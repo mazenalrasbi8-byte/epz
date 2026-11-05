@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0B7A63">
+<title>EPZ Teacher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF4F1;--surface:#fff;--ink:#13232F;--muted:#5A6B66;--line:#DCE6E2;--green:#0B7A63;--green-d:#08594A;--amber:#F4A51C;--bad:#C53030;--bad-bg:#FDECEC;--ok-bg:#E5F4EE;--shadow:0 2px 0 rgb(19 35 47/.06),0 8px 24px rgb(19 35 47/.06);--r:18px}
+@media (prefers-color-scheme:dark){:root{--bg:#0F1A1A;--surface:#172625;--ink:#EAF2EF;--muted:#9DB3AD;--line:#27403C;--green:#2FB896;--green-d:#2FB896;--bad:#FF8A8A;--bad-bg:#3A1F1F;--ok-bg:#183530;--shadow:0 2px 0 rgb(0 0 0/.3)}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,Arial,sans-serif;font-weight:700;line-height:1.35;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.wrap{max-width:760px;margin:0 auto;padding:16px}
+h1,h2{font-family:'Baloo 2','Nunito',sans-serif;margin:0;line-height:1.1}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:40px;height:40px;border-radius:12px;background:var(--green);color:#fff;display:grid;place-items:center;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:24px;box-shadow:3px 3px 0 var(--amber);flex-shrink:0;padding-top:2px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.top small{display:block;color:var(--muted);font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.card{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:16px}
+.login{margin-top:12vh;display:flex;flex-direction:column;gap:12px}
+label{font-weight:800;font-size:.92rem}
+input[type=text],input[type=password],input[type=search]{width:100%;font:inherit;font-weight:800;font-size:1.05rem;padding:13px 14px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--ink);outline:none}
+input:focus{border-color:var(--green)}
+.btn{font:inherit;font-weight:900;border:0;border-radius:14px;padding:13px 16px;background:var(--green);color:#fff;cursor:pointer;box-shadow:0 3px 0 var(--green-d);min-height:46px}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--green-d)}
+.btn[disabled]{opacity:.55}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--line);box-shadow:none;padding:9px 12px;min-height:40px;font-size:.9rem}
+.btn-bad{background:var(--bad);color:#fff;box-shadow:0 3px 0 rgb(0 0 0/.25)}
+.err{color:var(--bad);background:var(--bad-bg);border-radius:12px;padding:10px 12px;font-size:.92rem}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+@media(min-width:560px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:14px}
+.stat b{display:block;font-family:'Baloo 2',sans-serif;font-size:2.1rem;line-height:1}
+.stat span{color:var(--muted);font-size:.85rem;font-weight:800}
+.stat.good b{color:var(--green)}
+.stat.warn b{color:#B36B00}
+@media(prefers-color-scheme:dark){.stat.warn b{color:var(--amber)}}
+.note{color:var(--muted);font-size:.88rem;margin:-4px 2px 12px}
+.tabs{display:flex;gap:6px;background:var(--surface);padding:5px;border-radius:16px;box-shadow:var(--shadow);margin-bottom:10px}
+.tab{flex:1;font:inherit;font-weight:900;font-size:.9rem;border:0;background:transparent;color:var(--muted);padding:10px 6px;border-radius:12px;cursor:pointer}
+.tab[aria-selected=true]{background:var(--green);color:#fff}
+.search{margin-bottom:10px}
+.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.row{background:var(--surface);border-radius:16px;box-shadow:var(--shadow);padding:12px 12px 12px 14px;display:flex;align-items:center;gap:12px}
+.dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;background:var(--line)}
+.dot.on{background:#1FA97C}
+.who{flex:1;min-width:0}
+.who b{display:block;font-size:1.02rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.who span{display:block;color:var(--muted);font-size:.84rem;font-weight:700}
+.trash{font:inherit;border:2px solid var(--line);background:transparent;color:var(--bad);border-radius:12px;width:44px;height:44px;display:grid;place-items:center;cursor:pointer;flex-shrink:0}
+.trash:active{background:var(--bad-bg)}
+.empty{text-align:center;color:var(--muted);padding:26px 10px}
+.bar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin:14px 2px 0;color:var(--muted);font-size:.84rem}
+.modal-bg{position:fixed;inset:0;background:rgb(10 20 20/.55);display:grid;place-items:center;padding:16px;z-index:10}
+.modal{background:var(--surface);border-radius:22px;padding:20px;max-width:420px;width:100%;display:flex;flex-direction:column;gap:12px;box-shadow:0 20px 60px rgb(0 0 0/.35)}
+.modal h2{font-size:1.4rem}
+.modal p{margin:0;color:var(--muted)}
+.modal .acts{display:flex;gap:10px}
+.modal .acts>*{flex:1}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:14px;font-weight:800;z-index:20;max-width:90vw}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+(function () {
+  var SB_URL = 'https://vevjzvtbcuzubullytek.supabase.co';
+  var SB_KEY = 'sb_publishable_RBefpO-KlMXVswqgqZbVPg_A9U7USNc';
+  var KEY = 'epz-teacher-code';
+  var TZ = 'Asia/Muscat';
+  var app = document.getElementById('app');
+  var code = '';
+  try { code = localStorage.getItem(KEY) || ''; } catch (e) { code = ''; }
+  var data = null, tab = 'played', query = '', timer = null, lastOk = null, busy = false;
+
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var dayOf = function (d) { return new Date(d).toLocaleDateString('en-CA', { timeZone: TZ }); };
+  var ago = function (d) {
+    var s = Math.max(0, (Date.now() - new Date(d).getTime()) / 1000);
+    if (s < 90) return 'just now';
+    if (s < 3600) return Math.round(s / 60) + ' min ago';
+    if (s < 86400) return Math.round(s / 3600) + ' h ago';
+    var n = Math.round(s / 86400); return n + (n === 1 ? ' day ago' : ' days ago');
+  };
+  var fmtTime = function (d) { return new Date(d).toLocaleTimeString('en-GB', { timeZone: TZ, hour: '2-digit', minute: '2-digit' }); };
+
+  function rpc(name, body) {
+    var ctl = new AbortController();
+    var t = setTimeout(function () { ctl.abort(); }, 12000);
+    return fetch(SB_URL + '/rest/v1/rpc/' + name, {
+      method: 'POST', signal: ctl.signal,
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(function (r) {
+      clearTimeout(t);
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }, function (e) { clearTimeout(t); throw e; });
+  }
+
+  function toast(msg) {
+    var el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; document.body.appendChild(el);
+    setTimeout(function () { el.remove(); }, 2600);
+  }
+
+  function loginView(error) {
+    app.innerHTML =
+      '<div class="login card"><div class="brand"><span class="logo">E</span><div><h1>Teacher panel</h1><small style="color:var(--muted);font-weight:800">English Practice Zone</small></div></div>' +
+      '<form id="f" style="display:flex;flex-direction:column;gap:12px"><label for="c">Your code</label>' +
+      '<input id="c" type="password" autocomplete="current-password" autocapitalize="none" spellcheck="false" placeholder="Type your code">' +
+      (error ? '<div class="err" role="alert">' + esc(error) + '</div>' : '') +
+      '<button class="btn" type="submit">Open</button></form>' +
+      '<p style="margin:0;color:var(--muted);font-size:.85rem">You type the code once. This device remembers it.</p></div>';
+    var f = document.getElementById('f');
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var v = document.getElementById('c').value.trim();
+      if (!v) return;
+      code = v; load(true);
+    });
+    setTimeout(function () { var c = document.getElementById('c'); if (c) c.focus(); }, 50);
+  }
+
+  function failMsg(res) {
+    if (res && res.error === 'locked') return 'Too many wrong tries. Wait 10 minutes and try again.';
+    return 'That code is not right.';
+  }
+
+  function load(fromLogin) {
+    if (busy) return Promise.resolve();
+    busy = true;
+    return rpc('teacher_overview', { p_code: code }).then(function (res) {
+      busy = false;
+      if (!res || res.ok !== true) {
+        try { localStorage.removeItem(KEY); } catch (e) { /* ignore */ }
+        code = ''; data = null; clearInterval(timer);
+        loginView(failMsg(res));
+        return;
+      }
+      try { localStorage.setItem(KEY, code); } catch (e) { /* ignore */ }
+      data = res; lastOk = Date.now();
+      draw();
+      clearInterval(timer);
+      timer = setInterval(function () { if (!document.hidden) load(false); }, 60000);
+    }, function () {
+      busy = false;
+      if (data) { toast('No connection. Showing the last update.'); return; }
+      loginView('Could not reach the server. Check the internet and try again.');
+    });
+  }
+
+  function students() {
+    // One entry per device: board row (points) wins over the visitor row (name only).
+    var map = {};
+    (data.visitors || []).forEach(function (v) { map[v.id] = { id: v.id, name: v.name || '', seen: v.last_seen, pts: null, played: null, league: '', rounds: 0 }; });
+    (data.board || []).forEach(function (b) {
+      var m = map[b.id] || (map[b.id] = { id: b.id, seen: b.updated_at });
+      m.name = b.name || m.name || ''; m.pts = b.pts; m.league = b.league; m.rounds = b.rounds; m.played = b.updated_at;
+      if (!m.seen || new Date(b.updated_at) > new Date(m.seen)) m.seen = b.updated_at;
+    });
+    return Object.keys(map).map(function (k) { return map[k]; });
+  }
+
+  function draw() {
+    var all = students();
+    var today = dayOf(data.now || new Date());
+    var named = all.filter(function (s) { return s.name; });
+    var unnamed = all.length - named.length;
+    var playedToday = named.filter(function (s) { return s.played && dayOf(s.played) === today; });
+    var notToday = named.filter(function (s) { return !(s.played && dayOf(s.played) === today); });
+    var openedToday = all.filter(function (s) { return s.seen && dayOf(s.seen) === today; }).length;
+
+    var list = tab === 'played' ? playedToday : tab === 'not' ? notToday : named;
+    var q = query.trim().toLowerCase();
+    if (q) list = list.filter(function (s) { return s.name.toLowerCase().indexOf(q) >= 0; });
+    list = list.slice().sort(function (a, b) {
+      if (tab === 'played') return new Date(b.played) - new Date(a.played);
+      if (tab === 'not') return new Date(b.seen || 0) - new Date(a.seen || 0);
+      return a.name.localeCompare(b.name);
+    });
+
+    var rows = list.map(function (s) {
+      var isPlayed = s.played && dayOf(s.played) === today;
+      var sub = s.played
+        ? (isPlayed ? 'Played ' + ago(s.played) : 'Last played ' + ago(s.played)) + ' · ' + (s.pts || 0) + ' pts'
+        : 'Opened ' + ago(s.seen) + ' · has not played yet';
+      return '<li class="row"><span class="dot ' + (isPlayed ? 'on' : '') + '" aria-hidden="true"></span>' +
+        '<div class="who"><b>' + esc(s.name) + '</b><span>' + esc(sub) + '</span></div>' +
+        '<button class="trash" data-id="' + esc(s.id) + '" data-name="' + esc(s.name) + '" aria-label="Remove ' + esc(s.name) + '">' +
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></button></li>';
+    }).join('');
+
+    app.innerHTML =
+      '<div class="top"><div class="brand"><span class="logo">E</span><div><h1>Teacher panel</h1><small>English Practice Zone</small></div></div>' +
+      '<button class="btn btn-ghost" id="refresh" type="button">Refresh</button></div>' +
+      '<div class="stats">' +
+      '<div class="stat"><b>' + all.length + '</b><span>Opened the site</span></div>' +
+      '<div class="stat good"><b>' + playedToday.length + '</b><span>Played today</span></div>' +
+      '<div class="stat warn"><b>' + notToday.length + '</b><span>Not played today</span></div>' +
+      '<div class="stat"><b>' + openedToday + '</b><span>Opened today</span></div></div>' +
+      (unnamed ? '<p class="note">' + unnamed + (unnamed === 1 ? ' phone has' : ' phones have') + ' opened the site but not typed a name yet.</p>' : '') +
+      '<div class="tabs" role="tablist">' +
+      '<button class="tab" role="tab" data-tab="played" aria-selected="' + (tab === 'played') + '">Played today</button>' +
+      '<button class="tab" role="tab" data-tab="not" aria-selected="' + (tab === 'not') + '">Not today</button>' +
+      '<button class="tab" role="tab" data-tab="all" aria-selected="' + (tab === 'all') + '">All</button></div>' +
+      '<div class="search"><input id="q" type="search" placeholder="Search a name" value="' + esc(query) + '" autocomplete="off"></div>' +
+      (rows ? '<ul class="list">' + rows + '</ul>' : '<div class="card empty">' + (q ? 'No name matches your search.' : tab === 'played' ? 'Nobody has played yet today.' : tab === 'not' ? 'Everyone has played today. Well done!' : 'No students yet.') + '</div>') +
+      '<div class="bar"><span>Updated ' + fmtTime(lastOk) + ' · refreshes every minute</span><button class="btn btn-ghost" id="logout" type="button">Forget code</button></div>';
+
+    document.getElementById('refresh').onclick = function () { load(false).then(function () { toast('Updated'); }); };
+    document.getElementById('logout').onclick = function () {
+      try { localStorage.removeItem(KEY); } catch (e) { /* ignore */ }
+      code = ''; data = null; clearInterval(timer); loginView('');
+    };
+    var qEl = document.getElementById('q');
+    qEl.oninput = function () {
+      query = qEl.value; var pos = qEl.selectionStart; draw();
+      var n = document.getElementById('q'); n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) { /* ignore */ }
+    };
+    Array.prototype.forEach.call(app.querySelectorAll('.tab'), function (b) { b.onclick = function () { tab = b.getAttribute('data-tab'); draw(); }; });
+    Array.prototype.forEach.call(app.querySelectorAll('.trash'), function (b) { b.onclick = function () { confirmDelete(b.getAttribute('data-id'), b.getAttribute('data-name')); }; });
+  }
+
+  function confirmDelete(id, name) {
+    var bg = document.createElement('div'); bg.className = 'modal-bg';
+    bg.innerHTML = '<div class="modal" role="dialog" aria-modal="true"><h2>Remove ' + esc(name) + '?</h2>' +
+      '<p>This name and its points disappear from the class ranking. If the student opens the site again, they start fresh and type a new name.</p>' +
+      '<div class="acts"><button class="btn btn-ghost" id="no" type="button">Cancel</button><button class="btn btn-bad" id="yes" type="button">Remove</button></div></div>';
+    document.body.appendChild(bg);
+    var close = function () { bg.remove(); };
+    bg.addEventListener('click', function (e) { if (e.target === bg) close(); });
+    bg.querySelector('#no').onclick = close;
+    var yes = bg.querySelector('#yes');
+    yes.onclick = function () {
+      yes.disabled = true; yes.textContent = 'Removing…';
+      rpc('teacher_delete', { p_code: code, p_id: id }).then(function (res) {
+        close();
+        if (res && res.ok) { toast(name + ' removed'); busy = false; load(false); }
+        else toast('Could not remove. ' + (res && res.error === 'locked' ? 'Too many wrong tries.' : 'Try again.'));
+      }, function () { close(); toast('No connection. Nothing was removed.'); });
+    };
+  }
+
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && code && data && Date.now() - lastOk > 20000) load(false); });
+  if (code) { app.innerHTML = '<div class="empty">Loading…</div>'; load(false); } else loginView('');
+})();
+</script>
+</body>
+</html>
