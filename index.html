@@ -704,6 +704,42 @@ button.slot { cursor: pointer; border-color: var(--c); box-shadow: 0 3px 0 var(-
   .word-hero { padding: 26px; }
 }
 
+/* ------------------------------------------------------------ grade and class setup (epz-patch:classes) */
+.setup-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding-top: 8px; }
+.setup-top .back-btn { background: none; border: 0; font: inherit; font-weight: 900; cursor: pointer; }
+.su-steps { display: flex; gap: 6px; }
+.su-steps i { width: 26px; height: 6px; border-radius: 99px; background: var(--line); transition: background .2s; }
+.su-steps i.on { background: var(--brand); }
+.setup { display: flex; flex-direction: column; gap: 14px; padding-block: 4px 28px; }
+.setup > .logo-mark, .setup > .teacher-line, .setup > .skill-strip, .setup > .su-pick { align-self: flex-start; }
+.setup h1 { font-size: clamp(2rem, 8vw, 2.6rem); font-weight: 800; letter-spacing: -.01em; }
+.su-q { font-family: var(--display); font-size: 1.6rem; font-weight: 800; line-height: 1.15; margin-top: 4px; }
+.su-eyebrow { color: var(--brand); margin-bottom: -10px; }
+.su-grid { display: grid; gap: 10px; }
+.su-grades { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.su-classes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.su-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 80px; padding: 12px; border: 2px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--ink); box-shadow: var(--shadow); font: inherit; cursor: pointer; transition: transform .08s, border-color .15s, background .15s; }
+.su-card b { font-family: var(--display); font-size: 2rem; font-weight: 800; line-height: 1; }
+.su-card small { color: var(--muted); font-weight: 900; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+.su-classes .su-card { min-height: 64px; }
+.su-classes .su-card b { font-size: 1.5rem; }
+.su-card:active { transform: translateY(2px); }
+.su-card.on, .su-card:focus-visible { border-color: var(--brand); outline: none; background: color-mix(in srgb, var(--brand) 10%, var(--surface)); }
+.su-guest { flex-direction: row; gap: 10px; min-height: 60px; font-weight: 900; font-size: 1.05rem; border-style: dashed; box-shadow: none; }
+.su-guest svg, .su-pick svg { color: var(--brand); }
+.su-pick { display: inline-flex; align-items: center; gap: 8px; background: color-mix(in srgb, var(--brand) 12%, var(--surface)); padding: 8px 14px; border-radius: 999px; font-weight: 900; }
+.name-form .su-lbl { font-family: var(--font); font-size: .95rem; font-weight: 900; margin-top: 2px; }
+.su-fwd { animation: suFwd .28s ease both; }
+.su-back { animation: suBack .28s ease both; }
+@keyframes suFwd { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: none; } }
+@keyframes suBack { from { opacity: 0; transform: translateX(-18px); } to { opacity: 1; transform: none; } }
+.class-chip { display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; border: 2px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 3px 4px 3px 12px; font: inherit; font-weight: 900; font-size: .88rem; cursor: pointer; }
+.class-chip span { background: var(--surface-2); color: var(--brand); border-radius: 999px; padding: 3px 10px; font-size: .8rem; }
+.cls-tag { font-weight: 900; color: var(--ink); margin-right: 6px; }
+.me-info { display: flex; flex-direction: column; gap: 2px; background: var(--surface-2); border-radius: var(--r-s); padding: 12px 14px; }
+.me-info b { font-size: 1.1rem; }
+.me-info span { color: var(--muted); font-weight: 800; }
+@media (prefers-reduced-motion: reduce) { .su-fwd, .su-back { animation: none !important; } }
 </style>
 </head>
 <body>
@@ -3296,7 +3332,7 @@ Majid` }),
     el && el.textContent.trim() && (CLASS = Object.assign(CLASS, JSON.parse(el.textContent)));
   } catch {
   }
-  var classData = () => CLASS, blank = () => ({ v: 1, name: "", level: "easy", results: [], badges: {}, created: null, wotd: {} }), state = blank(), storageOk = !0;
+  var classData = () => CLASS, blank = () => ({ v: 1, name: "", first: "", last: "", grade: "", cls: "", userType: "", level: "easy", results: [], badges: {}, created: null, wotd: {} }), state = blank(), storageOk = !0;
   function readKey(k) {
     try {
       return localStorage.getItem(k);
@@ -3338,6 +3374,21 @@ Majid` }),
   function setName(name) {
     state.name = String(name || "").replace(/\s+/g, " ").trim().slice(0, 40), state.created || (state.created = (/* @__PURE__ */ new Date()).toISOString()), save(), LIVE && pingVisit();
   }
+  // epz-patch:classes — grade, class and first/last name
+  var GRADE_CLASSES = { "9": 5, "10": 5, "11": 8, "12": 9 };
+  function splitName(n) {
+    let w = String(n || "").trim().split(/\s+/).filter(Boolean);
+    return { first: w[0] || "", last: w.slice(1).join(" ") };
+  }
+  function setProfile({ first, last, grade, cls }) {
+    let clean = (s) => String(s || "").replace(/\s+/g, " ").trim().slice(0, 20), g = grade === "guest" ? "guest" : GRADE_CLASSES[grade] ? String(grade) : "", moved = g !== state.grade;
+    state.first = clean(first), state.last = clean(last), state.name = `${state.first} ${state.last}`.trim().slice(0, 40);
+    state.grade = g, state.cls = g === "guest" ? "" : String(cls || ""), state.userType = g === "guest" ? "guest" : "student";
+    state.created || (state.created = (/* @__PURE__ */ new Date()).toISOString()), save();
+    moved && (liveRows = null, liveSig = "", LIVE && (boardState = "loading"));
+    LIVE && pingVisit();
+  }
+  var classLabel = () => state.grade === "guest" ? "Guest" : state.grade ? `Grade ${state.grade} \xB7 Class ${state.cls}` : "", rankScope = () => state.grade === "guest" ? "guests" : `Grade ${state.grade || "9"}`;
   function setLevel(level) {
     LEVELS2[level] && (state.level = level, save());
   }
@@ -3571,15 +3622,37 @@ Majid` }),
     }
     state = blank(), save(), lastPosted = "", lastPing = null, liveRows = null, liveSig = "", boardState = "loading", onRemovedCb && onRemovedCb();
   }
-  var lastPing = null;
+  var lastPing = null, v2Missing = !1, boardV2 = !0;
+  async function callV2(path, body, oldPath, oldBody) {
+    if (!v2Missing && state.grade)
+      try {
+        return await call(path, { method: "POST", body: JSON.stringify(body) });
+      } catch (e) {
+        if (!/HTTP 404/.test(String(e && e.message || ""))) throw e;
+        v2Missing = !0;
+      }
+    return call(oldPath, { method: "POST", body: JSON.stringify(oldBody) });
+  }
+  async function boardFetch() {
+    let base = "board?select=id,name,pts,wk,rounds,streak,skills,updated_at", g = state.grade || "9";
+    if (boardV2)
+      try {
+        let f = g === "guest" ? "grade=eq.guest" : g === "9" ? 'grade=in.("9","")' : `grade=eq.${g}`;
+        return await (await call(`${base},grade,class_name&${encodeURI(f)}&order=pts.desc&limit=500`)).json();
+      } catch (e) {
+        if (!/HTTP 4\d\d/.test(String(e && e.message || ""))) throw e;
+        boardV2 = !1;
+      }
+    return (await call(`${base}&order=pts.desc&limit=300`)).json();
+  }
   async function doPing() {
     if (!LIVE) return !1;
     let id = studentId(), secret = studentSecret();
     if (!id || !secret) return !1;
-    let nm = state.name || "";
-    if (lastPing === nm) return !1;
+    let nm = state.name || "", sig = `${nm}|${state.grade || ""}|${state.cls || ""}`;
+    if (lastPing === sig) return !1;
     try {
-      await call("rpc/ping_visit", { method: "POST", body: JSON.stringify({ p_id: id, p_secret: secret, p_name: nm }) }), lastPing = nm;
+      await callV2("rpc/ping_visit2", { p_id: id, p_secret: secret, p_name: nm, p_grade: state.grade || "", p_class: state.cls || "" }, "rpc/ping_visit", { p_id: id, p_secret: secret, p_name: nm }), lastPing = sig;
     } catch (e) {
       if (isRemoved(e))
         return wasRemoved(), !0;
@@ -3593,16 +3666,16 @@ Majid` }),
       if (id && secret && state.name && (state.results.length || wotdPoints())) {
         let sk = {};
         for (let [k, v] of Object.entries(skillStats().skills)) v.acc != null && (sk[k] = v.acc);
-        let body = { p_id: id, p_secret: secret, p_name: state.name, p_pts: totalPoints(), p_wk: weekPoints(), p_rounds: state.results.length, p_streak: streak(), p_league: league().name, p_skills: sk }, sig2 = JSON.stringify(body);
+        let body = { p_id: id, p_secret: secret, p_name: state.name, p_pts: totalPoints(), p_wk: weekPoints(), p_rounds: state.results.length, p_streak: streak(), p_league: league().name, p_skills: sk }, body2 = { ...body, p_grade: state.grade || "", p_class: state.cls || "" }, sig2 = JSON.stringify(body2);
         if (sig2 !== lastPosted)
           try {
-            await call("rpc/save_score", { method: "POST", body: sig2 }), lastPosted = sig2;
+            await callV2("rpc/save_score2", body2, "rpc/save_score", body), lastPosted = sig2;
           } catch (e) {
             if (isRemoved(e))
               return wasRemoved(), !0;
           }
       }
-      let data = await (await call("board?select=id,name,pts,wk,rounds,streak,skills,updated_at&order=pts.desc&limit=300")).json(), now = Date.now(), today2 = dayKey(/* @__PURE__ */ new Date()), yesterday = dayKey(new Date(now - 864e5)), rows = data.map((x2) => {
+      let data = await boardFetch(), now = Date.now(), today2 = dayKey(/* @__PURE__ */ new Date()), yesterday = dayKey(new Date(now - 864e5)), rows = data.map((x2) => {
         let seen = dayKey(x2.updated_at), fresh = now - Date.parse(x2.updated_at) < 7 * 864e5;
         return {
           n: x2.name,
@@ -3611,6 +3684,7 @@ Majid` }),
           r: x2.rounds,
           st: (seen === today2 || seen === yesterday) && x2.streak || 0,
           sk: x2.skills && Object.keys(x2.skills).length ? x2.skills : void 0,
+          c: x2.class_name || "",
           self: !!id && x2.id === id
         };
       }), sig = JSON.stringify(rows), changed = sig !== liveSig || boardState !== "ok";
@@ -4499,8 +4573,12 @@ Majid` }),
   function route2() {
     cleanup && (cleanup(), cleanup = null), stopSpeaking(), document.querySelectorAll(".confetti").forEach((c2) => c2.remove()), document.body.classList.remove("playing"), app.classList.remove("wide");
     let h = location.hash.replace(/^#/, "");
-    if (!me().name) {
-      welcome();
+    if (h === "setup" && me().name && me().grade) {
+      setupFlow({ change: !0 });
+      return;
+    }
+    if (!me().name || !me().grade) {
+      setupFlow();
       return;
     }
     if (h === "quick") {
@@ -4556,6 +4634,66 @@ Majid` }),
       setName(v), location.hash && location.hash !== "#home" ? route2() : go("home");
     });
   }
+  function setupFlow(opts = {}) {
+    let m2 = me(), nm = m2.first || m2.last ? { first: m2.first || "", last: m2.last || "" } : splitName(m2.name), sel = { grade: m2.grade || "", cls: m2.cls || "", first: nm.first, last: nm.last }, canCancel = !!(opts.change && m2.name && m2.grade);
+    function draw(step, dir = "fwd") {
+      let guest = sel.grade === "guest", steps = guest ? ["grade", "name"] : ["grade", "class", "name"], at = steps.indexOf(step), body = "";
+      if (step === "grade")
+        body = `
+      ${!canCancel && ownerBar() ? `<div class="welcome-owner">${ownerBar()}</div>` : ""}
+      <span class="logo-mark big" aria-hidden="true">E</span>
+      <h1>English Practice Zone</h1>
+      <p class="teacher-line">${icon("user", 18)} Teacher: <b>${TEACHER_NAME}</b></p>
+      <div class="skill-strip" aria-hidden="true">${SKILL_KEYS2.map((k) => `<span style="--c:${SKILLS2[k].color}">${icon(SKILLS2[k].icon, 20)}</span>`).join("")}</div>
+      <h2 class="su-q">Which grade are you in?</h2>
+      <div class="su-grid su-grades">${Object.keys(GRADE_CLASSES).map((g) => `<button type="button" class="su-card ${sel.grade === g ? "on" : ""}" data-grade="${g}"><small>Grade</small><b>${g}</b></button>`).join("")}</div>
+      <button type="button" class="su-card su-guest ${guest ? "on" : ""}" data-grade="guest">${icon("user", 20)}<span>Continue as a Guest</span></button>
+      <p class="fine">No account and no password.</p>`;
+      else if (step === "class")
+        body = `
+      <p class="eyebrow su-eyebrow">Grade ${sel.grade}</p>
+      <h2 class="su-q">Choose your class</h2>
+      <div class="su-grid su-classes">${Array.from({ length: GRADE_CLASSES[sel.grade] }, (_, i) => `${sel.grade}/${i + 1}`).map((c2) => `<button type="button" class="su-card ${sel.cls === c2 ? "on" : ""}" data-cls="${c2}"><b>${c2}</b></button>`).join("")}</div>`;
+      else
+        body = `
+      <h2 class="su-q">What's your name?</h2>
+      <p class="su-pick">${icon(guest ? "user" : "users", 18)}<span>${guest ? "Guest" : `Grade ${sel.grade} \xB7 Class ${sel.cls}`}</span></p>
+      <form id="su-form" class="name-form" novalidate>
+        <label class="su-lbl" for="su-first">First name</label>
+        <input id="su-first" name="first" autocomplete="given-name" maxlength="20" value="${esc(sel.first)}" required>
+        <label class="su-lbl" for="su-last">Last name</label>
+        <input id="su-last" name="last" autocomplete="family-name" maxlength="20" value="${esc(sel.last)}" required>
+        <p class="form-error" id="su-err" hidden>Please write your first name and your last name.</p>
+        <button class="btn btn-primary btn-big" type="submit">${canCancel ? "Save" : "Start"} ${icon("next", 20)}</button>
+      </form>
+      <p class="fine">${LIVE2 ? `Your name and points show in the ${guest ? "guest" : `Grade ${sel.grade}`} ranking.` : "Your points are saved on this phone."}</p>`;
+      app.innerHTML = `
+    <header class="setup-top">
+      ${step !== "grade" ? `<button type="button" class="back-btn" id="su-back">${icon("back", 20)} Back</button>` : canCancel ? `<button type="button" class="back-btn" id="su-cancel">${icon("back", 20)} Home</button>` : "<span></span>"}
+      <span class="su-steps" aria-label="Step ${at + 1} of ${steps.length}">${steps.map((s, i) => `<i class="${i <= at ? "on" : ""}"></i>`).join("")}</span>
+    </header>
+    <section class="setup su-${dir}">${body}
+    </section>`, window.scrollTo(0, 0), app.querySelector("#owner-open")?.addEventListener("click", teacherCorner), app.querySelector("#su-cancel")?.addEventListener("click", () => go("home")), app.querySelector("#su-back")?.addEventListener("click", () => draw(step === "name" && !guest ? "class" : "grade", "back")), app.querySelectorAll("[data-grade]").forEach((b2) => b2.addEventListener("click", () => {
+        let g = b2.dataset.grade;
+        g !== sel.grade && (sel.cls = ""), sel.grade = g, draw(g === "guest" ? "name" : "class");
+      })), app.querySelectorAll("[data-cls]").forEach((b2) => b2.addEventListener("click", () => {
+        sel.cls = b2.dataset.cls, draw("name");
+      }));
+      let form = app.querySelector("#su-form");
+      form && (form.addEventListener("input", () => {
+        sel.first = form.first.value, sel.last = form.last.value;
+      }), form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let f2 = form.first.value.replace(/\s+/g, " ").trim(), l2 = form.last.value.replace(/\s+/g, " ").trim();
+        if (f2.length < 2 || l2.length < 2) {
+          app.querySelector("#su-err").hidden = !1, (f2.length < 2 ? form.first : form.last).focus();
+          return;
+        }
+        setProfile({ first: f2, last: l2, grade: sel.grade, cls: sel.cls }), canCancel ? (go("home"), toast("Saved", "success", 1600)) : location.hash && location.hash !== "#home" && location.hash !== "#setup" ? route2() : go("home");
+      }));
+    }
+    draw("grade");
+  }
   function home(opts = {}) {
     let m2 = me(), pts = totalPoints(), lg = league(pts), st = streak(), today2 = todayRounds(), lvl = m2.level, sugg = levelSuggestion(), rows = boardRows(), earned = Object.keys(BADGES).filter((k) => m2.badges[k]).length, rank = myRank(), goalDots = Array.from({ length: DAILY_GOAL }, (_, i) => `<i class="${i < today2 ? "on" : ""}"></i>`).join(""), tiles2 = SKILL_KEYS2.map((k) => {
       let s = SKILLS2[k], act2 = nextActivity(k, lvl), pr = skillProgress(k, lvl), dots = Array.from({ length: pr.total }, (_, i) => `<i class="${i < pr.done ? "on" : ""}"></i>`).join("");
@@ -4576,13 +4714,14 @@ Majid` }),
       <button class="avatar" id="me-btn" aria-label="Change your name">${esc(initials(m2.name))}</button>
       <div class="hello-txt">
         <h1>Hi, ${esc(firstName(m2.name))}!</h1>
+        <button type="button" class="class-chip" id="class-btn" aria-label="Change your grade or class">${esc(classLabel())}<span>Change</span></button>
         <p><span class="lg-dot" style="--lg:${lg.color}"></span>${lg.name} league <span class="sep">\xB7</span> ${icon("flame", 16, "flame")}${st ? `${st} day${st === 1 ? "" : "s"} in a row` : "Start a streak today"}</p>
       </div>
     </section>
 
     <a class="prog-card" href="#dashboard" aria-label="My progress: open my dashboard">
       <span class="prog-ic">${icon("progress", 22)}</span>
-      <span class="prog-txt"><b>My progress</b><span>${fmtNum(dailyPoints(7).reduce((a, d) => a + d.pts, 0))} points this week${rank ? ` \xB7 #${rank.rank} in class` : LIVE2 ? " \xB7 play a round to join the ranking" : " \xB7 send your score to join the ranking"}</span></span>
+      <span class="prog-txt"><b>My progress</b><span>${fmtNum(dailyPoints(7).reduce((a, d) => a + d.pts, 0))} points this week${rank ? ` \xB7 #${rank.rank} in ${rankScope()}` : LIVE2 ? " \xB7 play a round to join the ranking" : " \xB7 send your score to join the ranking"}</span></span>
       <span class="prog-go">Open</span>
     </a>
 
@@ -4633,7 +4772,7 @@ Majid` }),
       setLevel(b2.dataset.level);
       let y = window.scrollY;
       home(), window.scrollTo(0, y), toast(`Level: ${LEVELS2[b2.dataset.level].name}`, "success", 1800);
-    })), wireBoard(app, rows), wireHome(app), app.querySelector("#send-btn")?.addEventListener("click", sendSheet), app.querySelector("#me-btn").addEventListener("click", meSheet), app.querySelector("#owner-open")?.addEventListener("click", teacherCorner), app.querySelector("#owner-open-foot")?.addEventListener("click", teacherCorner), app.querySelector("#board-retry")?.addEventListener("click", () => {
+    })), wireBoard(app, rows), wireHome(app), app.querySelector("#send-btn")?.addEventListener("click", sendSheet), app.querySelector("#me-btn").addEventListener("click", meSheet), app.querySelector("#class-btn")?.addEventListener("click", () => go("setup")), app.querySelector("#owner-open")?.addEventListener("click", teacherCorner), app.querySelector("#owner-open-foot")?.addEventListener("click", teacherCorner), app.querySelector("#board-retry")?.addEventListener("click", () => {
       syncBoard().then(() => redrawIf("home"));
     }), LIVE2 && !opts.noSync && syncBoard().then((changed) => {
       changed && redrawIf("home");
@@ -4660,16 +4799,16 @@ Majid` }),
   function boardHtml(rows, all = !1) {
     let top = all ? rows : rows.slice(0, 10), mine = rows.find((r) => r.me), row = (r) => {
       let lg = league(r.pts);
-      return `<li class="${r.me ? "me" : ""}"><button type="button" class="peer" data-peer="${esc(r.n)}" aria-label="See ${esc(r.n)}'s progress"><span class="rk rk-${r.rank <= 3 ? r.rank : "n"}">${r.rank}</span><span class="nm">${esc(r.n)}${r.me ? " <em>(you)</em>" : ""}<small><span class="lg-dot" style="--lg:${lg.color}"></span>${lg.name}${r.wk ? ` \xB7 +${fmtNum(r.wk)} this week` : ""}</small></span><span class="pt">${fmtNum(r.pts)}</span></button></li>`;
+      return `<li class="${r.me ? "me" : ""}"><button type="button" class="peer" data-peer="${esc(r.n)}" aria-label="See ${esc(r.n)}'s progress"><span class="rk rk-${r.rank <= 3 ? r.rank : "n"}">${r.rank}</span><span class="nm">${esc(r.n)}${r.me ? " <em>(you)</em>" : ""}<small>${r.c ? `<span class="cls-tag">${esc(r.c)}</span>` : ""}<span class="lg-dot" style="--lg:${lg.color}"></span>${lg.name}${r.wk ? ` \xB7 +${fmtNum(r.wk)} this week` : ""}</small></span><span class="pt">${fmtNum(r.pts)}</span></button></li>`;
     }, upd = boardUpdated(), st = boardState, tag = LIVE2 ? st === "ok" ? '<span class="live-pill"><i></i>Live</span>' : "" : upd ? `<span class="muted small">Updated ${esc(fmtDay(upd))}</span>` : "";
     return LIVE2 && !rows.length ? `
     <section class="block board">
-      <div class="block-head"><h2>Class ranking</h2>${tag}</div>
+      <div class="block-head"><h2>${me().grade === "guest" ? "Guest ranking" : `Grade ${me().grade || "9"} ranking`}</h2>${tag}</div>
       <p class="board-note ${st === "error" ? "bad-text" : "muted"}">${st === "loading" ? "Loading your class\u2026" : st === "error" ? "Could not load the class ranking. Check your internet, then try again." : "Nobody is in the ranking yet. Play a round to be the first!"}</p>
       ${st === "error" ? '<button type="button" class="btn btn-ghost" id="board-retry">Try again</button>' : ""}
     </section>` : `
     <section class="block board">
-      <div class="block-head"><h2>Class ranking</h2>${tag}</div>
+      <div class="block-head"><h2>${me().grade === "guest" ? "Guest ranking" : `Grade ${me().grade || "9"} ranking`}</h2>${tag}</div>
       <ol class="board-list">${top.map(row).join("")}</ol>
       ${!all && mine && mine.rank > 10 ? `<ol class="board-list mine">${row(mine)}</ol>` : ""}
       ${!all && rows.length > 10 ? `<button type="button" class="btn btn-ghost" id="board-all">Show all ${rows.length} students</button>` : ""}
@@ -4741,7 +4880,7 @@ Majid` }),
       </div>
       <div class="dh-stats">
         <div><b>${fmtNum(pts)}</b><span>points</span></div>
-        <div><b>${rank ? `#${rank.rank}` : m2.results.length}</b><span>${rank ? `of ${rank.of} in class` : "rounds"}</span></div>
+        <div><b>${rank ? `#${rank.rank}` : m2.results.length}</b><span>${rank ? `of ${rank.of} in ${rankScope()}` : "rounds"}</span></div>
         <div><b>${st}</b><span>day streak</span></div>
       </div>
       <div class="dh-league">
@@ -4817,25 +4956,16 @@ Majid` }),
   }
   function meSheet() {
     let m2 = openModal(`
-    <h2 class="modal-title">${icon("user", 22)} Your name</h2>
-    <form id="rename" class="stack" novalidate>
-      <label for="rn">This name goes on your score</label>
-      <input id="rn" name="rn" maxlength="40" autocomplete="name" value="${esc(me().name)}">
-      <button class="btn btn-primary btn-big">Save</button>
-    </form>
+    <h2 class="modal-title">${icon("user", 22)} Me</h2>
+    <div class="me-info"><b>${esc(me().name)}</b><span>${esc(classLabel())}</span></div>
+    <button class="btn btn-primary btn-big" id="me-change" type="button">${icon("edit", 20)} Change my class or name</button>
     <details class="danger">
       <summary>Start over on this phone</summary>
       <p class="muted small">This deletes all your points and badges on this phone. It cannot be undone.</p>
       <button class="btn btn-bad" id="wipe" type="button">Delete my progress</button>
     </details>`);
-    m2.el.querySelector("#rename").addEventListener("submit", (e) => {
-      e.preventDefault();
-      let v = e.target.rn.value.replace(/\s+/g, " ").trim();
-      if (v.length < 2) {
-        toast("Please write your name.", "error");
-        return;
-      }
-      setName(v), m2.close(), home(), toast("Saved", "success", 1600);
+    m2.el.querySelector("#me-change").addEventListener("click", () => {
+      m2.close(), go("setup");
     }), m2.el.querySelector("#wipe").addEventListener("click", () => {
       startOver(), m2.close(), go("home");
     });
