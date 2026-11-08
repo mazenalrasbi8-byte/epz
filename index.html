@@ -525,6 +525,185 @@ details.danger[open] { display: flex; flex-direction: column; gap: 10px; }
 .live-pill i { width: 8px; height: 8px; border-radius: 50%; background: var(--good); box-shadow: 0 0 0 3px color-mix(in srgb, var(--good) 25%, transparent); }
 .board-note { font-weight: 700; }
 
+/* ------------------------------------------------------------ Word of the Day */
+.ipa { font-family: 'Noto Sans', 'Segoe UI', 'Lucida Sans Unicode', 'Arial Unicode MS', system-ui, sans-serif; font-weight: 500; letter-spacing: .01em; white-space: nowrap; }
+.ipa b { font-weight: 800; color: var(--brand); background: color-mix(in srgb, var(--brand) 12%, transparent); border-radius: 6px; padding: 0 3px; }
+.pos-chip, .lv-chip { display: inline-flex; align-items: center; border-radius: 999px; padding: 2px 10px; font-size: .78rem; font-weight: 900; letter-spacing: .02em; white-space: nowrap; }
+.pos-chip { background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); font-style: italic; }
+.lv-chip { color: #fff; }
+.lv-chip.lv-B { background: #0B8F63; }
+.lv-chip.lv-I { background: #1D5FD6; }
+.lv-chip.lv-A { background: #6C4CE0; }
+.say.on { animation: sayPulse 1s ease-in-out infinite; }
+.say-round { width: 52px; height: 52px; min-height: 52px; padding: 0; border-radius: 50%; flex-shrink: 0; background: var(--sun); color: var(--sun-ink); box-shadow: 0 4px 0 color-mix(in srgb, var(--sun) 65%, #000); }
+.say-round:active:not(:disabled) { box-shadow: 0 1px 0 color-mix(in srgb, var(--sun) 65%, #000); }
+@keyframes sayPulse { 0%, 100% { filter: none; } 50% { filter: brightness(1.18); transform: scale(1.04); } }
+.w-dots { display: inline-flex; gap: 4px; }
+.w-dots i { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--brand); }
+.w-dots i.on { background: var(--brand); }
+
+/* home card */
+.wotd-home { background: var(--surface); border-radius: var(--r); padding: 16px 18px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 10px; border-top: 5px solid var(--sun); animation: fadeUp .3s ease; }
+.wh-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.wh-head .eyebrow { display: inline-flex; align-items: center; gap: 6px; color: var(--brand); }
+.wh-date { color: var(--muted); font-weight: 800; font-size: .85rem; }
+.wh-main { display: flex; align-items: center; gap: 12px; }
+.wh-txt { flex: 1; min-width: 0; }
+.wotd-home h2 { font-size: clamp(1.9rem, 8vw, 2.3rem); font-weight: 800; line-height: 1.05; overflow-wrap: anywhere; }
+.wh-sub { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 4px; color: var(--muted); }
+.wh-def { color: var(--ink); font-weight: 700; }
+.wh-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.wh-prog { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-weight: 800; font-size: .88rem; }
+.wh-prog > span:last-child { display: inline-flex; align-items: center; gap: 4px; }
+.wh-go { background: var(--brand); color: var(--on-brand); box-shadow: 0 3px 0 var(--brand-deep); }
+
+/* word page */
+.app.wide { max-width: 560px; }
+.wotd-page { display: flex; flex-direction: column; gap: 16px; }
+.wcol { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.word-hero { background: var(--brand); color: var(--on-brand); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; }
+.word-hero::after { content: ""; position: absolute; right: -50px; top: -60px; width: 190px; height: 190px; border-radius: 50%; border: 24px solid rgb(255 255 255 / .08); pointer-events: none; }
+.word-hero .eyebrow { color: var(--sun); }
+.word-hero .wh-date { color: rgb(255 255 255 / .85); }
+.word-hero h1 { font-size: clamp(2.6rem, 12vw, 3.6rem); font-weight: 800; line-height: 1; overflow-wrap: anywhere; position: relative; z-index: 1; }
+.hero-sub { display: flex; align-items: center; gap: 8px; font-size: 1.25rem; }
+.word-hero .ipa b { color: var(--sun-ink); background: var(--sun); }
+.us-tag { font-size: .7rem; font-weight: 900; letter-spacing: .08em; border: 2px solid rgb(255 255 255 / .6); border-radius: 6px; padding: 0 5px; }
+.hero-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.word-hero .pos-chip { background: rgb(255 255 255 / .16); color: #fff; border-color: rgb(255 255 255 / .3); }
+.hero-say, .pron-btns { display: flex; gap: 10px; flex-wrap: wrap; position: relative; z-index: 1; }
+.hero-say .btn-primary { background: var(--sun); color: var(--sun-ink); box-shadow: 0 4px 0 color-mix(in srgb, var(--sun) 65%, #000); }
+.hero-say .btn-ghost { background: rgb(255 255 255 / .12); color: #fff; border-color: rgb(255 255 255 / .35); }
+.hero-def { margin: 4px 0 0; background: var(--surface); color: var(--ink); border-radius: 16px; padding: 4px 14px; }
+.hero-def div { padding: 10px 0; display: flex; flex-direction: column; gap: 2px; }
+.hero-def div + div { border-top: 1px solid var(--line); }
+.hero-def dt, .w-lbl { font-size: .74rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.hero-def dd { margin: 0; font-weight: 800; font-size: 1.08rem; }
+.ar-row dd { font-family: 'Noto Naskh Arabic', 'Segoe UI', Tahoma, system-ui, sans-serif; font-size: 1.3rem; font-weight: 700; }
+.ar-row dt { text-align: left; }
+.w-info mark, .w-ex mark, .w-col mark { background: color-mix(in srgb, var(--sun) 40%, transparent); color: inherit; border-radius: 4px; padding: 0 2px; font-weight: 900; }
+.w-example { background: var(--surface-2); border-left: 5px solid var(--sun); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; }
+.w-example p { font-size: 1.08rem; font-weight: 700; line-height: 1.55; }
+.w-row { display: flex; flex-direction: column; gap: 6px; }
+.w-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.w-chip { border-radius: 999px; padding: 4px 12px; font-weight: 800; font-size: .95rem; }
+.w-chip.syn { background: var(--good-bg); color: var(--good-ink); }
+.w-chip.ant { background: var(--bad-bg); color: var(--bad-ink); }
+.w-col { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.w-col li { background: var(--surface-2); border-radius: 10px; padding: 8px 12px; font-weight: 700; }
+.pron .dash-head h2 { display: inline-flex; align-items: center; gap: 8px; }
+.pron-word { display: flex; justify-content: center; padding: 8px 0 0; }
+.syls { display: inline-flex; align-items: baseline; flex-wrap: wrap; justify-content: center; gap: 2px 4px; font-family: var(--display); font-size: clamp(1.8rem, 8vw, 2.4rem); font-weight: 700; color: var(--muted); }
+.syls i { font-style: normal; color: var(--line); }
+.syl { padding: 0 4px; border-radius: 10px; }
+.syl.stress { color: var(--ink); background: color-mix(in srgb, var(--sun) 35%, transparent); font-weight: 800; font-size: 1.15em; box-shadow: inset 0 -4px 0 var(--sun); }
+.pron-ipa { text-align: center; font-size: 1.3rem; }
+.pron-steps { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; font-weight: 600; }
+.stress-word { font-weight: 900; background: color-mix(in srgb, var(--sun) 35%, transparent); border-radius: 6px; padding: 0 4px; }
+.pron-btns .btn { flex: 1; min-width: 120px; }
+.prac-score { font-weight: 800; color: var(--muted); }
+.prac-score b { font-family: var(--display); font-size: 1.3rem; color: var(--ink); }
+.prac-prog { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: .9rem; color: var(--muted); }
+.prac-prog .pbar { --c: var(--brand); }
+.prac-tip { display: flex; align-items: flex-start; gap: 8px; font-size: .92rem; font-weight: 700; color: var(--muted); }
+.prac-tip svg { color: var(--sun); fill: var(--sun); margin-top: 3px; }
+.day-done { display: flex; align-items: center; gap: 12px; background: var(--good-bg); color: var(--good-ink); border-radius: var(--r-s); padding: 12px 14px; animation: pop .35s ease; }
+.day-done > svg { width: 36px; height: 36px; padding: 7px; border-radius: 50%; background: var(--good); color: #fff; }
+.day-done div { display: flex; flex-direction: column; }
+.day-done span { font-size: .9rem; font-weight: 700; }
+.act-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.act-tile { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 16px; text-decoration: none; color: var(--ink); background: color-mix(in srgb, var(--c) 8%, var(--surface)); border: 2px solid color-mix(in srgb, var(--c) 22%, var(--surface)); box-shadow: 0 3px 0 color-mix(in srgb, var(--c) 28%, var(--surface)); transition: transform .08s; }
+.act-tile:active { transform: translateY(2px); box-shadow: 0 1px 0 color-mix(in srgb, var(--c) 28%, var(--surface)); }
+.act-tile.done { background: var(--surface); border-color: var(--line); box-shadow: 0 3px 0 var(--line); }
+.act-ic { width: 38px; height: 38px; border-radius: 12px; background: var(--c); color: #fff; display: grid; place-items: center; flex-shrink: 0; }
+.act-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.act-txt b { font-size: 1rem; line-height: 1.25; }
+.act-txt > span { color: var(--muted); font-size: .85rem; font-weight: 700; }
+.act-n { color: var(--muted); }
+.act-state { display: inline-flex; align-items: center; gap: 3px; border-radius: 999px; padding: 4px 9px; font-size: .8rem; font-weight: 900; background: var(--surface-2); color: var(--muted); white-space: nowrap; }
+.act-state.good { background: var(--good-bg); color: var(--good-ink); }
+.act-state.try { background: color-mix(in srgb, var(--sun) 25%, var(--surface)); color: var(--sun-ink); }
+.act-state.new { background: color-mix(in srgb, var(--c) 14%, var(--surface)); color: var(--c); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .act-state.try { color: var(--sun); } }
+
+/* activity screen */
+.w-mini { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--surface); border-radius: var(--r-s); padding: 10px 14px; box-shadow: var(--shadow); }
+.w-mini b { font-family: var(--display); font-size: 1.5rem; margin-right: 6px; }
+.w-mini .say-round { width: 44px; height: 44px; min-height: 44px; }
+.practice-note { display: flex; align-items: center; gap: 8px; background: var(--good-bg); color: var(--good-ink); border-radius: 12px; padding: 8px 12px; font-weight: 800; font-size: .9rem; }
+.wplay .audio-box .btn-primary { background: var(--c); box-shadow: 0 4px 0 color-mix(in srgb, var(--c) 65%, #000); }
+.slots { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; padding: 12px 8px; margin: 6px 0 14px; border: 3px dashed var(--line); border-radius: 16px; background: var(--surface-2); }
+.slot { width: 42px; height: 50px; border-radius: 10px; border: 2px solid var(--line); background: var(--surface); display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 1.5rem; text-transform: lowercase; }
+button.slot { cursor: pointer; border-color: var(--c); box-shadow: 0 3px 0 var(--c); animation: pop .2s ease; }
+.slots.correct { border-style: solid; border-color: var(--good); background: var(--good-bg); }
+.slots.correct .slot { border-color: var(--good); box-shadow: 0 3px 0 var(--good); }
+.slots.wrong { border-style: solid; border-color: var(--bad); background: var(--bad-bg); animation: shake .4s ease; }
+.letters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 12px; min-height: 52px; }
+.letter { width: 48px; height: 52px; border-radius: 12px; border: 2px solid var(--line); background: var(--surface); font-family: var(--display); font-weight: 800; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 0 var(--line); animation: pop .2s ease; }
+.letter:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--line); }
+@media (max-width: 360px) { .slot { width: 34px; height: 44px; font-size: 1.25rem; } .letter { width: 42px; height: 46px; } }
+.checks { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.checks li { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .92rem; color: var(--muted); }
+.checks li svg { width: 22px; height: 22px; padding: 3px; border-radius: 50%; background: var(--surface-2); flex-shrink: 0; }
+.checks li.ok { color: var(--good-ink); }
+.checks li.ok svg { background: var(--good); color: #fff; }
+.checks li.no { color: var(--bad-ink); }
+.checks li.no svg { background: var(--bad); color: #fff; }
+.w-tips { background: var(--surface); border-radius: var(--r-s); padding: 10px 14px; box-shadow: var(--shadow); }
+.w-tips summary { display: flex; align-items: center; gap: 6px; font-weight: 900; cursor: pointer; color: var(--c); }
+.w-tips summary svg { color: var(--sun); fill: var(--sun); }
+.w-tips ul { margin: 8px 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; font-weight: 600; font-size: .95rem; }
+.w-ex { display: flex; flex-direction: column; gap: 2px; background: var(--surface-2); border-radius: 10px; padding: 8px 12px; font-weight: 700; }
+.fin-list { list-style: none; margin: 4px 0; padding: 0; width: 100%; display: flex; flex-direction: column; gap: 6px; }
+.fin-list li { display: flex; align-items: center; gap: 10px; background: var(--surface); border-radius: 12px; padding: 8px 12px; font-weight: 800; text-align: left; box-shadow: var(--shadow); }
+.fin-list li span:nth-child(2) { flex: 1; }
+.fin-list .act-ic { width: 30px; height: 30px; border-radius: 9px; }
+
+/* Previous Words */
+.arch-head { display: flex; flex-direction: column; gap: 6px; padding-top: 4px; }
+.arch-head .eyebrow { display: inline-flex; align-items: center; gap: 6px; color: var(--brand); }
+.arch-head h1 { font-size: 2rem; font-weight: 800; }
+.arch-today { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: var(--brand); color: var(--on-brand); text-decoration: none; border-radius: var(--r-s); padding: 12px 16px; }
+.arch-today .eyebrow { color: var(--sun); }
+.arch-today b { font-family: var(--display); font-size: 1.4rem; flex: 1; }
+.arch-today-p { display: inline-flex; align-items: center; gap: 6px; font-weight: 800; font-size: .88rem; }
+.arch-today .w-dots i { border-color: var(--sun); }
+.arch-today .w-dots i.on { background: var(--sun); }
+.arch-tools { display: flex; flex-direction: column; gap: 10px; }
+.search { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 2px solid var(--line); border-radius: var(--r-s); padding: 0 12px; color: var(--muted); }
+.search:focus-within { border-color: var(--brand); }
+.search input { border: 0; padding: 12px 0; background: transparent; font-size: 1.05rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips::-webkit-scrollbar { display: none; }
+.chips button { flex-shrink: 0; border: 2px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 12px; min-height: 38px; font-weight: 900; font-size: .88rem; color: var(--muted); cursor: pointer; }
+.chips button[aria-checked="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.arch-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.arch-card { position: relative; background: var(--surface); border-radius: var(--r); box-shadow: var(--shadow); animation: fadeUp .25s ease; }
+.arch-link { display: flex; flex-direction: column; gap: 6px; padding: 14px 70px 14px 16px; color: var(--ink); text-decoration: none; min-height: 100%; }
+.arch-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.arch-top b { font-family: var(--display); font-size: 1.45rem; line-height: 1.1; }
+.arch-meta { color: var(--muted); font-weight: 700; font-size: .9rem; }
+.arch-def { font-weight: 700; font-size: .95rem; }
+.arch-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-top: 2px; color: var(--muted); font-weight: 800; font-size: .85rem; }
+.arch-p { display: inline-flex; align-items: center; gap: 6px; }
+.arch-card .say-round { position: absolute; right: 14px; top: 14px; width: 44px; height: 44px; min-height: 44px; }
+.arch-none { padding: 18px; text-align: center; background: var(--surface); border-radius: var(--r); }
+.arch-empty { flex-direction: row; align-items: center; color: var(--muted); }
+.arch-empty svg { color: var(--brand); }
+
+@media (min-width: 760px) {
+  .app.wide { max-width: 1040px; }
+  .wotd-page { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  .wcol-side { position: sticky; top: 76px; }
+  .arch-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .arch-tools { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+  .arch-tools .search { grid-column: 1 / -1; }
+}
+@media (min-width: 1000px) {
+  .arch-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .word-hero { padding: 26px; }
+}
+
 </style>
 </head>
 <body>
@@ -1904,7 +2083,11 @@ Majid` }),
     send: '<path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/>',
     bolt: '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
     medal: '<circle cx="12" cy="15" r="6"/><path d="M8.5 10 6 2h4l2 5 2-5h4l-2.5 8"/>',
-    list: '<path d="M8 6h13M8 12h13M8 18h13"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/>'
+    list: '<path d="M8 6h13M8 12h13M8 18h13"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    book: '<path d="M4 19.5V5a2 2 0 0 1 2-2h14v15H6.5A2.5 2.5 0 0 0 4 20.5 2.5 2.5 0 0 0 6.5 23H20v-5"/>',
+    mic: '<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/>'
   };
   function icon(name, size = 22, extra = "") {
     return `<svg class="ic ${extra}" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[name] || P.star}</svg>`;
@@ -2039,7 +2222,7 @@ Majid` }),
     el && el.textContent.trim() && (CLASS = Object.assign(CLASS, JSON.parse(el.textContent)));
   } catch {
   }
-  var classData = () => CLASS, blank = () => ({ v: 1, name: "", level: "easy", results: [], badges: {}, created: null }), state = blank(), storageOk = !0;
+  var classData = () => CLASS, blank = () => ({ v: 1, name: "", level: "easy", results: [], badges: {}, created: null, wotd: {} }), state = blank(), storageOk = !0;
   function readKey(k) {
     try {
       return localStorage.getItem(k);
@@ -2130,10 +2313,10 @@ Majid` }),
       for (let k of keys) bySkill[k].length && out.length < size && out.push(bySkill[k].pop());
     return shuffle(out);
   }
-  var dayKey = (d) => new Date(d).toLocaleDateString("en-CA"), todayKey = () => dayKey(Date.now()), totalPoints = () => state.results.reduce((a, r) => a + (r.pts || 0), 0);
+  var dayKey = (d) => new Date(d).toLocaleDateString("en-CA"), todayKey = () => dayKey(Date.now()), totalPoints = () => state.results.reduce((a, r) => a + (r.pts || 0), 0) + wotdPoints();
   function weekPoints() {
     let since = Date.now() - 6048e5;
-    return state.results.filter((r) => new Date(r.at).getTime() >= since).reduce((a, r) => a + (r.pts || 0), 0);
+    return state.results.filter((r) => new Date(r.at).getTime() >= since).reduce((a, r) => a + (r.pts || 0), 0) + wotdPoints((at) => Date.parse(at) >= since);
   }
   var todayRounds = () => state.results.filter((r) => dayKey(r.at) === todayKey()).length;
   function streak() {
@@ -2165,7 +2348,7 @@ Majid` }),
     };
   }
   function refreshBadges() {
-    let rs = state.results, pts = rs.reduce((a, r) => a + (r.pts || 0), 0), st = streak(), rules = {
+    let rs = state.results, pts = rs.reduce((a, r) => a + (r.pts || 0), 0) + wotdPoints(), st = streak(), rules = {
       first: rs.length >= 1,
       perfect: rs.some((r) => r.t > 0 && r.c === r.t),
       streak3: st >= 3,
@@ -2184,6 +2367,39 @@ Majid` }),
     if (i < 0 || i === order.length - 1) return null;
     let passed = new Set(state.results.filter((r) => r.level === state.level && r.acc >= 70 && r.aid !== "quick").map((r) => r.aid)), quickGood = state.results.filter((r) => r.level === state.level && r.aid === "quick" && r.acc >= 75).length;
     return passed.size + quickGood >= 4 ? order[i + 1] : null;
+  }
+  var WOTD_ACTS = ["meaning", "sentence", "listen", "scramble", "write", "synonym"], WOTD_PTS = { first: 10, second: 5, bonus: 20 };
+  function wotdPoints(keep = null) {
+    let n = 0;
+    for (let r of Object.values(state.wotd || {})) {
+      for (let a of Object.values(r.a || {})) (!keep || keep(a.at)) && (n += a.p || 0);
+      r.b && (!keep || keep(r.b.at)) && (n += r.b.p || 0);
+    }
+    return n;
+  }
+  var wotdRec = (w) => state.wotd && state.wotd[w] || null;
+  function wotdAnswer(w, act2, ok) {
+    state.wotd || (state.wotd = {});
+    let r = state.wotd[w] || (state.wotd[w] = { a: {}, t: {} });
+    r.a = r.a || {}, r.t = r.t || {};
+    let leagueBefore = league().index, before = new Set(Object.keys(state.badges)), now = (/* @__PURE__ */ new Date()).toISOString(), already = !!r.a[act2], pts = 0, reveal = !1, done = !1;
+    already ? ok || (reveal = !0) : ok ? (pts = (r.t[act2] || 0) === 0 ? WOTD_PTS.first : WOTD_PTS.second, r.a[act2] = { p: pts, at: now }, done = !0) : (r.t[act2] = (r.t[act2] || 0) + 1, r.t[act2] >= 2 && (r.a[act2] = { p: 0, at: now }, reveal = !0, done = !0));
+    let bonus = 0;
+    return !r.b && WOTD_ACTS.every((k) => r.a[k]) && (r.b = { p: WOTD_PTS.bonus, at: now }, bonus = WOTD_PTS.bonus), refreshBadges(), save(), {
+      pts,
+      bonus,
+      already,
+      reveal,
+      done,
+      tries: r.t[act2] || 0,
+      newBadges: Object.keys(state.badges).filter((k) => !before.has(k)),
+      leagueUp: league().index > leagueBefore ? league() : null
+    };
+  }
+  function wotdSaveSentence(w, text) {
+    state.wotd || (state.wotd = {});
+    let r = state.wotd[w] || (state.wotd[w] = { a: {}, t: {} });
+    r.s = String(text || "").slice(0, 300), save();
   }
   var normName = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9؀-ۿ]+/g, " ").trim();
   function checkCode(name, pts, wk) {
@@ -2300,7 +2516,7 @@ Majid` }),
     if (!LIVE) return !1;
     let id = studentId(), secret = studentSecret();
     try {
-      if (id && secret && state.name && state.results.length) {
+      if (id && secret && state.name && (state.results.length || wotdPoints())) {
         let sk = {};
         for (let [k, v] of Object.entries(skillStats().skills)) v.acc != null && (sk[k] = v.acc);
         let body = { p_id: id, p_secret: secret, p_name: state.name, p_pts: totalPoints(), p_wk: weekPoints(), p_rounds: state.results.length, p_streak: streak(), p_league: league().name, p_skills: sk }, sig2 = JSON.stringify(body);
@@ -2312,14 +2528,14 @@ Majid` }),
               return wasRemoved(), !0;
           }
       }
-      let data = await (await call("board?select=id,name,pts,wk,rounds,streak,skills,updated_at&order=pts.desc&limit=300")).json(), now = Date.now(), today = dayKey(/* @__PURE__ */ new Date()), yesterday = dayKey(new Date(now - 864e5)), rows = data.map((x2) => {
+      let data = await (await call("board?select=id,name,pts,wk,rounds,streak,skills,updated_at&order=pts.desc&limit=300")).json(), now = Date.now(), today2 = dayKey(/* @__PURE__ */ new Date()), yesterday = dayKey(new Date(now - 864e5)), rows = data.map((x2) => {
         let seen = dayKey(x2.updated_at), fresh = now - Date.parse(x2.updated_at) < 7 * 864e5;
         return {
           n: x2.name,
           pts: x2.pts || 0,
           wk: fresh && x2.wk || 0,
           r: x2.rounds,
-          st: (seen === today || seen === yesterday) && x2.streak || 0,
+          st: (seen === today2 || seen === yesterday) && x2.streak || 0,
           sk: x2.skills && Object.keys(x2.skills).length ? x2.skills : void 0,
           self: !!id && x2.id === id
         };
@@ -2372,7 +2588,7 @@ Majid` }),
         key,
         label: d.toLocaleDateString("en-GB", { weekday: "short" }),
         long: d.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "short" }),
-        pts: state.results.filter((r) => dayKey(r.at) === key).reduce((a, r) => a + (r.pts || 0), 0),
+        pts: state.results.filter((r) => dayKey(r.at) === key).reduce((a, r) => a + (r.pts || 0), 0) + wotdPoints((at) => dayKey(at) === key),
         rounds: state.results.filter((r) => dayKey(r.at) === key).length,
         today: k === 0
       });
@@ -2565,13 +2781,634 @@ Majid` }),
     return JSON.parse(new TextDecoder().decode(bytes));
   }
 
-  // src/simple/main.js
-  var app = document.getElementById("app"), cleanup = null, ownerState = "viewer", LIVE2 = LIVE, TEACHER_NAME = "Mr. Mazen Al-Rasbi", PRAISE = ["Great job!", "Excellent!", "Well done!", "Brilliant!", "Correct!", "Super!", "Nice work!"], firstName = (n) => String(n || "").trim().split(/\s+/)[0] || "there", initials = (n) => String(n || "?").trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase(), fmtDay = (d) => new Date(d).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
-  function go(name) {
-    location.hash === `#${name}` ? route() : location.hash = name;
+  // src/simple/words.js
+  var WOTD_START = "2026-11-01", WORDS = [
+    { w: "remember", pos: "verb", lv: "B", ipa: "r\u026A.\u02C8mem.b\u025A", syl: "re\xB7mem\xB7ber", st: 1, d: "to keep something in your mind or bring it back to your mind", ar: "\u064A\u062A\u0630\u0643\u0651\u0631", ex: "Do you remember the name of our first teacher?", gap: "Write the new words in your notebook so you can ___ them.", gx: ["arrive", "sleep", "happen"], syn: ["recall", "recollect"], ant: ["forget"], col: ["remember to", "remember doing", "as far as I remember"], ms: ["remembar", "remmember", "ramember"] },
+    { w: "arrive", pos: "verb", lv: "B", ipa: "\u0259.\u02C8ra\u026Av", syl: "ar\xB7rive", st: 1, d: "to reach a place at the end of a journey", ar: "\u064A\u0635\u0644", ex: "Our plane will arrive in Salalah at noon.", gap: "If we leave now, we will ___ at school before the bell.", gx: ["destroy", "describe", "believe"], syn: ["reach", "come"], ant: ["leave", "depart"], col: ["arrive at", "arrive in", "arrive on time"], ms: ["arriv", "arive", "arreve"] },
+    { w: "wealthy", pos: "adjective", lv: "I", ipa: "\u02C8wel.\u03B8i", syl: "wealth\xB7y", st: 0, d: "having a lot of money or property", ar: "\u062B\u0631\u064A / \u063A\u0646\u064A", ex: "A wealthy businessman built a new hospital for the town.", gap: "A hundred years ago, only ___ people could buy cars.", gx: ["narrow", "empty", "tidy"], syn: ["rich", "well-off"], ant: ["poor"], col: ["a wealthy family", "wealthy countries", "become wealthy"], ms: ["wealthey", "weelthy", "waalthy"] },
+    { w: "cheap", pos: "adjective", lv: "B", ipa: "\u02C8t\u0283i\u02D0p", syl: "cheap", st: 0, d: "costing little money", ar: "\u0631\u062E\u064A\u0635", ex: "The bus is a cheap way to travel around the city.", gap: "This phone was very ___; it cost only ten rials.", gx: ["expensive", "famous", "brave"], syn: ["inexpensive", "low-priced"], ant: ["expensive"], col: ["a cheap price", "cheap tickets", "cheap and easy"], ms: ["sheap", "chaap", "cheape"] },
+    { w: "afraid", pos: "adjective", lv: "B", ipa: "\u0259.\u02C8fre\u026Ad", syl: "a\xB7fraid", st: 1, d: "feeling fear or worry", ar: "\u062E\u0627\u0626\u0641", ex: "My little brother is afraid of the dark.", gap: "Don't be ___ of making mistakes; that is how we learn.", gx: ["tidy", "noisy", "cheap"], syn: ["scared", "frightened"], ant: ["brave", "fearless"], col: ["afraid of", "afraid that", "nothing to be afraid of"], ms: ["afrayd", "afraed", "afraide"] },
+    { w: "improve", pos: "verb", lv: "I", ipa: "\u026Am.\u02C8pru\u02D0v", syl: "im\xB7prove", st: 1, d: "to make something better, or to become better", ar: "\u064A\u064F\u062D\u0633\u0651\u0646 / \u064A\u062A\u062D\u0633\u0651\u0646", ex: "Reading every day will improve your English.", gap: "Practice is the best way to ___ your writing.", gx: ["disappear", "arrive", "exist"], syn: ["enhance", "develop"], ant: ["worsen"], col: ["improve skills", "greatly improve", "room to improve"], ms: ["improvve", "improva", "imrpove"] },
+    { w: "empty", pos: "adjective", lv: "B", ipa: "\u02C8emp.ti", syl: "emp\xB7ty", st: 0, d: "with nothing or nobody inside", ar: "\u0641\u0627\u0631\u063A", ex: "The classroom was empty after the bell rang.", gap: "My water bottle is ___, so I need to fill it again.", gx: ["full", "polite", "famous"], syn: ["vacant", "bare"], ant: ["full"], col: ["an empty room", "empty hands", "completely empty"], ms: ["emptey", "empti", "emtpy"] },
+    { w: "suggest", pos: "verb", lv: "I", ipa: "s\u0259\u0261.\u02C8d\u0292est", syl: "sug\xB7gest", st: 1, d: "to give an idea for someone to think about", ar: "\u064A\u0642\u062A\u0631\u062D", ex: "My friend suggested that we study together.", gap: "Can you ___ a good book for me to read?", gx: ["arrive", "sleep", "appear"], syn: ["propose", "recommend"], ant: [], col: ["suggest that", "strongly suggest", "suggest an idea"], ms: ["sugest", "soggest", "suggeste"] },
+    { w: "persuade", pos: "verb", lv: "A", ipa: "p\u025A.\u02C8swe\u026Ad", syl: "per\xB7suade", st: 1, d: "to make someone agree to do or believe something by giving good reasons", ar: "\u064A\u064F\u0642\u0646\u0639", ex: "She persuaded her parents to let her join the science club.", gap: "I tried to ___ my friend to join the reading club.", gx: ["arrive", "laugh", "describe"], syn: ["convince", "talk into"], ant: ["dissuade", "discourage"], col: ["persuade someone to", "try to persuade", "easily persuaded"], ms: ["persuadde", "persuede", "persuad"] },
+    { w: "interpret", pos: "verb", lv: "A", ipa: "\u026An.\u02C8t\u025D\u02D0.pr\u026At", syl: "in\xB7ter\xB7pret", st: 1, d: "to explain or decide what something means", ar: "\u064A\u064F\u0641\u0633\u0651\u0631", ex: "It is difficult to interpret this graph without labels.", gap: "How do you ___ the message in this poem?", gx: ["arrive", "sleep", "belong"], syn: ["explain", "understand"], ant: ["misinterpret"], col: ["interpret data", "interpret the results", "correctly interpret"], ms: ["intarpret", "interprete", "inetrpret"] },
+    { w: "delicious", pos: "adjective", lv: "B", ipa: "d\u026A\u02C8l\u026A\u0283.\u0259s", syl: "de\xB7li\xB7cious", st: 1, d: "having a very pleasant taste or smell", ar: "\u0644\u0630\u064A\u0630", ex: "My grandmother cooks delicious rice with chicken.", gap: "Thank you for the meal; it was really ___!", gx: ["narrow", "lazy", "honest"], syn: ["tasty", "yummy"], ant: ["disgusting", "tasteless"], col: ["delicious food", "smell delicious", "a delicious meal"], ms: ["delicius", "dellicious", "delicios"] },
+    { w: "obvious", pos: "adjective", lv: "I", ipa: "\u02C8\u0251\u02D0b.vi.\u0259s", syl: "ob\xB7vi\xB7ous", st: 0, d: "easy to see or understand", ar: "\u0648\u0627\u0636\u062D", ex: "It was obvious that he was tired because he kept yawning.", gap: "The answer is ___; anyone can see it.", gx: ["hungry", "narrow", "lazy"], syn: ["clear", "evident"], ant: ["unclear", "hidden"], col: ["an obvious reason", "it is obvious that", "the obvious choice"], ms: ["obvius", "obvios", "obvioos"] },
+    { w: "consistent", pos: "adjective", lv: "A", ipa: "k\u0259n.\u02C8s\u026As.t\u0259nt", syl: "con\xB7sis\xB7tent", st: 1, d: "always behaving or happening in the same way", ar: "\u062B\u0627\u0628\u062A / \u0645\u064F\u0646\u062A\u0638\u0645", ex: "Consistent practice is the secret to good results.", gap: "To get good grades, you need ___ effort all year, not just before exams.", gx: ["hungry", "narrow", "noisy"], syn: ["steady", "regular"], ant: ["inconsistent", "irregular"], col: ["consistent with", "consistent effort", "remain consistent"], ms: ["consistant", "konsistent", "cunsistent"] },
+    { w: "gradually", pos: "adverb", lv: "A", ipa: "\u02C8\u0261r\xE6d\u0292.u.\u0259.li", syl: "grad\xB7u\xB7al\xB7ly", st: 0, d: "slowly, over a period of time", ar: "\u062A\u062F\u0631\u064A\u062C\u064A\u064B\u0627", ex: "The weather gradually became cooler in October.", gap: "Your English will improve ___ if you practice a little every day.", gx: ["approximately", "yesterday", "nearly"], syn: ["slowly", "little by little"], ant: ["suddenly", "quickly"], col: ["gradually increase", "gradually improve", "slowly and gradually"], ms: ["gradualley", "gradualy", "graduelly"] },
+    { w: "confident", pos: "adjective", lv: "I", ipa: "\u02C8k\u0251\u02D0n.f\u0259.d\u0259nt", syl: "con\xB7fi\xB7dent", st: 0, d: "feeling sure about your own abilities", ar: "\u0648\u0627\u062B\u0642", ex: "After practicing many times, she felt confident about her speech.", gap: "I studied hard, so I feel ___ about tomorrow's test.", gx: ["narrow", "empty", "cheap"], syn: ["self-assured", "sure"], ant: ["nervous", "unsure"], col: ["feel confident", "confident about", "confident that"], ms: ["confiddent", "konfident", "cunfident"] },
+    { w: "inevitable", pos: "adjective", lv: "A", ipa: "\u026A.\u02C8nev.\u0259.t\u0259.b\u0259l", syl: "in\xB7ev\xB7i\xB7ta\xB7ble", st: 1, d: "certain to happen and impossible to avoid", ar: "\u062D\u062A\u0645\u064A / \u0644\u0627 \u0645\u0641\u0631\u0651 \u0645\u0646\u0647", ex: "Mistakes are inevitable when you learn something new.", gap: "With so many cars on the road, traffic jams are ___.", gx: ["polite", "hungry", "lazy"], syn: ["unavoidable", "certain"], ant: ["avoidable"], col: ["an inevitable result", "it is inevitable that", "almost inevitable"], ms: ["inevitible", "innevitable", "inavitable"] },
+    { w: "solution", pos: "noun", lv: "I", ipa: "s\u0259.\u02C8lu\u02D0.\u0283\u0259n", syl: "so\xB7lu\xB7tion", st: 1, d: "a way of solving a problem", ar: "\u062D\u0644", ex: "We need to find a solution to the traffic problem.", gap: "After a long discussion, we found a ___ to the problem.", gx: ["weather", "advice", "traffic"], syn: ["answer", "fix"], ant: ["problem"], col: ["find a solution", "a solution to", "a simple solution"], ms: ["solusion", "sollution", "soluteon"] },
+    { w: "familiar", pos: "adjective", lv: "I", ipa: "f\u0259.\u02C8m\u026Al.j\u025A", syl: "fa\xB7mil\xB7iar", st: 1, d: "easy to recognize because you have seen or heard it before", ar: "\u0645\u0623\u0644\u0648\u0641", ex: "Her face looks familiar; I think I met her before.", gap: "This street looks ___; I think we have been here before.", gx: ["hungry", "polite", "lazy"], syn: ["recognizable", "well-known"], ant: ["unfamiliar", "strange"], col: ["familiar with", "look familiar", "a familiar face"], ms: ["fammiliar", "familier", "familiare"] },
+    { w: "evidence", pos: "noun", lv: "A", ipa: "\u02C8ev.\u0259.d\u0259ns", syl: "ev\xB7i\xB7dence", st: 0, d: "facts or signs that show something is true", ar: "\u062F\u0644\u064A\u0644", ex: "The police found evidence that the window was broken from outside.", gap: "Do you have any ___ to support your idea?", gx: ["weather", "furniture", "kitchen"], syn: ["proof", "facts"], ant: [], col: ["strong evidence", "evidence of", "scientific evidence"], ms: ["evidance", "evvidence", "evidenke"] },
+    { w: "collect", pos: "verb", lv: "B", ipa: "k\u0259.\u02C8lekt", syl: "col\xB7lect", st: 1, d: "to bring things together from different places", ar: "\u064A\u062C\u0645\u0639", ex: "My cousin collects stamps from different countries.", gap: "Every Friday, we ___ plastic bottles from the beach for recycling.", gx: ["arrive", "shout", "believe"], syn: ["gather", "pick up"], ant: ["scatter"], col: ["collect money", "collect data", "collect information"], ms: ["collekt", "colect", "kollect"] },
+    { w: "decline", pos: "verb", lv: "A", ipa: "d\u026A.\u02C8kla\u026An", syl: "de\xB7cline", st: 1, d: "to become less in amount, importance, or quality", ar: "\u064A\u0646\u062E\u0641\u0636 / \u064A\u062A\u0631\u0627\u062C\u0639", ex: "The number of turtles on this beach has declined.", gap: "If we don't protect them, the number of wild animals will ___.", gx: ["describe", "repair", "destroy"], syn: ["decrease", "fall"], ant: ["rise", "grow"], col: ["decline in", "sharply decline", "decline rapidly"], ms: ["declinne", "dekline", "declene"] },
+    { w: "tiny", pos: "adjective", lv: "B", ipa: "\u02C8ta\u026A.ni", syl: "ti\xB7ny", st: 0, d: "very small", ar: "\u0635\u063A\u064A\u0631 \u062C\u062F\u064B\u0627", ex: "The baby has tiny fingers.", gap: "The ant is so ___ that you can hardly see it.", gx: ["huge", "famous", "brave"], syn: ["little", "minute"], ant: ["huge", "enormous"], col: ["a tiny bit", "a tiny piece", "tiny little"], ms: ["tiney", "tini", "teny"] },
+    { w: "neglect", pos: "verb", lv: "A", ipa: "n\u026A.\u02C8\u0261lekt", syl: "ne\xB7glect", st: 1, d: "to not give enough care or attention to someone or something", ar: "\u064A\u064F\u0647\u0645\u0644", ex: "If you neglect your plants, they will die.", gap: "Don't ___ your studies just because you have a new phone.", gx: ["arrive", "laugh", "appear"], syn: ["ignore", "overlook"], ant: ["care for", "look after"], col: ["neglect your duties", "badly neglected", "neglect to"], ms: ["neglekt", "neglact", "neglecte"] },
+    { w: "begin", pos: "verb", lv: "B", ipa: "b\u026A.\u02C8\u0261\u026An", syl: "be\xB7gin", st: 1, d: "to start doing something", ar: "\u064A\u0628\u062F\u0623", ex: "The lesson will begin at eight o'clock.", gap: 'Please ___ the test when the teacher says "Go".', gx: ["borrow", "arrive", "shout"], syn: ["start", "commence"], ant: ["finish", "end"], col: ["begin with", "begin to", "begin again"], ms: ["beggin", "bagin", "begine"] },
+    { w: "benefit", pos: "noun", lv: "I", ipa: "\u02C8ben.\u0259.f\u026At", syl: "ben\xB7e\xB7fit", st: 0, d: "an advantage or good result that something gives you", ar: "\u0641\u0627\u0626\u062F\u0629", ex: "One benefit of reading is that it improves your vocabulary.", gap: "What is the main ___ of learning a second language?", gx: ["weather", "furniture", "kitchen"], syn: ["advantage", "gain"], ant: ["disadvantage", "drawback"], col: ["health benefits", "the benefit of", "a great benefit"], ms: ["bennefit", "banefit", "benefite"] },
+    { w: "choose", pos: "verb", lv: "B", ipa: "\u02C8t\u0283u\u02D0z", syl: "choose", st: 0, d: "to decide which one you want from several things", ar: "\u064A\u062E\u062A\u0627\u0631", ex: "You can choose any book from the shelf.", gap: "There are three colors; ___ the one you like best.", gx: ["arrive", "destroy", "hurry"], syn: ["select", "pick"], ant: ["reject"], col: ["choose between", "choose carefully", "free to choose"], ms: ["choosse", "shoose", "chuose"] },
+    { w: "angry", pos: "adjective", lv: "B", ipa: "\u02C8\xE6\u014B.\u0261ri", syl: "an\xB7gry", st: 0, d: "having a strong feeling against someone who has behaved badly", ar: "\u063A\u0627\u0636\u0628", ex: "The teacher was angry because nobody did the homework.", gap: "She was ___ with her brother for breaking her phone.", gx: ["tidy", "cheap", "narrow"], syn: ["furious", "mad"], ant: ["calm", "pleased"], col: ["get angry", "angry with", "angry about"], ms: ["angrey", "angri", "anrgy"] },
+    { w: "ancient", pos: "adjective", lv: "I", ipa: "\u02C8e\u026An.\u0283\u0259nt", syl: "an\xB7cient", st: 0, d: "very old; from a long time ago", ar: "\u0642\u062F\u064A\u0645 / \u0639\u0631\u064A\u0642", ex: "Bahla Fort is an ancient building in Oman.", gap: "The museum shows ___ tools that people used thousands of years ago.", gx: ["lazy", "polite", "hungry"], syn: ["very old", "historic"], ant: ["modern", "new"], col: ["ancient history", "ancient times", "an ancient city"], ms: ["anciant", "anceint", "anceent"] },
+    { w: "advice", pos: "noun", lv: "B", ipa: "\u0259d.\u02C8va\u026As", syl: "ad\xB7vice", st: 1, d: "an opinion that someone gives you about what you should do", ar: "\u0646\u0635\u064A\u062D\u0629", ex: "My teacher gave me good advice about how to study.", gap: "If you are not sure what to do, ask your parents for ___.", gx: ["journey", "mistake", "kitchen"], syn: ["guidance", "tip"], ant: [], col: ["give advice", "a piece of advice", "follow advice"], ms: ["advicce", "advike", "advece"] },
+    { w: "fragile", pos: "adjective", lv: "A", ipa: "\u02C8fr\xE6d\u0292.\u0259l", syl: "frag\xB7ile", st: 0, d: "easily broken or damaged", ar: "\u0647\u0634\u0651 / \u0633\u0631\u064A\u0639 \u0627\u0644\u0643\u0633\u0631", ex: "Be careful with that box; the glasses inside are fragile.", gap: "Coral reefs are ___ and can be damaged easily.", gx: ["hungry", "lazy", "polite"], syn: ["delicate", "breakable"], ant: ["strong", "sturdy"], col: ["fragile items", "a fragile environment", "very fragile"], ms: ["fraggile", "fragila", "fragil"] },
+    { w: "deliberately", pos: "adverb", lv: "A", ipa: "d\u026A.\u02C8l\u026Ab.\u025A.\u0259t.li", syl: "de\xB7lib\xB7er\xB7ate\xB7ly", st: 1, d: "on purpose, not by accident", ar: "\u0639\u0645\u062F\u064B\u0627 / \u0639\u0646 \u0642\u0635\u062F", ex: "He deliberately left the door open so the cat could come in.", gap: "She didn't break the glass ___; it slipped from her hand.", gx: ["approximately", "tomorrow", "nearly"], syn: ["on purpose", "intentionally"], ant: ["accidentally", "by mistake"], col: ["deliberately ignore", "quite deliberately", "deliberately chosen"], ms: ["deliberateley", "delliberately", "daliberately"] },
+    { w: "modern", pos: "adjective", lv: "I", ipa: "\u02C8m\u0251\u02D0.d\u025An", syl: "mod\xB7ern", st: 0, d: "new and using the latest ideas or technology", ar: "\u062D\u062F\u064A\u062B / \u0639\u0635\u0631\u064A", ex: "Our school has a modern science lab with new computers.", gap: "Smartphones are an example of ___ technology.", gx: ["lazy", "hungry", "polite"], syn: ["up-to-date", "contemporary"], ant: ["ancient", "old-fashioned"], col: ["modern technology", "modern life", "modern buildings"], ms: ["moddern", "mudern", "moedrn"] },
+    { w: "consequence", pos: "noun", lv: "A", ipa: "\u02C8k\u0251\u02D0n.s\u0259.kwens", syl: "con\xB7se\xB7quence", st: 0, d: "a result of something, often a bad one", ar: "\u0639\u0627\u0642\u0628\u0629 / \u0646\u062A\u064A\u062C\u0629", ex: "One consequence of the heavy rain was that many roads were closed.", gap: "If you break the rules, you must accept the ___.", gx: ["furniture", "weather", "kitchen"], syn: ["result", "effect"], ant: ["cause"], col: ["serious consequences", "as a consequence", "face the consequences"], ms: ["consequance", "conseqquence", "konsequence"] },
+    { w: "scarce", pos: "adjective", lv: "A", ipa: "\u02C8skers", syl: "scarce", st: 0, d: "not enough; difficult to find or get", ar: "\u0634\u062D\u064A\u062D / \u0646\u0627\u062F\u0631", ex: "Water is scarce in many desert areas.", gap: "During the drought, fresh water became ___.", gx: ["polite", "tidy", "hungry"], syn: ["limited", "in short supply"], ant: ["abundant", "plentiful"], col: ["scarce resources", "water is scarce", "become scarce"], ms: ["skarce", "scarca", "scarc"] },
+    { w: "famous", pos: "adjective", lv: "B", ipa: "\u02C8fe\u026A.m\u0259s", syl: "fa\xB7mous", st: 0, d: "known by many people", ar: "\u0645\u0634\u0647\u0648\u0631", ex: "Nizwa is famous for its old fort and its busy market.", gap: "He became ___ after millions of people watched his video.", gx: ["hungry", "careful", "empty"], syn: ["well-known", "celebrated"], ant: ["unknown"], col: ["famous for", "a famous writer", "world famous"], ms: ["famus", "fammous", "famos"] },
+    { w: "optimistic", pos: "adjective", lv: "A", ipa: "\u02CC\u0251\u02D0p.t\u0259.\u02C8m\u026As.t\u026Ak", syl: "op\xB7ti\xB7mis\xB7tic", st: 2, d: "hoping or believing that good things will happen", ar: "\u0645\u062A\u0641\u0627\u0626\u0644", ex: "She is optimistic about her exam results.", gap: "Stay ___; I am sure things will get better soon.", gx: ["narrow", "crowded", "noisy"], syn: ["hopeful", "positive"], ant: ["pessimistic"], col: ["optimistic about", "remain optimistic", "cautiously optimistic"], ms: ["optimmistic", "optimistik", "optemistic"] },
+    { w: "avoid", pos: "verb", lv: "I", ipa: "\u0259.\u02C8v\u0254\u026Ad", syl: "a\xB7void", st: 1, d: "to stay away from someone or something, or to stop something from happening", ar: "\u064A\u062A\u062C\u0646\u0651\u0628", ex: "Leave early to avoid the heavy traffic.", gap: "Drink plenty of water to ___ feeling tired in the heat.", gx: ["arrive", "belong", "exist"], syn: ["evade", "dodge"], ant: ["face", "confront"], col: ["avoid mistakes", "avoid doing", "avoid traffic"], ms: ["avvoid", "avoyd", "avoed"] },
+    { w: "efficient", pos: "adjective", lv: "I", ipa: "\u026A.\u02C8f\u026A\u0283.\u0259nt", syl: "ef\xB7fi\xB7cient", st: 1, d: "working well without wasting time, money, or energy", ar: "\u0643\u0641\u0621 / \u0641\u0639\u0651\u0627\u0644", ex: "LED lights are more efficient than old light bulbs.", gap: "Planning your time is an ___ way to finish all your homework.", gx: ["empty", "ugly", "icy"], syn: ["effective", "productive"], ant: ["inefficient", "wasteful"], col: ["energy efficient", "efficient use of", "highly efficient"], ms: ["efficiant", "eficient", "efficeint"] },
+    { w: "healthy", pos: "adjective", lv: "B", ipa: "\u02C8hel.\u03B8i", syl: "health\xB7y", st: 0, d: "good for your body, or physically strong and well", ar: "\u0635\u062D\u064A / \u0628\u0635\u062D\u0629 \u062C\u064A\u062F\u0629", ex: "Eating fruit and vegetables keeps you healthy.", gap: "Walking every day is a ___ habit.", gx: ["crowded", "empty", "narrow"], syn: ["fit", "well"], ant: ["unhealthy", "ill"], col: ["a healthy diet", "healthy food", "stay healthy"], ms: ["healthey", "heelthy", "haalthy"] },
+    { w: "identify", pos: "verb", lv: "A", ipa: "a\u026A.\u02C8den.t\u0259.fa\u026A", syl: "i\xB7den\xB7ti\xB7fy", st: 1, d: "to recognize someone or something and say who or what they are", ar: "\u064A\u064F\u062D\u062F\u0651\u062F / \u064A\u062A\u0639\u0631\u0651\u0641 \u0639\u0644\u0649", ex: "Can you identify the main idea of the paragraph?", gap: "The students had to ___ the birds in the pictures.", gx: ["arrive", "laugh", "disappear"], syn: ["recognize", "name"], ant: [], col: ["identify the problem", "identify as", "easily identify"], ms: ["identifey", "iddentify", "identifi"] },
+    { w: "predict", pos: "verb", lv: "I", ipa: "pr\u026A.\u02C8d\u026Akt", syl: "pre\xB7dict", st: 1, d: "to say what you think will happen in the future", ar: "\u064A\u062A\u0646\u0628\u0651\u0623 / \u064A\u062A\u0648\u0642\u0651\u0639", ex: "Weather experts predict that it will be very hot next week.", gap: "Can you ___ what will happen at the end of the story?", gx: ["arrive", "happen", "belong"], syn: ["forecast", "foresee"], ant: [], col: ["predict the future", "predict that", "difficult to predict"], ms: ["predikt", "preddict", "pradict"] },
+    { w: "contribute", pos: "verb", lv: "A", ipa: "k\u0259n.\u02C8tr\u026Ab.ju\u02D0t", syl: "con\xB7trib\xB7ute", st: 1, d: "to give something, such as money, help, or ideas, to help achieve something", ar: "\u064A\u064F\u0633\u0627\u0647\u0645", ex: "Everyone contributed ideas for the class project.", gap: "Every student can ___ to keeping our school clean.", gx: ["destroy", "repair", "describe"], syn: ["give", "donate"], ant: ["withhold"], col: ["contribute to", "contribute money", "contribute ideas"], ms: ["contribbute", "kontribute", "contrebute"] },
+    { w: "responsible", pos: "adjective", lv: "I", ipa: "r\u026A.\u02C8sp\u0251\u02D0n.s\u0259.b\u0259l", syl: "re\xB7spon\xB7si\xB7ble", st: 1, d: "having the duty to take care of someone or something", ar: "\u0645\u0633\u0624\u0648\u0644", ex: "Each student is responsible for keeping the classroom clean.", gap: "My brother is ___ for feeding the cat every morning.", gx: ["narrow", "tidy", "empty"], syn: ["accountable", "in charge"], ant: ["irresponsible"], col: ["responsible for", "a responsible person", "feel responsible"], ms: ["responsable", "responcible", "responsibla"] },
+    { w: "reveal", pos: "verb", lv: "A", ipa: "r\u026A.\u02C8vi\u02D0l", syl: "re\xB7veal", st: 1, d: "to show or tell something that was secret or hidden", ar: "\u064A\u0643\u0634\u0641", ex: "The test results revealed that most students needed more practice.", gap: "She opened the box to ___ a beautiful gift.", gx: ["arrive", "sleep", "belong"], syn: ["show", "disclose"], ant: ["hide", "conceal"], col: ["reveal a secret", "reveal the truth", "research reveals"], ms: ["reveel", "revveal", "revaal"] },
+    { w: "abundant", pos: "adjective", lv: "A", ipa: "\u0259.\u02C8b\u028Cn.d\u0259nt", syl: "a\xB7bun\xB7dant", st: 1, d: "existing in large amounts; more than enough", ar: "\u0648\u0641\u064A\u0631", ex: "Fish are abundant in the waters near Masirah Island.", gap: "After the heavy rain, the farmers had an ___ supply of water.", gx: ["icy", "ugly", "angry"], syn: ["plentiful", "ample"], ant: ["scarce", "rare"], col: ["an abundant supply", "abundant in", "abundant resources"], ms: ["abundent", "abbundant", "abondant"] },
+    { w: "environment", pos: "noun", lv: "I", ipa: "\u026An.\u02C8va\u026A.r\u0259n.m\u0259nt", syl: "en\xB7vi\xB7ron\xB7ment", st: 1, d: "the air, water, and land where people, animals, and plants live", ar: "\u0627\u0644\u0628\u064A\u0626\u0629", ex: "We should protect the environment by recycling.", gap: "Plastic bags are bad for the ___ because they take years to break down.", gx: ["opinion", "mistake", "success"], syn: ["nature", "surroundings"], ant: [], col: ["protect the environment", "the natural environment", "a learning environment"], ms: ["environmant", "envirronment", "enveronment"] },
+    { w: "accurate", pos: "adjective", lv: "A", ipa: "\u02C8\xE6k.j\u025A.\u0259t", syl: "ac\xB7cu\xB7rate", st: 0, d: "correct and true in every detail", ar: "\u062F\u0642\u064A\u0642", ex: "Make sure your measurements are accurate in the science experiment.", gap: "A good map must be ___, or travelers will get lost.", gx: ["hungry", "lazy", "polite"], syn: ["correct", "precise"], ant: ["inaccurate", "wrong"], col: ["accurate information", "highly accurate", "an accurate answer"], ms: ["accurait", "acurate", "akcurate"] },
+    { w: "huge", pos: "adjective", lv: "B", ipa: "\u02C8hju\u02D0d\u0292", syl: "huge", st: 0, d: "extremely large in size or amount", ar: "\u0636\u062E\u0645 / \u0647\u0627\u0626\u0644", ex: "A huge wave hit the side of the boat.", gap: "The new stadium is ___; it holds sixty thousand people.", gx: ["tiny", "narrow", "lazy"], syn: ["enormous", "giant"], ant: ["tiny", "small"], col: ["a huge amount", "a huge success", "a huge difference"], ms: ["hudge", "hugge", "hoge"] },
+    { w: "mistake", pos: "noun", lv: "B", ipa: "m\u026A.\u02C8ste\u026Ak", syl: "mis\xB7take", st: 1, d: "something that is wrong or not correct", ar: "\u062E\u0637\u0623", ex: "I made a mistake in the second question.", gap: "Everyone makes a ___ sometimes; the important thing is to learn from it.", gx: ["advice", "knowledge", "furniture"], syn: ["error", "fault"], ant: [], col: ["make a mistake", "by mistake", "a big mistake"], ms: ["mistakke", "mistace", "mestake"] },
+    { w: "assess", pos: "verb", lv: "A", ipa: "\u0259.\u02C8ses", syl: "as\xB7sess", st: 1, d: "to judge or decide the quality, amount, or value of something", ar: "\u064A\u064F\u0642\u064A\u0651\u0645", ex: "Teachers assess our writing using a clear checklist.", gap: "The doctor will ___ how serious the injury is.", gx: ["arrive", "sleep", "belong"], syn: ["evaluate", "judge"], ant: [], col: ["assess the situation", "assess progress", "carefully assess"], ms: ["asess", "ascess", "assass"] },
+    { w: "flexible", pos: "adjective", lv: "A", ipa: "\u02C8flek.s\u0259.b\u0259l", syl: "flex\xB7i\xB7ble", st: 0, d: "able to change easily, or able to bend without breaking", ar: "\u0645\u0631\u0646", ex: "My schedule is flexible, so I can meet you in the afternoon.", gap: "Rubber is a ___ material; you can bend it easily.", gx: ["hungry", "polite", "lazy"], syn: ["adaptable", "bendable"], ant: ["rigid", "inflexible"], col: ["flexible hours", "a flexible approach", "highly flexible"], ms: ["flexable", "flexeble", "flexibl"] },
+    { w: "hurry", pos: "verb", lv: "B", ipa: "\u02C8h\u025D\u02D0.i", syl: "hur\xB7ry", st: 0, d: "to move or do things quickly because there is not much time", ar: "\u064A\u0633\u062A\u0639\u062C\u0644 / \u064A\u064F\u0633\u0631\u0639", ex: "We have to hurry or we will miss the bus.", gap: "We must ___ or we will be late for school.", gx: ["repair", "collect", "destroy"], syn: ["rush", "hasten"], ant: ["delay", "dawdle"], col: ["hurry up", "in a hurry", "no hurry"], ms: ["hurrey", "hury", "hurri"] },
+    { w: "punctual", pos: "adjective", lv: "I", ipa: "\u02C8p\u028C\u014Bk.t\u0283u.\u0259l", syl: "punc\xB7tu\xB7al", st: 0, d: "arriving or doing something at the expected time", ar: "\u0645\u0644\u062A\u0632\u0645 \u0628\u0627\u0644\u0645\u0648\u0627\u0639\u064A\u062F", ex: "Our bus driver is always punctual.", gap: "Please be ___; the trip leaves at exactly 7:00.", gx: ["hungry", "famous", "narrow"], syn: ["on time", "prompt"], ant: ["late"], col: ["be punctual", "punctual for", "always punctual"], ms: ["punctuel", "punktual", "punctoal"] },
+    { w: "generous", pos: "adjective", lv: "I", ipa: "\u02C8d\u0292en.\u025A.\u0259s", syl: "gen\xB7er\xB7ous", st: 0, d: "happy to give money, time, or help to others", ar: "\u0643\u0631\u064A\u0645", ex: "Our generous neighbor shared dates with everyone in the street.", gap: "It was very ___ of him to pay for everyone's lunch.", gx: ["narrow", "crowded", "empty"], syn: ["giving", "unselfish"], ant: ["selfish", "mean"], col: ["generous with", "a generous gift", "very generous of"], ms: ["generus", "gennerous", "generos"] },
+    { w: "believe", pos: "verb", lv: "B", ipa: "b\u026A.\u02C8li\u02D0v", syl: "be\xB7lieve", st: 1, d: "to think that something is true", ar: "\u064A\u064F\u0635\u062F\u0651\u0642 / \u064A\u0639\u062A\u0642\u062F", ex: "I believe that hard work leads to success.", gap: "I didn't ___ his story because it sounded impossible.", gx: ["arrive", "sleep", "laugh"], syn: ["trust", "accept"], ant: ["doubt"], col: ["believe in", "believe that", "hard to believe"], ms: ["bellieve", "beleive", "beleeve"] },
+    { w: "temporary", pos: "adjective", lv: "I", ipa: "\u02C8tem.p\u0259.rer.i", syl: "tem\xB7po\xB7rar\xB7y", st: 0, d: "lasting for only a short time", ar: "\u0645\u0624\u0642\u0651\u062A", ex: "The school is using a temporary classroom while the new building is finished.", gap: "This is only a ___ job; I will work here for two months.", gx: ["delicious", "narrow", "hungry"], syn: ["short-term", "brief"], ant: ["permanent"], col: ["a temporary job", "a temporary solution", "only temporary"], ms: ["temporery", "temporrary", "tamporary"] },
+    { w: "friendly", pos: "adjective", lv: "B", ipa: "\u02C8frend.li", syl: "friend\xB7ly", st: 0, d: "kind and pleasant to other people", ar: "\u0648\u062F\u0648\u062F", ex: "Our new neighbors are very friendly.", gap: "The new student was ___ and quickly made many friends.", gx: ["empty", "cheap", "narrow"], syn: ["pleasant", "warm"], ant: ["unfriendly", "hostile"], col: ["friendly people", "a friendly smile", "environmentally friendly"], ms: ["friendley", "freindly", "freendly"] },
+    { w: "independent", pos: "adjective", lv: "I", ipa: "\u02CC\u026An.d\u026A.\u02C8pen.d\u0259nt", syl: "in\xB7de\xB7pen\xB7dent", st: 2, d: "able to do things by yourself without help", ar: "\u0645\u0633\u062A\u0642\u0644", ex: "My sister became more independent after she started university.", gap: "An ___ learner finds answers without always asking the teacher.", gx: ["empty", "icy", "ugly"], syn: ["self-reliant", "self-sufficient"], ant: ["dependent"], col: ["an independent learner", "become independent", "independent of"], ms: ["independant", "indeppendent", "indapendent"] },
+    { w: "accept", pos: "verb", lv: "B", ipa: "\u0259k.\u02C8sept", syl: "ac\xB7cept", st: 1, d: "to agree to take something that is offered", ar: "\u064A\u0642\u0628\u0644", ex: "She accepted the invitation to the party.", gap: "I am happy to ___ your kind invitation.", gx: ["arrive", "belong", "happen"], syn: ["receive", "take"], ant: ["refuse", "reject"], col: ["accept an offer", "accept an apology", "widely accepted"], ms: ["acept", "akcept", "accapt"] },
+    { w: "goal", pos: "noun", lv: "B", ipa: "\u02C8\u0261o\u028Al", syl: "goal", st: 0, d: "something that you hope to achieve", ar: "\u0647\u062F\u0641", ex: "My goal is to read twenty books this year.", gap: "Her ___ is to become a doctor and help sick people.", gx: ["kitchen", "weather", "furniture"], syn: ["aim", "target"], ant: [], col: ["achieve a goal", "set a goal", "the main goal"], ms: ["goul", "goale", "gual"] },
+    { w: "diverse", pos: "adjective", lv: "A", ipa: "d\u026A.\u02C8v\u025D\u02D0s", syl: "di\xB7verse", st: 1, d: "including many different types of people or things", ar: "\u0645\u062A\u0646\u0648\u0651\u0639", ex: "Oman has a diverse landscape of mountains, deserts, and beaches.", gap: "Our class is ___; students come from many different towns.", gx: ["hungry", "lazy", "polite"], syn: ["varied", "mixed"], ant: ["similar", "uniform"], col: ["a diverse group", "culturally diverse", "a diverse range"], ms: ["divverse", "diverce", "diversa"] },
+    { w: "crucial", pos: "adjective", lv: "A", ipa: "\u02C8kru\u02D0.\u0283\u0259l", syl: "cru\xB7cial", st: 0, d: "extremely important because many other things depend on it", ar: "\u062D\u0627\u0633\u0645 / \u0628\u0627\u0644\u063A \u0627\u0644\u0623\u0647\u0645\u064A\u0629", ex: "The last goal was crucial for winning the cup.", gap: "Sleep is ___ for your brain to work well.", gx: ["hungry", "narrow", "tidy"], syn: ["critical", "key"], ant: ["unimportant", "minor"], col: ["a crucial role", "crucial for", "absolutely crucial"], ms: ["cruciel", "cruccial", "krucial"] },
+    { w: "repair", pos: "verb", lv: "B", ipa: "r\u026A.\u02C8per", syl: "re\xB7pair", st: 1, d: "to make something that is broken work again", ar: "\u064A\u064F\u0635\u0644\u062D", ex: "My father repaired the broken chair.", gap: "The mechanic will ___ our car tomorrow.", gx: ["arrive", "sleep", "disappear"], syn: ["fix", "mend"], ant: ["break", "damage"], col: ["repair the damage", "a repair shop", "beyond repair"], ms: ["reppair", "repayr", "rapair"] },
+    { w: "thorough", pos: "adjective", lv: "A", ipa: "\u02C8\u03B8\u025D\u02D0.o\u028A", syl: "thor\xB7ough", st: 0, d: "careful and complete, with attention to every detail", ar: "\u0634\u0627\u0645\u0644 / \u062F\u0642\u064A\u0642", ex: "The doctor gave me a thorough check-up.", gap: "Before you hand in your project, do a ___ check for spelling mistakes.", gx: ["hungry", "lazy", "noisy"], syn: ["complete", "detailed"], ant: ["careless", "superficial"], col: ["a thorough check", "a thorough investigation", "thorough knowledge"], ms: ["thorrough", "thorogh", "thoroogh"] },
+    { w: "patient", pos: "adjective", lv: "I", ipa: "\u02C8pe\u026A.\u0283\u0259nt", syl: "pa\xB7tient", st: 0, d: "able to wait calmly without getting angry", ar: "\u0635\u0628\u0648\u0631", ex: "Be patient; your turn will come soon.", gap: "Learning a language takes time, so you need to be ___.", gx: ["narrow", "cheap", "crowded"], syn: ["tolerant", "easygoing"], ant: ["impatient"], col: ["be patient with", "patient enough", "very patient"], ms: ["patiant", "pattient", "pateint"] },
+    { w: "available", pos: "adjective", lv: "I", ipa: "\u0259.\u02C8ve\u026A.l\u0259.b\u0259l", syl: "a\xB7vail\xB7a\xB7ble", st: 1, d: "able to be used, bought, or found", ar: "\u0645\u062A\u0627\u062D / \u0645\u062A\u0648\u0641\u0651\u0631", ex: "The new books are available in the school library.", gap: "Sorry, the teacher is not ___ now; she is in a meeting.", gx: ["narrow", "delicious", "crowded"], syn: ["free", "accessible"], ant: ["unavailable", "busy"], col: ["available for", "available online", "freely available"], ms: ["availible", "avvailable", "avaylable"] },
+    { w: "crowded", pos: "adjective", lv: "B", ipa: "\u02C8kra\u028A.d\u026Ad", syl: "crowd\xB7ed", st: 0, d: "full of people", ar: "\u0645\u0632\u062F\u062D\u0645", ex: "The market is always crowded on Thursday evenings.", gap: "The bus was so ___ that I had to stand all the way home.", gx: ["quiet", "tidy", "polite"], syn: ["packed", "busy"], ant: ["empty", "deserted"], col: ["a crowded room", "crowded streets", "crowded with people"], ms: ["krowded", "crowdad", "crowdede"] },
+    { w: "increase", pos: "verb", lv: "I", ipa: "\u026An.\u02C8kri\u02D0s", syl: "in\xB7crease", st: 1, d: "to become bigger in amount or number, or to make something bigger", ar: "\u064A\u0632\u064A\u062F / \u064A\u0631\u062A\u0641\u0639", ex: "The number of students in our school increases every year.", gap: "Regular exercise can ___ your energy.", gx: ["disappear", "arrive", "exist"], syn: ["raise", "boost"], ant: ["reduce", "decrease"], col: ["increase by", "increase the number", "greatly increase"], ms: ["increasse", "increese", "incraase"] },
+    { w: "discover", pos: "verb", lv: "I", ipa: "d\u026A.\u02C8sk\u028Cv.\u025A", syl: "dis\xB7cov\xB7er", st: 1, d: "to find something or learn something for the first time", ar: "\u064A\u0643\u062A\u0634\u0641", ex: "Scientists discovered a new kind of fish in the deep sea.", gap: "We were surprised to ___ an old coin buried in the garden.", gx: ["arrive", "sleep", "belong"], syn: ["find", "uncover"], ant: ["miss", "overlook"], col: ["discover that", "newly discovered", "discover the truth"], ms: ["discovar", "discovver", "diskover"] },
+    { w: "kind", pos: "adjective", lv: "B", ipa: "\u02C8ka\u026And", syl: "kind", st: 0, d: "caring about others and wanting to help them", ar: "\u0644\u0637\u064A\u0641 / \u0637\u064A\u0651\u0628", ex: "It was kind of you to help me carry my bags.", gap: "My neighbor is very ___; she always helps old people with their shopping.", gx: ["lazy", "noisy", "narrow"], syn: ["caring", "gentle"], ant: ["cruel", "unkind"], col: ["kind to", "kind of you", "a kind heart"], ms: ["cind", "kend", "kinde"] },
+    { w: "fresh", pos: "adjective", lv: "B", ipa: "\u02C8fre\u0283", syl: "fresh", st: 0, d: "recently made, picked, or prepared", ar: "\u0637\u0627\u0632\u062C", ex: "We bought fresh bread from the bakery this morning.", gap: "These vegetables are ___; they were picked from the farm today.", gx: ["stale", "noisy", "famous"], syn: ["new", "recent"], ant: ["stale", "old"], col: ["fresh air", "fresh fruit", "a fresh start"], ms: ["frash", "freshe", "frseh"] },
+    { w: "essential", pos: "adjective", lv: "I", ipa: "\u026A.\u02C8sen.\u0283\u0259l", syl: "es\xB7sen\xB7tial", st: 1, d: "completely necessary; very important", ar: "\u0623\u0633\u0627\u0633\u064A / \u0636\u0631\u0648\u0631\u064A", ex: "Water is essential for all living things.", gap: "A good night's sleep is ___ before an important exam.", gx: ["narrow", "crowded", "lazy"], syn: ["necessary", "vital"], ant: ["unnecessary"], col: ["essential for", "absolutely essential", "essential skills"], ms: ["essentiel", "esential", "escential"] },
+    { w: "genuine", pos: "adjective", lv: "A", ipa: "\u02C8d\u0292en.ju.\u026An", syl: "gen\xB7u\xB7ine", st: 0, d: "real and exactly what it seems to be", ar: "\u062D\u0642\u064A\u0642\u064A / \u0623\u0635\u0644\u064A", ex: "This bag is made of genuine leather.", gap: "Is this a ___ diamond or a fake one?", gx: ["hungry", "lazy", "noisy"], syn: ["real", "authentic"], ant: ["fake", "false"], col: ["genuine interest", "genuine leather", "a genuine smile"], ms: ["gennuine", "ganuine", "genuin"] },
+    { w: "hungry", pos: "adjective", lv: "B", ipa: "\u02C8h\u028C\u014B.\u0261ri", syl: "hun\xB7gry", st: 0, d: "wanting or needing food", ar: "\u062C\u0627\u0626\u0639", ex: "I didn't eat breakfast, so I am very hungry now.", gap: "After the long football match, the players were ___ and wanted lunch.", gx: ["tidy", "narrow", "cheap"], syn: ["starving", "famished"], ant: ["full"], col: ["feel hungry", "hungry for", "go hungry"], ms: ["hungrey", "hongry", "hugnry"] },
+    { w: "opinion", pos: "noun", lv: "I", ipa: "\u0259.\u02C8p\u026An.j\u0259n", syl: "o\xB7pin\xB7ion", st: 1, d: "what you think or believe about something", ar: "\u0631\u0623\u064A", ex: "In my opinion, football is the best sport.", gap: "Everyone in the group gave their ___ about the plan.", gx: ["weather", "furniture", "traffic"], syn: ["view", "belief"], ant: ["fact"], col: ["in my opinion", "give an opinion", "public opinion"], ms: ["oppinion", "openion", "opinione"] },
+    { w: "emphasize", pos: "verb", lv: "A", ipa: "\u02C8em.f\u0259.sa\u026Az", syl: "em\xB7pha\xB7size", st: 0, d: "to show that something is especially important", ar: "\u064A\u064F\u0624\u0643\u0651\u062F \u0639\u0644\u0649 / \u064A\u064F\u0634\u062F\u0651\u062F \u0639\u0644\u0649", ex: "The teacher emphasized the importance of reading every day.", gap: "In your speech, ___ the main point by repeating it at the end.", gx: ["arrive", "sleep", "belong"], syn: ["stress", "highlight"], ant: ["downplay"], col: ["emphasize the importance", "strongly emphasize", "emphasize that"], ms: ["emphassize", "emfasize", "emphesize"] },
+    { w: "quiet", pos: "adjective", lv: "B", ipa: "\u02C8kwa\u026A.\u0259t", syl: "qui\xB7et", st: 0, d: "making very little noise", ar: "\u0647\u0627\u062F\u0626", ex: "The library is a quiet place to study.", gap: "Please be ___; the baby is sleeping.", gx: ["noisy", "famous", "cheap"], syn: ["silent", "soft"], ant: ["noisy", "loud"], col: ["keep quiet", "a quiet place", "a quiet voice"], ms: ["queit", "quiat", "quiete"] },
+    { w: "encourage", pos: "verb", lv: "I", ipa: "\u026An.\u02C8k\u025D\u02D0.\u026Ad\u0292", syl: "en\xB7cour\xB7age", st: 1, d: "to give someone support and confidence to do something", ar: "\u064A\u064F\u0634\u062C\u0651\u0639", ex: "My parents always encourage me to try new things.", gap: "Good teachers ___ their students to ask questions.", gx: ["arrive", "sleep", "appear"], syn: ["motivate", "support"], ant: ["discourage"], col: ["encourage someone to", "strongly encourage", "encourage growth"], ms: ["encourige", "encourrage", "encorage"] },
+    { w: "honest", pos: "adjective", lv: "B", ipa: "\u02C8\u0251\u02D0.n\u026Ast", syl: "hon\xB7est", st: 0, d: "always telling the truth", ar: "\u0635\u0627\u062F\u0642 / \u0623\u0645\u064A\u0646", ex: "Be honest and tell your teacher what really happened.", gap: "He is an ___ boy; he always tells the truth.", gx: ["empty", "icy", "awful"], syn: ["truthful", "sincere"], ant: ["dishonest"], col: ["an honest answer", "to be honest", "honest with"], ms: ["honnest", "hunest", "honeste"] },
+    { w: "humble", pos: "adjective", lv: "A", ipa: "\u02C8h\u028Cm.b\u0259l", syl: "hum\xB7ble", st: 0, d: "not thinking that you are better than other people", ar: "\u0645\u062A\u0648\u0627\u0636\u0639", ex: "Although he is famous, he is still humble and kind.", gap: "She won the prize, but she stayed ___ and thanked her team.", gx: ["hungry", "narrow", "noisy"], syn: ["modest", "unassuming"], ant: ["proud", "arrogant"], col: ["a humble person", "remain humble", "humble beginnings"], ms: ["humbla", "humbl", "hubmle"] },
+    { w: "prefer", pos: "verb", lv: "I", ipa: "pr\u026A.\u02C8f\u025D\u02D0", syl: "pre\xB7fer", st: 1, d: "to like one thing more than another", ar: "\u064A\u064F\u0641\u0636\u0651\u0644", ex: "I prefer tea to coffee.", gap: "Do you ___ reading books or watching movies?", gx: ["arrive", "happen", "belong"], syn: ["favor", "would rather"], ant: ["dislike"], col: ["prefer to", "prefer A to B", "would prefer"], ms: ["prefar", "preffer", "prafer"] },
+    { w: "reduce", pos: "verb", lv: "I", ipa: "r\u026A.\u02C8du\u02D0s", syl: "re\xB7duce", st: 1, d: "to make something smaller in size, amount, or number", ar: "\u064A\u064F\u0642\u0644\u0651\u0644 / \u064A\u064F\u062E\u0641\u0651\u0636", ex: "Turning off the lights reduces the amount of electricity we use.", gap: "Walking or cycling to school can ___ air pollution.", gx: ["arrive", "sleep", "belong"], syn: ["decrease", "lower"], ant: ["increase"], col: ["reduce waste", "reduce the risk", "greatly reduce"], ms: ["redduce", "reduke", "raduce"] },
+    { w: "journey", pos: "noun", lv: "B", ipa: "\u02C8d\u0292\u025D\u02D0.ni", syl: "jour\xB7ney", st: 0, d: "a trip from one place to another, especially a long one", ar: "\u0631\u062D\u0644\u0629", ex: "The journey from Muscat to Salalah takes about twelve hours by car.", gap: "We took a long ___ across the desert by car.", gx: ["knowledge", "success", "advice"], syn: ["trip", "voyage"], ant: [], col: ["a long journey", "a journey to", "have a safe journey"], ms: ["journy", "jorney", "journay"] },
+    { w: "protect", pos: "verb", lv: "I", ipa: "pr\u0259.\u02C8tekt", syl: "pro\xB7tect", st: 1, d: "to keep someone or something safe from harm", ar: "\u064A\u062D\u0645\u064A", ex: "Sunglasses protect your eyes from the sun.", gap: "We must ___ sea turtles because there are very few of them left.", gx: ["arrive", "laugh", "exist"], syn: ["defend", "guard"], ant: ["harm", "attack"], col: ["protect from", "protect the environment", "protect yourself"], ms: ["protekt", "prottect", "prutect"] },
+    { w: "curious", pos: "adjective", lv: "I", ipa: "\u02C8kj\u028Ar.i.\u0259s", syl: "cu\xB7ri\xB7ous", st: 0, d: "wanting to know or learn about something", ar: "\u0641\u0636\u0648\u0644\u064A / \u0645\u062D\u0628\u0651 \u0644\u0644\u0645\u0639\u0631\u0641\u0629", ex: "Young children are curious about everything around them.", gap: "She was ___ to know what was inside the box.", gx: ["narrow", "cheap", "empty"], syn: ["inquisitive", "interested"], ant: ["uninterested", "indifferent"], col: ["curious about", "curious to know", "a curious mind"], ms: ["curius", "currious", "kurious"] },
+    { w: "shout", pos: "verb", lv: "B", ipa: "\u02C8\u0283a\u028At", syl: "shout", st: 0, d: "to say something very loudly", ar: "\u064A\u0635\u0631\u062E", ex: "Please don't shout; I can hear you.", gap: "The fans began to ___ when their team scored a goal.", gx: ["repair", "borrow", "collect"], syn: ["yell", "scream"], ant: ["whisper"], col: ["shout at", "shout for help", "shout loudly"], ms: ["shuut", "shoute", "shuot"] },
+    { w: "confirm", pos: "verb", lv: "A", ipa: "k\u0259n.\u02C8f\u025D\u02D0m", syl: "con\xB7firm", st: 1, d: "to say or show that something is true or certain", ar: "\u064A\u064F\u0624\u0643\u0651\u062F", ex: "Please call the hotel to confirm your booking.", gap: "The results ___ that our idea was correct.", gx: ["arrive", "sleep", "belong"], syn: ["verify", "prove"], ant: ["deny"], col: ["confirm a booking", "confirm that", "officially confirm"], ms: ["konfirm", "cunfirm", "confirme"] },
+    { w: "analyze", pos: "verb", lv: "A", ipa: "\u02C8\xE6n.\u0259l.a\u026Az", syl: "an\xB7a\xB7lyze", st: 0, d: "to study something carefully to understand it", ar: "\u064A\u064F\u062D\u0644\u0651\u0644", ex: "Scientists analyze water samples to check if they are clean.", gap: "In this lesson, we will ___ the results of our survey.", gx: ["arrive", "laugh", "appear"], syn: ["examine", "study"], ant: [], col: ["analyze data", "carefully analyze", "analyze the results"], ms: ["annalyze", "anelyze", "analyz"] },
+    { w: "careful", pos: "adjective", lv: "B", ipa: "\u02C8ker.f\u0259l", syl: "care\xB7ful", st: 0, d: "giving attention to what you do so that you avoid mistakes or harm", ar: "\u062D\u0630\u0631 / \u062D\u0631\u064A\u0635", ex: "Be careful when you cross the busy street.", gap: "Please be ___ with the glass; it breaks easily.", gx: ["famous", "hungry", "crowded"], syn: ["cautious", "attentive"], ant: ["careless"], col: ["be careful with", "careful planning", "a careful driver"], ms: ["carefull", "carreful", "kareful"] },
+    { w: "reluctant", pos: "adjective", lv: "A", ipa: "r\u026A.\u02C8l\u028Ck.t\u0259nt", syl: "re\xB7luc\xB7tant", st: 1, d: "not willing to do something", ar: "\u0645\u062A\u0631\u062F\u0651\u062F / \u063A\u064A\u0631 \u0631\u0627\u063A\u0628", ex: "He was reluctant to speak because he was shy.", gap: "She was ___ to lend her new phone to anyone.", gx: ["narrow", "tidy", "crowded"], syn: ["unwilling", "hesitant"], ant: ["willing", "eager"], col: ["reluctant to", "seem reluctant", "a reluctant hero"], ms: ["reluctent", "relluctant", "reluktant"] },
+    { w: "approximately", pos: "adverb", lv: "A", ipa: "\u0259.\u02C8pr\u0251\u02D0k.s\u0259.m\u0259t.li", syl: "ap\xB7prox\xB7i\xB7mate\xB7ly", st: 1, d: "close to an exact number or time, but not exactly", ar: "\u062A\u0642\u0631\u064A\u0628\u064B\u0627", ex: "The trip takes approximately three hours.", gap: "There are ___ thirty students in each class.", gx: ["deliberately", "gradually", "politely"], syn: ["about", "roughly"], ant: ["exactly", "precisely"], col: ["approximately equal", "approximately half", "approximately ten minutes"], ms: ["approximateley", "aproximately", "approximateli"] },
+    { w: "valuable", pos: "adjective", lv: "I", ipa: "\u02C8v\xE6l.j\u0259.b\u0259l", syl: "val\xB7u\xB7a\xB7ble", st: 0, d: "worth a lot of money, or very useful and important", ar: "\u0642\u064A\u0651\u0645 / \u062B\u0645\u064A\u0646", ex: "The museum keeps many valuable old coins.", gap: "Thank you for your ___ advice; it really helped me.", gx: ["narrow", "lazy", "crowded"], syn: ["precious", "useful"], ant: ["worthless"], col: ["valuable information", "a valuable lesson", "valuable time"], ms: ["valuible", "valluable", "valoable"] },
+    { w: "noisy", pos: "adjective", lv: "B", ipa: "\u02C8n\u0254\u026A.zi", syl: "nois\xB7y", st: 0, d: "making a lot of loud noise", ar: "\u0635\u0627\u062E\u0628 / \u0645\u0632\u0639\u062C", ex: "The noisy traffic woke me up early.", gap: "The classroom was so ___ that I couldn't hear the teacher.", gx: ["quiet", "empty", "tidy"], syn: ["loud", "rowdy"], ant: ["quiet", "silent"], col: ["noisy neighbors", "a noisy street", "noisy children"], ms: ["noisey", "noicy", "noesy"] },
+    { w: "calm", pos: "adjective", lv: "B", ipa: "\u02C8k\u0251\u02D0m", syl: "calm", st: 0, d: "not worried, angry, or excited", ar: "\u0647\u0627\u062F\u0626 / \u0645\u0637\u0645\u0626\u0646", ex: "Stay calm and read the question again.", gap: "Take a deep breath and try to stay ___ during the exam.", gx: ["crowded", "empty", "famous"], syn: ["relaxed", "peaceful"], ant: ["nervous", "anxious"], col: ["stay calm", "keep calm", "a calm voice"], ms: ["kalm", "celm", "calme"] },
+    { w: "nervous", pos: "adjective", lv: "I", ipa: "\u02C8n\u025D\u02D0.v\u0259s", syl: "ner\xB7vous", st: 0, d: "worried or a little afraid", ar: "\u0645\u062A\u0648\u062A\u0651\u0631 / \u0642\u0644\u0642", ex: "I always feel nervous before a big exam.", gap: "He was ___ before his first speech, and his hands were shaking.", gx: ["tidy", "narrow", "cheap"], syn: ["anxious", "worried"], ant: ["calm", "relaxed"], col: ["feel nervous", "nervous about", "a bit nervous"], ms: ["nervus", "nervos", "nervoos"] },
+    { w: "lazy", pos: "adjective", lv: "B", ipa: "\u02C8le\u026A.zi", syl: "la\xB7zy", st: 0, d: "not wanting to work or make an effort", ar: "\u0643\u0633\u0648\u0644", ex: "Don't be lazy; finish your homework before you play.", gap: "He was too ___ to clean his room, so it stayed messy.", gx: ["tidy", "brave", "healthy"], syn: ["idle", "inactive"], ant: ["hardworking", "active"], col: ["a lazy day", "feel lazy", "too lazy to"], ms: ["lazey", "lezy", "lazi"] },
+    { w: "polite", pos: "adjective", lv: "B", ipa: "p\u0259.\u02C8la\u026At", syl: "po\xB7lite", st: 1, d: "behaving in a way that shows respect for other people", ar: "\u0645\u0624\u062F\u0628", ex: 'It is polite to say "please" and "thank you".', gap: "Always be ___ when you speak to older people.", gx: ["rude", "hungry", "empty"], syn: ["courteous", "respectful"], ant: ["rude", "impolite"], col: ["a polite request", "polite to", "a polite smile"], ms: ["pollite", "polete", "polit"] },
+    { w: "traditional", pos: "adjective", lv: "I", ipa: "tr\u0259.\u02C8d\u026A\u0283.\u0259n.\u0259l", syl: "tra\xB7di\xB7tion\xB7al", st: 1, d: "following customs that have existed for a long time", ar: "\u062A\u0642\u0644\u064A\u062F\u064A", ex: "We wore traditional clothes on National Day.", gap: "Halwa is a ___ Omani sweet that people serve to guests.", gx: ["narrow", "lazy", "brave"], syn: ["customary", "conventional"], ant: ["modern"], col: ["traditional food", "traditional clothes", "traditional dress"], ms: ["traditionel", "tradditional", "treditional"] },
+    { w: "brave", pos: "adjective", lv: "B", ipa: "\u02C8bre\u026Av", syl: "brave", st: 0, d: "ready to face danger or pain without showing fear", ar: "\u0634\u062C\u0627\u0639", ex: "The brave firefighter carried the child out of the burning house.", gap: "It was ___ of her to speak in front of the whole school.", gx: ["crowded", "delicious", "empty"], syn: ["courageous", "fearless"], ant: ["cowardly", "afraid"], col: ["a brave decision", "brave enough to", "a brave soldier"], ms: ["bravve", "brav", "brvae"] },
+    { w: "allow", pos: "verb", lv: "B", ipa: "\u0259.\u02C8la\u028A", syl: "al\xB7low", st: 1, d: "to let someone do something", ar: "\u064A\u0633\u0645\u062D", ex: "Our school does not allow phones in class.", gap: "My parents ___ me to stay up late on weekends.", gx: ["arrive", "agree", "smile"], syn: ["permit", "let"], ant: ["forbid", "prevent"], col: ["allow someone to", "not allowed", "allow time for"], ms: ["allou", "alluw", "allowe"] },
+    { w: "frequent", pos: "adjective", lv: "I", ipa: "\u02C8fri\u02D0.kw\u0259nt", syl: "fre\xB7quent", st: 0, d: "happening often", ar: "\u0645\u062A\u0643\u0631\u0651\u0631", ex: "There are frequent buses from the city center to the airport.", gap: "He is a ___ visitor to the library; he goes there every day.", gx: ["narrow", "empty", "tidy"], syn: ["regular", "common"], ant: ["rare", "occasional"], col: ["a frequent visitor", "frequent use", "frequent flights"], ms: ["frequant", "freqquent", "frekwent"] },
+    { w: "eager", pos: "adjective", lv: "A", ipa: "\u02C8i\u02D0.\u0261\u025A", syl: "ea\xB7ger", st: 0, d: "wanting to do or have something very much", ar: "\u0645\u062A\u062D\u0645\u0651\u0633 / \u0645\u062A\u0644\u0647\u0651\u0641", ex: "The students were eager to start the school trip.", gap: "Ahmed is ___ to learn how to write computer programs.", gx: ["narrow", "tidy", "crowded"], syn: ["keen", "enthusiastic"], ant: ["reluctant", "unwilling"], col: ["eager to", "eager for", "an eager learner"], ms: ["eagar", "eagger", "eeger"] },
+    { w: "maintain", pos: "verb", lv: "A", ipa: "me\u026An.\u02C8te\u026An", syl: "main\xB7tain", st: 1, d: "to keep something in good condition or at the same level", ar: "\u064A\u062D\u0627\u0641\u0638 \u0639\u0644\u0649 / \u064A\u0635\u0648\u0646", ex: "It is important to maintain good relationships with your classmates.", gap: "You need to ___ your bike so that it works well.", gx: ["arrive", "sleep", "destroy"], syn: ["keep", "preserve"], ant: ["neglect", "abandon"], col: ["maintain a balance", "maintain contact", "well maintained"], ms: ["maintane", "mayntain", "meintain"] },
+    { w: "rapid", pos: "adjective", lv: "I", ipa: "\u02C8r\xE6p.\u026Ad", syl: "rap\xB7id", st: 0, d: "happening or moving very quickly", ar: "\u0633\u0631\u064A\u0639", ex: "The city has seen rapid growth in recent years.", gap: "There was a ___ change in the weather, and it started to rain.", gx: ["polite", "hungry", "lazy"], syn: ["fast", "quick"], ant: ["slow"], col: ["rapid growth", "rapid change", "rapid progress"], ms: ["rappid", "repid", "rapide"] },
+    { w: "significant", pos: "adjective", lv: "A", ipa: "s\u026A\u0261.\u02C8n\u026Af.\u0259.k\u0259nt", syl: "sig\xB7nif\xB7i\xB7cant", st: 1, d: "important or large enough to have an effect", ar: "\u0645\u0647\u0645 / \u0643\u0628\u064A\u0631", ex: "There has been a significant increase in the number of tourists in Oman.", gap: "Winning the prize was a ___ moment in her life.", gx: ["hungry", "narrow", "lazy"], syn: ["important", "major"], ant: ["insignificant", "minor"], col: ["a significant change", "a significant role", "a significant difference"], ms: ["significent", "signifficant", "signifikant"] },
+    { w: "sufficient", pos: "adjective", lv: "A", ipa: "s\u0259.\u02C8f\u026A\u0283.\u0259nt", syl: "suf\xB7fi\xB7cient", st: 1, d: "as much as is needed; enough", ar: "\u0643\u0627\u0641\u064D", ex: "Make sure you have sufficient time to check your answers.", gap: "We didn't have ___ water for the long walk, so we bought more.", gx: ["hungry", "polite", "narrow"], syn: ["enough", "adequate"], ant: ["insufficient", "inadequate"], col: ["sufficient time", "sufficient evidence", "more than sufficient"], ms: ["sufficiant", "suficient", "sufficeint"] },
+    { w: "success", pos: "noun", lv: "I", ipa: "s\u0259k.\u02C8ses", syl: "suc\xB7cess", st: 1, d: "the result of achieving what you wanted", ar: "\u0646\u062C\u0627\u062D", ex: "Hard work is the key to success.", gap: "The school trip was a great ___; everyone enjoyed it.", gx: ["weather", "furniture", "advice"], syn: ["achievement", "triumph"], ant: ["failure"], col: ["a great success", "the key to success", "a success story"], ms: ["sucess", "sukcess", "soccess"] },
+    { w: "frequently", pos: "adverb", lv: "A", ipa: "\u02C8fri\u02D0.kw\u0259nt.li", syl: "fre\xB7quent\xB7ly", st: 0, d: "often; many times", ar: "\u0643\u062B\u064A\u0631\u064B\u0627 / \u0628\u0634\u0643\u0644 \u0645\u062A\u0643\u0631\u0651\u0631", ex: "He frequently visits his grandparents in Nizwa.", gap: "Wash your hands ___ to stay healthy.", gx: ["approximately", "rarely", "nearly"], syn: ["often", "regularly"], ant: ["rarely", "seldom"], col: ["frequently asked questions", "frequently used", "very frequently"], ms: ["frequentley", "freqquently", "frekwently"] },
+    { w: "ambitious", pos: "adjective", lv: "A", ipa: "\xE6m.\u02C8b\u026A\u0283.\u0259s", syl: "am\xB7bi\xB7tious", st: 1, d: "having a strong wish to be successful", ar: "\u0637\u0645\u0648\u062D", ex: "She is ambitious and wants to become an engineer.", gap: "Our team has an ___ plan to build a robot in one month.", gx: ["icy", "ugly", "empty"], syn: ["determined", "driven"], ant: ["unambitious"], col: ["an ambitious plan", "ambitious goals", "highly ambitious"], ms: ["ambitius", "ambittious", "ambitios"] },
+    { w: "volunteer", pos: "verb", lv: "I", ipa: "\u02CCv\u0251\u02D0.l\u0259n.\u02C8t\u026Ar", syl: "vol\xB7un\xB7teer", st: 2, d: "to offer to do something without being paid or without being asked", ar: "\u064A\u062A\u0637\u0648\u0651\u0639", ex: "Many students volunteered to clean the beach.", gap: "I want to ___ at the hospital during the summer vacation.", gx: ["destroy", "describe", "repair"], syn: ["offer", "step forward"], ant: ["refuse"], col: ["volunteer to", "volunteer for", "volunteer work"], ms: ["voluntear", "vollunteer", "voluntaer"] },
+    { w: "sustainable", pos: "adjective", lv: "A", ipa: "s\u0259.\u02C8ste\u026A.n\u0259.b\u0259l", syl: "sus\xB7tain\xB7a\xB7ble", st: 1, d: "able to continue for a long time without harming the environment", ar: "\u0645\u0633\u062A\u062F\u0627\u0645", ex: "Solar power is a sustainable source of energy.", gap: "Using less plastic is a ___ way to protect the oceans.", gx: ["hungry", "lazy", "polite"], syn: ["eco-friendly", "renewable"], ant: ["unsustainable"], col: ["sustainable development", "sustainable energy", "environmentally sustainable"], ms: ["sustainible", "sustainnable", "sustaynable"] },
+    { w: "reliable", pos: "adjective", lv: "I", ipa: "r\u026A.\u02C8la\u026A.\u0259.b\u0259l", syl: "re\xB7li\xB7a\xB7ble", st: 1, d: "able to be trusted to do what you expect", ar: "\u0645\u0648\u062B\u0648\u0642 / \u064A\u064F\u0639\u062A\u0645\u062F \u0639\u0644\u064A\u0647", ex: "This website is a reliable source of information.", gap: "You can trust Ali; he is a very ___ friend.", gx: ["narrow", "empty", "crowded"], syn: ["dependable", "trustworthy"], ant: ["unreliable"], col: ["a reliable source", "reliable information", "totally reliable"], ms: ["reliible", "relliable", "reliabla"] },
+    { w: "knowledge", pos: "noun", lv: "I", ipa: "\u02C8n\u0251\u02D0.l\u026Ad\u0292", syl: "knowl\xB7edge", st: 0, d: "information and understanding that you get from learning or experience", ar: "\u0645\u0639\u0631\u0641\u0629", ex: "Reading books increases your knowledge of the world.", gap: "Our teacher has a lot of ___ about science.", gx: ["journey", "mistake", "solution"], syn: ["understanding", "learning"], ant: ["ignorance"], col: ["general knowledge", "knowledge of", "gain knowledge"], ms: ["knowleddge", "cnowledge", "knowledga"] },
+    { w: "vague", pos: "adjective", lv: "A", ipa: "\u02C8ve\u026A\u0261", syl: "vague", st: 0, d: "not clear or not detailed", ar: "\u063A\u0627\u0645\u0636 / \u0645\u064F\u0628\u0647\u0645", ex: "His answer was vague, so the teacher asked him to explain more.", gap: "The directions were so ___ that we got lost.", gx: ["delicious", "polite", "hungry"], syn: ["unclear", "imprecise"], ant: ["clear", "precise"], col: ["a vague idea", "a vague answer", "rather vague"], ms: ["vagu", "vaggue", "vagua"] },
+    { w: "grateful", pos: "adjective", lv: "I", ipa: "\u02C8\u0261re\u026At.f\u0259l", syl: "grate\xB7ful", st: 0, d: "feeling or showing thanks", ar: "\u0645\u0645\u062A\u0646\u0651 / \u0634\u0627\u0643\u0631", ex: "I am grateful to my teachers for their help.", gap: "We are ___ for all the help you gave us.", gx: ["narrow", "crowded", "noisy"], syn: ["thankful", "appreciative"], ant: ["ungrateful"], col: ["grateful for", "grateful to", "deeply grateful"], ms: ["gratefull", "gratteful", "greteful"] },
+    { w: "rare", pos: "adjective", lv: "I", ipa: "\u02C8rer", syl: "rare", st: 0, d: "not happening or seen very often", ar: "\u0646\u0627\u062F\u0631", ex: "It is rare to see rain in the desert in summer.", gap: "The Arabian leopard is a ___ animal; very few are left in the wild.", gx: ["crowded", "tidy", "polite"], syn: ["uncommon", "unusual"], ant: ["common", "frequent"], col: ["a rare animal", "very rare", "a rare chance"], ms: ["rarre", "rere", "rar"] },
+    { w: "destroy", pos: "verb", lv: "B", ipa: "d\u026A.\u02C8str\u0254\u026A", syl: "de\xB7stroy", st: 1, d: "to damage something so badly that it no longer exists or works", ar: "\u064A\u064F\u062F\u0645\u0651\u0631", ex: "The storm destroyed many trees along the coast.", gap: "Fire can ___ a forest in just a few hours.", gx: ["arrive", "smile", "disappear"], syn: ["ruin", "wreck"], ant: ["build", "create"], col: ["completely destroy", "destroy the environment", "destroyed by fire"], ms: ["destroey", "destroi", "detsroy"] },
+    { w: "obtain", pos: "verb", lv: "A", ipa: "\u0259b.\u02C8te\u026An", syl: "ob\xB7tain", st: 1, d: "to get something, especially by making an effort", ar: "\u064A\u062D\u0635\u0644 \u0639\u0644\u0649", ex: "You need to obtain permission before you leave school early.", gap: "Students can ___ more information from the school office.", gx: ["arrive", "laugh", "appear"], syn: ["get", "acquire"], ant: ["lose"], col: ["obtain information", "obtain permission", "difficult to obtain"], ms: ["obtane", "obtayn", "obtein"] },
+    { w: "tidy", pos: "adjective", lv: "B", ipa: "\u02C8ta\u026A.di", syl: "ti\xB7dy", st: 0, d: "neat and with everything in the right place", ar: "\u0645\u0631\u062A\u0628", ex: "Keep your desk tidy so you can find your things.", gap: "My room is ___ now; I put all my clothes away.", gx: ["messy", "hungry", "famous"], syn: ["neat", "organized"], ant: ["messy", "untidy"], col: ["keep tidy", "a tidy room", "neat and tidy"], ms: ["tidey", "tydy", "tidie"] },
+    { w: "expand", pos: "verb", lv: "A", ipa: "\u026Ak.\u02C8sp\xE6nd", syl: "ex\xB7pand", st: 1, d: "to become larger, or to make something larger", ar: "\u064A\u062A\u0648\u0633\u0651\u0639 / \u064A\u064F\u0648\u0633\u0651\u0639", ex: "The company plans to expand into other countries.", gap: "Reading helps you ___ your vocabulary.", gx: ["arrive", "sleep", "disappear"], syn: ["grow", "enlarge"], ant: ["shrink", "contract"], col: ["expand rapidly", "expand your knowledge", "expand into"], ms: ["expande", "exapnd", "expnad"] },
+    { w: "include", pos: "verb", lv: "I", ipa: "\u026An.\u02C8klu\u02D0d", syl: "in\xB7clude", st: 1, d: "to have something as one part of a whole", ar: "\u064A\u062A\u0636\u0645\u0651\u0646 / \u064A\u0634\u0645\u0644", ex: "The price of the trip includes lunch.", gap: "Make sure you ___ your name and class on the answer sheet.", gx: ["arrive", "sleep", "belong"], syn: ["contain", "involve"], ant: ["exclude"], col: ["include details", "include in", "be included"], ms: ["includde", "inklude", "includa"] },
+    { w: "describe", pos: "verb", lv: "I", ipa: "d\u026A.\u02C8skra\u026Ab", syl: "de\xB7scribe", st: 1, d: "to say or write what someone or something is like", ar: "\u064A\u0635\u0641", ex: "Can you describe the man you saw?", gap: "In your essay, ___ your favorite place in Oman.", gx: ["arrive", "happen", "belong"], syn: ["portray", "depict"], ant: [], col: ["describe as", "describe in detail", "hard to describe"], ms: ["describbe", "deskribe", "dascribe"] },
+    { w: "hostile", pos: "adjective", lv: "A", ipa: "\u02C8h\u0251\u02D0.st\u0259l", syl: "hos\xB7tile", st: 0, d: "unfriendly and ready to argue or fight", ar: "\u0639\u062F\u0627\u0626\u064A", ex: "The cat became hostile when the dog came near its kittens.", gap: "The new player felt that the other team was ___ toward him.", gx: ["delicious", "narrow", "tidy"], syn: ["unfriendly", "aggressive"], ant: ["friendly", "welcoming"], col: ["hostile toward", "a hostile environment", "a hostile attitude"], ms: ["hostille", "hostila", "hostil"] },
+    { w: "damage", pos: "verb", lv: "I", ipa: "\u02C8d\xE6m.\u026Ad\u0292", syl: "dam\xB7age", st: 0, d: "to harm or break something", ar: "\u064A\u064F\u062A\u0644\u0641 / \u064A\u064F\u0644\u062D\u0642 \u0627\u0644\u0636\u0631\u0631", ex: "Too much sugar can damage your teeth.", gap: "Strong winds can ___ roofs and windows.", gx: ["arrive", "laugh", "sleep"], syn: ["harm", "hurt"], ant: ["repair", "fix"], col: ["badly damage", "damage the environment", "damaged by"], ms: ["damige", "dammage", "damaga"] },
+    { w: "achieve", pos: "verb", lv: "I", ipa: "\u0259.\u02C8t\u0283i\u02D0v", syl: "a\xB7chieve", st: 1, d: "to succeed in doing something good, usually after a lot of effort", ar: "\u064A\u064F\u062D\u0642\u0651\u0642 / \u064A\u064F\u0646\u062C\u0632", ex: "She worked hard and achieved excellent results.", gap: "If you study every day, you will ___ your goals.", gx: ["arrive", "belong", "sleep"], syn: ["accomplish", "attain"], ant: ["fail"], col: ["achieve a goal", "achieve success", "achieve results"], ms: ["achievve", "acheive", "achiave"] },
+    { w: "narrow", pos: "adjective", lv: "B", ipa: "\u02C8ner.o\u028A", syl: "nar\xB7row", st: 0, d: "small from one side to the other", ar: "\u0636\u064A\u0642", ex: "The old streets in the village are very narrow.", gap: "The road was too ___ for two cars to pass each other.", gx: ["wide", "polite", "delicious"], syn: ["thin", "tight"], ant: ["wide", "broad"], col: ["a narrow road", "a narrow escape", "narrow down"], ms: ["narow", "narrou", "narruw"] }
+  ];
+
+  // src/simple/wotd.js
+  var LEVEL = { B: "Beginner", I: "Intermediate", A: "Advanced" }, ACTS = {
+    meaning: { name: "Match the Meaning", sub: "Pick what the word means", icon: "vocabulary", color: "#0B8F63" },
+    sentence: { name: "Complete the Sentence", sub: "Choose the missing word", icon: "building", color: "#9A6B12" },
+    listen: { name: "Listen and Identify", sub: "Listen, then pick the spelling", icon: "listening", color: "#C2410C" },
+    scramble: { name: "Word Scramble", sub: "Put the letters in order", icon: "scramble", color: "#B4236F" },
+    write: { name: "Build Your Own Sentence", sub: "Write a sentence with the word", icon: "correction", color: "#1D5FD6" },
+    synonym: { name: "Synonym Challenge", sub: "Find the closest meaning", icon: "target", color: "#6C4CE0" }
+  }, ACT_KEYS = WOTD_ACTS, MAX_PTS = ACT_KEYS.length * WOTD_PTS.first + WOTD_PTS.bonus, PRAISE = ["Great job!", "Excellent!", "Well done!", "Brilliant!", "Correct!", "Super!", "Nice work!"], NEAR = [
+    "quiet calm patient humble",
+    "huge abundant wealthy",
+    "crucial essential significant valuable",
+    "brave confident ambitious eager",
+    "nervous afraid reluctant",
+    "kind friendly generous polite humble grateful",
+    "careful thorough accurate punctual responsible reliable consistent",
+    "rare scarce",
+    "frequent consistent",
+    "modern fresh",
+    "famous familiar",
+    "hostile angry",
+    "efficient rapid",
+    "curious eager",
+    "traditional ancient",
+    "obvious genuine",
+    "tiny narrow",
+    "noisy crowded",
+    "temporary fragile",
+    "inevitable obvious",
+    "vague obvious",
+    "repair maintain protect",
+    "reduce decline",
+    "increase expand improve",
+    "collect obtain achieve",
+    "choose prefer",
+    "believe confirm",
+    "destroy damage",
+    "allow accept",
+    "suggest persuade encourage emphasize",
+    "describe interpret analyze assess identify",
+    "discover reveal identify",
+    "contribute volunteer",
+    "avoid neglect",
+    "advice opinion",
+    "goal success benefit solution",
+    "knowledge evidence",
+    "consequence benefit",
+    "frequently gradually"
+  ].map((g) => new Set(g.split(" "))), BY = new Map(WORDS.map((w) => [w.w, w])), DAY2 = 864e5, keyOf = (d) => new Date(d).toLocaleDateString("en-CA"), dayNum = (key) => {
+    let [y, m2, d] = key.split("-").map(Number);
+    return Math.round(Date.UTC(y, m2 - 1, d) / DAY2);
+  }, START = dayNum(WOTD_START), dayIndex = () => dayNum(keyOf(Date.now())) - START, wordOnDay = (i) => WORDS[(i % WORDS.length + WORDS.length) % WORDS.length], dayLabel = (i, long = !1) => new Date((START + i) * DAY2).toLocaleDateString("en-GB", long ? { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" } : { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
+  function today() {
+    let i = Math.max(0, dayIndex());
+    return { word: wordOnDay(i), day: i };
   }
-  function route() {
-    cleanup && (cleanup(), cleanup = null), stopSpeaking(), document.querySelectorAll(".confetti").forEach((c2) => c2.remove()), document.body.classList.remove("playing");
+  function previousWords() {
+    let t = dayIndex(), seen = /* @__PURE__ */ new Set([today().word.w]), out = [];
+    for (let i = t - 1; i >= 0 && out.length < WORDS.length - 1; i--) {
+      let w = wordOnDay(i);
+      seen.has(w.w) || (seen.add(w.w), out.push({ word: w, day: i }));
+    }
+    return out;
+  }
+  function featured(w) {
+    let t = today();
+    return t.word.w === w ? t : previousWords().find((x2) => x2.word.w === w) || null;
+  }
+  function usVoice() {
+    let us = window.speechSynthesis.getVoices().filter((v) => /en[-_]US/i.test(v.lang));
+    return us.find((v) => /(Samantha|Google US English|Aria|Jenny|Guy|Allison|Ava|Alex)/i.test(v.name)) || us.find((v) => v.localService) || us[0] || null;
+  }
+  typeof window < "u" && "speechSynthesis" in window && window.speechSynthesis.getVoices();
+  function sayUS(text, rate = 0.85, btn = null) {
+    if (!("speechSynthesis" in window)) {
+      toast("Your browser cannot play audio. Try Chrome, Safari or Edge.", "error");
+      return;
+    }
+    let s = window.speechSynthesis;
+    s.cancel();
+    let u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-US", u.rate = rate;
+    let v = usVoice();
+    if (v && (u.voice = v), btn) {
+      document.querySelectorAll(".say.on").forEach((b2) => b2.classList.remove("on")), btn.classList.add("on");
+      let off = () => btn.classList.remove("on");
+      u.onend = off, u.onerror = off, setTimeout(off, 4e3);
+    }
+    s.speak(u);
+  }
+  function wireSay(root, w) {
+    root.querySelectorAll("[data-say]").forEach((b2) => b2.addEventListener("click", (e) => {
+      e.preventDefault(), e.stopPropagation();
+      let word = BY.get(b2.dataset.say) || w;
+      sayUS(word.w, b2.dataset.slow ? 0.5 : 0.85, b2);
+    }));
+  }
+  var IRREGULAR = { begin: ["began", "begun"], choose: ["chose", "chosen"] };
+  function forms(w) {
+    let f2 = /* @__PURE__ */ new Set([w, `${w}s`, `${w}es`, `${w}d`, `${w}ed`, `${w}ing`, `${w}ly`, `${w}r`, `${w}er`, `${w}est`, ...IRREGULAR[w] || []]);
+    return w.endsWith("e") && (f2.add(`${w.slice(0, -1)}ing`), f2.add(`${w.slice(0, -1)}ed`)), w.endsWith("y") && ["ies", "ied", "ier", "iest", "ily"].forEach((x2) => f2.add(w.slice(0, -1) + x2)), /[^aeiou][aeiou][bdgmnprt]$/.test(w) && ["ed", "ing", "er"].forEach((x2) => f2.add(w + w.slice(-1) + x2)), f2;
+  }
+  var usesWord = (text, w) => (String(text).toLowerCase().match(/[a-z]+/g) || []).some((t) => forms(w).has(t)), markWord = (text, w) => esc(text).replace(/[A-Za-z]+/g, (t) => forms(w).has(t.toLowerCase()) ? `<mark>${t}</mark>` : t), ipaHtml = (w) => `<span class="ipa" lang="en-US">/${w.ipa.split(".").map((s) => s.includes("\u02C8") ? `<b>${esc(s)}</b>` : esc(s)).join("")}/</span>`, sylHtml = (w) => `<span class="syls" aria-label="Syllables: ${esc(w.syl.replace(/·/g, " "))}. Stress on syllable ${w.st + 1}">${w.syl.split("\xB7").map((s, i) => `<span class="syl ${i === w.st ? "stress" : ""}">${esc(i === w.st ? s.toUpperCase() : s)}</span>`).join('<i aria-hidden="true">\xB7</i>')}</span>`, lvChip = (w) => `<span class="lv-chip lv-${w.lv}">${LEVEL[w.lv]}</span>`, posChip = (w) => `<span class="pos-chip">${esc(w.pos)}</span>`, sayBtn = (w, slow = !1, label = !0) => `<button type="button" class="btn say ${slow ? "btn-ghost" : "btn-primary"} ${label ? "" : "say-round"}" data-say="${esc(w.w)}" ${slow ? 'data-slow="1"' : ""} aria-label="${slow ? "Listen slowly" : "Listen"} to ${esc(w.w)}">${icon(slow ? "slow" : "volume", 18)}${label ? ` ${slow ? "Slow" : "Listen"}` : ""}</button>`;
+  function progressOf(w) {
+    let r = wotdRec(w.w), done = ACT_KEYS.filter((k) => r?.a?.[k]), pts = done.reduce((a, k) => a + (r.a[k].p || 0), 0) + (r?.b?.p || 0);
+    return { r, done, n: done.length, pts, complete: done.length === ACT_KEYS.length };
+  }
+  var dotsHtml = (p) => `<span class="w-dots" aria-hidden="true">${ACT_KEYS.map((k) => `<i class="${p.r?.a?.[k] ? "on" : ""}"></i>`).join("")}</span>`;
+  function related(a, b2) {
+    if (a.w === b2.w) return !0;
+    let sa = /* @__PURE__ */ new Set([a.w, ...a.syn]), sb = /* @__PURE__ */ new Set([b2.w, ...b2.syn]);
+    for (let x2 of sa) if (sb.has(x2)) return !0;
+    return a.ant.includes(b2.w) || b2.ant.includes(a.w) || a.syn.includes(b2.w) || b2.syn.includes(a.w) ? !0 : NEAR.some((g) => g.has(a.w) && g.has(b2.w));
+  }
+  function others(w, n, extra = () => !0) {
+    let same = WORDS.filter((x2) => x2.pos === w.pos && !related(w, x2) && extra(x2));
+    return shuffle(same).slice(0, n);
+  }
+  function homeCard() {
+    let { word: w, day } = today(), p = progressOf(w);
+    return `
+    <section class="wotd-home" aria-labelledby="wh-word">
+      <div class="wh-head">
+        <span class="eyebrow">${icon("calendar", 15)} Word of the Day</span>
+        <span class="wh-date">${esc(dayLabel(day))}</span>
+      </div>
+      <div class="wh-main">
+        <div class="wh-txt">
+          <h2 id="wh-word">${esc(w.w)}</h2>
+          <p class="wh-sub">${ipaHtml(w)} ${posChip(w)} ${lvChip(w)}</p>
+        </div>
+        ${sayBtn(w, !1, !1)}
+      </div>
+      <p class="wh-def">${esc(w.d)}</p>
+      <div class="wh-foot">
+        <span class="wh-prog">${dotsHtml(p)}<span>${p.complete ? `${icon("check", 16)} Done today \xB7 +${fmtNum(p.pts)}` : `${p.n} of ${ACT_KEYS.length} activities`}</span></span>
+        <a class="btn btn-sm wh-go" href="#word">${p.complete ? "Review" : p.n ? "Continue" : "Learn it"} ${icon("next", 16)}</a>
+      </div>
+    </section>`;
+  }
+  function wireHome(root) {
+    let sec = root.querySelector(".wotd-home");
+    sec && wireSay(sec, today().word);
+  }
+  function route(h, ctx) {
+    if (h === "words") {
+      archive(ctx);
+      return;
+    }
+    let parts = h.split("/").map(decodeURIComponent), t = today();
+    if (parts.length === 2 && ACTS[parts[1]]) {
+      activity(t, parts[1], ctx);
+      return;
+    }
+    let f2 = parts[1] ? featured(parts[1]) : t;
+    if (!f2) {
+      ctx.go("word");
+      return;
+    }
+    if (parts[2] && ACTS[parts[2]]) {
+      activity(f2, parts[2], ctx);
+      return;
+    }
+    wordPage(f2, ctx);
+  }
+  var wordHash = (f2) => f2.word.w === today().word.w ? "word" : `word/${encodeURIComponent(f2.word.w)}`;
+  function wordPage(f2, ctx) {
+    let { app: app2 } = ctx, w = f2.word, isToday = f2.word.w === today().word.w, p = progressOf(w), pts = totalPoints(), nextAct = ACT_KEYS.find((k) => !p.r?.a?.[k]);
+    app2.classList.add("wide"), window.scrollTo(0, 0);
+    let tiles2 = ACT_KEYS.map((k, i) => {
+      let a = ACTS[k], rec = p.r?.a?.[k], state2 = rec ? rec.p ? `<span class="act-state good">${icon("check", 14)} +${rec.p}</span>` : `<span class="act-state">${icon("check", 14)} Done</span>` : p.r?.t?.[k] ? '<span class="act-state try">Try again</span>' : `<span class="act-state new">+${WOTD_PTS.first}</span>`;
+      return `<a class="act-tile ${rec ? "done" : ""}" href="#${wordHash(f2)}/${k}" style="--c:${a.color}">
+        <span class="act-ic">${icon(a.icon, 20)}</span>
+        <span class="act-txt"><b><span class="act-n">${i + 1}.</span> ${a.name}</b><span>${a.sub}</span></span>
+        ${state2}
+      </a>`;
+    }).join(""), chips = (list, cls) => list.length ? list.map((x2) => `<span class="w-chip ${cls}">${esc(x2)}</span>`).join("") : '<span class="muted small">No common antonym</span>';
+    app2.innerHTML = `
+    <header class="top">
+      <a class="back-btn" href="#${isToday ? "home" : "words"}">${icon("back", 20)} ${isToday ? "Home" : "Previous Words"}</a>
+      <span class="pts-chip" aria-label="${fmtNum(pts)} points">${icon("star", 16)}<b>${fmtNum(pts)}</b></span>
+    </header>
+
+    <div class="wotd-page">
+      <div class="wcol">
+      <section class="word-hero" aria-labelledby="w-title">
+        <div class="wh-head">
+          <span class="eyebrow">${icon("calendar", 15)} ${isToday ? "Word of the Day" : "Previous word"}</span>
+          <span class="wh-date">${esc(dayLabel(f2.day, !0))}</span>
+        </div>
+        <h1 id="w-title" lang="en-US">${esc(w.w)}</h1>
+        <p class="hero-sub">${ipaHtml(w)}<span class="us-tag">US</span></p>
+        <div class="hero-chips">${posChip(w)} ${lvChip(w)}</div>
+        <div class="hero-say">${sayBtn(w)} ${sayBtn(w, !0)}</div>
+        <dl class="hero-def">
+          <div><dt>Meaning</dt><dd>${esc(w.d)}</dd></div>
+          <div class="ar-row"><dt>Arabic</dt><dd lang="ar" dir="rtl">${esc(w.ar)}</dd></div>
+        </dl>
+      </section>
+
+      <section class="dash-card w-info">
+        <div class="dash-head"><h2>Use it</h2></div>
+        <div class="w-example"><span class="w-lbl">Example</span><p>${markWord(w.ex, w.w)}</p></div>
+        <div class="w-row"><span class="w-lbl">Synonyms</span><div class="w-chips">${chips(w.syn, "syn")}</div></div>
+        <div class="w-row"><span class="w-lbl">Antonyms</span><div class="w-chips">${chips(w.ant, "ant")}</div></div>
+        <div class="w-row"><span class="w-lbl">Common collocations</span><ul class="w-col">${w.col.map((c2) => `<li>${markWord(c2, w.w)}</li>`).join("")}</ul></div>
+      </section>
+
+      <section class="dash-card pron" aria-labelledby="pron-h">
+        <div class="dash-head"><h2 id="pron-h">${icon("mic", 20)} Pronunciation Practice</h2><span class="muted small">American English</span></div>
+        <div class="pron-word">${sylHtml(w)}</div>
+        <p class="pron-ipa">${ipaHtml(w)}</p>
+        <ol class="pron-steps">
+          <li><b>Listen</b> to the word. Replay it as many times as you like.</li>
+          <li><b>Listen slowly</b> and notice the <span class="stress-word">BIG</span> part. That syllable is stressed: say it louder and longer.</li>
+          <li><b>Say it out loud</b> three times, then listen again to check.</li>
+        </ol>
+        <div class="pron-btns">${sayBtn(w)} ${sayBtn(w, !0)}</div>
+        <p class="fine">The sound comes from your phone's own voice. If you hear nothing, turn up the volume and check that silent mode is off.</p>
+      </section>
+      </div>
+      <div class="wcol wcol-side">
+
+      <section class="dash-card practice" aria-labelledby="prac-h">
+        <div class="dash-head"><h2 id="prac-h">Practice Your Word</h2><span class="prac-score"><b>${fmtNum(p.pts)}</b> / ${MAX_PTS} points</span></div>
+        <div class="prac-prog">
+          <div class="pbar" role="progressbar" aria-label="Activities done" aria-valuemin="0" aria-valuemax="${ACT_KEYS.length}" aria-valuenow="${p.n}"><span style="width:${100 * p.n / ACT_KEYS.length}%"></span></div>
+          <span>${p.n} of ${ACT_KEYS.length} done</span>
+        </div>
+        ${p.complete ? `<div class="day-done">${icon("check", 20)}<div><b>${isToday ? "Today's word is complete!" : "Word complete!"}</b><span>You earned ${fmtNum(p.pts)} points, including the +${WOTD_PTS.bonus} bonus. Practice again any time.</span></div></div>` : `<p class="prac-tip">${icon("star", 16)}<span>Right the first time: <b>+${WOTD_PTS.first}</b>. Second try: <b>+${WOTD_PTS.second}</b>. Finish all ${ACT_KEYS.length}: <b>+${WOTD_PTS.bonus} bonus</b>.</span></p>`}
+        <div class="act-grid">${tiles2}</div>
+        ${nextAct ? `<a class="btn btn-primary btn-big" href="#${wordHash(f2)}/${nextAct}">${icon("play", 18)} ${p.n ? "Continue" : "Start practice"}</a>` : ""}
+      </section>
+
+      <a class="prog-card w-archive-link" href="#words">
+        <span class="prog-ic">${icon("book", 22)}</span>
+        <span class="prog-txt"><b>Previous Words</b><span>${previousWords().length ? `Review ${previousWords().length} earlier word${previousWords().length === 1 ? "" : "s"}` : "Your word list grows every day"}</span></span>
+        <span class="prog-go">Open</span>
+      </a>
+      </div>
+    </div>
+    <footer class="foot"><b>English Practice Zone</b> by Mr. Mazen Al-Rasbi<br>Your progress is saved on this phone.</footer>`, wireSay(app2, w);
+  }
+  function buildQuestion(w, k) {
+    if (k === "meaning") {
+      let wrong = others(w, 3).map((x2) => x2.d);
+      return { type: "mcq", prompt: `What does "${w.w}" mean?`, options: [w.d, ...wrong], answer: w.d };
+    }
+    if (k === "sentence") return { type: "mcq", prompt: w.gap, options: [w.w, ...w.gx], answer: w.w };
+    if (k === "listen") return { type: "mcq", prompt: "Which spelling is correct?", options: [w.w, ...w.ms], answer: w.w };
+    if (k === "synonym") {
+      let syn = w.syn[0], pool = w.ant.length ? [w.ant[0]] : [], avoid = new Set([w.w, ...w.syn, ...w.ant].map((x2) => x2.toLowerCase()));
+      return others(w, 3 - pool.length, (x2) => !avoid.has(x2.w)).forEach((x2) => pool.push(x2.w)), { type: "mcq", prompt: `Which word is closest in meaning to "${w.w}"?`, options: [syn, ...pool], answer: syn, explanation: `"${w.w}" and "${syn}" mean almost the same.${w.ant.length ? ` "${w.ant[0]}" is the opposite.` : ""}` };
+    }
+    return null;
+  }
+  function scrambleCtrl(w, area, ctx) {
+    let letters = w.w.split("").map((ch, i) => ({ id: i, ch })), pool = shuffleNotSame(letters);
+    pool.map((x2) => x2.ch).join("") === w.w && (pool = pool.slice().reverse());
+    let placed = [], locked = !1;
+    area.innerHTML = `
+    <p class="q-label">${icon("scramble", 18)} Tap the letters in the right order.</p>
+    <h2 class="q-prompt small-prompt">Clue: ${esc(w.d)}</h2>
+    <div class="slots" id="slots" aria-label="Your word"></div>
+    <div class="letters" id="letters" aria-label="Letters"></div>
+    <button class="btn btn-ghost btn-sm" id="sc-clear" type="button">${icon("refresh", 16)} Clear</button>`;
+    let slots = area.querySelector("#slots"), pl = area.querySelector("#letters"), draw = () => {
+      slots.innerHTML = letters.map((_, i) => placed[i] ? `<button type="button" class="slot full" data-id="${placed[i].id}" aria-label="Remove ${placed[i].ch}">${esc(placed[i].ch)}</button>` : '<span class="slot"></span>').join(""), pl.innerHTML = pool.map((t) => `<button type="button" class="letter" data-id="${t.id}">${esc(t.ch)}</button>`).join(""), ctx.setReady(placed.length === letters.length);
+    };
+    return area.addEventListener("click", (e) => {
+      if (locked) return;
+      let b2 = e.target.closest("[data-id]");
+      if (b2) {
+        let id = Number(b2.dataset.id);
+        if (b2.classList.contains("slot")) {
+          let t = placed.find((x2) => x2.id === id);
+          placed = placed.filter((x2) => x2.id !== id), pool.push(t);
+        } else {
+          let t = pool.find((x2) => x2.id === id);
+          pool = pool.filter((x2) => x2.id !== id), placed.push(t);
+        }
+        draw();
+      } else e.target.closest("#sc-clear") && (pool = pool.concat(placed), placed = [], draw());
+    }), draw(), {
+      evaluate() {
+        locked = !0, area.querySelector("#sc-clear").disabled = !0;
+        let ok = placed.map((x2) => x2.ch).join("") === w.w;
+        return slots.classList.add(ok ? "correct" : "wrong"), { ok, correctText: w.w };
+      }
+    };
+  }
+  function writeCtrl(w, area, ctx) {
+    let old = wotdRec(w.w)?.s || "";
+    area.innerHTML = `
+    <p class="q-label">${icon("correction", 18)}<span>Write one sentence of your own with <b>${esc(w.w)}</b>.</span></p>
+    <label class="field answer-field"><span class="sr-only">Your sentence</span>
+      <textarea rows="3" class="answer-input" id="w-text" maxlength="300" spellcheck="true" autocapitalize="sentences" placeholder="Write your sentence here\u2026">${esc(old)}</textarea>
+    </label>
+    <ul class="checks" id="w-checks" aria-live="polite"></ul>
+    <details class="w-tips" open>
+      <summary>${icon("star", 16)} Writing tips</summary>
+      <ul>
+        <li>Use <b>${esc(w.w)}</b> as a <b>${esc(w.pos)}</b>.</li>
+        <li>Try a common phrase: ${w.col.map((c2) => `<i>${esc(c2)}</i>`).join(", ")}.</li>
+        <li>Write about your own life: school, family, Oman, sports or your plans.</li>
+        <li>Start with a capital letter and end with a full stop (.), a question mark (?) or an exclamation mark (!).</li>
+      </ul>
+      <p class="w-ex"><span class="w-lbl">Example</span> ${markWord(w.ex, w.w)}</p>
+    </details>`;
+    let box = area.querySelector("#w-text"), list = area.querySelector("#w-checks"), norm = (s) => String(s).toLowerCase().replace(/[^a-z]+/g, " ").trim(), rules = (t) => {
+      let s = t.trim(), words = s.split(/\s+/).filter(Boolean);
+      return [
+        [`Uses the word "${w.w}"`, usesWord(s, w.w)],
+        ["At least 6 words", words.length >= 6],
+        ["Starts with a capital letter", /^[A-Z]/.test(s)],
+        ["Ends with . ? or !", /[.?!]["')]?$/.test(s)],
+        ["Your own sentence, not the example", !!s && norm(s) !== norm(w.ex) && norm(s) !== norm(w.gap.replace("___", w.w))]
+      ];
+    }, shown = !1, draw = () => {
+      let r = rules(box.value);
+      list.innerHTML = r.map(([t, ok]) => `<li class="${ok ? "ok" : shown ? "no" : ""}">${icon(ok ? "check" : shown ? "x" : "plus", 15)} ${esc(t)}</li>`).join(""), ctx.setReady(box.value.trim().length > 0);
+    };
+    return box.addEventListener("input", () => {
+      shown = !1, draw();
+    }), draw(), {
+      textarea: box,
+      evaluate() {
+        shown = !0, draw();
+        let ok = rules(box.value).every(([, v]) => v);
+        return ok && (box.disabled = !0, box.classList.add("correct"), wotdSaveSentence(w.w, box.value.trim())), { ok, correctText: "" };
+      }
+    };
+  }
+  function activity(f2, k, ctx) {
+    let { app: app2, go: go2 } = ctx, w = f2.word, a = ACTS[k], hash = wordHash(f2), idx = ACT_KEYS.indexOf(k), p = progressOf(w);
+    app2.classList.remove("wide"), document.body.classList.add("playing"), window.scrollTo(0, 0), app2.innerHTML = `
+    <div class="play wplay" style="--c:${a.color}">
+      <div class="play-bar">
+        <button class="icon-btn" id="quit" aria-label="Back to the word">${icon("x", 24)}</button>
+        <div class="pbar" role="progressbar" aria-label="Activities done for this word" aria-valuemin="0" aria-valuemax="${ACT_KEYS.length}" aria-valuenow="${p.n}"><span id="pfill" style="width:${100 * p.n / ACT_KEYS.length}%"></span></div>
+        <span class="pts-chip" id="wscore" aria-label="Points for this word">${icon("star", 16)}<b>${fmtNum(p.pts)}</b></span>
+      </div>
+      <div class="play-meta"><span class="skill-pill">${icon(a.icon, 16)} ${a.name}</span><span>${idx + 1} of ${ACT_KEYS.length}</span></div>
+      <div class="w-mini">
+        <div><b lang="en-US">${k === "listen" || k === "scramble" ? "? ? ?" : esc(w.w)}</b>${k === "listen" || k === "scramble" ? `<span class="muted small">${w.w.length} letters</span>` : ` ${ipaHtml(w)}`}</div>
+        ${k === "listen" || k === "scramble" ? "" : sayBtn(w, !1, !1)}
+      </div>
+      ${k === "listen" ? `<div class="audio-box">
+          <span class="audio-ic">${icon("listening", 24)}</span>
+          <span class="audio-txt"><b>Listen first</b><span>Play it as many times as you like.</span></span>
+          ${sayBtn(w)} ${sayBtn(w, !0)}
+        </div>` : ""}
+      ${p.r?.a?.[k] ? `<p class="practice-note">${icon("check", 16)} You finished this one already${p.r.a[k].p ? ` (+${p.r.a[k].p})` : ""}. Practice again for fun: no new points.</p>` : ""}
+      <section class="qarea" id="qarea" aria-live="polite"></section>
+    </div>
+    <div class="play-foot" id="foot" style="--c:${a.color}">
+      <div class="foot-inner">
+        <div class="feedback" id="feedback" role="status" hidden></div>
+        <button class="btn btn-primary btn-big" id="check-btn" disabled>Check</button>
+        <button class="btn btn-big btn-next" id="next-btn" hidden></button>
+        <button class="btn btn-ghost btn-big" id="alt-btn" hidden></button>
+      </div>
+    </div>`, wireSay(app2, w);
+    let qarea = app2.querySelector("#qarea"), foot = app2.querySelector("#foot"), feedback = app2.querySelector("#feedback"), checkBtn = app2.querySelector("#check-btn"), nextBtn = app2.querySelector("#next-btn"), altBtn = app2.querySelector("#alt-btn"), current = null, q = null, answered = !1, nextAction = null, altAction = null;
+    app2.querySelector("#quit").addEventListener("click", () => go2(hash));
+    function mount() {
+      answered = !1, foot.className = "play-foot", feedback.hidden = !0, nextBtn.hidden = !0, altBtn.hidden = !0, checkBtn.hidden = !1, checkBtn.disabled = !0;
+      let c2 = { setReady: (r) => {
+        checkBtn.disabled = !r;
+      }, submitNow: () => check() };
+      k === "scramble" ? current = scrambleCtrl(w, qarea, c2) : k === "write" ? current = writeCtrl(w, qarea, c2) : (q = buildQuestion(w, k), current = mountQuestion(q, qarea, c2)), checkBtn.hidden = !!current.autoCheck, qarea.classList.remove("enter"), qarea.offsetWidth, qarea.classList.add("enter"), k === "listen" && setTimeout(() => sayUS(w.w, 0.85, app2.querySelector(".audio-box [data-say]:not([data-slow])")), 350);
+    }
+    function nextUndone() {
+      let pr = progressOf(w);
+      return ACT_KEYS.slice(idx + 1).concat(ACT_KEYS.slice(0, idx)).find((x2) => !pr.r?.a?.[x2]) || null;
+    }
+    function setNext(label, fn, alt = null) {
+      nextBtn.innerHTML = label, nextBtn.hidden = !1, nextAction = fn, alt ? (altBtn.innerHTML = alt[0], altBtn.hidden = !1, altAction = alt[1]) : (altBtn.hidden = !0, altAction = null), nextBtn.focus({ preventScroll: !0 });
+    }
+    function check() {
+      if (answered) return;
+      let res = current.evaluate();
+      if (k === "write" && !res.ok) {
+        foot.className = "play-foot bad", feedback.innerHTML = `<span class="fb-ic">${icon("x", 22)}</span><div class="fb-txt"><strong>Almost there</strong><p>Fix the points marked with a cross, then check again.</p></div>`, feedback.hidden = !1, current.textarea.focus();
+        return;
+      }
+      answered = !0;
+      let r = wotdAnswer(w.w, k, res.ok);
+      LIVE && (r.pts || r.bonus) && syncBoard(), p = progressOf(w), app2.querySelector("#wscore b").textContent = fmtNum(p.pts), app2.querySelector("#pfill").style.width = `${100 * p.n / ACT_KEYS.length}%`, checkBtn.hidden = !0;
+      let after = nextUndone(), goNext = () => go2(after ? `${hash}/${after}` : hash), nextLabel = after ? `Next: ${ACTS[after].name} ${icon("next", 20)}` : `Back to my word ${icon("next", 20)}`, extra = q?.explanation && res.ok ? `<p class="small">${esc(q.explanation)}</p>` : "";
+      if (res.ok) {
+        foot.className = "play-foot good";
+        let got = r.pts ? `+${r.pts}` : r.already ? "No new points" : "";
+        feedback.innerHTML = `<span class="fb-ic">${icon("check", 22)}</span><div class="fb-txt"><strong>${PRAISE[Math.floor(Math.random() * PRAISE.length)]} ${got}</strong>
+        ${r.already ? '<p class="small">You already earned points for this activity.</p>' : r.pts === WOTD_PTS.second ? '<p class="small">Right on the second try.</p>' : ""}
+        ${k === "write" ? '<p class="small">Saved. Read it out loud once.</p>' : ""}${extra}</div>`;
+      } else if (r.reveal)
+        foot.className = "play-foot bad", feedback.innerHTML = `<span class="fb-ic">${icon("x", 22)}</span><div class="fb-txt"><strong>Not quite</strong>
+        <p>Answer: <b>${esc(res.correctText)}</b></p>
+        <p class="small">${r.already ? "Practice round: no points to lose." : "No points this time. Look at the answer, then try the next one."}</p></div>`;
+      else {
+        foot.className = "play-foot bad", feedback.innerHTML = `<span class="fb-ic">${icon("x", 22)}</span><div class="fb-txt"><strong>Not quite</strong><p>Try once more. You can still earn +${WOTD_PTS.second}.</p></div>`, feedback.hidden = !1, setNext(`${icon("refresh", 20)} Try again`, () => mount(), ["Back to my word", () => go2(hash)]);
+        return;
+      }
+      if (feedback.hidden = !1, r.bonus) {
+        setNext(`See my score ${icon("flag", 20)}`, () => finishWord(f2, r, ctx));
+        return;
+      }
+      setNext(nextLabel, goNext, [`${icon("refresh", 18)} Retry`, () => mount()]);
+    }
+    checkBtn.addEventListener("click", check), nextBtn.addEventListener("click", () => nextAction && nextAction()), altBtn.addEventListener("click", () => altAction && altAction());
+    let onKey = (e) => {
+      let tag = (e.target.tagName || "").toLowerCase();
+      e.key === "Enter" && !e.shiftKey && tag !== "textarea" ? nextBtn.hidden ? !checkBtn.disabled && !checkBtn.hidden && tag !== "button" && (e.preventDefault(), checkBtn.click()) : (e.preventDefault(), nextBtn.click()) : !answered && /^[1-4]$/.test(e.key) && tag !== "input" && tag !== "textarea" && qarea.querySelectorAll(".opt")[Number(e.key) - 1]?.click();
+    };
+    document.addEventListener("keydown", onKey), ctx.setCleanup(() => document.removeEventListener("keydown", onKey)), mount();
+  }
+  function finishWord(f2, r, ctx) {
+    let { app: app2, go: go2 } = ctx, w = f2.word, p = progressOf(w), pct = Math.round(100 * p.pts / MAX_PTS);
+    document.body.classList.remove("playing"), window.scrollTo(0, 0), app2.innerHTML = `
+    <section class="results" style="--c:var(--brand)">
+      <div class="ring" style="--p:${pct}"><span><b>${fmtNum(p.pts)}</b><small>of ${MAX_PTS}</small></span></div>
+      <h1>Word complete!</h1>
+      <p class="muted"><b lang="en-US">${esc(w.w)}</b> \xB7 ${ipaHtml(w)}</p>
+      <div class="earned-pts">${icon("star", 22)} +${fmtNum(p.pts)} points</div>
+      <p class="small good-text">Includes a bonus of +${WOTD_PTS.bonus} for finishing all ${ACT_KEYS.length} activities.</p>
+      <ul class="fin-list">${ACT_KEYS.map((k) => `<li style="--c:${ACTS[k].color}"><span class="act-ic">${icon(ACTS[k].icon, 16)}</span><span>${ACTS[k].name}</span><b>+${p.r.a[k].p || 0}</b></li>`).join("")}</ul>
+      ${r.leagueUp ? `<div class="unlock" style="--lg:${r.leagueUp.color}"><span class="medal">${icon("medal", 24)}</span><div><b>New league: ${r.leagueUp.name}!</b><span>${LIVE ? "Your class ranking shows your new league." : "Well done!"}</span></div></div>` : ""}
+      ${r.newBadges.map((b2) => `<div class="unlock badge-new"><span class="badge-ic">${icon(BADGES[b2].icon, 22)}</span><div><b>New badge: ${esc(BADGES[b2].name)}</b><span>${esc(BADGES[b2].desc)}</span></div></div>`).join("")}
+      <div class="res-actions">
+        <button class="btn btn-primary btn-big" id="fin-word">${icon("book", 20)} Back to my word</button>
+        <button class="btn btn-ghost btn-big" id="fin-arch">${icon("list", 20)} Previous Words</button>
+        <button class="btn btn-ghost btn-big" id="fin-home">${icon("home", 20)} Home</button>
+      </div>
+    </section>`, confetti(), app2.querySelector("#fin-word").addEventListener("click", () => go2(wordHash(f2))), app2.querySelector("#fin-arch").addEventListener("click", () => go2("words")), app2.querySelector("#fin-home").addEventListener("click", () => go2("home"));
+  }
+  var filt = { q: "", lv: "all", pos: "all", st: "all" };
+  function archive(ctx) {
+    let { app: app2 } = ctx, list = previousWords(), t = today(), tp = progressOf(t.word), pts = totalPoints();
+    app2.classList.add("wide"), window.scrollTo(0, 0);
+    let statusOf = (w) => {
+      let p = progressOf(w);
+      return p.complete ? "done" : p.n ? "part" : "new";
+    }, practiced = list.filter((x2) => statusOf(x2.word) !== "new").length, chipRow = (key, label, opts) => `<div class="chips" role="radiogroup" aria-label="${label}">${opts.map(([v, l]) => `<button type="button" role="radio" aria-checked="${filt[key] === v}" data-f="${key}" data-v="${v}">${l}</button>`).join("")}</div>`;
+    if (app2.innerHTML = `
+    <header class="top">
+      <a class="back-btn" href="#word">${icon("back", 20)} Today's word</a>
+      <span class="pts-chip" aria-label="${fmtNum(pts)} points">${icon("star", 16)}<b>${fmtNum(pts)}</b></span>
+    </header>
+    <section class="arch-head">
+      <p class="eyebrow">${icon("book", 15)} Word archive</p>
+      <h1>Previous Words</h1>
+      <p class="muted">${list.length} word${list.length === 1 ? "" : "s"} so far \xB7 ${practiced} practiced. Open any word to listen, review and practice it again.</p>
+    </section>
+    <a class="arch-today" href="#word">
+      <span class="eyebrow">Today</span>
+      <b lang="en-US">${esc(t.word.w)}</b>
+      <span class="arch-today-p">${dotsHtml(tp)} ${tp.n}/${ACT_KEYS.length}</span>
+    </a>
+    ${list.length ? `
+    <div class="arch-tools">
+      <label class="search">${icon("search", 18)}<span class="sr-only">Search</span><input type="search" id="arch-q" placeholder="Search a word or meaning" value="${esc(filt.q)}" autocomplete="off" spellcheck="false"></label>
+      ${chipRow("lv", "Level", [["all", "All levels"], ["B", "Beginner"], ["I", "Intermediate"], ["A", "Advanced"]])}
+      ${chipRow("pos", "Part of speech", [["all", "All types"], ["noun", "Nouns"], ["verb", "Verbs"], ["adjective", "Adjectives"], ["adverb", "Adverbs"]])}
+      ${chipRow("st", "Status", [["all", "All"], ["new", "Not started"], ["part", "In progress"], ["done", "Completed"]])}
+    </div>
+    <p class="arch-count muted small" id="arch-count" aria-live="polite"></p>
+    <ul class="arch-list" id="arch-list"></ul>` : `<div class="dash-card arch-empty">${icon("calendar", 28)}<p><b>No previous words yet.</b><br>A new word comes every day. Come back tomorrow and today's word will be here.</p></div>`}
+    <footer class="foot"><b>English Practice Zone</b> by Mr. Mazen Al-Rasbi<br>Your progress is saved on this phone.</footer>`, !list.length) return;
+    let ul = app2.querySelector("#arch-list"), count = app2.querySelector("#arch-count"), draw = () => {
+      let q = filt.q.trim().toLowerCase(), rows = list.filter(({ word: w }) => (filt.lv === "all" || w.lv === filt.lv) && (filt.pos === "all" || w.pos === filt.pos) && (filt.st === "all" || statusOf(w) === filt.st) && (!q || w.w.includes(q) || w.d.toLowerCase().includes(q) || w.ar.includes(filt.q.trim()) || w.syn.some((s) => s.includes(q))));
+      count.textContent = rows.length === list.length ? `Showing all ${rows.length}` : `Showing ${rows.length} of ${list.length}`, ul.innerHTML = rows.length ? rows.map(({ word: w, day }) => {
+        let p = progressOf(w);
+        return `<li class="arch-card">
+          <a class="arch-link" href="#word/${encodeURIComponent(w.w)}">
+            <span class="arch-top"><b lang="en-US">${esc(w.w)}</b>${lvChip(w)}</span>
+            <span class="arch-meta">${ipaHtml(w)} \xB7 ${esc(w.pos)}</span>
+            <span class="arch-def">${esc(w.d)}</span>
+            <span class="arch-foot"><span class="arch-date">${esc(dayLabel(day))}</span><span class="arch-p">${dotsHtml(p)}${p.complete ? `${icon("check", 14)} Done` : `${p.n}/${ACT_KEYS.length}`}</span></span>
+          </a>
+          ${sayBtn(w, !1, !1)}
+        </li>`;
+      }).join("") : '<li class="arch-none muted">No words match. Try another search or filter.</li>', wireSay(ul, null);
+    };
+    app2.querySelector("#arch-q").addEventListener("input", (e) => {
+      filt.q = e.target.value, draw();
+    }), app2.querySelectorAll("[data-f]").forEach((b2) => b2.addEventListener("click", () => {
+      filt[b2.dataset.f] = b2.dataset.v, app2.querySelectorAll(`[data-f="${b2.dataset.f}"]`).forEach((x2) => x2.setAttribute("aria-checked", String(x2 === b2))), draw();
+    })), draw();
+  }
+
+  // src/simple/main.js
+  var app = document.getElementById("app"), cleanup = null, ownerState = "viewer", LIVE2 = LIVE, TEACHER_NAME = "Mr. Mazen Al-Rasbi", PRAISE2 = ["Great job!", "Excellent!", "Well done!", "Brilliant!", "Correct!", "Super!", "Nice work!"], firstName = (n) => String(n || "").trim().split(/\s+/)[0] || "there", initials = (n) => String(n || "?").trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase(), fmtDay = (d) => new Date(d).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+  function go(name) {
+    location.hash === `#${name}` ? route2() : location.hash = name;
+  }
+  function route2() {
+    cleanup && (cleanup(), cleanup = null), stopSpeaking(), document.querySelectorAll(".confetti").forEach((c2) => c2.remove()), document.body.classList.remove("playing"), app.classList.remove("wide");
     let h = location.hash.replace(/^#/, "");
     if (!me().name) {
       welcome();
@@ -2579,6 +3416,12 @@ Majid` }),
     }
     if (h === "quick") {
       play({ quick: !0 });
+      return;
+    }
+    if (h === "words" || h === "word" || h.startsWith("word/")) {
+      route(h, { app, go, setCleanup: (f2) => {
+        cleanup = f2;
+      } });
       return;
     }
     if (h === "dashboard") {
@@ -2621,11 +3464,11 @@ Majid` }),
         app.querySelector("#nm-err").hidden = !1, form.nm.focus();
         return;
       }
-      setName(v), location.hash && location.hash !== "#home" ? route() : go("home");
+      setName(v), location.hash && location.hash !== "#home" ? route2() : go("home");
     });
   }
   function home(opts = {}) {
-    let m2 = me(), pts = totalPoints(), lg = league(pts), st = streak(), today = todayRounds(), lvl = m2.level, sugg = levelSuggestion(), rows = boardRows(), earned = Object.keys(BADGES).filter((k) => m2.badges[k]).length, rank = myRank(), goalDots = Array.from({ length: DAILY_GOAL }, (_, i) => `<i class="${i < today ? "on" : ""}"></i>`).join(""), tiles2 = SKILL_KEYS2.map((k) => {
+    let m2 = me(), pts = totalPoints(), lg = league(pts), st = streak(), today2 = todayRounds(), lvl = m2.level, sugg = levelSuggestion(), rows = boardRows(), earned = Object.keys(BADGES).filter((k) => m2.badges[k]).length, rank = myRank(), goalDots = Array.from({ length: DAILY_GOAL }, (_, i) => `<i class="${i < today2 ? "on" : ""}"></i>`).join(""), tiles2 = SKILL_KEYS2.map((k) => {
       let s = SKILLS2[k], act2 = nextActivity(k, lvl), pr = skillProgress(k, lvl), dots = Array.from({ length: pr.total }, (_, i) => `<i class="${i < pr.done ? "on" : ""}"></i>`).join("");
       return `<a class="skill-tile" style="--c:${s.color}" ${act2 ? `href="#play-${esc(act2.id)}"` : 'aria-disabled="true"'}>
         <span class="skill-ic">${icon(s.icon, 22)}</span>
@@ -2659,10 +3502,12 @@ Majid` }),
         <span class="eyebrow">Quick Play</span>
         <h2>${QUICK_SIZE} mixed questions</h2>
         <p>${LEVELS2[lvl].name} level \xB7 about 3 minutes</p>
-        <div class="goal"><span class="goal-dots" aria-hidden="true">${goalDots}</span><span>Today ${Math.min(today, DAILY_GOAL)} of ${DAILY_GOAL} rounds${today >= DAILY_GOAL ? " \xB7 goal done!" : ""}</span></div>
+        <div class="goal"><span class="goal-dots" aria-hidden="true">${goalDots}</span><span>Today ${Math.min(today2, DAILY_GOAL)} of ${DAILY_GOAL} rounds${today2 >= DAILY_GOAL ? " \xB7 goal done!" : ""}</span></div>
       </div>
       <a class="play-btn" href="#quick" aria-label="Play Quick Play">${icon("play", 28)}<span>Play</span></a>
     </section>
+
+    ${homeCard()}
 
     <section class="block">
       <div class="block-head">
@@ -2699,7 +3544,7 @@ Majid` }),
       setLevel(b2.dataset.level);
       let y = window.scrollY;
       home(), window.scrollTo(0, y), toast(`Level: ${LEVELS2[b2.dataset.level].name}`, "success", 1800);
-    })), wireBoard(app, rows), app.querySelector("#send-btn")?.addEventListener("click", sendSheet), app.querySelector("#me-btn").addEventListener("click", meSheet), app.querySelector("#owner-open")?.addEventListener("click", teacherCorner), app.querySelector("#owner-open-foot")?.addEventListener("click", teacherCorner), app.querySelector("#board-retry")?.addEventListener("click", () => {
+    })), wireBoard(app, rows), wireHome(app), app.querySelector("#send-btn")?.addEventListener("click", sendSheet), app.querySelector("#me-btn").addEventListener("click", meSheet), app.querySelector("#owner-open")?.addEventListener("click", teacherCorner), app.querySelector("#owner-open-foot")?.addEventListener("click", teacherCorner), app.querySelector("#board-retry")?.addEventListener("click", () => {
       syncBoard().then(() => redrawIf("home"));
     }), LIVE2 && !opts.noSync && syncBoard().then((changed) => {
       changed && redrawIf("home");
@@ -2774,7 +3619,7 @@ Majid` }),
     m2.el.querySelector("#peer-close").addEventListener("click", () => m2.close());
   }
   function dashboard(opts = {}) {
-    let m2 = me(), pts = totalPoints(), lg = league(pts), st = streak(), rank = myRank(), days = dailyPoints(7), wk = days.reduce((a, d) => a + d.pts, 0), maxPts = Math.max(50, ...days.map((d) => d.pts)), bestDay = days.reduce((a, d) => d.pts > a.pts ? d : a, days[0]), { skills, best, next } = skillStats(), nextAct = next ? nextActivity(next, m2.level) : null, recent = recentRounds(6), earned = Object.keys(BADGES).filter((k) => m2.badges[k]), today = days[days.length - 1], dayCaption = (d) => `${d.today ? "Today" : d.long}: ${fmtNum(d.pts)} point${d.pts === 1 ? "" : "s"} \xB7 ${d.rounds} round${d.rounds === 1 ? "" : "s"}`, bars = days.map((d, i) => {
+    let m2 = me(), pts = totalPoints(), lg = league(pts), st = streak(), rank = myRank(), days = dailyPoints(7), wk = days.reduce((a, d) => a + d.pts, 0), maxPts = Math.max(50, ...days.map((d) => d.pts)), bestDay = days.reduce((a, d) => d.pts > a.pts ? d : a, days[0]), { skills, best, next } = skillStats(), nextAct = next ? nextActivity(next, m2.level) : null, recent = recentRounds(6), earned = Object.keys(BADGES).filter((k) => m2.badges[k]), today2 = days[days.length - 1], dayCaption = (d) => `${d.today ? "Today" : d.long}: ${fmtNum(d.pts)} point${d.pts === 1 ? "" : "s"} \xB7 ${d.rounds} round${d.rounds === 1 ? "" : "s"}`, bars = days.map((d, i) => {
       let h = d.pts ? Math.max(4, Math.round(100 * d.pts / maxPts)) : 0, label = d.pts && (d.today || d === bestDay) ? fmtNum(d.pts) : "";
       return `<button type="button" class="wc ${d.today ? "today" : ""}" data-day="${i}" aria-label="${esc(dayCaption(d))}">
         <span class="wc-plot"><span class="wc-val">${label}</span><span class="wc-bar ${d.pts ? "" : "zero"}" style="height:${h}%"></span></span>
@@ -2818,9 +3663,9 @@ Majid` }),
 
     <section class="dash-card">
       <div class="dash-head"><h2>Points this week</h2><span class="muted small">Last 7 days</span></div>
-      <p class="dash-big"><b>${fmtNum(wk)}</b> points <span class="muted">\xB7 today ${Math.min(today.rounds, DAILY_GOAL)} of ${DAILY_GOAL} rounds</span></p>
+      <p class="dash-big"><b>${fmtNum(wk)}</b> points <span class="muted">\xB7 today ${Math.min(today2.rounds, DAILY_GOAL)} of ${DAILY_GOAL} rounds</span></p>
       <div class="week-chart">${bars}</div>
-      <p class="wc-cap" id="wc-cap" aria-live="polite">${esc(dayCaption(today))}</p>
+      <p class="wc-cap" id="wc-cap" aria-live="polite">${esc(dayCaption(today2))}</p>
     </section>
 
     <section class="dash-card">
@@ -2970,7 +3815,7 @@ Majid` }),
       sk[k] = sk[k] || [0, 0], sk[k][1]++, res.ok && sk[k][0]++, app.querySelector("#score b").textContent = fmtNum(correct * perQ), foot.className = `play-foot ${res.ok ? "good" : "bad"}`, feedback.innerHTML = `
       <span class="fb-ic">${icon(res.ok ? "check" : "x", 22)}</span>
       <div class="fb-txt">
-        <strong>${res.ok ? `${PRAISE[Math.floor(Math.random() * PRAISE.length)]} +${perQ}` : "Not quite"}</strong>
+        <strong>${res.ok ? `${PRAISE2[Math.floor(Math.random() * PRAISE2.length)]} +${perQ}` : "Not quite"}</strong>
         ${!res.ok && res.correctText ? `<p>Answer: <b>${esc(res.correctText)}</b></p>` : ""}
         ${q.explanation ? `<p class="small">${esc(q.explanation)}</p>` : ""}
       </div>`, feedback.hidden = !1, checkBtn.hidden = !0, nextBtn.hidden = !1, nextBtn.innerHTML = idx === questions.length - 1 ? `See my score ${icon("flag", 20)}` : `Continue ${icon("next", 20)}`, nextBtn.focus({ preventScroll: !0 });
@@ -2990,7 +3835,7 @@ Majid` }),
       finished = !0;
       let t = questions.length, acc = Math.round(100 * correct / t), r = recordRound({ aid: quick ? "quick" : act2.id, skill: quick ? "mix" : act2.skill, level, c: correct, i: t - correct, sk });
       LIVE2 && syncBoard(), document.body.classList.remove("playing"), window.scrollTo(0, 0);
-      let title = acc === 100 ? "Perfect score!" : acc >= 80 ? "Excellent work!" : acc >= 50 ? "Good effort!" : "Keep practising!", sugg = levelSuggestion(), again = quick ? null : nextActivity(act2.skill, me().level), againIsSame = again && again.id === act2.id, againLabel = quick ? "Play again" : againIsSame && acc < 70 ? "Try again" : againIsSame ? "Quick Play" : "Next round", st = streak(), today = todayRounds();
+      let title = acc === 100 ? "Perfect score!" : acc >= 80 ? "Excellent work!" : acc >= 50 ? "Good effort!" : "Keep practising!", sugg = levelSuggestion(), again = quick ? null : nextActivity(act2.skill, me().level), againIsSame = again && again.id === act2.id, againLabel = quick ? "Play again" : againIsSame && acc < 70 ? "Try again" : againIsSame ? "Quick Play" : "Next round", st = streak(), today2 = todayRounds();
       app.innerHTML = `
       <section class="results" style="--c:${quick ? "var(--brand)" : SKILLS2[act2.skill].color}">
         <div class="ring" style="--p:${acc}"><span><b>${correct}/${t}</b><small>${acc}%</small></span></div>
@@ -3001,9 +3846,9 @@ Majid` }),
         ${r.repeat ? '<p class="muted small">You played this one before, so it gives half points. New rounds give full points.</p>' : ""}
         <div class="res-chips">
           <span>${icon("flame", 16, "flame")} ${st} day${st === 1 ? "" : "s"} in a row</span>
-          <span>${icon("target", 16)} Today ${Math.min(today, DAILY_GOAL)} of ${DAILY_GOAL}${today >= DAILY_GOAL ? " \xB7 done!" : ""}</span>
+          <span>${icon("target", 16)} Today ${Math.min(today2, DAILY_GOAL)} of ${DAILY_GOAL}${today2 >= DAILY_GOAL ? " \xB7 done!" : ""}</span>
         </div>
-        ${r.leagueUp ? `<div class="unlock" style="--lg:${r.leagueUp.color}"><span class="medal">${icon("medal", 24)}</span><div><b>New league: ${r.leagueUp.name}!</b><span>Send your score so your teacher sees it.</span></div></div>` : ""}
+        ${r.leagueUp ? `<div class="unlock" style="--lg:${r.leagueUp.color}"><span class="medal">${icon("medal", 24)}</span><div><b>New league: ${r.leagueUp.name}!</b><span>${LIVE2 ? "Your class ranking shows your new league." : "Send your score so your teacher sees it."}</span></div></div>` : ""}
         ${r.newBadges.map((k) => `<div class="unlock badge-new"><span class="badge-ic">${icon(BADGES[k].icon, 22)}</span><div><b>New badge: ${esc(BADGES[k].name)}</b><span>${esc(BADGES[k].desc)}</span></div></div>`).join("")}
         ${sugg ? `<div class="unlock level-up">${icon("award", 22)}<div><b>You are ready for ${LEVELS2[sugg].name}</b><span>Harder questions give more points.</span></div><button class="btn btn-sm btn-primary" id="lvl-up">Switch</button></div>` : ""}
         <div class="res-actions">
@@ -3112,9 +3957,9 @@ Majid` }),
     throw new Error("Could not read the page to update it.");
   }
   function start() {
-    storageOk || (document.getElementById("storage-warning").hidden = !1), window.addEventListener("hashchange", route), onRemoved(() => {
-      location.hash && history.replaceState(null, "", location.pathname + location.search), route(), toast("Your teacher removed this name. Please type your name again.", "error", 4500);
-    }), route(), setupOwner();
+    storageOk || (document.getElementById("storage-warning").hidden = !1), window.addEventListener("hashchange", route2), onRemoved(() => {
+      location.hash && history.replaceState(null, "", location.pathname + location.search), route2(), toast("Your teacher removed this name. Please type your name again.", "error", 4500);
+    }), route2(), setupOwner();
     try {
       sessionStorage.getItem("epz-published") && (sessionStorage.removeItem("epz-published"), setTimeout(() => toast("Class ranking published for all students.", "success", 5e3), 600));
     } catch {
