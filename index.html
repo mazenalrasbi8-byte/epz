@@ -1520,7 +1520,1081 @@ Majid` }),
   ];
 
   // src/extra/index.js
-  var EXTRA_ACTIVITIES = [...grammar_default, ...vocabulary_default, ...reading_default, ...listening_default, ...writing_default];
+  // site/src/extra2 (second question bank)
+  var __EPZ_EXTRA2 = (() => {
+    var __defProp = Object.defineProperty;
+    var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames = Object.getOwnPropertyNames;
+    var __hasOwnProp = Object.prototype.hasOwnProperty;
+    var __export = (target, all) => {
+      for (var name in all)
+        __defProp(target, name, { get: all[name], enumerable: !0 });
+    }, __copyProps = (to, from, except, desc) => {
+      if (from && typeof from == "object" || typeof from == "function")
+        for (let key of __getOwnPropNames(from))
+          !__hasOwnProp.call(to, key) && key !== except && __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+      return to;
+    };
+    var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: !0 }), mod);
+
+    // ../src/site/src/extra2/index.js
+    var index_exports = {};
+    __export(index_exports, {
+      EXTRA2_ACTIVITIES: () => EXTRA2_ACTIVITIES
+    });
+
+    // ../src/site/src/extra/h.js
+    var x = (o2, explanation, image) => (explanation && (o2.explanation = explanation), image && (o2.image = image), o2), m = (prompt, options, explanation) => x({ type: "mcq", prompt, options, answer: options[0] }, explanation), mi = (image, prompt, options, explanation) => x({ type: "mcq", prompt, options, answer: options[0] }, explanation, image), tf = (prompt, isTrue, explanation) => x({ type: "truefalse", prompt, answer: isTrue ? "True" : "False" }, explanation), f = (prompt, answer, explanation) => x({ type: "fill", prompt, answer }, explanation), c = (prompt, answer, explanation) => x({ type: "correct", prompt, answer }, explanation), b = (prompt, answer) => ({ type: "build", prompt, answer }), o = (prompt, items) => ({ type: "order", prompt, items }), mt = (prompt, pairs) => ({ type: "match", prompt, pairs: pairs.map(([left, right]) => ({ left, right })) }), act = (skill, level, sort_order, title, instructions, questions, more = {}) => ({ skill, level, sort_order, title, instructions, ...more, questions });
+
+    // ../src/site/src/extra2/grammar.js
+    var CH = "Choose the correct answer.", TY = "Choose or type the correct answer.", TFI = "Is the sentence correct? Choose True or False.", grammar_default = [
+      // ------------------------------------------------------------ EASY
+      act("grammar", "easy", 21, "Articles: a, an, the", CH, [
+        m("I saw ___ elephant at the zoo.", ["an", "a", "the", "some"], "an before a vowel sound."),
+        m("She is ___ university student.", ["a", "an", "the", "some"], '"University" starts with a "you" sound \u2192 a.'),
+        m("We waited for ___ hour at the airport.", ["an", "a", "the", "any"], '"Hour" starts with a vowel sound (the h is silent) \u2192 an.'),
+        m("___ sun is very hot in summer.", ["The", "A", "An", "Some"], "There is only one sun \u2192 the."),
+        m("I bought a book. ___ book is about space.", ["The", "A", "An", "Some"], "We already know which book \u2192 the."),
+        m("My uncle is ___ engineer.", ["an", "a", "the", "some"], 'Jobs: a / an + job. "Engineer" starts with a vowel sound.'),
+        m("Can you play ___ guitar?", ["the", "a", "an", "some"], 'Musical instruments usually take "the".'),
+        f("Muscat is ___ capital of Oman.", "the", "There is only one capital \u2192 the.")
+      ]),
+      act("grammar", "easy", 22, "Pronouns & Possessives", CH, [
+        m("This is Ali. ___ is my cousin.", ["He", "Him", "His", "Her"], "Subject pronoun \u2192 he."),
+        m("Can you help ___? I am lost.", ["me", "I", "my", "mine"], "Object pronoun after a verb \u2192 me."),
+        m("That is not your bag. It is ___.", ["mine", "my", "me", "I"], "Possessive pronoun without a noun \u2192 mine."),
+        m("The cat is eating ___ food.", ["its", "it's", "it", "their"], `"its" = belonging to it. "it's" = it is.`),
+        m("My sisters love ___ new bikes.", ["their", "there", "they're", "them"], '"their" = belonging to them.'),
+        m("Is this pen ___? I found it on your desk.", ["yours", "your", "you", "you're"], "Possessive pronoun \u2192 yours."),
+        m("We cleaned the classroom by ___.", ["ourselves", "us", "our", "ourself"], "by + reflexive pronoun = alone, without help."),
+        m("Mariam and ___ went to the library.", ["I", "me", "my", "mine"], "Subject of the sentence \u2192 I.")
+      ]),
+      act("grammar", "easy", 23, "Adverbs of Frequency", CH, [
+        m("I ___ drink milk at breakfast. I do it every day.", ["always", "never", "rarely", "sometimes"], "Every day \u2192 always."),
+        m("Which sentence is correct?", ["She is never late.", "She never is late.", "Never she is late.", "She is late never."], 'Adverbs of frequency go after "be".'),
+        m("Which sentence is correct?", ["We usually walk to school.", "We walk usually to school.", "Usually we to school walk.", "We walk to school usually always."], "Adverbs of frequency go before most verbs."),
+        m("He ___ eats fish. He hates it!", ["never", "always", "usually", "often"], "He hates it \u2192 never."),
+        m("How ___ do you visit your grandparents?", ["often", "many", "much", "long"], "How often = how many times."),
+        m('"I go swimming once a week." This means I go swimming\u2026', ["every week, one time", "every day", "never", "twice a day"]),
+        f("My brother ___ (sometimes / is) tired after football.", "is sometimes", "be + adverb of frequency."),
+        m("I ___ go to the cinema. Maybe once or twice a year.", ["rarely", "always", "usually", "often"], "Once or twice a year \u2192 rarely.")
+      ]),
+      act("grammar", "easy", 24, "Present Continuous: Questions & Negatives", TY, [
+        m("___ you listening to me?", ["Are", "Do", "Is", "Does"], "Present continuous question: am / is / are + subject + -ing."),
+        m("She ___ sleeping. She is reading.", ["isn't", "doesn't", "aren't", "don't"], "Negative: is not + -ing."),
+        m("What ___ they doing in the garden?", ["are", "is", "do", "does"]),
+        f("We ___ (not / watch) TV right now.", "aren't watching|are not watching|'re not watching", "are not + -ing."),
+        m("Look! The children ___ in the rain.", ["are running", "run", "runs", "is running"], "run \u2192 running (double the n)."),
+        m('Choose the correct -ing form of "swim".', ["swimming", "swiming", "swimeing", "swimmming"]),
+        m('Choose the correct -ing form of "write".', ["writing", "writeing", "writting", "writng"], "Drop the final e: write \u2192 writing."),
+        f("Why ___ you crying?", "are", "Why + are + you + -ing?")
+      ]),
+      act("grammar", "easy", 25, "Past Simple: was, were & did", TY, [
+        m("I ___ very tired yesterday.", ["was", "were", "am", "did"], "I / he / she / it \u2192 was."),
+        m("___ your parents at home last night?", ["Were", "Was", "Did", "Are"]),
+        m("We ___ go to school last Friday. It was a holiday.", ["didn't", "wasn't", "weren't", "don't"], "didn't + base verb."),
+        f("Where ___ you go last summer?", "did"),
+        m("She ___ happy with her exam results.", ["wasn't", "didn't", "weren't", "isn't"], `Negative of "was" \u2192 wasn't.`),
+        m("Did he ___ the bus this morning?", ["take", "took", "takes", "taken"], "did + base verb."),
+        f("They ___ (not / be) at the party.", "weren't|were not"),
+        m('What is the past simple of "teach"?', ["taught", "teached", "thought", "tought"])
+      ]),
+      act("grammar", "easy", 26, "There is / There are & Plurals", TY, [
+        m("There ___ a big park near my house.", ["is", "are", "am", "be"]),
+        m("There ___ three bedrooms in our flat.", ["are", "is", "am", "be"]),
+        m('Choose the correct plural of "box".', ["boxes", "boxs", "boxies", "box"]),
+        m('Choose the correct plural of "baby".', ["babies", "babys", "babyes", "babyies"]),
+        m('Choose the correct plural of "man".', ["men", "mans", "mens", "manes"]),
+        f("There ___ (be) some milk in the fridge.", "is", '"Milk" is uncountable \u2192 there is.'),
+        m("___ there any eggs left?", ["Are", "Is", "Do", "Have"]),
+        f("Choose the plural: one tooth, two ___.", "teeth")
+      ]),
+      act("grammar", "easy", 27, "Adjectives & Adverbs", TY, [
+        m("She speaks English very ___.", ["well", "good", "goodly", "best"], 'The adverb of "good" is "well".'),
+        m("He is a ___ driver.", ["careful", "carefully", "care", "carefuly"], "Adjective before a noun."),
+        m("He drives ___.", ["carefully", "careful", "care", "carefull"], "Adverb after the verb."),
+        m("The test was ___ easy.", ["quite", "quiet", "quit", "quietly"]),
+        f("Please speak ___ (quiet). The baby is sleeping.", "quietly"),
+        m("My grandfather walks very ___.", ["slowly", "slow", "slowely", "slowlly"]),
+        m("Which word is an adverb?", ["happily", "happy", "happiness", "happier"]),
+        f("She ran ___ (fast) to catch the bus.", "fast", '"Fast" is the same as an adjective and an adverb.')
+      ]),
+      act("grammar", "easy", 28, "Grammar: True or False 2", TFI, [
+        tf("My father works in a bank.", !0),
+        tf("She have three brothers.", !1, "She has three brothers."),
+        tf("There is two apples on the table.", !1, "There are two apples."),
+        tf("I saw an owl in the tree.", !0),
+        tf("They was at the beach yesterday.", !1, "They were at the beach."),
+        tf("Do you like your new school?", !0),
+        tf("He can plays the piano.", !1, "He can play the piano."),
+        tf("Our school is bigger than yours.", !0),
+        tf("I am liking this song very much.", !1, 'I like this song very much. "Like" is not usually used in the continuous.'),
+        tf("The children are playing outside.", !0),
+        tf("She is the most tall girl in the class.", !1, "She is the tallest girl."),
+        tf("We usually have lunch at one o'clock.", !0)
+      ]),
+      // ------------------------------------------------------------ MEDIUM
+      act("grammar", "medium", 21, "Used to", TY, [
+        m("I ___ like vegetables, but now I love them.", ["didn't use to", "don't use to", "didn't used to", "wasn't use to"], "Negative: didn't use to + base verb."),
+        m("There ___ be a cinema here. Now it is a mall.", ["used to", "use to", "is used to", "using to"]),
+        f("My grandfather ___ (use to / work) as a fisherman.", "used to work"),
+        m("___ you use to play outside when you were little?", ["Did", "Do", "Were", "Have"]),
+        m("Which sentence talks about a past habit?", ["We used to visit Sur every summer.", "We are used to the heat.", "We use the car every day.", "We will visit Sur next summer."]),
+        m("She used to ___ glasses, but now she wears contact lenses.", ["wear", "wearing", "wore", "wears"]),
+        m("He is used to ___ up early.", ["getting", "get", "got", "gets"], "be used to + -ing = be familiar with."),
+        f("I ___ (not / use to) like reading, but now I read every day.", "didn't use to|did not use to")
+      ]),
+      act("grammar", "medium", 22, "Present Perfect Continuous", TY, [
+        m("I'm tired. I ___ all morning.", ["have been studying", "studied", "am studying", "had studied"], "An action that started in the past and continues \u2192 present perfect continuous."),
+        m("How long ___ you been waiting?", ["have", "are", "did", "were"]),
+        f("It ___ (rain) since this morning.", "has been raining"),
+        m("She has been learning English ___ six years.", ["for", "since", "ago", "from"]),
+        m("They have been living in Sohar ___ 2020.", ["since", "for", "ago", "during"]),
+        m("Your eyes are red. ___ you been crying?", ["Have", "Has", "Did", "Are"]),
+        m("Which sentence is correct?", ["He has been playing football for two hours.", "He has played football since two hours.", "He is playing football for two hours.", "He have been playing football for two hours."]),
+        f("We ___ (not / wait) long. We arrived five minutes ago.", "haven't been waiting|have not been waiting")
+      ]),
+      act("grammar", "medium", 23, "Past Perfect", TY, [
+        m("When we arrived at the station, the train ___.", ["had already left", "already left", "has already left", "was already leave"], "The train left before we arrived \u2192 past perfect."),
+        m("She ___ never seen snow before she went to Turkey.", ["had", "has", "was", "did"]),
+        f("I couldn't pay because I ___ (lose) my wallet.", "had lost"),
+        m("After he ___ his homework, he went out.", ["had finished", "has finished", "finishes", "had finish"]),
+        m("By the time the teacher came, we ___ the test.", ["had started", "have started", "start", "had start"]),
+        m("___ you eaten before you came to the party?", ["Had", "Have", "Did", "Were"]),
+        f("The film ___ (already / start) when we got to the cinema.", "had already started"),
+        m('Which action happened FIRST? "When I got home, my mother had cooked dinner."', ["My mother cooked dinner.", "I got home.", "They happened at the same time.", "Nobody cooked dinner."])
+      ]),
+      act("grammar", "medium", 24, "Too, Enough, So & Such", CH, [
+        m("This bag is ___ heavy for me to carry.", ["too", "enough", "so", "such"]),
+        m("He is not old ___ to drive a car.", ["enough", "too", "so", "such"], "adjective + enough."),
+        m("We don't have ___ chairs for everyone.", ["enough", "too", "too many", "so"], "enough + noun."),
+        m("It was ___ a beautiful day that we went to the beach.", ["such", "so", "too", "very"], "such + a + adjective + noun."),
+        m("The film was ___ funny that we laughed all the time.", ["so", "such", "too", "enough"], "so + adjective + that."),
+        m("There are ___ cars in the city. The traffic is terrible.", ["too many", "too much", "enough", "so"], "too many + plural noun."),
+        m("I drank ___ coffee and now I can't sleep.", ["too much", "too many", "enough of", "such"], "too much + uncountable noun."),
+        m("Is the water warm ___ for swimming?", ["enough", "too", "so", "such"])
+      ]),
+      act("grammar", "medium", 25, "Future Forms", TY, [
+        m("I ___ my cousins tomorrow evening. It's all arranged.", ["am meeting", "meet", "met", "will to meet"], "A fixed arrangement \u2192 present continuous."),
+        m("The train ___ at 6:15 tomorrow morning.", ["leaves", "is leave", "will leaving", "left"], "Timetables \u2192 present simple."),
+        m('"The phone is ringing." "I ___ answer it."', ["will", "am going to", "am", "going to"], "A quick decision \u2192 will."),
+        m("I think our team ___ the match.", ["will win", "wins", "is winning", "won"], "A prediction / opinion \u2192 will."),
+        f("Look at that boy on the wall! He ___ (fall).", "is going to fall|'s going to fall", "Evidence now \u2192 going to."),
+        m("What ___ you do after you finish school?", ["will", "are", "do", "did"]),
+        m("By this time next week, we ___ on the beach in Salalah.", ["will be relaxing", "relax", "are relax", "relaxed"], "An action in progress at a future time \u2192 future continuous."),
+        f("Don't worry. I ___ (not / tell) anyone your secret.", "won't tell|will not tell", "A promise \u2192 will.")
+      ]),
+      act("grammar", "medium", 26, "Quantifiers", CH, [
+        m("There is ___ water in the bottle. We need to buy more.", ["very little", "very few", "a lot of", "many"], "little + uncountable noun."),
+        m("Only ___ students came to the meeting.", ["a few", "a little", "much", "little"], "a few + plural countable noun."),
+        m("Hurry up! We don't have ___ time.", ["much", "many", "few", "a few"]),
+        m("___ of my friends like football. All of them!", ["All", "None", "Neither", "Each"], "All = every one of them."),
+        m("___ of the two answers is correct. Both are wrong.", ["Neither", "Either", "Both", "None"], "Neither = not one and not the other."),
+        m("We have ___ of food for the picnic. Don't buy any more.", ["plenty", "many", "few", "little"]),
+        m("I have two brothers. ___ of them are older than me.", ["Both", "All", "Each", "Every"]),
+        m("___ student must bring a pencil.", ["Every", "All", "Both", "Many"], "every + singular noun.")
+      ]),
+      act("grammar", "medium", 27, "Relative Clauses: who, which, where, whose", CH, [
+        m("A pilot is a person ___ flies planes.", ["who", "which", "where", "whose"]),
+        m("This is the phone ___ I bought yesterday.", ["which", "who", "where", "whose"]),
+        m("That is the school ___ my mother teaches.", ["where", "which", "who", "what"]),
+        m("I have a friend ___ father is a doctor.", ["whose", "who", "which", "where"]),
+        m("The cake ___ she made was delicious.", ["that", "who", "where", "whose"]),
+        m("Do you know the boy ___ is standing near the door?", ["who", "which", "whose", "where"]),
+        m("Salalah is a city ___ it rains in summer.", ["where", "which", "who", "whose"]),
+        m("Which sentence is correct?", ["The book which I read was great.", "The book who I read was great.", "The book where I read was great.", "The book whose I read was great."])
+      ]),
+      act("grammar", "medium", 28, "Grammar: True or False 2", TFI, [
+        tf("I used to play with toy cars when I was a child.", !0),
+        tf("She has been working here since three years.", !1, "She has been working here for three years."),
+        tf("When I arrived, the lesson had already started.", !0),
+        tf("The water is too cold for swimming.", !0),
+        tf("He is enough tall to play basketball.", !1, "He is tall enough."),
+        tf("It was such a good film that I watched it twice.", !0),
+        tf("There are too much people in the room.", !1, "There are too many people."),
+        tf("I am meeting my friends tomorrow at six.", !0),
+        tf("That is the shop where I bought my phone.", !0),
+        tf("The girl which won the prize is my sister.", !1, "The girl who won the prize."),
+        tf("Each of the students has a book.", !0, '"Each" is singular \u2192 has.'),
+        tf("If you heat water to 100 degrees, it boils.", !0)
+      ]),
+      // ------------------------------------------------------------ CHALLENGE
+      act("grammar", "challenge", 21, "Mixed Conditionals", TY, [
+        m("If I had studied medicine, I ___ a doctor now.", ["would be", "would have been", "will be", "am"], "Past condition \u2192 present result."),
+        m("If she ___ so shy, she would have spoken at the meeting.", ["weren't", "hadn't been", "isn't", "won't be"], "Present condition \u2192 past result."),
+        f("If we ___ (not / miss) the bus, we would be at school now.", "hadn't missed|had not missed"),
+        m("I would be rich now if I ___ that house ten years ago.", ["had bought", "bought", "would buy", "have bought"]),
+        m("If he were more careful, he ___ the vase yesterday.", ["wouldn't have broken", "wouldn't break", "won't break", "didn't break"]),
+        m("Which sentence is a mixed conditional?", ["If I had saved money, I would have a car now.", "If I save money, I will buy a car.", "If I saved money, I would buy a car.", "If I had saved money, I would have bought a car."]),
+        f("If you ___ (listen) to the instructions, you would know what to do now.", "had listened"),
+        m("If I spoke Chinese, I ___ the job in Beijing last year.", ["would have got", "would get", "will get", "had got"])
+      ]),
+      act("grammar", "challenge", 22, "Modals of Deduction", CH, [
+        m("The lights are off. They ___ be at home.", ["can't", "must", "should", "need"], "Logical certainty that something is NOT true \u2192 can't."),
+        m("She has been working all day. She ___ be exhausted.", ["must", "can't", "might not", "needn't"], "Logical certainty that something IS true \u2192 must."),
+        m("I can't find my keys. I ___ have left them at school.", ["might", "can't", "must not", "should"], "Possibility in the past \u2192 might have + past participle."),
+        m("He ___ have seen me. He was looking the other way.", ["can't", "must", "should", "would"], "Certainty that something didn't happen \u2192 can't have."),
+        m("The ground is wet. It ___ have rained last night.", ["must", "can't", "might not", "should not"]),
+        f("I'm not sure where Huda is. She ___ (could / go) to the library.", "could have gone"),
+        m("Ahmed didn't come to the party. He ___ have forgotten about it.", ["may", "must not", "can't", "should"]),
+        m("That ___ be the right answer. The total is more than 100%!", ["can't", "must", "may", "could"])
+      ]),
+      act("grammar", "challenge", 23, "Passive Reporting & Causatives", TY, [
+        m("It ___ that the castle was built in the 17th century.", ["is believed", "believes", "is believing", "believed"], "It + passive reporting verb + that\u2026"),
+        m("The thief is thought ___ the country.", ["to have left", "to leave", "leaving", "that he left"], "Past action \u2192 to have + past participle."),
+        m("She is said ___ the best singer in the school.", ["to be", "being", "be", "that is"]),
+        m("We are having our house ___ next week.", ["painted", "paint", "painting", "to paint"], "have + object + past participle."),
+        f("I need to get my phone ___ (repair).", "repaired"),
+        m("My father had the mechanic ___ the brakes.", ["check", "checked", "to check", "checking"], "have + person + base verb."),
+        m("Turtles ___ to return to the beach where they were born.", ["are known", "know", "are knowing", "have known"]),
+        f("It ___ (report) that the road will be closed tomorrow.", "is reported|has been reported")
+      ]),
+      act("grammar", "challenge", 24, "Participle Clauses", CH, [
+        m("___ the door, she saw a large box on the floor.", ["Opening", "Opened", "To opening", "Open"], "Two actions at the same time \u2192 -ing participle."),
+        m("___ in 1990, the museum attracts many visitors.", ["Opened", "Opening", "Having opening", "To open"], "Passive meaning \u2192 past participle."),
+        m("___ his homework, he went to play football.", ["Having finished", "Finishing", "Finished", "To have finish"], "One action before another \u2192 Having + past participle."),
+        m("The man ___ next to the window is my uncle.", ["sitting", "sat", "sits", "who sitting"]),
+        m("Books ___ by this author are always popular.", ["written", "writing", "wrote", "to write"]),
+        m("___ tired, I went to bed early.", ["Feeling", "Felt", "Having feel", "Feel"]),
+        m("Which sentence is correct?", ["Not knowing the answer, I stayed silent.", "Not knew the answer, I stayed silent.", "Knowing not the answer, I stayed silent.", "Not know the answer, I stayed silent."]),
+        m("___ by the noise, the baby started to cry.", ["Frightened", "Frightening", "Having frightening", "Frighten"])
+      ]),
+      act("grammar", "challenge", 25, "Subject\u2013Verb Agreement", CH, [
+        m("Mathematics ___ my favourite subject.", ["is", "are", "were", "be"], "Subjects ending in -s like mathematics are singular."),
+        m("Everyone in the class ___ the answer.", ["knows", "know", "are knowing", "have known"], '"Everyone" is singular.'),
+        m("The teacher, together with her students, ___ planning a trip.", ["is", "are", "were", "have been"], 'The subject is "the teacher".'),
+        m("Ten kilometres ___ a long way to walk.", ["is", "are", "were", "have"], "A distance seen as one amount \u2192 singular."),
+        m("A number of students ___ absent today.", ["are", "is", "was", "has been"], '"A number of" + plural noun \u2192 plural verb.'),
+        m("Either my brother or my parents ___ going to pick me up.", ["are", "is", "was", "has"], "The verb agrees with the nearer subject."),
+        m("The furniture in this room ___ very old.", ["is", "are", "were", "have been"], '"Furniture" is uncountable.'),
+        m("None of the cake ___ left.", ["was", "were", "are", "have been"], '"None of" + uncountable noun \u2192 singular.')
+      ]),
+      act("grammar", "challenge", 26, "Past Modals: should have, could have", TY, [
+        m("I failed the test. I ___ harder.", ["should have studied", "should study", "must study", "should studied"], "Regret / criticism about the past \u2192 should have + past participle."),
+        m("You ___ told me you were coming! I would have cooked something.", ["could have", "must have", "can't have", "should"], "A possibility that did not happen."),
+        f("We ___ (not / should / leave) the window open. Now the room is full of dust.", "shouldn't have left|should not have left"),
+        m("You ___ have brought a gift, but it's very kind of you.", ["needn't", "mustn't", "can't", "shouldn't to"], "needn't have = it wasn't necessary, but you did it."),
+        m("He ___ have won the race, but he fell near the end.", ["could", "must", "can't", "should not"]),
+        m("I ___ have called you, but my phone battery was dead.", ["would", "must", "can't", "need"]),
+        f("She ___ (ought to / tell) the truth from the beginning.", "ought to have told"),
+        m("Which sentence shows a regret?", ["I shouldn't have eaten so much.", "I can't eat any more.", "I might eat later.", "I must eat now."])
+      ]),
+      act("grammar", "challenge", 27, "Future Perfect & Future Continuous", TY, [
+        m("By 2030, scientists ___ a cure for the disease.", ["will have found", "will find", "are finding", "found"], "Completed before a future time \u2192 future perfect."),
+        m("Don't call at nine. I ___ dinner then.", ["will be having", "will have had", "have", "had"], "In progress at a future time \u2192 future continuous."),
+        f("By the end of this year, I ___ (read) 30 books.", "will have read"),
+        m("This time tomorrow, we ___ over the Indian Ocean.", ["will be flying", "will have flown", "fly", "flew"]),
+        m("By the time you arrive, the film ___.", ["will have started", "will start", "starts", "started"]),
+        m("___ you be using the laptop this evening? I need it.", ["Will", "Are", "Have", "Do"]),
+        f("Next June, my parents ___ (be) married for twenty years.", "will have been"),
+        m("Which sentence is correct?", ["By Friday, I will have finished the project.", "By Friday, I will finish the project already.", "By Friday, I have finished the project.", "By Friday, I will have finish the project."])
+      ]),
+      act("grammar", "challenge", 28, "Grammar: True or False 2", TFI, [
+        tf("If I had taken the map, I wouldn't be lost now.", !0),
+        tf("He must have forgot his homework.", !1, "He must have forgotten his homework."),
+        tf("The castle is believed to be 500 years old.", !0),
+        tf("I had my car wash yesterday.", !1, "I had my car washed yesterday."),
+        tf("Having finished the test, she left the room.", !0),
+        tf("Everybody in the team have a new shirt.", !1, "Everybody has a new shirt."),
+        tf("The news was surprising.", !0),
+        tf("You should have told me earlier.", !0),
+        tf("By next month, I will have finish the course.", !1, "I will have finished the course."),
+        tf("Physics is my best subject.", !0),
+        tf("She can't have seen us. She wasn't there.", !0),
+        tf("Feeling hungry, the sandwich was eaten quickly.", !1, "The sandwich did not feel hungry! Correct: Feeling hungry, I ate the sandwich quickly.")
+      ])
+    ];
+
+    // ../src/site/src/extra2/vocabulary.js
+    var CH2 = "Choose the best answer.", TFI2 = "Is the sentence true or false?", vocabulary_default = [
+      // ------------------------------------------------------------ EASY
+      act("vocabulary", "easy", 21, "Animals", "Look at the picture or clue and choose the word.", [
+        mi("\u{1F422}", "What is this?", ["turtle", "frog", "snake", "lizard"]),
+        mi("\u{1F985}", "What is this?", ["eagle", "parrot", "pigeon", "duck"]),
+        mi("\u{1F42C}", "This clever animal lives in the sea. It is a\u2026", ["dolphin", "shark", "whale", "crab"]),
+        m("A young dog is called a\u2026", ["puppy", "kitten", "calf", "lamb"]),
+        m("A young sheep is called a\u2026", ["lamb", "puppy", "chick", "foal"]),
+        m("Which animal has a very long neck?", ["giraffe", "zebra", "hippo", "bear"]),
+        m("Bees live in a\u2026", ["hive", "nest", "cave", "stable"]),
+        mt("Match each animal with where it lives.", [["fish", "sea"], ["camel", "desert"], ["bird", "nest"], ["horse", "stable"]])
+      ]),
+      act("vocabulary", "easy", 22, "Body & Health", CH2, [
+        mi("\u{1F442}", "What is this?", ["ear", "eye", "nose", "mouth"]),
+        mi("\u{1F9B7}", "You brush these twice a day.", ["teeth", "hair", "nails", "lips"]),
+        m("You see with your\u2026", ["eyes", "ears", "hands", "feet"]),
+        m("I have a ___. I ate too much cake!", ["stomachache", "headache", "toothache", "backache"]),
+        m("When you have a cold, you often\u2026", ["sneeze", "laugh", "swim", "jump"]),
+        m("A doctor for your teeth is a\u2026", ["dentist", "nurse", "chef", "pilot"]),
+        m("Your ___ connects your hand to your arm.", ["wrist", "knee", "ankle", "neck"]),
+        m("Your temperature is very high. You have a\u2026", ["fever", "cough", "cut", "bruise"])
+      ]),
+      act("vocabulary", "easy", 23, "Clothes", "Look at the picture or clue and choose the word.", [
+        mi("\u{1F45F}", "What are these?", ["trainers", "socks", "gloves", "boots"]),
+        mi("\u{1F9E2}", "What is this?", ["cap", "scarf", "belt", "tie"]),
+        mi("\u{1F9E4}", "You wear these on your hands when it is cold.", ["gloves", "socks", "shoes", "rings"]),
+        m("You wear a ___ to keep your trousers up.", ["belt", "scarf", "jacket", "sock"]),
+        m("In Oman, men often wear a long white ___.", ["dishdasha", "skirt", "coat", "jumper"]),
+        m("You wear ___ to swim.", ["swimming clothes", "a coat", "gloves", "boots"]),
+        m("These shoes are too ___. I need a bigger size.", ["small", "big", "long", "loose"]),
+        m("Before you buy a shirt, you can ___ it on.", ["try", "put", "take", "wear"])
+      ]),
+      act("vocabulary", "easy", 24, "Sports & Hobbies", CH2, [
+        mi("\u26BD", "Which sport uses this ball?", ["football", "tennis", "golf", "basketball"]),
+        mi("\u{1F3CA}", "What is this person doing?", ["swimming", "running", "cycling", "diving"]),
+        m("In tennis, you hit the ball with a\u2026", ["racket", "bat", "stick", "club"]),
+        m("A person who plays a sport is a\u2026", ["player", "coach", "fan", "referee"]),
+        m("The person who controls a football match is the\u2026", ["referee", "goalkeeper", "captain", "coach"]),
+        m("My hobby is ___. I have a lot of old coins.", ["collecting", "cooking", "painting", "sailing"]),
+        m("You need a ___ to take photos.", ["camera", "racket", "brush", "ball"]),
+        mt("Match each hobby with what you need.", [["painting", "a brush"], ["reading", "a book"], ["cycling", "a bike"], ["fishing", "a rod"]])
+      ]),
+      act("vocabulary", "easy", 25, "Family & People", CH2, [
+        m("My father's brother is my\u2026", ["uncle", "cousin", "nephew", "grandfather"]),
+        m("My aunt's son is my\u2026", ["cousin", "brother", "uncle", "nephew"]),
+        m("My mother's mother is my\u2026", ["grandmother", "aunt", "sister", "niece"]),
+        m("My sister's daughter is my\u2026", ["niece", "nephew", "cousin", "aunt"]),
+        m("A person who lives next to you is your\u2026", ["neighbour", "cousin", "guest", "stranger"]),
+        m("Two babies born to the same mother at the same time are\u2026", ["twins", "cousins", "parents", "adults"]),
+        m("A person you do not know is a\u2026", ["stranger", "friend", "relative", "neighbour"]),
+        m("Your mother and father are your\u2026", ["parents", "relatives", "children", "grandparents"])
+      ]),
+      act("vocabulary", "easy", 26, "Places in Town", CH2, [
+        m("You buy medicine at the\u2026", ["pharmacy", "bakery", "library", "post office"]),
+        m("You borrow books from the\u2026", ["library", "bookshop", "museum", "bank"]),
+        m("You keep your money safe in a\u2026", ["bank", "park", "garage", "mosque"]),
+        m("You watch films at the\u2026", ["cinema", "stadium", "hospital", "factory"]),
+        m("Planes take off and land at the\u2026", ["airport", "port", "station", "garage"]),
+        m("A traditional market in Oman is called a\u2026", ["souq", "wadi", "falaj", "fort"]),
+        m("Ships stop at the\u2026", ["port", "airport", "station", "bridge"]),
+        mi("\u{1F3E5}", "Doctors and nurses work here.", ["hospital", "hotel", "school", "bank"])
+      ]),
+      act("vocabulary", "easy", 27, "Transport", "Look at the picture or clue and choose the word.", [
+        mi("\u{1F6B2}", "What is this?", ["bicycle", "motorbike", "scooter", "car"]),
+        mi("\u{1F6A2}", "What is this?", ["ship", "train", "plane", "bus"]),
+        mi("\u{1F681}", "What is this?", ["helicopter", "plane", "rocket", "kite"]),
+        m("You wait for the bus at a bus\u2026", ["stop", "station", "gate", "port"]),
+        m("A person who drives a taxi is a taxi\u2026", ["driver", "pilot", "rider", "captain"]),
+        m("People on a bus or plane are\u2026", ["passengers", "drivers", "pilots", "customers"]),
+        m("We travelled by ___ from Muscat to Salalah. The flight was 90 minutes.", ["plane", "bike", "boat", "bus"]),
+        m("A traditional wooden boat in Oman is a\u2026", ["dhow", "canoe", "ferry", "yacht"])
+      ]),
+      act("vocabulary", "easy", 28, "Vocabulary: True or False 2", TFI2, [
+        tf("A puppy is a baby dog.", !0),
+        tf("You wear gloves on your feet.", !1, "You wear gloves on your hands."),
+        tf("A pharmacy sells medicine.", !0),
+        tf("Your cousin is your uncle's child.", !0),
+        tf("A pilot drives a bus.", !1, "A pilot flies a plane."),
+        tf('The opposite of "quiet" is "noisy".', !0),
+        tf("A library is a place where you buy food.", !1, "You borrow books from a library."),
+        tf("A turtle has a hard shell.", !0),
+        tf("You hear with your eyes.", !1, "You hear with your ears."),
+        tf("A referee controls a football match.", !0),
+        tf("Bees make milk.", !1, "Bees make honey."),
+        tf("Passengers travel on buses, trains and planes.", !0)
+      ]),
+      // ------------------------------------------------------------ MEDIUM
+      act("vocabulary", "medium", 21, "Shopping & Money", CH2, [
+        m("The paper the shop gives you after you pay is a\u2026", ["receipt", "recipe", "ticket", "bill"]),
+        m("Everything is 50% cheaper this week. There is a\u2026", ["sale", "price", "profit", "loan"]),
+        m("Money that you keep for the future is your\u2026", ["savings", "change", "tips", "prices"]),
+        m("If something is broken, you can take it back for a\u2026", ["refund", "discount", "receipt", "bargain"]),
+        m("A very good price for something is a\u2026", ["bargain", "fee", "budget", "cost"]),
+        m("The money you get back when you pay too much is your\u2026", ["change", "salary", "loan", "fare"]),
+        m("How much money you plan to spend is your\u2026", ["budget", "bill", "wage", "coin"]),
+        m("Can I pay by ___? I don't have any cash.", ["card", "coin", "note", "change"])
+      ]),
+      act("vocabulary", "medium", 22, "Personality", "Which word describes the person?", [
+        m("She always helps others and gives her things away. She is\u2026", ["generous", "selfish", "lazy", "rude"]),
+        m("He never does any work. He is\u2026", ["lazy", "hard-working", "patient", "polite"]),
+        m("She waits calmly and never gets angry. She is\u2026", ["patient", "impatient", "nervous", "bossy"]),
+        m("He always thinks about himself, not others. He is\u2026", ["selfish", "generous", "kind", "honest"]),
+        m("She is not afraid of anything. She is\u2026", ["brave", "shy", "anxious", "careless"]),
+        m("He feels nervous when he meets new people. He is\u2026", ["shy", "confident", "friendly", "brave"]),
+        m("She always does what she says she will do. She is\u2026", ["reliable", "unreliable", "lazy", "rude"]),
+        mt("Match each word with its opposite.", [["polite", "rude"], ["honest", "dishonest"], ["patient", "impatient"], ["confident", "shy"]])
+      ]),
+      act("vocabulary", "medium", 23, "Media & Entertainment", CH2, [
+        m("A TV programme about real events and nature is a\u2026", ["documentary", "cartoon", "comedy", "quiz"]),
+        m("The main newspaper story on the front page is the\u2026", ["headline", "advert", "caption", "channel"]),
+        m("A short video that tries to sell a product is an\u2026", ["advertisement", "episode", "article", "interview"]),
+        m("One part of a TV series is an\u2026", ["episode", "audience", "actor", "screen"]),
+        m("The people who watch a show are the\u2026", ["audience", "cast", "crew", "director"]),
+        m("The person who tells actors what to do in a film is the\u2026", ["director", "author", "presenter", "reporter"]),
+        m("A funny film is a\u2026", ["comedy", "horror", "thriller", "documentary"]),
+        m("The words at the bottom of the screen that show what people say are\u2026", ["subtitles", "headlines", "captions", "credits"])
+      ]),
+      act("vocabulary", "medium", 24, "Adjectives + Prepositions", "Choose the correct preposition.", [
+        m("I am interested ___ history.", ["in", "on", "at", "for"]),
+        m("She is good ___ maths.", ["at", "in", "on", "for"]),
+        m("He is afraid ___ spiders.", ["of", "from", "about", "with"]),
+        m("We are proud ___ our school.", ["of", "about", "for", "with"]),
+        m("I am worried ___ the exam.", ["about", "of", "for", "on"]),
+        m("This town is famous ___ its pottery.", ["for", "of", "about", "with"]),
+        m("My brother is very different ___ me.", ["from", "of", "with", "at"]),
+        m("Are you angry ___ me?", ["with", "on", "of", "for"])
+      ]),
+      act("vocabulary", "medium", 25, "Prefixes", "Choose or type the word with the correct prefix.", [
+        m('The opposite of "agree" is\u2026', ["disagree", "unagree", "misagree", "inagree"]),
+        m('The opposite of "patient" is\u2026', ["impatient", "unpatient", "dispatient", "inpatient"]),
+        m('The opposite of "legal" is\u2026', ["illegal", "unlegal", "dislegal", "inlegal"]),
+        m('The opposite of "regular" is\u2026', ["irregular", "unregular", "disregular", "imregular"]),
+        m('"Rewrite" means\u2026', ["write again", "write badly", "not write", "write before"]),
+        m('"Misunderstand" means\u2026', ["understand wrongly", "understand again", "understand well", "understand before"]),
+        f('The opposite of "kind" is ___.', "unkind"),
+        f('The opposite of "honest" is ___.', "dishonest")
+      ]),
+      act("vocabulary", "medium", 26, "Health & Fitness", CH2, [
+        m("A plan of what food you eat is a\u2026", ["diet", "menu", "recipe", "meal"]),
+        m("Running and swimming are good ___ for your heart.", ["exercise", "medicine", "rest", "injury"]),
+        m("He hurt his ankle playing football. It is an\u2026", ["injury", "illness", "infection", "allergy"]),
+        m("Some people sneeze near cats. They have an\u2026", ["allergy", "injury", "operation", "ambulance"]),
+        m("The doctor gave me a ___ for some medicine.", ["prescription", "receipt", "recipe", "ticket"]),
+        m("Before you exercise, you should ___ up.", ["warm", "heat", "cool", "turn"]),
+        m("A person who is in hospital is a\u2026", ["patient", "surgeon", "visitor", "nurse"]),
+        m("Fruit and vegetables contain lots of\u2026", ["vitamins", "sugar", "fat", "salt"])
+      ]),
+      act("vocabulary", "medium", 27, "Synonyms", "Choose the word with the same meaning.", [
+        m('Choose the synonym of "begin".', ["start", "finish", "stop", "leave"]),
+        m('Choose the synonym of "difficult".', ["hard", "easy", "simple", "soft"]),
+        m('Choose the synonym of "quick".', ["fast", "slow", "late", "calm"]),
+        m('Choose the synonym of "intelligent".', ["clever", "silly", "lazy", "tired"]),
+        m('Choose the synonym of "shout".', ["yell", "whisper", "smile", "listen"]),
+        m('Choose the synonym of "unhappy".', ["sad", "glad", "calm", "proud"]),
+        m('Choose the synonym of "angry".', ["cross", "calm", "glad", "polite"]),
+        m('Choose the synonym of "choose".', ["select", "refuse", "remove", "forget"])
+      ]),
+      act("vocabulary", "medium", 28, "Vocabulary: True or False 2", TFI2, [
+        tf("A receipt shows what you paid for.", !0),
+        tf("A generous person never shares anything.", !1, "A generous person likes giving and sharing."),
+        tf("A documentary is a programme about real events.", !0),
+        tf('"Disagree" is the opposite of "agree".', !0),
+        tf('"Illegal" means allowed by the law.', !1, '"Illegal" means NOT allowed by the law.'),
+        tf("A bargain is something you buy at a very good price.", !0),
+        tf("A patient is a person who works in a hospital kitchen.", !1, "A patient is a sick person who is treated by a doctor."),
+        tf('We say "good at" a subject.', !0),
+        tf('"Rewrite" means to write something again.', !0),
+        tf("A shy person loves talking to strangers.", !1, "A shy person feels nervous with new people."),
+        tf("The audience watches a show.", !0),
+        tf('"Begin" and "finish" are synonyms.', !1, "They are opposites.")
+      ]),
+      // ------------------------------------------------------------ CHALLENGE
+      act("vocabulary", "challenge", 21, "Advanced Phrasal Verbs", "Choose the correct phrasal verb.", [
+        m("The match was ___ because of the storm.", ["called off", "called up", "called on", "called in"], "call off = cancel."),
+        m("I can't ___ his rudeness any more.", ["put up with", "put off", "put on", "put away"], "put up with = accept something unpleasant."),
+        m("We need to ___ ways to save water.", ["come up with", "come down with", "come across", "come over"], "come up with = think of an idea."),
+        m("The fire alarm ___ in the middle of the lesson.", ["went off", "went on", "went out", "went over"], "go off = start ringing."),
+        m("She ___ a bad cold and stayed at home.", ["came down with", "came up with", "came across", "came round"], "come down with = become ill."),
+        m("The teacher asked us to ___ the new words in a dictionary.", ["look up", "look into", "look out", "look over"], "look up = find information."),
+        m("Please don't ___ your homework until the last minute.", ["put off", "put out", "put up", "put down"], "put off = delay."),
+        m("The police are ___ the cause of the accident.", ["looking into", "looking up", "looking after", "looking forward to"], "look into = investigate.")
+      ]),
+      act("vocabulary", "challenge", 22, "Science & Space", CH2, [
+        m("The path a planet follows around the sun is its\u2026", ["orbit", "gravity", "galaxy", "surface"]),
+        m("The force that pulls things towards the Earth is\u2026", ["gravity", "energy", "pressure", "friction"]),
+        m("A very large group of stars, like the Milky Way, is a\u2026", ["galaxy", "planet", "comet", "satellite"]),
+        m("A scientist tests an idea by doing an\u2026", ["experiment", "explanation", "excursion", "exhibition"]),
+        m("An idea that a scientist wants to test is a\u2026", ["hypothesis", "conclusion", "result", "method"]),
+        m("Water turns into gas when it\u2026", ["evaporates", "freezes", "melts", "dissolves"]),
+        m("A machine that goes around the Earth and sends signals is a\u2026", ["satellite", "telescope", "microscope", "rocket"]),
+        m("You use a ___ to see very small things like bacteria.", ["microscope", "telescope", "periscope", "stethoscope"])
+      ]),
+      act("vocabulary", "challenge", 23, "Work & Careers", CH2, [
+        m("A formal meeting where a company asks you questions about a job is an\u2026", ["interview", "internship", "application", "appointment"]),
+        m("The money you earn every month is your\u2026", ["salary", "fare", "fee", "fine"]),
+        m("A document listing your education and experience is a\u2026", ["CV", "receipt", "contract", "licence"]),
+        m("When you stop working because you are old, you\u2026", ["retire", "resign", "apply", "promote"]),
+        m("When you leave your job because you want to, you\u2026", ["resign", "retire", "recruit", "hire"]),
+        m("A move to a higher position at work is a\u2026", ["promotion", "pension", "profession", "project"]),
+        m("The people who work for a company are its\u2026", ["employees", "employers", "customers", "clients"]),
+        m("The last day you can do something is the\u2026", ["deadline", "timeline", "headline", "outline"])
+      ]),
+      act("vocabulary", "challenge", 24, "Strong Adjectives", "Choose the strong adjective with the same meaning.", [
+        m("very tired =", ["exhausted", "sleepy", "bored", "weak"]),
+        m("very big =", ["enormous", "tall", "wide", "long"]),
+        m("very hungry =", ["starving", "thirsty", "full", "greedy"]),
+        m("very cold =", ["freezing", "cool", "chilly", "fresh"]),
+        m("very good =", ["excellent", "nice", "fine", "okay"]),
+        m("very scared =", ["terrified", "nervous", "worried", "surprised"]),
+        m("very angry =", ["furious", "annoyed", "upset", "cross"]),
+        m("very dirty =", ["filthy", "messy", "dusty", "untidy"])
+      ]),
+      act("vocabulary", "challenge", 25, "Body Idioms", "What does each idiom mean?", [
+        m('"To keep your chin up" means\u2026', ["to stay positive", "to look at the sky", "to be proud", "to stand still"]),
+        m('"To give someone a hand" means\u2026', ["to help someone", "to shake hands", "to clap", "to hit someone"]),
+        m(`"To pull someone's leg" means\u2026`, ["to joke with someone", "to hurt someone", "to help someone walk", "to argue"]),
+        m('"To learn something by heart" means\u2026', ["to memorise it", "to love it", "to forget it", "to feel it"]),
+        m('"To get cold feet" means\u2026', ["to feel too nervous to do something", "to need new socks", "to be ill", "to walk in the rain"]),
+        m('"To see eye to eye" means\u2026', ["to agree", "to argue", "to look carefully", "to be the same height"]),
+        m('"To be all ears" means\u2026', ["to listen carefully", "to hear badly", "to talk a lot", "to be noisy"]),
+        m('"To have a sweet tooth" means\u2026', ["to love sugary food", "to have a toothache", "to be kind", "to visit the dentist"])
+      ]),
+      act("vocabulary", "challenge", 26, "Society & Community", CH2, [
+        m("Work that you do to help others without pay is\u2026", ["volunteering", "employment", "business", "trading"]),
+        m("A group of people who live in the same area is a\u2026", ["community", "committee", "company", "campaign"]),
+        m("A planned series of actions to achieve something, e.g. to reduce litter, is a\u2026", ["campaign", "contest", "ceremony", "contract"]),
+        m("An organisation that collects money to help people in need is a\u2026", ["charity", "factory", "council", "firm"]),
+        m("Treating people unfairly because of who they are is\u2026", ["discrimination", "cooperation", "celebration", "donation"]),
+        m("Money or things you give to help others is a\u2026", ["donation", "debt", "fine", "loan"]),
+        m("People who live in a place are its\u2026", ["residents", "tourists", "visitors", "guests"]),
+        m("Working together to reach a goal is\u2026", ["cooperation", "competition", "conflict", "confusion"])
+      ]),
+      act("vocabulary", "challenge", 27, "Confusing Words 2", "Choose the right word. Be careful!", [
+        m("Please be quiet. The baby is sleeping. Don't ___ her.", ["disturb", "distract", "destroy", "disturbance"], "disturb = interrupt someone who is resting or working."),
+        m("Did you ___ the meeting yesterday?", ["attend", "assist", "attempt", "attract"], "attend = go to an event."),
+        m("The weather can ___ your mood.", ["affect", "effect", "afford", "infect"], '"Affect" is the verb.'),
+        m("I need some ___ about which university to choose.", ["advice", "advise", "advices", "advisor"], '"Advice" is the noun; "advise" is the verb.'),
+        m("She was ___ to win the first prize.", ["lucky", "luckily", "luck", "lucked"]),
+        m("We had a ___ argument and stopped speaking.", ["serious", "series", "serial", "seriously"]),
+        m("Turn ___ the light when you leave the room.", ["off", "of", "away", "over"]),
+        m("He was ___ of stealing the money, but he was innocent.", ["accused", "blamed", "charged", "arrested"], "accuse someone OF something.")
+      ]),
+      act("vocabulary", "challenge", 28, "Vocabulary: True or False 2", TFI2, [
+        tf('To "call off" an event means to cancel it.', !0),
+        tf('"Starving" means very thirsty.', !1, '"Starving" means very hungry.'),
+        tf("An employer is a person who works for a company.", !1, "An employer gives people jobs. An employee works for a company."),
+        tf("Gravity pulls objects towards the Earth.", !0),
+        tf('"To give someone the cold shoulder" means to ignore them.', !0),
+        tf("A deadline is the last day to finish something.", !0),
+        tf("A charity helps people in need.", !0),
+        tf('"Furious" means very angry.', !0),
+        tf("A telescope helps you see tiny bacteria.", !1, "A microscope helps you see tiny things. A telescope helps you see far things."),
+        tf('To "resign" means to leave your job.', !0),
+        tf('"Advice" can be used as a verb.', !1, '"Advice" is a noun. The verb is "advise".'),
+        tf("Volunteers work without being paid.", !0)
+      ])
+    ];
+
+    // ../src/site/src/extra2/reading.js
+    var RI = "Read the text, then answer the questions.", reading_default = [
+      // ------------------------------------------------------------ EASY
+      act("reading", "easy", 21, "My Best Friend", RI, [
+        m("How long have Talal and Hamood been friends?", ["Since they were six", "For one year", "Since last summer", "Since they were ten"]),
+        m("What do they both love?", ["Football", "Swimming", "Drawing", "Cooking"]),
+        tf("Hamood is very good at maths.", !0),
+        m("How does Hamood help Talal?", ["He helps him with his maths homework.", "He drives him to school.", "He cooks dinner for him.", "He teaches him to swim."]),
+        m("What does Talal do for Hamood?", ["He helps him with English.", "He buys him a ball.", "He helps him with science.", "He walks his dog."])
+      ], { passage: "My name is Talal, and my best friend is Hamood. We have been friends since we were six years old. We live in the same street, and we walk to school together every morning. We both love football, and we play in the same team on Thursdays. Hamood is very good at maths, so he helps me with my maths homework. I am better at English, so I help him with his reading and writing. We sometimes argue, but we always say sorry quickly. A good friend is like a brother." }),
+      act("reading", "easy", 22, "Camping in the Desert", RI, [
+        m("Where did the family go camping?", ["In the Wahiba Sands", "In the mountains", "On a beach", "In a forest"]),
+        m("How did they travel there?", ["By car", "By plane", "By bus", "By camel"]),
+        tf("They slept in a hotel.", !1, "They slept in a tent."),
+        m("What did they do in the evening?", ["They watched the sunset from a sand dune.", "They went to a restaurant.", "They swam in the sea.", "They watched TV."]),
+        m("What was the weather like at night?", ["Cold", "Very hot", "Rainy", "Windy and hot"])
+      ], { passage: "Last weekend, my family went camping in the Wahiba Sands. We drove there in my father's big car. When we arrived, we put up two tents near a small group of trees. In the evening, we climbed a high sand dune and watched the sunset. The sky was orange and pink. Then my mother cooked chicken and rice over a fire. The desert was hot in the day, but it was cold at night, so we wore jackets. Before we went to sleep, we looked at the stars. There were thousands of them!" }),
+      act("reading", "easy", 23, "School Trip Notice", RI, [
+        m("Where is the trip going?", ["To the Science Museum", "To the zoo", "To the beach", "To a factory"]),
+        m("When does the bus leave?", ["At 7:30", "At 8:30", "At 1:30", "At 12:00"]),
+        m("How much does the trip cost?", ["Three riyals", "Thirty riyals", "It is free", "Five riyals"]),
+        tf("Students must bring their own lunch.", !1, "Lunch is included in the price."),
+        m("What must students give their teacher by Thursday?", ["A form signed by a parent", "A packed lunch", "Their science book", "A photo"])
+      ], { passage: `GRADE 9 SCHOOL TRIP
+  On Tuesday 15th, Grade 9 students will visit the Science Museum.
+  The bus leaves the school at 7:30 in the morning and comes back at 1:30 in the afternoon.
+  The trip costs three riyals. This includes the museum ticket and lunch.
+  Please wear your school uniform and comfortable shoes. Bring a notebook and a pen.
+  All students must give their teacher a form signed by a parent by Thursday.` }),
+      act("reading", "easy", 24, "Grandma's Kitchen", RI, [
+        m("When does Laila visit her grandmother?", ["Every Friday", "Every Monday", "Every day", "Once a month"]),
+        m("What is Grandma famous for?", ["Her bread", "Her cakes", "Her soup", "Her coffee"]),
+        tf("Laila helps her grandmother in the kitchen.", !0),
+        m("What does Grandma never use?", ["A recipe book", "Flour", "Water", "An oven"]),
+        m("What does Laila want to do one day?", ["Open a small bakery", "Become a doctor", "Write a recipe book", "Live in a big city"])
+      ], { passage: "Every Friday, Laila visits her grandmother. Grandma is famous in the village for her delicious bread. Laila helps her in the kitchen. First, they mix flour, water and a little salt. Then Grandma shows Laila how to make the dough thin and round. Grandma never uses a recipe book. She says the recipe is in her head and in her hands! Laila loves the smell of fresh bread. One day, she wants to open a small bakery and use her grandmother's recipe." }),
+      act("reading", "easy", 25, "A New Pet", RI, [
+        m("What pet did Sara get?", ["A kitten", "A puppy", "A rabbit", "A parrot"]),
+        m("Where did they find it?", ["Under a car", "In a pet shop", "In the park", "At school"]),
+        m("Why did they take it to the vet?", ["To check that it was healthy", "To buy food", "To give it a name", "To find its owner"]),
+        tf("Sara named the pet Sugar because it is white.", !0),
+        m("What is the best title for the text?", ["Sara's New Kitten", "A Day at the Vet", "My Favourite Food", "The Lost Car"])
+      ], { passage: "One rainy evening, Sara and her father heard a small noise under their car. It was a tiny white kitten. It was wet and very hungry. Sara gave it some milk and a warm blanket. The next day, they took the kitten to the vet to check that it was healthy. The vet said it was about six weeks old. Sara's parents said she could keep it. She called the kitten Sugar because it is white and sweet. Now Sugar sleeps on Sara's bed every night." }),
+      // ------------------------------------------------------------ MEDIUM
+      act("reading", "medium", 21, "The Dhow Builders of Sur", RI, [
+        m("What is Sur famous for?", ["Building dhows", "Growing dates", "Making pottery", "Fishing for pearls"]),
+        m("How did builders learn their skills in the past?", ["From their fathers and grandfathers", "At university", "From books", "On the internet"]),
+        tf("The builders use detailed drawings for every boat.", !1, "They build without drawings, from memory and experience."),
+        m("What are most dhows used for today?", ["Tourism and fishing", "Wars", "Carrying oil", "Racing"]),
+        m("What does the writer think about the craft?", ["It is important and should be protected.", "It is old-fashioned and useless.", "It is too expensive.", "It is easy to learn."])
+      ], { passage: "For hundreds of years, the town of Sur has been famous for building dhows, the traditional wooden ships of Oman. In the past, these ships carried dates, cloth and spices to India and East Africa. The skills of dhow building were passed from father to son. Amazingly, many builders worked without any drawings; they built the ship from memory and experience. Today, fewer dhows are built, and most are used for tourism and fishing rather than trade. However, visitors to Sur can still watch craftsmen at work in the shipyard. I believe this special craft is an important part of our history, and we must protect it for future generations." }),
+      act("reading", "medium", 22, "Food Waste", RI, [
+        m("How much of the world's food is wasted, according to the text?", ["About one third", "About half", "About ten percent", "Almost all of it"]),
+        m("Why do some shops throw food away?", ["It does not look perfect.", "It is too expensive.", "Nobody likes it.", "It is too old to cook."]),
+        m("Which tip is NOT in the text?", ["Grow your own vegetables", "Make a shopping list", "Use leftovers", "Check the dates on food"]),
+        tf("The text says food waste is bad for the environment.", !0),
+        m('The word "leftovers" means\u2026', ["food that is not eaten at a meal", "food from a shop", "food that is cooked again", "fresh fruit"])
+      ], { passage: "It is surprising, but about one third of all the food produced in the world is wasted. Some of it is lost on farms, and some is thrown away by shops because it does not look perfect. However, a lot of food is wasted at home. Families buy too much, forget about food in the fridge or cook more than they need. Food waste is also bad for the environment, because rotting food produces harmful gases. There are simple ways to waste less. Make a shopping list before you go to the supermarket, check the dates on food, and use your leftovers to make a new meal the next day." }),
+      act("reading", "medium", 23, "My First Week at a New School", RI, [
+        m("Why did Noor move to a new school?", ["Her family moved to a new city.", "She did not like her old school.", "She failed her exams.", "Her old school closed."]),
+        m("How did Noor feel on the first day?", ["Nervous", "Bored", "Angry", "Excited and calm"]),
+        m("Who helped Noor on her first day?", ["A girl called Asma", "Her teacher", "Her brother", "The head teacher"]),
+        tf("Noor joined the school drama club.", !1, "She joined the art club."),
+        m("What is the main message of the blog post?", ["New beginnings can be easier than you think.", "Changing schools is always terrible.", "Art is the best subject.", "Big schools are better than small ones."])
+      ], { passage: "Hi everyone! This week was my first week at a new school. My family moved to Sohar because of my father's job, so I had to leave my old friends. On the first day, I was really nervous. The school was much bigger than my old one, and I didn't know anybody. Then, at break time, a girl called Asma came to sit with me. She showed me the library and introduced me to her friends. On Wednesday, I joined the art club, and the teacher said my painting was beautiful. Now I feel much better. I've learned that new beginnings are often easier than you think!" }),
+      act("reading", "medium", 24, "How Dates Grow", RI, [
+        m("How long can a date palm live?", ["More than 100 years", "About 10 years", "About 50 days", "Only 5 years"]),
+        m("Why do farmers pollinate the trees by hand?", ["To make sure they produce plenty of fruit", "To make the trees taller", "To protect them from insects", "Because the wind is too strong"]),
+        m("When are the dates usually harvested?", ["In summer and autumn", "In early spring", "In winter only", "Every month"]),
+        tf("Every part of the palm tree can be used.", !0),
+        m('In the text, "harvest" means\u2026', ["to collect the crop", "to plant seeds", "to water trees", "to sell fruit"])
+      ], { passage: "The date palm is one of the most important trees in Oman. It can live for more than 100 years and grows well in hot, dry places. Each spring, farmers climb the trees to pollinate the flowers by hand. This makes sure that the trees produce plenty of fruit. Over the next few months, the dates grow and change colour from green to yellow or red, and finally to brown. The dates are usually harvested in summer and autumn. Nothing from the palm tree is wasted: the leaves are used to make baskets and mats, and the trunks were once used to build houses." }),
+      act("reading", "medium", 25, "The Bake Sale", RI, [
+        m("Why did the class organise a bake sale?", ["To raise money for a family whose house was damaged", "To buy new computers", "To pay for a school trip", "To win a competition"]),
+        m("How much money did they hope to raise?", ["200 riyals", "20 riyals", "2,000 riyals", "500 riyals"]),
+        m("What was the problem in the morning?", ["It started to rain.", "Nobody came.", "The cakes were burnt.", "The teacher was ill."]),
+        tf("They raised more money than they expected.", !0),
+        m("Which word best describes the students?", ["caring", "lazy", "selfish", "careless"])
+      ], { passage: "When Ms Fatma told her class that a family in the town had lost their home in a flood, the students wanted to help. They decided to organise a bake sale and hoped to raise 200 riyals. For a week, they baked cakes, biscuits and bread at home with their families. On the day of the sale, it started to rain heavily in the morning, and the students were worried that nobody would come. However, they moved the tables inside the school hall, and by the afternoon the hall was full of parents and teachers. At the end of the day, they counted the money: 350 riyals! The family thanked the students with a letter, which now hangs on the classroom wall." }),
+      // ------------------------------------------------------------ CHALLENGE
+      act("reading", "challenge", 21, "Mangroves: Forests of the Sea", RI, [
+        m("What is unusual about mangrove trees?", ["They can grow in salty water.", "They grow only in deserts.", "They have no roots.", "They lose all their leaves in summer."]),
+        m("How do mangroves protect the coast?", ["Their roots reduce the force of waves.", "They block the sunlight.", "They make the water warmer.", "They keep tourists away."]),
+        m('Why are mangroves called "nurseries"?', ["Young fish shelter among their roots.", "They grow very quickly.", "Children play in them.", "They are planted by schools."]),
+        m('In the text, "absorb" is closest in meaning to\u2026', ["take in", "give out", "destroy", "measure"]),
+        m("What is the writer's main purpose?", ["To explain why mangroves are valuable and need protection", "To tell a personal story about a holiday", "To advertise a tourist park", "To argue that mangroves should be cut down"])
+      ], { passage: "Along some of Oman's coasts, including the lagoon at Qurum, grow forests that most people never notice: mangroves. Unlike most trees, mangroves can survive in salty water, and their tangled roots rise above the mud like stilts. These roots are extremely useful. They reduce the force of waves and help to protect the coast from storms and erosion. They also act as 'nurseries', because young fish and crabs shelter among the roots until they are big enough to swim into the open sea. In addition, mangroves absorb large amounts of carbon dioxide, which helps to slow down climate change. Despite these benefits, mangrove forests around the world are disappearing because of coastal building and pollution. Protecting them is not just good for nature; it is good for people too." }),
+      act("reading", "challenge", 22, "Robots at Work", RI, [
+        m("What worries some people about robots?", ["That they will take people's jobs", "That they are too slow", "That they are too small", "That they cannot be repaired"]),
+        m("According to the text, which jobs are robots good at?", ["Repetitive and dangerous jobs", "Creative jobs", "Jobs that need kindness", "Teaching jobs"]),
+        m("What example of a new job is given?", ["Repairing and programming robots", "Selling robots in shops", "Driving taxis", "Writing novels"]),
+        m('The phrase "on the other hand" introduces\u2026', ["a contrasting idea", "an example", "a conclusion", "a time order"]),
+        m("What does the writer recommend?", ["Young people should develop skills that robots lack.", "Schools should ban robots.", "Everyone should become an engineer.", "People should stop using technology."])
+      ], { passage: "Many people worry that robots and computers will soon take their jobs. It is true that machines are already doing work that people used to do. In factories, robots build cars, and in warehouses, they sort and pack parcels. Robots are particularly good at repetitive and dangerous jobs, and they never get tired. On the other hand, technology also creates new jobs. Someone has to design, program and repair the machines. Furthermore, there are many things that robots still cannot do well, such as showing kindness, solving unusual problems or thinking creatively. For this reason, experts believe young people should focus on developing these human skills, together with digital skills, to prepare for the jobs of the future." }),
+      act("reading", "challenge", 23, "The Old Map", RI, [
+        m("Where did Khalid find the map?", ["Inside an old book in his grandfather's house", "In the school library", "On the beach", "In a museum"]),
+        m("Why did Khalid feel disappointed at first?", ["The place on the map was an empty, dry well.", "He lost the map.", "His grandfather was angry.", "The map was in a foreign language."]),
+        m("What did his grandfather explain?", ["The well once gave water to the whole village.", "There was gold under the well.", "He had drawn the map as a joke.", "The map was very valuable."]),
+        m('"His heart sank" suggests Khalid felt\u2026', ["disappointed", "excited", "relieved", "proud"]),
+        m('What is the "treasure" that Khalid finally discovers?', ["The history of his family and village", "A box of coins", "A new friend", "A secret room"])
+      ], { passage: "While he was helping to clean his grandfather's house, Khalid found a folded piece of paper inside an old book. It was a hand-drawn map of the village, and one place was marked with a red cross. Excited, Khalid followed the map past the old mosque and the date gardens until he reached the spot. His heart sank. There was nothing there except an empty, dry well. That evening, he showed the map to his grandfather, who smiled. 'I drew that map when I was your age,' he said. 'That well once gave water to the whole village. My father and I used to collect water there every morning.' For the next hour, his grandfather told him stories about life in the village fifty years ago. Khalid realised that he had found a treasure after all: his family's history." }),
+      act("reading", "challenge", 24, "Noise: The Invisible Pollution", RI, [
+        m("According to the text, why is noise pollution often ignored?", ["People cannot see it.", "It is not harmful.", "It only happens at night.", "It is easy to stop."]),
+        m("Which effect of noise is NOT mentioned?", ["Losing your sense of smell", "Poor sleep", "Stress", "Difficulty concentrating"]),
+        m("How can noise affect students?", ["It can make it harder to learn.", "It helps them remember more.", "It makes them taller.", "It improves their hearing."]),
+        m('The word "constant" is closest in meaning to\u2026', ["continuous", "sudden", "quiet", "pleasant"]),
+        m("Which solution does the text suggest?", ["Planting trees along busy roads", "Closing all schools", "Banning all cars", "Wearing headphones all day"])
+      ], { passage: "When we think about pollution, we usually imagine dirty air or plastic in the sea. However, there is another kind of pollution that is often ignored because we cannot see it: noise. Traffic, construction work and loud music can all create constant noise in towns and cities. Scientists have found that living with too much noise can cause stress, poor sleep and difficulty concentrating. Studies also suggest that children who attend schools near busy roads or airports may find it harder to learn to read. Fortunately, there are solutions. Cities can plant trees along busy roads, build quieter road surfaces and set limits on noise at night. As individuals, we can also help by keeping our own noise down." }),
+      act("reading", "challenge", 25, "Learning from Failure", RI, [
+        m("What happened in Hind's first competition?", ["Her robot stopped working.", "She won first prize.", "She did not take part.", "Her team argued."]),
+        m("How did Hind react at first?", ["She wanted to give up.", "She laughed about it.", "She blamed her teacher.", "She started a new project immediately."]),
+        m("What advice did her coach give her?", ["To find out what went wrong and learn from it", "To choose a different hobby", "To buy a better robot", "To practise less"]),
+        m("Which word best describes Hind at the end of the story?", ["determined", "lazy", "jealous", "careless"]),
+        m("What is the main message of the text?", ["Failure can be an important step towards success.", "Robots are too difficult for students.", "Competitions are unfair.", "Success comes without hard work."])
+      ], { passage: "Hind had spent three months building a robot for the national robotics competition. On the day of the event, she placed it on the track and pressed the start button. The robot moved forward a few centimetres, then stopped. In front of the judges and the audience, nothing she tried would make it move again. Hind was embarrassed, and on the way home she told her coach that she wanted to give up. Her coach disagreed. 'Every engineer fails,' she said. 'The important thing is to find out what went wrong and learn from it.' Over the next few weeks, Hind discovered that a single loose wire had caused the problem. She redesigned the robot and tested it every day. The following year, she returned to the competition and won second place. Today, she keeps the broken wire in a box on her desk as a reminder." })
+    ];
+
+    // ../src/site/src/extra2/listening.js
+    var LI = "Press Play and listen. You can listen as many times as you need.", listening_default = [
+      // ------------------------------------------------------------ EASY
+      act("listening", "easy", 21, "Meet Noor", LI, [
+        m("How old is Noor?", ["Thirteen", "Fourteen", "Fifteen", "Twelve"]),
+        m("Where is Noor from?", ["Ibri", "Muscat", "Sur", "Sohar"]),
+        m("How many brothers does she have?", ["Two", "One", "Three", "None"]),
+        f("Her favourite hobby is ___.", "drawing"),
+        m("What does Noor want to be in the future?", ["An architect", "A doctor", "A teacher", "An artist"])
+      ], { audio_text: "Hi! I'm Noor. I'm thirteen years old, and I'm from Ibri. I have two brothers and one sister. My brothers are older than me, and my sister is only four. My favourite hobby is drawing. I draw buildings, animals and people. My favourite subject at school is maths. In the future, I want to be an architect and design beautiful buildings." }),
+      act("listening", "easy", 22, "Library Announcement", LI, [
+        m("What time does the library close today?", ["At two o'clock", "At four o'clock", "At twelve o'clock", "At three o'clock"]),
+        m("How many books can students borrow?", ["Three", "Two", "Five", "One"]),
+        m("How long can students keep the books?", ["Two weeks", "One week", "One month", "Three days"]),
+        tf("Students can eat in the library.", !1, "Food and drinks are not allowed."),
+        m("What is new in the library?", ["Books about space", "Computers", "Games", "Comics"])
+      ], { audio_text: "Good morning, students. This is a message from the school library. Today the library will close at two o'clock, not four o'clock. Remember, you can borrow three books at a time, and you can keep them for two weeks. Please don't bring food or drinks into the library. Also, we have some new books about space. Come and see them! Thank you." }),
+      act("listening", "easy", 23, "At the Bus Station", LI, [
+        m("Where does the customer want to go?", ["Nizwa", "Muscat", "Sur", "Sohar"]),
+        m("What time is the next bus?", ["10:15", "10:50", "11:15", "9:15"]),
+        m("How much is a single ticket?", ["Two riyals", "Three riyals", "Four riyals", "One riyal"]),
+        tf("The customer buys a return ticket.", !1, "She buys a single ticket."),
+        m("Which platform does the bus leave from?", ["Platform 3", "Platform 1", "Platform 13", "Platform 5"])
+      ], { audio_text: "Customer: Excuse me, what time is the next bus to Nizwa? Ticket seller: The next one is at ten fifteen. Customer: How much is a ticket? Ticket seller: A single ticket is two riyals, and a return ticket is three riyals. Customer: Just a single, please. Ticket seller: Here you are. The bus leaves from platform three. Customer: Thank you very much." }),
+      act("listening", "easy", 24, "A Birthday Invitation", LI, [
+        m("Whose birthday is it?", ["Huda's", "Maha's", "Sara's", "Mariam's"]),
+        m("When is the party?", ["On Saturday", "On Friday", "On Sunday", "On Thursday"]),
+        m("What time does the party start?", ["At five", "At four", "At six", "At seven"]),
+        m("Where is the party?", ["At Huda's house", "At a restaurant", "At the park", "At school"]),
+        f("Maha should bring her ___.", "swimming clothes|swimsuit", "There is a swimming pool.")
+      ], { audio_text: "Hi Maha, it's Huda! I'm calling to invite you to my birthday party. It's on Saturday afternoon at my house. The party starts at five o'clock and finishes at eight. We have a swimming pool, so bring your swimming clothes! My mum is making a big chocolate cake. Please call me back and tell me if you can come. See you soon!" }),
+      act("listening", "easy", 25, "Buying Shoes", LI, [
+        m("What kind of shoes does the customer want?", ["Running shoes", "School shoes", "Sandals", "Football boots"]),
+        m("What size does he need?", ["Forty-two", "Forty", "Forty-four", "Thirty-two"]),
+        m("What colour does he choose?", ["Blue", "Black", "White", "Red"]),
+        m("How much do the shoes cost?", ["Fifteen riyals", "Fifty riyals", "Five riyals", "Twenty riyals"]),
+        tf("The shoes are too small.", !1, "They fit well.")
+      ], { audio_text: "Shop assistant: Hello, can I help you? Customer: Yes, I'm looking for some running shoes. Shop assistant: What size are you? Customer: Forty-two. Shop assistant: We have these in black, white and blue. Customer: I like the blue ones. Can I try them on? Shop assistant: Of course. How are they? Customer: They're perfect. How much are they? Shop assistant: They're fifteen riyals. Customer: Great. I'll take them." }),
+      // ------------------------------------------------------------ MEDIUM
+      act("listening", "medium", 21, "Booking a Hotel Room", LI, [
+        m("How many nights does the caller want to stay?", ["Three", "Two", "Four", "One"]),
+        m("What kind of room does he book?", ["A family room", "A single room", "A double room", "A suite"]),
+        m("What is included in the price?", ["Breakfast", "Dinner", "Lunch and dinner", "Nothing"]),
+        f("The price is ___ riyals per night.", "forty-five|45|forty five"),
+        m("How will the hotel send the confirmation?", ["By email", "By text message", "By post", "By phone"])
+      ], { audio_text: "Receptionist: Good afternoon, Salalah Beach Hotel. How can I help you? Caller: Hello. I'd like to book a room for three nights, from the fifth to the eighth of August. Receptionist: How many people? Caller: Two adults and two children. Receptionist: Then I recommend a family room. It costs forty-five riyals per night, and breakfast is included. Caller: That sounds good. Does the room have a sea view? Receptionist: Yes, all our family rooms face the sea. Can I have your email address? We'll send you a confirmation." }),
+      act("listening", "medium", 22, "School Club Fair", LI, [
+        m("When is the club fair?", ["Next Tuesday", "Next Thursday", "This Friday", "Tomorrow"]),
+        m("Where is the club fair?", ["In the school hall", "In the library", "On the football field", "In the canteen"]),
+        m("Which club is new this year?", ["The robotics club", "The drama club", "The chess club", "The art club"]),
+        m("What can students do at the photography club stand?", ["Take part in a photo competition", "Buy a camera", "Watch a film", "Meet a famous photographer"]),
+        tf("Students can join only one club.", !1, "They can join up to two clubs.")
+      ], { audio_text: "Good morning, everyone. Next Tuesday, during the long break, we are holding our club fair in the school hall. You can visit the stands, meet the teachers and choose your clubs for this term. This year, for the first time, we have a robotics club, where you will learn to build and program small robots. The drama club, chess club and art club are also back. At the photography club stand, you can enter a photo competition and win a prize. Remember, each student can join up to two clubs. See you there!" }),
+      act("listening", "medium", 23, "Directions to the Stadium", LI, [
+        m("What should the visitor do first?", ["Go straight along this road", "Turn left at the bank", "Take a taxi", "Cross the bridge"]),
+        m("Where should he turn right?", ["At the second traffic lights", "At the first roundabout", "Next to the mosque", "After the bridge"]),
+        m("What is opposite the stadium?", ["A big supermarket", "A hospital", "A school", "A park"]),
+        m("How long will it take to walk there?", ["About fifteen minutes", "About five minutes", "About an hour", "About thirty minutes"]),
+        tf("The speaker suggests taking the bus.", !1, "He says it is easy to walk.")
+      ], { audio_text: "Visitor: Excuse me, how do I get to the sports stadium? Local man: It's not far. Go straight along this road, past the petrol station. At the second traffic lights, turn right. Walk for about five minutes, and you'll see the stadium on your left. There's a big supermarket opposite it. Visitor: How long will it take to walk? Local man: About fifteen minutes. It's an easy walk. Visitor: Thank you so much!" }),
+      act("listening", "medium", 24, "Cooking Show: Date Smoothie", LI, [
+        m("How many dates does the recipe use?", ["Five", "Four", "Six", "Ten"]),
+        m("What do you do with the dates first?", ["Take out the seeds", "Freeze them", "Cut them into four", "Wash them in hot water"]),
+        m("What kind of milk does the chef use?", ["Cold milk", "Warm milk", "Camel milk", "Chocolate milk"]),
+        f("Add one ___ to make it sweeter and thicker.", "banana"),
+        m("How long should you blend everything?", ["About one minute", "About ten minutes", "About five seconds", "About half an hour"])
+      ], { audio_text: "Welcome back to Quick Kitchen! Today I'm making a healthy date smoothie. It's perfect for breakfast. You need five dates, one banana, a glass of cold milk and a little cinnamon. First, take the seeds out of the dates. Then put the dates, the banana and the milk into the blender. The banana makes it sweeter and thicker. Add a pinch of cinnamon, and blend everything for about one minute. Pour it into a glass, and enjoy!" }),
+      act("listening", "medium", 25, "Interview: A Lifeguard", LI, [
+        m("How long has Saif been a lifeguard?", ["Four years", "Two years", "Ten years", "One year"]),
+        m("What is the most important part of his job?", ["Watching the water carefully", "Teaching swimming lessons", "Cleaning the beach", "Selling tickets"]),
+        m("What does the red flag mean?", ["It is dangerous to swim.", "The beach is closed for lunch.", "The water is warm.", "A lifeguard is on duty."]),
+        tf("Saif says most accidents happen to good swimmers.", !1, "He says many accidents happen to people who are not confident swimmers."),
+        m("What advice does Saif give?", ["Always swim where a lifeguard can see you.", "Swim alone at night.", "Never go to the beach in summer.", "Swim as far as you can."])
+      ], { audio_text: "Presenter: Today we're talking to Saif, a lifeguard at Qurum Beach. Saif, how long have you done this job? Saif: For four years now. Presenter: What does a lifeguard actually do? Saif: The most important part of my job is watching the water carefully, all the time. We also check the weather and the waves. If we put up a red flag, it means it's dangerous to swim. Presenter: Do many people get into trouble? Saif: Sometimes. Many accidents happen to people who are not confident swimmers but go too far from the beach. My advice is simple: always swim where a lifeguard can see you, and never swim alone." }),
+      // ------------------------------------------------------------ CHALLENGE
+      act("listening", "challenge", 21, "Lecture: The History of Paper", "Listen to the short talk. Focus on dates, places and reasons.", [
+        m("Where was paper first made?", ["In China", "In Egypt", "In Europe", "In India"]),
+        m("About how long ago was paper invented?", ["About 2,000 years ago", "About 200 years ago", "About 500 years ago", "About 10,000 years ago"]),
+        m("What did people write on before paper, according to the talk?", ["Bamboo, silk and clay", "Glass and metal", "Plastic", "Leaves only"]),
+        m("Why did Baghdad become a centre of paper making?", ["Paper was cheaper and easier to use than older materials.", "There were many trees there.", "The king banned books.", "It was the only city with water."]),
+        tf("The speaker says paper is no longer important today.", !1, "She says we still use huge amounts of paper.")
+      ], { audio_text: "Good morning. Today I'd like to talk briefly about the history of paper. Paper was first made in China about two thousand years ago. Before that, people wrote on materials such as bamboo, silk and clay tablets, which were either heavy or very expensive. The Chinese method used plant fibres mixed with water, which were pressed and dried in thin sheets. Over the following centuries, the technique travelled along trade routes to the Islamic world. By the end of the eighth century, Baghdad had become an important centre of paper making, because paper was cheaper and easier to use than the older materials. This helped libraries and learning to grow. Even in our digital age, the world still uses huge amounts of paper every year." }),
+      act("listening", "challenge", 22, "Debate: Online or Classroom Learning?", "Listen to the two speakers. Who thinks what?", [
+        m("What is the first speaker's main argument for online learning?", ["Students can learn at their own speed.", "It is more fun than school.", "Teachers prefer it.", "It is always cheaper."]),
+        m("What advantage of online learning does the first speaker mention?", ["Students can watch lessons again.", "There is no homework.", "Exams are easier.", "Students can sleep longer."]),
+        m("What does the second speaker think students miss online?", ["Face-to-face contact with friends and teachers", "Free time", "Good computers", "Sports lessons only"]),
+        m("Which problem with online learning does the second speaker mention?", ["Not everyone has a good internet connection.", "Videos are too short.", "Online teachers are not qualified.", "Screens are too big."]),
+        m("What do both speakers finally agree on?", ["A mix of both types of learning could be best.", "Schools should close.", "Online learning should be banned.", "Homework should stop."])
+      ], { audio_text: "Speaker one: In my view, online learning has huge advantages. Students can learn at their own speed, and if they don't understand something, they can watch the lesson again. Speaker two: That's true, but I think students miss face-to-face contact with their friends and teachers. School isn't only about facts; it's also about learning to work with other people. Besides, not everyone has a good internet connection at home. Speaker one: I agree that's a real problem. Perhaps the best solution is a mix of both: lessons in the classroom, with online materials for extra practice. Speaker two: Yes, a mix of both could work very well." }),
+      act("listening", "challenge", 23, "Podcast: Making Good Decisions", LI, [
+        m("What is today's podcast about?", ["How to make better decisions", "How to study for exams", "How to save money", "How to make friends"]),
+        m("Why should you not make big decisions when you are very tired or angry?", ["Strong emotions can affect our judgement.", "You will forget the decision.", "It takes too long.", "Other people will be angry."]),
+        m('What is the "ten-ten-ten" rule?', ["Thinking about how you will feel in ten minutes, ten months and ten years", "Taking ten seconds to decide", "Asking ten people for advice", "Writing ten reasons for and against"]),
+        m("Why does the speaker suggest asking for advice?", ["Other people may see things we miss.", "It is always faster.", "It makes others happy.", "It is the rule at school."]),
+        tf("The speaker says every decision must be perfect.", !1, "She says no decision is perfect, and mistakes help us learn.")
+      ], { audio_text: "Welcome to Smart Choices. Today we're looking at how to make better decisions. First, avoid making big decisions when you are very tired, hungry or angry, because strong emotions can affect our judgement. Second, try the ten-ten-ten rule: ask yourself how you will feel about the decision in ten minutes, in ten months and in ten years. This helps you think about the long term. Third, don't be afraid to ask for advice from someone you trust, because other people may see things we miss. Finally, remember that no decision is perfect. If you make a mistake, learn from it and move on." }),
+      act("listening", "challenge", 24, "News: A New Solar Farm", LI, [
+        m("What will the new solar farm provide?", ["Electricity for about 30,000 homes", "Water for farms", "Jobs for 30,000 people", "Free internet"]),
+        m("When is the project expected to be finished?", ["By the end of next year", "Next month", "In ten years", "It is already finished"]),
+        m("Why is the location good for solar power?", ["It gets strong sunshine almost all year.", "It is near the sea.", "It is in the mountains.", "It has a lot of wind."]),
+        m("What problem do critics mention?", ["Dust and sand on the panels", "The panels are too heavy", "The noise of the panels", "There are too few workers"]),
+        m("How will the company solve this problem?", ["By using robots to clean the panels", "By building a roof over them", "By using more water", "By moving the farm"])
+      ], { audio_text: "In other news, work has started on a large new solar farm in the desert. When it is completed, which is expected by the end of next year, the farm will provide electricity for about thirty thousand homes. Officials say the location is ideal, because it receives strong sunshine almost all year round. However, some critics have pointed out that dust and sand can cover the solar panels and reduce the amount of electricity they produce. The company says it will solve this problem by using small robots that clean the panels every night, without using any water." }),
+      act("listening", "challenge", 25, "Interview: An Astronaut's Day", LI, [
+        m("How many times a day can astronauts see the sun rise?", ["About sixteen", "Once", "About four", "About a hundred"]),
+        m("Why do astronauts exercise for about two hours a day?", ["To keep their muscles and bones strong", "Because they are bored", "To stay warm", "To save energy"]),
+        m("How do astronauts sleep?", ["In sleeping bags fixed to the wall", "In normal beds", "On the floor", "In their seats"]),
+        m("What does the astronaut miss most?", ["Her family and fresh food", "Her car", "Television", "Her office"]),
+        tf("The astronaut says that drinking water in space is easy.", !1, "Water floats, so they drink from special bags.")
+      ], { audio_text: "Presenter: What is a normal day like on the space station? Astronaut: Well, it's not very normal! The station goes around the Earth about sixteen times a day, so we see about sixteen sunrises every day. We work on science experiments for most of the day, and we exercise for about two hours, because without gravity our muscles and bones become weak. Presenter: How do you sleep? Astronaut: In sleeping bags fixed to the wall, so we don't float around. Even drinking is different, because water floats, so we drink from special bags. Presenter: What do you miss most? Astronaut: My family, of course, and fresh food. A simple salad is a big treat up there!" })
+    ];
+
+    // ../src/site/src/extra2/writing.js
+    var BI = "Tap the words in the correct order.", OI = "Tap the sentences in the correct order.", CI = "Each sentence has one mistake. Fix it and type the correct sentence.", writing_default = [
+      // ===================================================== BUILD SENTENCES
+      act("building", "easy", 21, "Sentences About Me", BI, [
+        b("Present simple", "I live in a small village."),
+        b("have got", "I have got two younger sisters."),
+        b("like + -ing", "My brother likes playing video games."),
+        b("Present simple question", "What is your favourite colour?"),
+        b("can for ability", "My mother can speak three languages."),
+        b("Present simple negative", "We don't have school on Friday."),
+        b("Adverb of frequency", "I always do my homework after lunch."),
+        b("Past simple", "My family moved to Muscat last year.")
+      ]),
+      act("building", "easy", 22, "Around the House", BI, [
+        b("Preposition of place", "The keys are on the kitchen table."),
+        b("There is", "There is a big mirror in my bedroom."),
+        b("Present continuous", "My father is washing the car."),
+        b("Imperative", "Please close the window."),
+        b("Possessive", "This is my sister's room."),
+        b("Present continuous question", "Who is cooking dinner tonight?"),
+        b("Past simple negative", "I didn't clean my room yesterday."),
+        b("Preposition of place", "The cat is sleeping under the bed.")
+      ]),
+      act("building", "easy", 23, "At School", BI, [
+        b("Present simple", "Our English lesson starts at eight."),
+        b('Question with "Can"', "Can I borrow your ruler, please?"),
+        b("Comparative", "Science is more interesting than history."),
+        b("Past simple", "The teacher gave us a short test."),
+        b("going to", "We are going to play football after school."),
+        b("must", "You must wear your uniform every day."),
+        b('Question with "How"', "How do you spell your name?"),
+        b("Superlative", "Ahmed is the fastest runner in our class.")
+      ]),
+      act("building", "easy", 24, "Weekend Plans", BI, [
+        b("going to", "I am going to visit my grandparents."),
+        b("will", "It will be sunny on Saturday."),
+        b("want to", "My sister wants to go to the mall."),
+        b("Let's", "Let's have a picnic in the park."),
+        b('Question with "What"', "What are you doing this weekend?")
+      ]),
+      act("building", "medium", 21, "Perfect Tenses", BI, [
+        b("Present perfect + already", "I have already finished my homework."),
+        b("Present perfect + yet", "She hasn't called me back yet."),
+        b("Present perfect + ever", "Have you ever eaten camel meat?"),
+        b("Present perfect + for", "We have known each other for ten years."),
+        b("Past perfect", "The film had started before we arrived."),
+        b("Present perfect continuous", "It has been raining all morning."),
+        b("Present perfect + just", "The bus has just left the station."),
+        b("Past perfect question", "Had you met him before the party?")
+      ]),
+      act("building", "medium", 22, "Modals & Advice", BI, [
+        b("should for advice", "You should drink more water every day."),
+        b("don't have to", "We don't have to wear a tie at school."),
+        b("might for possibility", "It might rain later this afternoon."),
+        b("must not", "You must not use your phone in the exam."),
+        b("could for a polite request", "Could you open the door for me?"),
+        b("had better", "You had better leave now or you will be late."),
+        b("used to", "My grandfather used to work on a farm."),
+        b("be able to", "She will be able to help you tomorrow.")
+      ]),
+      act("building", "medium", 23, "Questions & Answers", BI, [
+        b("Indirect question", "Can you tell me where the station is?"),
+        b('Question with "How long"', "How long have you been learning English?"),
+        b("Question tag", "You live near the school, don't you?"),
+        b("Subject question", "Who broke the window in the classroom?"),
+        b('Question with "Whose"', "Whose phone is ringing in the bag?"),
+        b('Question with "How often"', "How often do you go to the gym?"),
+        b("Passive question", "When was this mosque built?"),
+        b('Question with "What \u2026 like"', "What was the weather like in Salalah?")
+      ]),
+      act("building", "medium", 24, "Reasons & Results", BI, [
+        b("because of", "The match was delayed because of the rain."),
+        b("so", "I was hungry, so I made a sandwich."),
+        b("in order to", "She studied hard in order to pass the test."),
+        b("too \u2026 to", "The box was too heavy to lift."),
+        b("enough \u2026 to", "The water was warm enough to swim in.")
+      ]),
+      act("building", "challenge", 21, "Reported Speech & Passive", "Tap the words in the correct order. Watch the commas!", [
+        b("Reported question", "She asked me whether I had seen the film."),
+        b("Reported command", "The doctor told him not to eat sugar."),
+        b("Reported statement", "He said that he would call me the next day."),
+        b("Present perfect passive", "The new library has just been opened."),
+        b("Modal passive", "All phones must be switched off during the exam."),
+        b("Passive reporting verb", "It is believed that the fort is very old."),
+        b("Causative have", "We are having our kitchen painted next week."),
+        b("Reported suggestion", "My teacher suggested reading more English books.")
+      ]),
+      act("building", "challenge", 22, "Complex Sentences", "Tap the words in the correct order. These are tricky!", [
+        b("Mixed conditional", "If I had listened to the coach, I would be in the team now."),
+        b("Despite + -ing", "Despite feeling ill, she went to school."),
+        b("Unless", "Unless it stops raining, the trip will be cancelled."),
+        b("Should have", "You should have told me about the problem."),
+        b("Must have", "He must have forgotten about our meeting."),
+        b("Future perfect", "By next year, I will have finished school."),
+        b("As long as", "You can borrow my laptop as long as you are careful."),
+        b("Even though", "Even though it was late, nobody wanted to go home.")
+      ]),
+      act("building", "challenge", 23, "Formal Sentences", "Tap the words in the correct order.", [
+        b("Formal email opening", "I am writing to complain about the service."),
+        b("Formal request", "I would be grateful if you could reply soon."),
+        b("Formal closing", "I look forward to hearing from you."),
+        b("Giving an opinion", "In my opinion, students should have more free time."),
+        b("Adding a point", "Furthermore, exercise improves our mood and memory."),
+        b("Contrast", "However, not everyone agrees with this idea."),
+        b("Conclusion", "To sum up, the advantages outweigh the disadvantages."),
+        b("Giving an example", "For example, many cities now have bike lanes.")
+      ]),
+      act("building", "challenge", 24, "Emphasis & Inversion", "Tap the words in the correct order.", [
+        b("Not only \u2026 but also", "Not only did he win, but he also broke the record."),
+        b("Rarely", "Rarely have I seen such a beautiful garden."),
+        b("Hardly \u2026 when", "Hardly had the film started when the lights came on."),
+        b("What I need is \u2026", "What I need is a good night's sleep."),
+        b("It was \u2026 that", "It was in Nizwa that I bought this pot.")
+      ]),
+      // ===================================================== STORY ORDER
+      act("scramble", "easy", 21, "My Day", OI, [
+        o("Saturday morning", ["I woke up late on Saturday morning.", "I had breakfast with my brother.", "Then we went to the park to play football.", "We came home at lunchtime, hot and tired."]),
+        o("After school", ["I get home from school at two o'clock.", "First, I have lunch with my family.", "After that, I rest for half an hour.", "Then I start my homework."]),
+        o("Bedtime", ["At nine o'clock, I turn off the TV.", "I brush my teeth and put on my pyjamas.", "I read a book in bed for twenty minutes.", "Finally, I turn off the light and go to sleep."]),
+        o("A visit to the dentist", ["On Monday, I had a toothache.", "My mother made an appointment with the dentist.", "The dentist looked at my teeth and fixed the problem.", "Now I brush my teeth more carefully."])
+      ]),
+      act("scramble", "easy", 22, "Little Stories", OI, [
+        o("The broken window", ["Ali and his friends were playing football in the street.", "Ali kicked the ball very hard.", "The ball hit a window and broke it.", "Ali said sorry to the neighbour and helped to pay for a new window."]),
+        o("The new bike", ["For my birthday, my father bought me a new bike.", "At first, I fell off many times.", "My father helped me to practise every day.", "After a week, I could ride it without any help."]),
+        o("A rainy afternoon", ["It was raining, so we could not go outside.", "My sister had an idea: let's make a cake!", "We mixed everything and put the cake in the oven.", "When the rain stopped, the cake was ready to eat."]),
+        o("The lost key", ["When I got home, I couldn't find my key.", "I looked in my bag and in my pockets.", "Then I called my mother.", 'She said, "Look under the plant pot!"'])
+      ]),
+      act("scramble", "easy", 23, "How To\u2026", OI, [
+        o("Making orange juice", ["Wash three oranges.", "Cut each orange in half.", "Squeeze the juice into a glass.", "Add some ice and drink it."]),
+        o("Taking a photo with a phone", ["Open the camera app.", "Point the phone at the thing you want to photograph.", "Hold the phone still.", "Tap the button to take the photo."]),
+        o("Making your bed", ["Take off the pillows.", "Pull the sheet straight.", "Put the blanket on top.", "Put the pillows back on the bed."]),
+        o("Crossing the road", ["Stop at the side of the road.", "Look left and right.", "Wait until there are no cars.", "Walk across the road carefully."])
+      ]),
+      act("scramble", "easy", 24, "Short Messages", OI, [
+        o("A message to a friend", ["Hi Sara,", "Are you free on Friday afternoon?", "Let's go to the new caf\xE9 near the beach.", "Text me back! Love, Mona"]),
+        o("A note for Mum", ["Dear Mum,", "I have gone to Khalid's house to study.", "I will be home at six o'clock.", "See you later, Omar"]),
+        o("A postcard", ["Dear Grandpa,", "We are having a great time in Salalah.", "Yesterday we visited a beautiful waterfall.", "See you next week! Love, Amal"]),
+        o("A thank-you card", ["Dear Ms Aisha,", "Thank you for helping me with my English this year.", "Your lessons were always fun and interesting.", "Best wishes, Yusuf"])
+      ]),
+      act("scramble", "medium", 21, "Stories with Time Words", 'Look for time words like "then", "later" and "finally".', [
+        o("The surprise party", ["Last Thursday was my father's fiftieth birthday.", "While he was at work, we decorated the house with balloons.", 'When he opened the door, everyone shouted "Surprise!"', "He was so happy that he couldn't stop smiling."]),
+        o("The flat tyre", ["We were driving to Nizwa when we heard a loud bang.", "My father stopped the car and saw that a tyre was flat.", "Luckily, a kind man stopped and helped us change it.", "An hour later, we continued our journey."]),
+        o("Planting trees", ["Our class wanted to make the school greener.", "First, we asked the head teacher for permission.", "Then we collected money to buy twenty young trees.", "Finally, we planted them along the school wall."]),
+        o("The stray cat", ["One morning, a thin cat appeared in our garden.", "My brother started to give it food every day.", "Soon, the cat began to follow him everywhere.", "In the end, my parents agreed that we could keep it."])
+      ]),
+      act("scramble", "medium", 22, "Opinion Paragraphs", "Find the topic sentence, the reasons and the conclusion.", [
+        o("Why I like living in a village", ["I prefer living in a village to living in a city.", "Firstly, the air is cleaner and there is less traffic.", "Secondly, everyone knows each other and helps their neighbours.", "For these reasons, I hope I never have to move to a city."]),
+        o("Learning a language", ["Learning a second language has many benefits.", "It helps you to communicate with people from other countries.", "It can also help you to find a better job in the future.", "Therefore, every student should try to learn at least one foreign language."]),
+        o("Reading on paper", ["Some people think e-books will soon replace paper books.", "However, I still prefer reading printed books.", "They are easier on the eyes and do not need a battery.", "In my view, paper books will be with us for a long time."]),
+        o("Pets", ["Having a pet can be good for children.", "For one thing, it teaches them to be responsible.", "In addition, pets can make people feel less lonely.", "That is why I think every family should consider getting a pet."])
+      ]),
+      act("scramble", "medium", 23, "Emails & Letters", "Find the greeting, the message and the ending.", [
+        o("Asking for information", ["Dear Sir or Madam,", "I saw your advertisement for summer swimming classes.", "Could you please tell me the times and the price?", "Yours faithfully, Salim Al Busaidi"]),
+        o("An apology", ["Hi Rashid,", "I'm really sorry that I missed your football match.", "My grandmother was ill, and we had to visit her.", "I promise I'll come to the next one! Hamad"]),
+        o("An invitation", ["Dear Aunt Zainab,", "We are having a small party for my graduation on Friday.", "It would be wonderful if you could come.", "With love, Reem"]),
+        o("Booking a table", ["Dear Manager,", "I would like to book a table for six people.", "We will arrive at 7 pm on Saturday 12th March.", "Kind regards, Fatma Al Hinai"])
+      ]),
+      act("scramble", "medium", 24, "Processes", OI, [
+        o("How rain is formed", ["The sun heats the water in the sea.", "The water turns into water vapour and rises.", "The vapour cools and forms clouds.", "When the clouds are full, the water falls as rain."]),
+        o("Making pottery", ["First, the potter mixes clay with water.", "Next, the clay is shaped on a turning wheel.", "Then the pot is left in the sun to dry.", "Finally, it is baked in a very hot oven."]),
+        o("Borrowing a library book", ["Find the book you want on the shelf.", "Take it to the librarian's desk.", "Show your library card.", "Return the book within two weeks."]),
+        o("From seed to apple", ["A seed is planted in the soil.", "It grows into a small tree.", "After a few years, the tree has flowers.", "The flowers turn into apples."])
+      ]),
+      act("scramble", "challenge", 21, "Order the Argument", "Five sentences each. Think about how the ideas connect.", [
+        o("Should mobile phones be allowed in class?", ["Whether students should use phones in class is a controversial issue.", "On the one hand, phones give students quick access to useful information.", "On the other hand, they can easily distract students from the lesson.", "A possible solution is to allow phones only when the teacher asks for them.", "In this way, students can enjoy the benefits without the problems."]),
+        o("Fast food", ["Fast food has become extremely popular among young people.", "It is cheap, quick and often tastes delicious.", "However, it usually contains a lot of fat, salt and sugar.", "Eating it too often can lead to serious health problems.", "Therefore, fast food should be an occasional treat rather than a daily meal."]),
+        o("Public transport", ["Many cities are trying to encourage people to use public transport.", "This is because fewer cars mean less traffic and pollution.", "However, people will only leave their cars at home if buses are reliable.", "Governments therefore need to invest in better services.", "If they do, everyone will benefit from cleaner, quieter cities."])
+      ]),
+      act("scramble", "challenge", 22, "Order the Story", "Five sentences each. Look for pronouns and time words.", [
+        o("The storm at sea", ["The fishermen had been at sea for three hours when the sky turned dark.", "Within minutes, huge waves were crashing against their small boat.", "The captain calmly ordered everyone to put on their life jackets.", "Despite the danger, he managed to steer the boat back towards the harbour.", "When they finally reached land, the whole village was waiting for them."]),
+        o("The competition", ["Mariam had always dreamed of winning the school poetry competition.", "This year, she spent weeks writing and rewriting her poem.", "On the day of the competition, her voice shook as she began to read.", "However, as she continued, she grew more confident.", "When the results were announced, she could hardly believe she had won."]),
+        o("The kind stranger", ["It was late at night, and Saeed's car had broken down on a quiet road.", "His phone battery was dead, so he could not call for help.", "After half an hour, a truck stopped beside him.", "The driver, a stranger, offered to take him to the nearest town.", "Saeed never learned the man's name, but he never forgot his kindness."])
+      ]),
+      act("scramble", "challenge", 23, "Order the Report", "Five sentences each. Follow the logic from start to finish.", [
+        o("Survey: How students travel to school", ["This report presents the results of a survey on how students travel to school.", "A total of 200 students from Grades 7 to 9 answered the questionnaire.", "The majority, 60 percent, said they travel by school bus.", "Only 10 percent walk or cycle, mainly because of the heat.", "It is recommended that the school provide shaded paths to encourage walking."]),
+        o("How a desalination plant works", ["Desalination is the process of removing salt from seawater.", "First, seawater is pumped into the plant and filtered.", "It is then forced through membranes that hold back the salt.", "After that, minerals are added to make the water safe and pleasant to drink.", "Finally, the clean water is stored and sent to homes and businesses."]),
+        o("A science experiment", ["The aim of this experiment was to see whether plants need light to grow.", "Two identical plants were given the same amount of water every day.", "One plant was kept in a sunny window, and the other in a dark cupboard.", "After two weeks, the plant in the window had grown much taller.", "This shows that light is necessary for healthy plant growth."])
+      ]),
+      act("scramble", "challenge", 24, "Order the Biography", "Five sentences each. Follow the life story.", [
+        o("A young inventor", ["Yusuf was born in a small village near Rustaq.", "As a boy, he loved taking old radios apart to see how they worked.", "After finishing school, he studied engineering at university.", "Later, he designed a cheap water filter for villages without clean water.", "Today, his invention is used in several countries around the world."]),
+        o("A champion swimmer", ["Layla learned to swim in the sea when she was only four years old.", "By the age of twelve, she was winning local competitions.", "However, a serious shoulder injury stopped her from training for a year.", "With great determination, she returned to the pool and trained harder than ever.", "Two years later, she won a gold medal for her country."]),
+        o("A famous traveller", ["Ibn Battuta was born in Tangier, Morocco, in 1304.", "At the age of twenty-one, he left home to make the journey to Mecca.", "Instead of returning home, he continued travelling for almost thirty years.", "He visited many lands, including East Africa, India and China.", "Later, he told the story of his travels in a famous book."])
+      ]),
+      // ===================================================== FIX THE MISTAKE
+      act("correction", "easy", 21, "Fix It: Everyday Sentences", CI, [
+        c("My brother play football every day.", "My brother plays football every day.", "He + verb + s."),
+        c("I am fourteen years.", "I am fourteen years old.|I'm fourteen years old.|I am fourteen.|I'm fourteen.", 'We say "years old".'),
+        c("She have a red bag.", "She has a red bag.", "She \u2192 has."),
+        c("There are a cat on the sofa.", "There is a cat on the sofa.", "One cat \u2192 there is."),
+        c("We was at the mall yesterday.", "We were at the mall yesterday.", "We \u2192 were."),
+        c("Do she like ice cream?", "Does she like ice cream?", "She \u2192 does."),
+        c("I have three brother.", "I have three brothers.", "Three \u2192 plural."),
+        c("He go to bed at ten.", "He goes to bed at ten.", "He + goes.")
+      ]),
+      act("correction", "easy", 22, "Fix It: Past Simple", CI, [
+        c("Last week I visit my uncle.", "Last week I visited my uncle.", '"Last week" \u2192 past simple.'),
+        c("We goed to the beach on Friday.", "We went to the beach on Friday.", "go \u2192 went."),
+        c("She didn't ate her lunch.", "She didn't eat her lunch.|She did not eat her lunch.", "didn't + base verb."),
+        c("They was very happy.", "They were very happy.", "They \u2192 were."),
+        c("I see a big fish yesterday.", "I saw a big fish yesterday.", "see \u2192 saw."),
+        c("Where did you went?", "Where did you go?", "did + base verb."),
+        c("He catched the ball.", "He caught the ball.", "catch \u2192 caught."),
+        c("She cutted her finger with a knife.", "She cut her finger with a knife.", "cut \u2192 cut (the past is the same).")
+      ]),
+      act("correction", "easy", 23, "Fix It: Small Words 2", CI, [
+        c("I go to school by foot.", "I go to school on foot.", 'We say "on foot".'),
+        c("She is good in drawing.", "She is good at drawing.|She's good at drawing.", "good at."),
+        c("I have an car.", "I have a car.", "a before a consonant sound."),
+        c("My birthday is in 5th May.", "My birthday is on 5th May.|My birthday is on the 5th of May.", "on + dates."),
+        c("He is more taller than his father.", "He is taller than his father.|He's taller than his father.", 'Do not use "more" with -er.'),
+        c("Listen at the teacher.", "Listen to the teacher.", "listen to."),
+        c("There isn't some milk.", "There isn't any milk.|There is not any milk.|There is no milk.", "Negative \u2192 any."),
+        c("What time you get up?", "What time do you get up?", "Present simple questions need do / does.")
+      ]),
+      act("correction", "easy", 24, "Fix It: Plurals & Pronouns", CI, [
+        c("The womans are talking.", "The women are talking.", "woman \u2192 women."),
+        c("I like your shoes. Where did you buy it?", "I like your shoes. Where did you buy them?", "shoes \u2192 them."),
+        c("Me and my friend play tennis.", "My friend and I play tennis.|I and my friend play tennis.", "Subject \u2192 I."),
+        c("This book is my.", "This book is mine.", "Without a noun \u2192 mine."),
+        c("Her is my best friend.", "She is my best friend.|She's my best friend.", "Subject \u2192 she.")
+      ]),
+      act("correction", "medium", 21, "Fix It: Perfect Tenses", CI, [
+        c("I have finished my homework yesterday.", "I finished my homework yesterday.", '"Yesterday" \u2192 past simple.'),
+        c("They have arrived two hours ago.", "They arrived two hours ago.", '"Ago" \u2192 past simple.'),
+        c("Have you ever went to Salalah?", "Have you ever been to Salalah?|Have you ever gone to Salalah?", "have + past participle."),
+        c("When I arrived, the bus has already left.", "When I arrived, the bus had already left.", "Earlier past action \u2192 past perfect."),
+        c("I have been waiting here since two hours.", "I have been waiting here for two hours.|I've been waiting here for two hours.", "for + a period of time."),
+        c("He hasn't finished his work already.", "He hasn't finished his work yet.|He has not finished his work yet.", '"yet" in negatives.'),
+        c("We have knew each other for years.", "We have known each other for years.|We've known each other for years.", "know \u2192 known."),
+        c("How long do you live in Muscat?", "How long have you lived in Muscat?|How long have you been living in Muscat?", '"How long" + present perfect.')
+      ]),
+      act("correction", "medium", 22, "Fix It: Verb Patterns", CI, [
+        c("I want go home.", "I want to go home.", "want + to."),
+        c("She is interested in learn Chinese.", "She is interested in learning Chinese.|She's interested in learning Chinese.", "After a preposition \u2192 -ing."),
+        c("He finished to write his essay.", "He finished writing his essay.", "finish + -ing."),
+        c("My parents let me to stay up late.", "My parents let me stay up late.", "let + person + base verb."),
+        c("We decided going to the beach.", "We decided to go to the beach.", "decide + to."),
+        c("I am looking forward to meet you.", "I am looking forward to meeting you.|I'm looking forward to meeting you.", "look forward to + -ing."),
+        c("She can't stand to wait in queues.", "She can't stand waiting in queues.", "can't stand + -ing."),
+        c("He made me to laugh.", "He made me laugh.", "make + person + base verb.")
+      ]),
+      act("correction", "medium", 23, "Fix It: Conditionals & Modals", CI, [
+        c("If it will be sunny, we will go out.", "If it is sunny, we will go out.|If it's sunny, we will go out.|If it is sunny, we'll go out.|If it's sunny, we'll go out.", 'No "will" after "if".'),
+        c("If I was you, I would study harder.", "If I were you, I would study harder.|If I were you, I'd study harder.", "If I were you\u2026"),
+        c("You must to wear a helmet.", "You must wear a helmet.", "must + base verb."),
+        c("She should goes to the doctor.", "She should go to the doctor.", "should + base verb."),
+        c("If I had a car, I will drive to work.", "If I had a car, I would drive to work.|If I had a car, I'd drive to work.", "Second conditional \u2192 would."),
+        c("Could you to help me?", "Could you help me?", "could + base verb."),
+        c("We don't must be late.", "We mustn't be late.|We must not be late.", "Negative of must \u2192 must not."),
+        c("Unless you don't hurry, you will miss the bus.", "Unless you hurry, you will miss the bus.|Unless you hurry, you'll miss the bus.|If you don't hurry, you will miss the bus.", '"Unless" already means "if not".')
+      ]),
+      act("correction", "medium", 24, "Fix It: Mixed Errors", CI, [
+        c("I am agree with your idea.", "I agree with your idea.", '"agree" is a verb; no "am".'),
+        c("He is very good student.", "He is a very good student.|He's a very good student.", "a + adjective + noun."),
+        c("There is too much cars in the street.", "There are too many cars in the street.", "Plural countable \u2192 too many."),
+        c("She has two years old.", "She is two years old.|She's two years old.", 'Age uses "be".'),
+        c("It was too cold that we stayed inside.", "It was so cold that we stayed inside.", "so + adjective + that.")
+      ]),
+      act("correction", "challenge", 21, "Fix It: Advanced Tenses", CI, [
+        c("By next year, I will finish school.", "By next year, I will have finished school.|By next year, I'll have finished school.", '"By next year" \u2192 future perfect.'),
+        c("This time tomorrow, I will fly to London.", "This time tomorrow, I will be flying to London.|This time tomorrow, I'll be flying to London.", "In progress at a future time \u2192 future continuous."),
+        c("He must have forgot the meeting.", "He must have forgotten the meeting.", "must have + past participle."),
+        c("You should have tell me earlier.", "You should have told me earlier.", "should have + past participle."),
+        c("She can't have saw us.", "She can't have seen us.|She cannot have seen us.", "can't have + past participle."),
+        c("If I would have known, I would have helped.", "If I had known, I would have helped.|If I'd known, I would have helped.|If I had known, I'd have helped.", "Third conditional: if + past perfect."),
+        c("I wish I studied harder last year.", "I wish I had studied harder last year.|I wish I'd studied harder last year.", "Wish about the past \u2192 past perfect."),
+        c("It's time we go home.", "It's time we went home.|It is time we went home.", `"It's time" + past simple.`)
+      ]),
+      act("correction", "challenge", 22, "Fix It: Agreement & Nouns", CI, [
+        c("Mathematics are my favourite subject.", "Mathematics is my favourite subject.", '"Mathematics" is singular.'),
+        c("Everyone in the room were silent.", "Everyone in the room was silent.", '"Everyone" is singular.'),
+        c("The equipments are very expensive.", "The equipment is very expensive.", '"Equipment" is uncountable.'),
+        c("A number of students was absent.", "A number of students were absent.", '"A number of" \u2192 plural verb.'),
+        c("Neither of the answers are correct.", "Neither of the answers is correct.", '"Neither of" \u2192 singular verb.'),
+        c("The teacher, with her students, are visiting the museum.", "The teacher, with her students, is visiting the museum.", 'The subject is "the teacher".'),
+        c("He gave me two advices.", "He gave me two pieces of advice.|He gave me some advice.", '"Advice" is uncountable.'),
+        c("The furnitures in this room are new.", "The furniture in this room is new.", '"Furniture" is uncountable.')
+      ]),
+      act("correction", "challenge", 23, "Fix It: Word Order & Linking", CI, [
+        c("Never I have eaten such delicious food.", "Never have I eaten such delicious food.", 'Inversion after "Never".'),
+        c("Despite it was raining, we played.", "Despite the rain, we played.|Although it was raining, we played.|Despite it raining, we played.", "despite + noun / -ing; although + clause."),
+        c("Can you tell me where is the bank?", "Can you tell me where the bank is?", "Indirect question \u2192 statement word order."),
+        c("Not only she sings, but she also dances.", "Not only does she sing, but she also dances.", 'Inversion after "Not only".'),
+        c("She asked me what time was it.", "She asked me what time it was.", "Reported question \u2192 statement word order."),
+        c("Because of it was late, we took a taxi.", "Because it was late, we took a taxi.", "because + clause; because of + noun."),
+        c("I have never seen so a beautiful view.", "I have never seen such a beautiful view.|I have never seen so beautiful a view.", "such + a + adjective + noun."),
+        c("Little he knew about the surprise.", "Little did he know about the surprise.", 'Inversion after "Little".')
+      ]),
+      act("correction", "challenge", 24, "Fix It: Participles & Passives", CI, [
+        c("Having finish the exam, he left the room.", "Having finished the exam, he left the room.", "Having + past participle."),
+        c("The castle was build in 1650.", "The castle was built in 1650.", "build \u2192 built."),
+        c("I had my hair cutted yesterday.", "I had my hair cut yesterday.", "cut \u2192 cut."),
+        c("The new road will be open next month by the minister.", "The new road will be opened next month by the minister.", "Passive: will be + past participle."),
+        c("The bridge is being build at the moment.", "The bridge is being built at the moment.", "Passive: being + past participle.")
+      ])
+    ];
+
+    // ../src/site/src/extra2/index.js
+    var EXTRA2_ACTIVITIES = [...grammar_default, ...vocabulary_default, ...reading_default, ...listening_default, ...writing_default];
+    return __toCommonJS(index_exports);
+  })();
+  var EXTRA_ACTIVITIES = [...grammar_default, ...vocabulary_default, ...reading_default, ...listening_default, ...writing_default, ...__EPZ_EXTRA2.EXTRA2_ACTIVITIES];
 
   // src/sample-content.js
   var BASE_ACTIVITIES = [
@@ -2626,6 +3700,21 @@ Majid` }),
     let type = q.type === "truefalse" ? "mcq" : q.type, audioBtn = q.audio ? `<button class="btn btn-ghost btn-sm q-audio" type="button">${icon("volume", 16)} Listen</button>` : "", image = q.image ? `<div class="q-image" aria-hidden="true">${esc(q.image)}</div>` : "", prompt = (text) => `<h2 class="q-prompt">${formatPrompt(text)}</h2>`, ctrl;
     return type === "mcq" ? ctrl = mcq(q, area, ctx, image + prompt(q.prompt) + audioBtn) : type === "fill" ? ctrl = textAnswer(q, area, ctx, image + prompt(q.prompt) + audioBtn, "") : type === "correct" ? ctrl = textAnswer(q, area, ctx, `<p class="q-label">${icon("correction", 18)} Find the mistake and write the correct sentence:</p>` + prompt(q.prompt) + audioBtn, q.prompt) : type === "build" ? ctrl = tiles(q, area, ctx, !1) : type === "order" ? ctrl = tiles(q, area, ctx, !0) : type === "match" ? ctrl = match(q, area, ctx) : (area.innerHTML = `<p class="muted">Unknown question type "${esc(q.type)}".</p>`, ctx.setReady(!0), ctrl = { evaluate: () => ({ ok: !0, correctText: "" }) }), area.querySelector(".q-audio")?.addEventListener("click", () => speak(q.audio)), ctrl;
   }
+  function expandShort(s) {
+    return String(s ?? "").replace(/[’‘]/g, "'").toLowerCase().replace(/\bcan't\b/g, "cannot").replace(/\bcan not\b/g, "cannot").replace(/\bwon't\b/g, "will not").replace(/\bshan't\b/g, "shall not").replace(/\b([a-z]+)n't\b/g, "$1 not").replace(/\bi'm\b/g, "i am").replace(/\b([a-z]+)'re\b/g, "$1 are").replace(/\b([a-z]+)'ll\b/g, "$1 will").replace(/\b([a-z]+)'ve\b/g, "$1 have");
+  }
+  function answerForms(s) {
+    let forms = [expandShort(s)];
+    const RULES = [[/\b([a-z]+)'s\b/, ["is", "has"]], [/\b([a-z]+)'d\b/, ["would", "had"]]];
+    for (const [re, words] of RULES)
+      for (let round = 0; round < 4 && forms.some((v) => re.test(v)); round++)
+        forms = forms.flatMap((v) => re.test(v) ? [v.replace(re, "$1\uE000" + (re === RULES[0][0] ? "s" : "d")), ...words.map((w) => v.replace(re, `$1 ${w}`))] : [v]);
+    return forms.map((v) => v.replace(/\uE000/g, "'"));
+  }
+  function typedMatches(given, key) {
+    const keys = String(key ?? "").split("|").flatMap(answerForms).join("|");
+    return answerForms(given).some((g) => answerMatches(g, keys));
+  }
   function formatPrompt(text) {
     return esc(text || "").replace(/_{2,}/g, '<span class="blank">_____</span>');
   }
@@ -2666,7 +3755,7 @@ Majid` }),
       correctText: () => firstAnswer(q.answer),
       evaluate() {
         input.disabled = !0;
-        let ok = answerMatches(input.value, q.answer);
+        let ok = typedMatches(input.value, q.answer);
         return input.classList.add(ok ? "correct" : "wrong"), { ok, correctText: firstAnswer(q.answer) };
       }
     };
