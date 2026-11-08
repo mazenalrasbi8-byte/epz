@@ -64,6 +64,10 @@ input:focus{border-color:var(--green)}
 .modal .acts>*{flex:1}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:14px;font-weight:800;z-index:20;max-width:90vw}
 [hidden]{display:none!important}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 8px;margin:0 -2px 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{font:inherit;font-weight:900;font-size:.88rem;border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 12px;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.chip[aria-pressed=true]{background:var(--green);border-color:var(--green);color:#fff}
 </style>
 </head>
 <body>
@@ -78,6 +82,10 @@ input:focus{border-color:var(--green)}
   var code = '';
   try { code = localStorage.getItem(KEY) || ''; } catch (e) { code = ''; }
   var data = null, tab = 'played', query = '', timer = null, lastOk = null, busy = false;
+  // epz-patch:classes — grade and class filter (remembered on this device)
+  var NCLS = { '9': 5, '10': 5, '11': 8, '12': 9 }, gsel = 'all', csel = 'all';
+  try { var fs = JSON.parse(localStorage.getItem('epz-teacher-filter') || '{}'); gsel = fs.g || 'all'; csel = fs.c || 'all'; } catch (e) { /* ignore */ }
+  var classOf = function (s) { return s.grade === 'guest' ? 'Guest' : s.cls || 'No class yet'; };
 
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
   var dayOf = function (d) { return new Date(d).toLocaleDateString('en-CA', { timeZone: TZ }); };
@@ -158,17 +166,28 @@ input:focus{border-color:var(--green)}
   function students() {
     // One entry per device: board row (points) wins over the visitor row (name only).
     var map = {};
-    (data.visitors || []).forEach(function (v) { map[v.id] = { id: v.id, name: v.name || '', seen: v.last_seen, pts: null, played: null, league: '', rounds: 0 }; });
+    (data.visitors || []).forEach(function (v) { map[v.id] = { id: v.id, name: v.name || '', seen: v.last_seen, pts: null, played: null, league: '', rounds: 0, grade: v.grade || '', cls: v.class_name || '' }; });
     (data.board || []).forEach(function (b) {
       var m = map[b.id] || (map[b.id] = { id: b.id, seen: b.updated_at });
       m.name = b.name || m.name || ''; m.pts = b.pts; m.league = b.league; m.rounds = b.rounds; m.played = b.updated_at;
+      if (b.grade) { m.grade = b.grade; m.cls = b.class_name || ''; } else if (m.grade == null) { m.grade = ''; m.cls = ''; }
       if (!m.seen || new Date(b.updated_at) > new Date(m.seen)) m.seen = b.updated_at;
     });
     return Object.keys(map).map(function (k) { return map[k]; });
   }
 
   function draw() {
-    var all = students();
+    var everyone = students();
+    var hasNone = everyone.some(function (s) { return !s.grade; });
+    if (gsel === 'none' && !hasNone) gsel = 'all';
+    var all = everyone.filter(function (s) {
+      if (gsel !== 'all' && (gsel === 'none' ? !!s.grade : s.grade !== gsel)) return false;
+      return csel === 'all' || s.cls === csel;
+    });
+    var gopts = [['all', 'All'], ['9', 'Grade 9'], ['10', 'Grade 10'], ['11', 'Grade 11'], ['12', 'Grade 12'], ['guest', 'Guests']].concat(hasNone ? [['none', 'No class yet']] : []);
+    var copts = NCLS[gsel] ? [['all', 'All classes']].concat(Array.from({ length: NCLS[gsel] }, function (_, i) { var c = gsel + '/' + (i + 1); return [c, c]; })) : [];
+    var chips = '<div class="chips" role="group" aria-label="Grade">' + gopts.map(function (o) { return '<button class="chip" type="button" data-g="' + o[0] + '" aria-pressed="' + (gsel === o[0]) + '">' + o[1] + '</button>'; }).join('') + '</div>' +
+      (copts.length ? '<div class="chips" role="group" aria-label="Class">' + copts.map(function (o) { return '<button class="chip" type="button" data-c="' + esc(o[0]) + '" aria-pressed="' + (csel === o[0]) + '">' + esc(o[1]) + '</button>'; }).join('') + '</div>' : '');
     var today = dayOf(data.now || new Date());
     var named = all.filter(function (s) { return s.name; });
     var unnamed = all.length - named.length;
@@ -191,14 +210,14 @@ input:focus{border-color:var(--green)}
         ? (isPlayed ? 'Played ' + ago(s.played) : 'Last played ' + ago(s.played)) + ' · ' + (s.pts || 0) + ' pts'
         : 'Opened ' + ago(s.seen) + ' · has not played yet';
       return '<li class="row"><span class="dot ' + (isPlayed ? 'on' : '') + '" aria-hidden="true"></span>' +
-        '<div class="who"><b>' + esc(s.name) + '</b><span>' + esc(sub) + '</span></div>' +
+        '<div class="who"><b>' + esc(s.name) + '</b><span>' + esc(classOf(s) + ' · ' + sub) + '</span></div>' +
         '<button class="trash" data-id="' + esc(s.id) + '" data-name="' + esc(s.name) + '" aria-label="Remove ' + esc(s.name) + '">' +
         '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></button></li>';
     }).join('');
 
     app.innerHTML =
       '<div class="top"><div class="brand"><span class="logo">E</span><div><h1>Teacher panel</h1><small>English Practice Zone</small></div></div>' +
-      '<button class="btn btn-ghost" id="refresh" type="button">Refresh</button></div>' +
+      '<button class="btn btn-ghost" id="refresh" type="button">Refresh</button></div>' + chips +
       '<div class="stats">' +
       '<div class="stat"><b>' + all.length + '</b><span>Opened the site</span></div>' +
       '<div class="stat good"><b>' + playedToday.length + '</b><span>Played today</span></div>' +
@@ -224,6 +243,9 @@ input:focus{border-color:var(--green)}
       var n = document.getElementById('q'); n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) { /* ignore */ }
     };
     Array.prototype.forEach.call(app.querySelectorAll('.tab'), function (b) { b.onclick = function () { tab = b.getAttribute('data-tab'); draw(); }; });
+    var keepFilter = function () { try { localStorage.setItem('epz-teacher-filter', JSON.stringify({ g: gsel, c: csel })); } catch (e) { /* ignore */ } };
+    Array.prototype.forEach.call(app.querySelectorAll('[data-g]'), function (b) { b.onclick = function () { gsel = b.getAttribute('data-g'); csel = 'all'; keepFilter(); draw(); }; });
+    Array.prototype.forEach.call(app.querySelectorAll('[data-c]'), function (b) { b.onclick = function () { csel = b.getAttribute('data-c'); keepFilter(); draw(); }; });
     Array.prototype.forEach.call(app.querySelectorAll('.trash'), function (b) { b.onclick = function () { confirmDelete(b.getAttribute('data-id'), b.getAttribute('data-name')); }; });
   }
 
