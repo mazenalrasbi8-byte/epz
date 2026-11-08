@@ -711,6 +711,7 @@ button.slot { cursor: pointer; border-color: var(--c); box-shadow: 0 3px 0 var(-
 .su-steps i { width: 26px; height: 6px; border-radius: 99px; background: var(--line); transition: background .2s; }
 .su-steps i.on { background: var(--brand); }
 .setup { display: flex; flex-direction: column; gap: 14px; padding-block: 4px 28px; }
+.school-line { margin-bottom: -6px; }
 .setup > .logo-mark, .setup > .teacher-line, .setup > .skill-strip, .setup > .su-pick { align-self: flex-start; }
 .setup h1 { font-size: clamp(2rem, 8vw, 2.6rem); font-weight: 800; letter-spacing: -.01em; }
 .su-q { font-family: var(--display); font-size: 1.6rem; font-weight: 800; line-height: 1.15; margin-top: 4px; }
@@ -4315,7 +4316,7 @@ Majid` }),
       </a>
       </div>
     </div>
-    <footer class="foot"><b>English Practice Zone</b> by Mr. Mazen Al-Rasbi<br>Your progress is saved on this phone.</footer>`, wireSay(app2, w);
+    <footer class="foot"><b>English Practice Zone</b> by Mr. Mazen Al-Rasbi<br>Qutiba bin Muslim Boys School (9‑12)<br>Your progress is saved on this phone.</footer>`, wireSay(app2, w);
   }
   function buildQuestion(w, k) {
     if (k === "meaning") {
@@ -4542,7 +4543,7 @@ Majid` }),
     </div>
     <p class="arch-count muted small" id="arch-count" aria-live="polite"></p>
     <ul class="arch-list" id="arch-list"></ul>` : `<div class="dash-card arch-empty">${icon("calendar", 28)}<p><b>No previous words yet.</b><br>A new word comes every day. Come back tomorrow and today's word will be here.</p></div>`}
-    <footer class="foot"><b>English Practice Zone</b> by Mr. Mazen Al-Rasbi<br>Your progress is saved on this phone.</footer>`, !list.length) return;
+    <footer class="foot"><b>English Practice Zone</b> by Mr. Mazen Al-Rasbi<br>Qutiba bin Muslim Boys School (9‑12)<br>Your progress is saved on this phone.</footer>`, !list.length) return;
     let ul = app2.querySelector("#arch-list"), count = app2.querySelector("#arch-count"), draw = () => {
       let q = filt.q.trim().toLowerCase(), rows = list.filter(({ word: w }) => (filt.lv === "all" || w.lv === filt.lv) && (filt.pos === "all" || w.pos === filt.pos) && (filt.st === "all" || statusOf(w) === filt.st) && (!q || w.w.includes(q) || w.d.toLowerCase().includes(q) || w.ar.includes(filt.q.trim()) || w.syn.some((s) => s.includes(q))));
       count.textContent = rows.length === list.length ? `Showing all ${rows.length}` : `Showing ${rows.length} of ${list.length}`, ul.innerHTML = rows.length ? rows.map(({ word: w, day }) => {
@@ -4566,7 +4567,7 @@ Majid` }),
   }
 
   // src/simple/main.js
-  var app = document.getElementById("app"), cleanup = null, ownerState = "viewer", LIVE2 = LIVE, TEACHER_NAME = "Mr. Mazen Al-Rasbi", PRAISE2 = ["Great job!", "Excellent!", "Well done!", "Brilliant!", "Correct!", "Super!", "Nice work!"], firstName = (n) => String(n || "").trim().split(/\s+/)[0] || "there", initials = (n) => String(n || "?").trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase(), fmtDay = (d) => new Date(d).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+  var app = document.getElementById("app"), cleanup = null, ownerState = "viewer", LIVE2 = LIVE, TEACHER_NAME = "Mr. Mazen Al-Rasbi", SCHOOL_NAME = "Qutiba bin Muslim Boys School (9‑12)" /* epz-patch:school */, PRAISE2 = ["Great job!", "Excellent!", "Well done!", "Brilliant!", "Correct!", "Super!", "Nice work!"], firstName = (n) => String(n || "").trim().split(/\s+/)[0] || "there", initials = (n) => String(n || "?").trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase(), fmtDay = (d) => new Date(d).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
   function go(name) {
     location.hash === `#${name}` ? route2() : location.hash = name;
   }
@@ -4643,6 +4644,7 @@ Majid` }),
       ${!canCancel && ownerBar() ? `<div class="welcome-owner">${ownerBar()}</div>` : ""}
       <span class="logo-mark big" aria-hidden="true">E</span>
       <h1>English Practice Zone</h1>
+      <p class="teacher-line school-line">${icon("home", 18)} <b>${SCHOOL_NAME}</b></p>
       <p class="teacher-line">${icon("user", 18)} Teacher: <b>${TEACHER_NAME}</b></p>
       <div class="skill-strip" aria-hidden="true">${SKILL_KEYS2.map((k) => `<span style="--c:${SKILLS2[k].color}">${icon(SKILLS2[k].icon, 20)}</span>`).join("")}</div>
       <h2 class="su-q">Which grade are you in?</h2>
@@ -4768,7 +4770,7 @@ Majid` }),
       ${LIVE2 ? "" : `<button class="btn btn-send btn-big" id="send-btn">${icon("send", 20)} Send my score to my teacher</button>`}
     </section>
 
-    <footer class="foot"><b>English Practice Zone</b> by ${TEACHER_NAME}<br>Your progress is saved on this phone.${ownerState === "unknown" ? ' <button class="linklike" id="owner-open-foot">Teacher corner</button>' : ""}</footer>`, app.querySelectorAll("[data-level]").forEach((b2) => b2.addEventListener("click", () => {
+    <footer class="foot"><b>English Practice Zone</b> by ${TEACHER_NAME}<br>Qutiba bin Muslim Boys School (9‑12)<br>Your progress is saved on this phone.${ownerState === "unknown" ? ' <button class="linklike" id="owner-open-foot">Teacher corner</button>' : ""}</footer>`, app.querySelectorAll("[data-level]").forEach((b2) => b2.addEventListener("click", () => {
       setLevel(b2.dataset.level);
       let y = window.scrollY;
       home(), window.scrollTo(0, y), toast(`Level: ${LEVELS2[b2.dataset.level].name}`, "success", 1800);
@@ -4926,7 +4928,7 @@ Majid` }),
     </section>
 
     ${LIVE2 ? "" : `<button class="btn btn-send btn-big" id="send-btn">${icon("send", 20)} Send my score to my teacher</button>`}
-    <footer class="foot"><b>English Practice Zone</b> by ${TEACHER_NAME}<br>Your progress is saved on this phone.</footer>`;
+    <footer class="foot"><b>English Practice Zone</b> by ${TEACHER_NAME}<br>Qutiba bin Muslim Boys School (9‑12)<br>Your progress is saved on this phone.</footer>`;
     let cap = app.querySelector("#wc-cap");
     app.querySelectorAll(".wc").forEach((b2) => b2.addEventListener("click", () => {
       app.querySelectorAll(".wc").forEach((x2) => x2.classList.remove("picked")), b2.classList.add("picked"), cap.textContent = dayCaption(days[Number(b2.dataset.day)]);
