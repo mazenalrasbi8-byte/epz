@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>English Practice Zone</title>
 <meta name="description" content="Grade 9 English practice games: type your name and play. Points, badges, streaks and a class ranking.">
-<meta name="theme-color" content="#0B7A63">
+<meta name="theme-color" content="#F7F9FD">
 <meta property="og:title" content="English Practice Zone">
 <meta property="og:description" content="Grade 9 English games by Mr. Mazen Al-Rasbi. Type your name and play.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='6' y='6' width='52' height='52' rx='14' fill='%23F4A51C'/><rect x='2' y='2' width='52' height='52' rx='14' fill='%230B7A63'/><text x='28' y='42' font-family='Arial' font-weight='700' font-size='34' fill='white' text-anchor='middle'>E</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='6' y='6' width='52' height='52' rx='14' fill='%23FFD83D'/><rect x='2' y='2' width='52' height='52' rx='14' fill='%232B41C4'/><text x='28' y='42' font-family='Arial' font-weight='700' font-size='34' fill='white' text-anchor='middle'>E</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Lexend:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
 /* Layout: one thumb-friendly column (max 560px); while playing, the answer button and feedback sit in a bar fixed to the bottom. */
@@ -742,11 +742,320 @@ button.slot { cursor: pointer; border-color: var(--c); box-shadow: 0 3px 0 var(-
 .me-info b { font-size: 1.1rem; }
 .me-info span { color: var(--muted); font-weight: 800; }
 @media (prefers-reduced-motion: reduce) { .su-fwd, .su-back { animation: none !important; } }
+
+/* ============================================================ epz-patch:theme — "School notebook" look (11 Nov 2026)
+   Squared exercise-book paper, ink blue, highlighter yellow, a green chalkboard for greetings and the word of the day.
+   Only colours, type, shapes and the bottom tab bar. No question, class or points logic lives here. */
+:root {
+  --bg: #F7F9FD; --grid: #E3EAF6; --surface: #FFFFFF; --surface-2: #EEF2FA; --ink: #17224D; --muted: #56618A; --line: #CDD7EA;
+  --brand: #2B41C4; --brand-deep: #1C2C8F; --on-brand: #FFFFFF; --sun: #FFD83D; --sun-ink: #2B2300;
+  --good: #178A4C; --good-bg: #DDF5E6; --good-ink: #0D5530; --bad: #D8343F; --bad-bg: #FDE4E5; --bad-ink: #7C1820; --on-state: #FFFFFF;
+  --board: #1F4A3D; --chalk: #F4F7EF; --chalk-dim: #BDD2C6; --wood: #C4975F; --pen: #D8343F;
+  --cover: #2B41C4; --cover-deep: #1C2C8F; --on-cover: #FFFFFF;
+  --shadow: 0 3px 0 var(--line);
+  --font: 'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --display: 'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --hand: 'Kalam', 'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive;
+  --r: 16px; --r-s: 11px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121A18; --grid: #1A2623; --surface: #1B2925; --surface-2: #23342F; --ink: #EDF2EC; --muted: #A3B6AD; --line: #34493F;
+    --brand: #A3AFFF; --brand-deep: #7483E8; --on-brand: #101A4A; --sun: #FFD83D; --sun-ink: #2B2300;
+    --good: #45C97F; --good-bg: #143524; --good-ink: #B5EFCB; --bad: #F4737A; --bad-bg: #3B191C; --bad-ink: #FFC6C9; --on-state: #0E1F17;
+    --board: #1F4A3D; --chalk: #F4F7EF; --chalk-dim: #BDD2C6; --wood: #8F6E45; --pen: #FF8A90;
+    --cover: #2B41C4; --cover-deep: #1A287F; --on-cover: #FFFFFF;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121A18; --grid: #1A2623; --surface: #1B2925; --surface-2: #23342F; --ink: #EDF2EC; --muted: #A3B6AD; --line: #34493F;
+  --brand: #A3AFFF; --brand-deep: #7483E8; --on-brand: #101A4A; --sun: #FFD83D; --sun-ink: #2B2300;
+  --good: #45C97F; --good-bg: #143524; --good-ink: #B5EFCB; --bad: #F4737A; --bad-bg: #3B191C; --bad-ink: #FFC6C9; --on-state: #0E1F17;
+  --board: #1F4A3D; --chalk: #F4F7EF; --chalk-dim: #BDD2C6; --wood: #8F6E45; --pen: #FF8A90;
+  --cover: #2B41C4; --cover-deep: #1A287F; --on-cover: #FFFFFF;
+  color-scheme: dark;
+}
+
+/* ---------- page: squared paper */
+body {
+  font-size: 16px; line-height: 1.55; font-weight: 400;
+  background-color: var(--bg);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 22px 22px; background-position: center top;
+}
+body.has-nav { padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px)); }
+body.playing { padding-bottom: 210px; }
+h1, h2, h3 { letter-spacing: -.02em; }
+:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+.eyebrow { text-transform: none; letter-spacing: 0; font-size: .86rem; font-weight: 700; }
+.mini-stats span, .su-card small, .hero-def dt, .w-lbl, .live-pill { text-transform: none; letter-spacing: 0; }
+.fine, .small { font-size: .84rem; }
+.app { gap: 14px; }
+
+/* ---------- sheets of paper: every card */
+.prog-card, .go-skills, .board, .me-block, .dash-card, .dash-hero, .name-form, .wotd-home, .passage, .audio-box, .w-mini, .w-tips,
+.arch-card, .arch-none, .su-card, .qarea, .results, .level-switch, .search, .unlock {
+  border: 1.5px solid var(--line); box-shadow: 0 3px 0 var(--line);
+}
+.su-guest { box-shadow: none; }
+
+/* ---------- top bar */
+.top { background: var(--bg); padding-block: 10px; }
+.brand { font-weight: 700; font-size: 1rem; }
+.logo-mark { border-radius: 8px; padding-top: 0; font-weight: 800; box-shadow: 3px 3px 0 var(--sun); }
+.logo-mark.big { border-radius: 14px; }
+.pts-chip, a.pts-chip { background: var(--sun); color: var(--sun-ink); border-radius: 9px; box-shadow: 0 2px 0 color-mix(in srgb, var(--sun) 62%, #000); font-weight: 800; padding: 5px 11px; }
+.pts-chip svg { color: var(--sun-ink); fill: var(--sun-ink); }
+.back-btn { font-weight: 700; }
+
+/* ---------- buttons and fields */
+.btn { font-weight: 700; border-radius: var(--r-s); }
+.btn-big { border-radius: 13px; font-size: 1.05rem; }
+.btn-ghost { border-color: var(--line); }
+.btn-next { color: var(--on-state); }
+input, textarea { font-weight: 600; border-color: var(--line); }
+.linklike, .prog-go { font-weight: 700; }
+
+/* ---------- the chalkboard: greeting, first screen, word of the day */
+.hello, .cover-board, .word-hero {
+  background-color: var(--board);
+  background-image: radial-gradient(ellipse at 18% 8%, rgb(255 255 255 / .09), transparent 58%), radial-gradient(ellipse at 88% 96%, rgb(255 255 255 / .06), transparent 55%);
+  color: var(--chalk); border: 6px solid var(--wood); border-radius: 14px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / .3), inset 0 0 36px rgb(0 0 0 / .22), 0 4px 0 color-mix(in srgb, var(--wood) 58%, #000);
+}
+.hello { padding: 16px 14px 14px; align-items: flex-start; gap: 12px; }
+.hello h1, .cover-board h1, .word-hero h1 { font-family: var(--hand); font-weight: 700; letter-spacing: 0; color: var(--chalk); }
+.hello h1 { font-size: 2.15rem; line-height: 1.15; overflow-wrap: anywhere; }
+.hello p { color: var(--chalk-dim); font-weight: 600; font-size: .9rem; margin-top: 8px; }
+.hello .ic.flame { color: var(--sun); }
+.avatar { background: var(--chalk); color: var(--board); width: 50px; height: 50px; padding-top: 0; font-size: 1.1rem; box-shadow: 0 0 0 3px rgb(255 255 255 / .16); }
+.class-chip { background: transparent; border: 1.5px dashed rgb(255 255 255 / .45); color: var(--chalk); font-weight: 600; border-radius: 9px; padding: 3px 4px 3px 10px; margin-top: 4px; }
+.class-chip span { background: var(--sun); color: var(--sun-ink); border-radius: 6px; font-weight: 800; }
+.hello .class-chip:focus-visible, .hello .avatar:focus-visible { outline-color: var(--sun); }
+
+.cover-board { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 18px 16px 16px; }
+.cover-board h1 { font-size: clamp(2.1rem, 9vw, 2.7rem); line-height: 1.1; }
+.cover-board .teacher-line { background: transparent; box-shadow: none; padding: 0; color: var(--chalk-dim); font-weight: 500; font-size: .95rem; align-items: flex-start; text-align: left; }
+.cover-board .teacher-line b { color: var(--chalk); font-weight: 600; }
+.cover-board .teacher-line svg { color: var(--sun); margin-top: 3px; }
+.cover-board .school-line { margin-bottom: -4px; }
+.cover-board .skill-strip { margin-block: 6px 0; }
+.cover-board .skill-strip { gap: 6px; }
+.cover-board .skill-strip span { width: 36px; height: 36px; border-radius: 9px; box-shadow: 0 2px 0 rgb(0 0 0 / .3); }
+.cover-board .logo-mark.big { width: 52px; height: 52px; font-size: 1.9rem; background: var(--chalk); color: var(--board); box-shadow: 4px 4px 0 var(--sun); }
+
+/* ---------- home: today */
+.prog-card, .go-skills { border-radius: var(--r); padding: 12px 14px; }
+.prog-ic { color: var(--on-brand); border-radius: 11px; }
+.prog-txt b { font-weight: 700; font-size: 1.05rem; }
+.prog-txt span { font-weight: 500; font-size: .86rem; }
+.go-skills { display: flex; align-items: center; gap: 12px; background: var(--surface); text-decoration: none; color: var(--ink); min-height: 64px; }
+.gs-shelf { display: flex; align-items: flex-end; gap: 2px; height: 44px; padding: 0 3px; border-bottom: 3px solid var(--wood); flex-shrink: 0; }
+.gs-shelf i { width: 7px; height: 36px; border-radius: 2px 2px 0 0; background: var(--c); }
+.gs-shelf i:nth-child(3n+2) { height: 42px; }
+.gs-shelf i:nth-child(4n) { height: 31px; }
+
+.quick { background: var(--cover); color: var(--on-cover); border-radius: var(--r); padding: 18px 16px; box-shadow: 0 4px 0 var(--cover-deep); }
+.quick::after { display: none; }
+.quick h2 { font-size: 1.45rem; font-weight: 700; }
+.quick p { font-weight: 500; font-size: .92rem; }
+.goal { font-weight: 600; font-size: .84rem; }
+.play-btn { font-weight: 800; width: 92px; height: 92px; }
+
+.wotd-home { border-top: 1.5px solid var(--line); padding: 0 16px 14px; gap: 10px; }
+.wotd-home .wh-head { margin-inline: -16px; padding: 10px 16px 8px; border-bottom: 2px solid color-mix(in srgb, var(--pen) 55%, var(--surface)); }
+.wotd-home h2 { font-weight: 700; }
+.wh-date { font-weight: 600; }
+.wh-def { font-weight: 500; }
+.wh-prog { font-weight: 600; }
+.say-round { border-radius: 14px; }
+
+/* ---------- practice: white cards, each skill with its own colour line on top; progress as a bar with a count */
+.block-head h2 { font-size: 1.35rem; font-weight: 700; }
+.level-switch { border-radius: 12px; padding: 3px; }
+.level-switch button { border-radius: 9px; font-weight: 700; font-size: .88rem; padding: 7px 12px; }
+.skill-grid { gap: 12px; }
+.skill-tile {
+  background: var(--surface); color: var(--ink); border: 1.5px solid var(--line); border-top: 8px solid var(--c);
+  border-radius: 14px; box-shadow: 0 3px 0 var(--line); padding: 12px; min-height: 150px; gap: 10px;
+}
+.skill-tile:active { box-shadow: 0 1px 0 var(--line); }
+.skill-tile .skill-ic { background: var(--c); color: #fff; border-radius: 10px; width: 40px; height: 40px; }
+.skill-ic.sm { border-radius: 9px; }
+.skill-name { font-size: 1.05rem; font-weight: 700; line-height: 1.2; }
+.skill-sub { color: var(--muted); font-size: .8rem; font-weight: 500; }
+.skill-tile:last-child:nth-child(odd) { min-height: 0; }
+.sk-prog { display: flex; align-items: center; gap: 8px; margin-top: auto; align-self: stretch; font-size: .8rem; font-weight: 700; color: var(--muted); }
+.sk-prog-bar { flex: 1; height: 8px; border-radius: 99px; background: color-mix(in srgb, var(--c) 24%, var(--surface-2)); overflow: hidden; }
+.sk-prog-bar i { display: block; height: 100%; background: var(--c); border-radius: 99px; }
+.sk-prog b { font-variant-numeric: tabular-nums; }
+.skill-tile:last-child:nth-child(odd) .sk-prog { margin-top: 0; align-self: center; width: 96px; flex-shrink: 0; }
+.suggest { border-radius: var(--r-s); font-weight: 500; }
+
+/* ---------- ranking: a class list on ruled paper */
+.board, .me-block, .dash-card, .dash-hero { padding: 16px; }
+.board-list { gap: 0; }
+.board-list li { background: none; border-radius: 0; border-bottom: 1.5px solid var(--grid); font-weight: 600; }
+.board-list li:last-child { border-bottom: 0; }
+.board-list li.me { background: color-mix(in srgb, var(--sun) 42%, var(--surface)); outline: 0; border-radius: 8px; border-bottom-color: transparent; }
+.board-list li em { color: var(--ink); font-weight: 700; }
+.peer { padding: 9px 6px; }
+.peer .nm small { font-weight: 500; color: var(--muted); }
+.board-list .pt { font-weight: 700; }
+.rk { font-weight: 700; background: var(--surface-2); border: 1.5px solid var(--line); }
+.rk-1 { background: #E8B21E; color: #3A2600; border-color: transparent; }
+.rk-2 { background: #A9B4C0; color: #1F2933; border-color: transparent; }
+.rk-3 { background: #C98B53; color: #2E1704; border-color: transparent; }
+.cls-tag { font-weight: 700; }
+.live-pill { font-weight: 700; font-size: .82rem; }
+.board-note { font-weight: 500; }
+.league-txt b { font-weight: 700; }
+.league-txt span { font-weight: 500; }
+.mini-stats b, .dh-stats b { font-weight: 700; }
+.mini-stats span, .dh-stats span { font-weight: 500; font-size: .8rem; }
+.foot { font-size: .8rem; }
+
+/* ---------- bottom tab bar: every part of the site is one tap away */
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 24; background: var(--surface); border-top: 2px solid var(--ink);
+  padding-top: 5px; padding-bottom: max(5px, env(safe-area-inset-bottom, 0px));
+  padding-left: max(6px, env(safe-area-inset-left, 0px)); padding-right: max(6px, env(safe-area-inset-right, 0px));
+}
+body.playing .tabbar { display: none; }
+.tabbar-in { max-width: 548px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; }
+.tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 56px; padding: 4px 2px; border-radius: 12px; color: var(--muted); text-decoration: none; font-size: .72rem; font-weight: 600; line-height: 1.2; }
+.tab-ic { display: grid; place-items: center; width: 48px; height: 30px; border-radius: 9px; }
+.tab[aria-current="page"] { color: var(--ink); font-weight: 800; }
+.tab[aria-current="page"] .tab-ic { background: var(--sun); color: var(--sun-ink); box-shadow: 0 2px 0 color-mix(in srgb, var(--sun) 62%, #000); }
+.tab:active .tab-ic { transform: translateY(1px); }
+.app[data-tab="home"] > .skills-block, .app[data-tab="home"] > .board, .app[data-tab="home"] > .me-block,
+.app[data-tab="skills"] > .hello, .app[data-tab="skills"] > .prog-card, .app[data-tab="skills"] > .quick, .app[data-tab="skills"] > .wotd-home, .app[data-tab="skills"] > .go-skills, .app[data-tab="skills"] > .board, .app[data-tab="skills"] > .me-block, .app[data-tab="skills"] > .owner-bar,
+.app[data-tab="ranking"] > .hello, .app[data-tab="ranking"] > .prog-card, .app[data-tab="ranking"] > .quick, .app[data-tab="ranking"] > .wotd-home, .app[data-tab="ranking"] > .go-skills, .app[data-tab="ranking"] > .skills-block, .app[data-tab="ranking"] > .owner-bar { display: none; }
+
+/* ---------- first screens */
+.setup { gap: 14px; }
+.su-q { font-size: 1.45rem; font-weight: 700; }
+.su-card { border-radius: var(--r); }
+.su-card b { font-weight: 700; }
+.su-card small { font-size: .84rem; font-weight: 600; }
+.su-card.on, .su-card:focus-visible { background: color-mix(in srgb, var(--sun) 38%, var(--surface)); border-color: var(--ink); box-shadow: 0 3px 0 var(--ink); }
+.su-guest { font-weight: 700; font-size: 1rem; }
+.su-pick { border-radius: 9px; font-weight: 700; background: color-mix(in srgb, var(--sun) 45%, var(--surface)); color: var(--ink); }
+.su-pick svg, .su-guest svg { color: var(--ink); }
+.su-steps i { height: 7px; border-radius: 2px; }
+.name-form label { font-weight: 700; }
+.name-form .su-lbl { font-weight: 600; }
+
+/* ---------- playing: an exam paper */
+.play { overflow-x: clip; }
+.play-bar { background: var(--bg); }
+.pbar { position: relative; height: 18px; border-radius: 5px; border: 1.5px solid var(--ink); background: var(--surface); }
+.pbar span { border-radius: 0; }
+.pbar::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(90deg, transparent 0 9px, color-mix(in srgb, var(--ink) 30%, transparent) 9px 10px); }
+.play-meta { font-weight: 600; font-size: .88rem; }
+.skill-pill { border-radius: 8px; font-weight: 700; }
+.qarea { background: var(--surface); border-radius: var(--r); padding: 18px 14px 16px; }
+.q-prompt { font-weight: 600; font-size: clamp(1.18rem, 5vw, 1.42rem); line-height: 1.45; margin-bottom: 16px; }
+.q-prompt.small-prompt { font-weight: 500; }
+.q-label { font-weight: 700; font-size: .92rem; }
+.opt { border-radius: 13px; font-weight: 600; font-size: 1.02rem; min-height: 58px; padding: 10px 12px; gap: 10px; border-color: var(--line); background: var(--surface); }
+.opt-key { border-radius: 50%; background: transparent; border: 2px solid var(--muted); width: 28px; height: 28px; font-weight: 700; }
+.opt.correct .opt-key, .opt.wrong .opt-key { border-color: transparent; color: var(--on-state); }
+.tile, .match-item { font-weight: 600; border-radius: 10px; }
+.tile-target { border-radius: 13px; border-width: 2px; }
+.letter, .slot { border-radius: 9px; font-weight: 700; }
+.passage { border-radius: var(--r); }
+.passage summary { font-weight: 700; }
+.passage-text {
+  margin: 0 14px 16px 16px; padding: 0 0 0 14px; border-left: 2px solid color-mix(in srgb, var(--pen) 50%, transparent);
+  font-size: 1rem; line-height: 1.95em;
+  background-image: repeating-linear-gradient(transparent 0 calc(1.95em - 1px), var(--grid) calc(1.95em - 1px) 1.95em);
+}
+.q-text { border-left: 3px solid color-mix(in srgb, var(--pen) 60%, transparent); border-radius: 4px 10px 10px 4px; font-size: .98rem; line-height: 1.7; }
+.audio-box { border-radius: var(--r); }
+.play-foot { border-top: 2px solid var(--ink); }
+.play-foot.good { border-top-color: var(--good); }
+.play-foot.bad { border-top-color: var(--bad); }
+.fb-txt strong { font-weight: 700; font-size: 1.25rem; }
+.fb-ic { color: var(--on-state); }
+
+/* ---------- results: a marked paper */
+.results { background: var(--surface); border-radius: var(--r); padding: 26px 16px 18px; margin-top: 14px; gap: 12px; }
+.results h1 { font-size: 1.7rem; font-weight: 700; }
+.ring { width: auto; height: auto; background: none; border-radius: 0; }
+.ring > span {
+  width: 164px; height: 112px; background: none; color: var(--brand);
+  border: 4px solid var(--brand); border-radius: 52% 46% 54% 44% / 48% 56% 44% 52%; transform: rotate(-5deg);
+}
+.ring b { font-family: var(--hand); font-size: 2.9rem; font-weight: 700; line-height: .95; }
+.ring small { font-family: var(--hand); font-size: 1.15rem; font-weight: 700; color: var(--brand); }
+.earned-pts { background: var(--sun); color: var(--sun-ink); border-radius: 10px; box-shadow: 0 2px 0 color-mix(in srgb, var(--sun) 62%, #000); font-weight: 700; font-size: 1.4rem; }
+.earned-pts svg { color: var(--sun-ink); fill: var(--sun-ink); }
+.res-chips span { background: var(--surface-2); border-radius: 8px; font-weight: 600; font-size: .86rem; }
+.unlock { background: var(--surface-2); box-shadow: none; }
+.dash-link { font-weight: 700; }
+
+/* ---------- progress page */
+.dh-name h1 { font-size: 1.5rem; font-weight: 700; }
+.dh-name p:last-child { font-weight: 500; }
+.dash-head h2 { font-size: 1.2rem; font-weight: 700; }
+.dash-big { font-weight: 600; }
+.dash-big b { font-weight: 700; }
+.wc-bar { border-radius: 3px 3px 0 0; }
+.wc-lbl, .wc-val { font-weight: 600; }
+.tip { font-weight: 500; }
+.sk-acc { font-weight: 700; }
+.badge { border-radius: var(--r-s); }
+.badge.earned { background: color-mix(in srgb, var(--sun) 30%, var(--surface)); }
+.rc-txt b { font-weight: 600; }
+.recent li { background: none; border-bottom: 1.5px solid var(--grid); border-radius: 0; padding-inline: 2px; }
+.recent li:last-child { border-bottom: 0; }
+
+/* ---------- word of the day */
+.word-hero { padding: 16px 14px; }
+.word-hero::after { display: none; }
+.word-hero h1 { font-size: clamp(2.7rem, 13vw, 3.7rem); }
+.word-hero .wh-date { color: var(--chalk-dim); }
+.word-hero .ipa b { color: var(--sun-ink); background: var(--sun); }
+.hero-def { border-radius: 10px; }
+.hero-def dd { font-weight: 600; font-size: 1.02rem; }
+.w-example { border-left: 3px solid color-mix(in srgb, var(--pen) 60%, transparent); border-radius: 4px 10px 10px 4px; }
+.w-example p { font-weight: 500; font-size: 1.02rem; }
+.w-chip { border-radius: 8px; font-weight: 600; }
+.w-col li { font-weight: 500; }
+.syls { font-weight: 600; }
+.act-tile { border-radius: 13px; }
+.act-txt b { font-weight: 700; }
+.act-state { border-radius: 8px; font-weight: 700; }
+.pos-chip, .lv-chip { border-radius: 7px; font-weight: 700; }
+.arch-head h1 { font-size: 1.7rem; font-weight: 700; }
+.arch-today { background: var(--cover); color: var(--on-cover); box-shadow: 0 3px 0 var(--cover-deep); }
+.arch-top b { font-weight: 700; }
+.chips button { border-radius: 9px; font-weight: 700; }
+.practice-note, .day-done { border-radius: 10px; }
+
+/* ---------- sheets and messages */
+.modal { border-top: 2px solid var(--ink); }
+.modal-title { font-size: 1.3rem; font-weight: 700; }
+.toast { border-radius: 10px; font-weight: 600; }
+.me-info { border-radius: var(--r-s); }
+.owner-bar { border-radius: var(--r-s); font-weight: 600; }
+@media (min-width: 640px) { .modal { border: 1.5px solid var(--line); border-top: 2px solid var(--ink); } }
+@media (max-width: 360px) {
+  .hello h1 { font-size: 1.8rem; }
+  .tab { font-size: .66rem; }
+  .tab-ic { width: 40px; }
+  .skill-tile { min-height: 144px; }
+  .cover-board .skill-strip span { width: 31px; height: 31px; }
+  .cover-board .skill-strip svg { width: 17px; height: 17px; }
+}
 </style>
 </head>
 <body>
 <div id="storage-warning" class="storage-warning" hidden>This browser is not saving your progress. Open the link in a normal (not private) window.</div>
 <main id="app" class="app"></main>
+<nav id="tabbar" class="tabbar" aria-label="Main" hidden></nav>
 <div id="toasts" class="toasts" aria-live="polite"></div>
 <div id="modal-root"></div>
 <script>
@@ -4610,15 +4919,24 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   function go(name) {
     location.hash === `#${name}` ? route2() : location.hash = name;
   }
+  // epz-patch:theme — bottom tab bar
+  var TABS = [["home", "Home", "home"], ["skills", "Practice", "book"], ["word", "Word", "calendar"], ["ranking", "Ranking", "trophy"], ["dashboard", "Progress", "progress"]];
+  function drawTabs(h) {
+    let nav = document.getElementById("tabbar");
+    if (!nav) return;
+    let show = !!(me().name && me().grade) && h !== "setup", tab = h === "skills" || h === "quick" || h.startsWith("play-") ? "skills" : h === "ranking" ? "ranking" : h === "dashboard" ? "dashboard" : h === "word" || h === "words" || h.startsWith("word/") ? "word" : "home";
+    nav.hidden = !show, document.body.classList.toggle("has-nav", show), nav.innerHTML = `<div class="tabbar-in">${TABS.map(([id, label, ic]) => `<a class="tab" href="#${id}"${id === tab ? ' aria-current="page"' : ""}><span class="tab-ic">${icon(ic, 22)}</span><span>${label}</span></a>`).join("")}</div>`;
+  }
   function route2() {
     cleanup && (cleanup(), cleanup = null), stopSpeaking(), document.querySelectorAll(".confetti").forEach((c2) => c2.remove()), document.body.classList.remove("playing"), app.classList.remove("wide");
     let h = location.hash.replace(/^#/, "");
+    drawTabs(h);
     if (h === "setup" && me().name && me().grade) {
       setupFlow({ change: !0 });
       return;
     }
     if (!me().name || !me().grade) {
-      setupFlow();
+      delete app.dataset.tab, setupFlow();
       return;
     }
     if (h === "quick") {
@@ -4642,6 +4960,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         return;
       }
     }
+    let tab = h === "skills" ? "skills" : h === "ranking" ? "ranking" : "home";
+    app.dataset.tab = tab, window.scrollTo(0, 0);
     home();
   }
   var ownerBar = () => ownerState === "owner" ? `<div class="owner-bar">${icon("shield", 18)}<span>Teacher view. Only you see this.</span><button class="btn btn-sm" id="owner-open" type="button">Teacher corner</button></div>` : "";
@@ -4681,11 +5001,13 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (step === "grade")
         body = `
       ${!canCancel && ownerBar() ? `<div class="welcome-owner">${ownerBar()}</div>` : ""}
+      <div class="cover-board">
       <span class="logo-mark big" aria-hidden="true">E</span>
       <h1>English Practice Zone</h1>
       <p class="teacher-line school-line">${icon("home", 18)} <b>${SCHOOL_NAME}</b></p>
       <p class="teacher-line">${icon("user", 18)} Teacher: <b>${TEACHER_NAME}</b></p>
       <div class="skill-strip" aria-hidden="true">${SKILL_KEYS2.map((k) => `<span style="--c:${SKILLS2[k].color}">${icon(SKILLS2[k].icon, 20)}</span>`).join("")}</div>
+      </div>
       <h2 class="su-q">Which grade are you in?</h2>
       <div class="su-grid su-grades">${Object.keys(GRADE_CLASSES).map((g) => `<button type="button" class="su-card ${sel.grade === g ? "on" : ""}" data-grade="${g}"><small>Grade</small><b>${g}</b></button>`).join("")}</div>
       <button type="button" class="su-card su-guest ${guest ? "on" : ""}" data-grade="guest">${icon("user", 20)}<span>Continue as a Guest</span></button>
@@ -4749,7 +5071,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       return `<a class="skill-tile" style="--c:${s.color}" ${act2 ? `href="#play-${esc(act2.id)}"` : 'aria-disabled="true"'}>
         <span class="skill-ic">${icon(s.icon, 22)}</span>
         <span class="skill-txt"><span class="skill-name">${esc(s.name)}</span><span class="skill-sub">${esc(s.sub)}</span></span>
-        <span class="dots" aria-label="${pr.done} of ${pr.total} done at this level">${dots}</span>
+        <span class="sk-prog" aria-label="${pr.done} of ${pr.total} done at this level"><span class="sk-prog-bar"><i style="width:${pr.total ? Math.round(100 * pr.done / pr.total) : 0}%"></i></span><b>${pr.done}/${pr.total}</b></span>
       </a>`;
     }).join("");
     app.innerHTML = `
@@ -4786,7 +5108,13 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
 
     ${homeCard()}
 
-    <section class="block">
+    <a class="go-skills" href="#skills">
+      <span class="gs-shelf" aria-hidden="true">${gradeSkills().map((k) => `<i style="--c:${SKILLS2[k].color}"></i>`).join("")}</span>
+      <span class="prog-txt"><b>Practice by skill</b><span>${gradeSkills().length} skills \xB7 ${LEVELS2[lvl].name} level</span></span>
+      <span class="prog-go">Open</span>
+    </a>
+
+    <section class="block skills-block">
       <div class="block-head">
         <h2>Pick a skill</h2>
         <div class="level-switch" role="radiogroup" aria-label="Level">
@@ -4829,7 +5157,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   }
   function redrawIf(view) {
     let h = location.hash.replace(/^#/, "");
-    if (view === "home" && (!h || h === "home") && me().name) {
+    if (view === "home" && (!h || h === "home" || h === "skills" || h === "ranking") && me().name) {
       let y = window.scrollY;
       home({ noSync: !0 }), window.scrollTo(0, y);
     }
@@ -4840,7 +5168,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   }
   LIVE2 && document.addEventListener("visibilitychange", () => {
     if (document.visibilityState !== "visible") return;
-    let h = location.hash.replace(/^#/, ""), view = !h || h === "home" ? "home" : h === "dashboard" ? "dashboard" : null;
+    let h = location.hash.replace(/^#/, ""), view = !h || h === "home" || h === "skills" || h === "ranking" ? "home" : h === "dashboard" ? "dashboard" : null;
     view && syncBoard().then((changed) => {
       changed && redrawIf(view);
     });
