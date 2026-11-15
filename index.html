@@ -4015,6 +4015,9 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (id && secret && state.name && (state.results.length || wotdPoints())) {
         let sk = {};
         for (let [k, v] of Object.entries(skillStats().skills)) v.acc != null && (sk[k] = v.acc);
+        let nn = {}; /* epz-patch:answers: counts for the teacher panel only */
+        for (let [k, v] of Object.entries(skillStats().skills)) v.t && (nn[k] = [v.c, v.t]);
+        Object.keys(nn).length && (sk._n = nn);
         let body = { p_id: id, p_secret: secret, p_name: state.name, p_pts: totalPoints(), p_wk: weekPoints(), p_rounds: state.results.length, p_streak: streak(), p_league: league().name, p_skills: sk }, body2 = { ...body, p_grade: state.grade || "", p_class: state.cls || "" }, sig2 = JSON.stringify(body2);
         if (sig2 !== lastPosted)
           try {
