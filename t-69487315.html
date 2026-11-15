@@ -64,6 +64,17 @@ input:focus{border-color:var(--green)}
 .modal .acts>*{flex:1}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:14px;font-weight:800;z-index:20;max-width:90vw}
 [hidden]{display:none!important}
+.who{cursor:pointer}
+.who .ans{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:3px;font-weight:800;color:var(--ink)}
+.ans .ok{color:var(--green)}.ans .no{color:var(--bad)}.ans .pc{color:var(--muted)}
+.ans.wait{color:var(--muted);font-weight:700}
+.sk-t{width:100%;border-collapse:collapse;font-size:.92rem}
+.sk-t th,.sk-t td{padding:7px 4px;text-align:right;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.sk-t th:first-child,.sk-t td:first-child{text-align:left}
+.sk-t th{color:var(--muted);font-size:.78rem}
+.sk-t tr:last-child td{border-bottom:0;font-weight:900}
+.sk-t.pct tr:last-child td{font-weight:inherit}
+.sk-t .ok{color:var(--green)}.sk-t .no{color:var(--bad)}
 .chips{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 8px;margin:0 -2px 4px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{font:inherit;font-weight:900;font-size:.88rem;border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 12px;white-space:nowrap;cursor:pointer;flex-shrink:0}
@@ -85,6 +96,25 @@ input:focus{border-color:var(--green)}
   // epz-patch:classes — grade and class filter (remembered on this device)
   var NCLS = { '9': 5, '10': 5, '11': 8, '12': 9 }, gsel = 'all', csel = 'all';
   try { var fs = JSON.parse(localStorage.getItem('epz-teacher-filter') || '{}'); gsel = fs.g || 'all'; csel = fs.c || 'all'; } catch (e) { /* ignore */ }
+  // epz-patch:answers — correct / wrong answers (sent by the student page in skills._n = { skill: [correct, answered] })
+  var SKN = [['grammar', 'Grammar'], ['vocabulary', 'Vocabulary'], ['reading', 'Reading'], ['listening', 'Listening'], ['building', 'Build Sentences'], ['scramble', 'Story Order'], ['correction', 'Fix the Mistake']];
+  var answersOf = function (sk) {
+    var n = sk && sk._n; if (!n || typeof n !== 'object') return null;
+    var out = { c: 0, t: 0, rows: [] };
+    SKN.forEach(function (k) {
+      var v = n[k[0]]; if (!Array.isArray(v)) return;
+      var c = Math.max(0, Number(v[0]) || 0), t = Math.max(c, Number(v[1]) || 0); if (!t) return;
+      out.c += c; out.t += t; out.rows.push({ name: k[1], c: c, w: t - c, p: Math.round(100 * c / t) });
+    });
+    return out.t ? out : null;
+  };
+  // percentages per skill: already saved by the student page, so they work with no change to it
+  var pctOf = function (sk) {
+    if (!sk || typeof sk !== 'object') return null;
+    var rows = []; SKN.forEach(function (k) { var v = sk[k[0]]; if (typeof v === 'number' && v >= 0 && v <= 100) rows.push({ name: k[1], p: Math.round(v) }); });
+    return rows.length ? rows : null;
+  };
+  var hasAnswers = function () { return (data.board || []).some(function (b) { return 'skills' in b; }); };
   var classOf = function (s) { return s.grade === 'guest' ? 'Guest' : s.cls || 'No class yet'; };
 
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
@@ -169,7 +199,7 @@ input:focus{border-color:var(--green)}
     (data.visitors || []).forEach(function (v) { map[v.id] = { id: v.id, name: v.name || '', seen: v.last_seen, pts: null, played: null, league: '', rounds: 0, grade: v.grade || '', cls: v.class_name || '' }; });
     (data.board || []).forEach(function (b) {
       var m = map[b.id] || (map[b.id] = { id: b.id, seen: b.updated_at });
-      m.name = b.name || m.name || ''; m.pts = b.pts; m.league = b.league; m.rounds = b.rounds; m.played = b.updated_at;
+      m.name = b.name || m.name || ''; m.pts = b.pts; m.league = b.league; m.rounds = b.rounds; m.played = b.updated_at; m.ans = answersOf(b.skills); m.pct = pctOf(b.skills);
       if (b.grade) { m.grade = b.grade; m.cls = b.class_name || ''; } else if (m.grade == null) { m.grade = ''; m.cls = ''; }
       if (!m.seen || new Date(b.updated_at) > new Date(m.seen)) m.seen = b.updated_at;
     });
@@ -204,13 +234,18 @@ input:focus{border-color:var(--green)}
       return a.name.localeCompare(b.name);
     });
 
+    var sqlOk = hasAnswers();
     var rows = list.map(function (s) {
       var isPlayed = s.played && dayOf(s.played) === today;
       var sub = s.played
         ? (isPlayed ? 'Played ' + ago(s.played) : 'Last played ' + ago(s.played)) + ' · ' + (s.pts || 0) + ' pts'
         : 'Opened ' + ago(s.seen) + ' · has not played yet';
+      var ans = !sqlOk || !s.played ? '' : s.ans
+        ? '<span class="ans"><span class="ok">✓ ' + s.ans.c + ' correct</span><span class="no">✗ ' + (s.ans.t - s.ans.c) + ' wrong</span><span class="pc">' + Math.round(100 * s.ans.c / s.ans.t) + '%</span></span>'
+        : s.pct ? '<span class="ans">' + s.pct.map(function (r) { return '<span class="' + (r.p >= 50 ? 'ok' : 'no') + '">' + r.name + ' ' + r.p + '%</span>'; }).join('') + '</span>'
+        : '<span class="ans wait">No answers yet</span>';
       return '<li class="row"><span class="dot ' + (isPlayed ? 'on' : '') + '" aria-hidden="true"></span>' +
-        '<div class="who"><b>' + esc(s.name) + '</b><span>' + esc(classOf(s) + ' · ' + sub) + '</span></div>' +
+        '<div class="who" data-who="' + esc(s.id) + '"><b>' + esc(s.name) + '</b><span>' + esc(classOf(s) + ' · ' + sub) + '</span>' + ans + '</div>' +
         '<button class="trash" data-id="' + esc(s.id) + '" data-name="' + esc(s.name) + '" aria-label="Remove ' + esc(s.name) + '">' +
         '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></button></li>';
     }).join('');
@@ -223,6 +258,7 @@ input:focus{border-color:var(--green)}
       '<div class="stat good"><b>' + playedToday.length + '</b><span>Played today</span></div>' +
       '<div class="stat warn"><b>' + notToday.length + '</b><span>Not played today</span></div>' +
       '<div class="stat"><b>' + openedToday + '</b><span>Opened today</span></div></div>' +
+      (!sqlOk && (data.board || []).length ? '<p class="note">To see correct and wrong answers, run step4-answers.sql once in Supabase.</p>' : '') +
       (unnamed ? '<p class="note">' + unnamed + (unnamed === 1 ? ' phone has' : ' phones have') + ' opened the site but not typed a name yet.</p>' : '') +
       '<div class="tabs" role="tablist">' +
       '<button class="tab" role="tab" data-tab="played" aria-selected="' + (tab === 'played') + '">Played today</button>' +
@@ -246,7 +282,32 @@ input:focus{border-color:var(--green)}
     var keepFilter = function () { try { localStorage.setItem('epz-teacher-filter', JSON.stringify({ g: gsel, c: csel })); } catch (e) { /* ignore */ } };
     Array.prototype.forEach.call(app.querySelectorAll('[data-g]'), function (b) { b.onclick = function () { gsel = b.getAttribute('data-g'); csel = 'all'; keepFilter(); draw(); }; });
     Array.prototype.forEach.call(app.querySelectorAll('[data-c]'), function (b) { b.onclick = function () { csel = b.getAttribute('data-c'); keepFilter(); draw(); }; });
+    Array.prototype.forEach.call(app.querySelectorAll('[data-who]'), function (el) { el.onclick = function () { var id = el.getAttribute('data-who'); var s = everyone.filter(function (x) { return x.id === id; })[0]; if (s) answersSheet(s, sqlOk); }; });
     Array.prototype.forEach.call(app.querySelectorAll('.trash'), function (b) { b.onclick = function () { confirmDelete(b.getAttribute('data-id'), b.getAttribute('data-name')); }; });
+  }
+
+  function answersSheet(s, sqlOk) {
+    var a = s.ans, body;
+    if (a) {
+      body = '<table class="sk-t"><tr><th>Skill</th><th>Correct</th><th>Wrong</th><th>%</th></tr>' +
+        a.rows.map(function (r) { return '<tr><td>' + r.name + '</td><td class="ok">' + r.c + '</td><td class="no">' + r.w + '</td><td>' + r.p + '%</td></tr>'; }).join('') +
+        '<tr><td>All</td><td class="ok">' + a.c + '</td><td class="no">' + (a.t - a.c) + '</td><td>' + Math.round(100 * a.c / a.t) + '%</td></tr></table>' +
+        '<p>' + a.t + ' answers in ' + (s.rounds || 0) + ' rounds. Word of the Day answers are not counted here.</p>';
+    } else if (s.pct) {
+      body = '<table class="sk-t pct"><tr><th>Skill</th><th>Correct</th><th>Wrong</th></tr>' +
+        s.pct.map(function (r) { return '<tr><td>' + r.name + '</td><td class="ok">' + r.p + '%</td><td class="no">' + (100 - r.p) + '%</td></tr>'; }).join('') + '</table>' +
+        '<p>' + (s.rounds || 0) + ' rounds played. Word of the Day answers are not counted here.</p>';
+    } else {
+      body = '<p>' + (!s.played ? 'This student has not played yet.' : !sqlOk ? 'Run step4-answers.sql once in Supabase to see the answers.' : 'No answers yet.') + '</p>';
+    }
+    var bg = document.createElement('div'); bg.className = 'modal-bg';
+    bg.innerHTML = '<div class="modal" role="dialog" aria-modal="true"><h2>' + esc(s.name) + '</h2>' +
+      '<p>' + esc(classOf(s)) + (s.played ? ' · ' + (s.pts || 0) + ' pts' + (s.league ? ' · ' + esc(s.league) : '') : '') + '</p>' + body +
+      '<div class="acts"><button class="btn btn-ghost" id="ans-close" type="button">Close</button></div></div>';
+    document.body.appendChild(bg);
+    var close = function () { bg.remove(); };
+    bg.addEventListener('click', function (e) { if (e.target === bg) close(); });
+    bg.querySelector('#ans-close').onclick = close;
   }
 
   function confirmDelete(id, name) {
