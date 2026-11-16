@@ -4741,6 +4741,30 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let low = toks.map((t) => t.toLowerCase()), uniq = new Set(low).size;
     return { bad, uniq, total: low.length };
   }
+  /* epz-patch:grammar */
+  var GR_BASE = new Set("go play like love want have do make take get come see know think eat drink live work study read write watch speak talk walk run swim help visit travel buy sell open close start finish feel look listen learn teach try use give tell ask answer call wait stay leave meet win lose find keep spend sleep wake drive ride fly sing dance cook clean wash carry bring send build plan hope enjoy prefer believe understand remember forget agree decide practise practice improve become change move miss hate wish say get grow".split(" ")),
+    GR_AUX = new Set("do does did don't doesn't didn't can could will would shall should must may might can't couldn't won't wouldn't shouldn't let lets make makes made help helps helped to".split(" ")),
+    GR_MODAL = new Set("can could will would shall should must may might can't couldn't won't wouldn't shouldn't mustn't".split(" ")),
+    GR_AFTER_MODAL = new Set("to is are was were am has does did goes went came saw ate made took got gave played liked wanted watched".split(" ")),
+    GR_AFTER_NEG = new Set("is are was were am has does did goes went came saw ate made took got gave bought played liked wanted watched".split(" ")),
+    GR_A_OK = /^(uni|use|usu|ura|uro|uti|eu|one|once|ewe|ufo)/, GR_AN_OK = /^(hour|honest|honour|honor|heir)/;
+  function grCheck(text) {
+    let toks = (String(text).replace(/’/g, "'").match(/[A-Za-z]+(?:'[A-Za-z]+)*/g) || []), low = toks.map((t) => t.toLowerCase()), bad = [];
+    let add = (i, n) => { let p = toks.slice(i, i + n).join(" "); bad.includes(p) || bad.push(p); };
+    for (let i = 0; i + 1 < low.length; i++) {
+      let a = low[i], b = low[i + 1], prev = low.slice(Math.max(0, i - 3), i), q = prev.some((x) => GR_AUX.has(x));
+      if (a === b && a.length > 1 && a !== "had" && a !== "that") add(i, 2);
+      else if ((a === "he" || a === "she" || a === "it") && (["are", "am", "aren't", "weren't"].includes(b) || (b === "were" && !prev.includes("if") && !prev.includes("wish")) || (!q && ["have", "do", "don't", "haven't"].includes(b)) || (a !== "it" && !q && GR_BASE.has(b)))) add(i, 2);
+      else if (a === "i" && ["is", "are", "has", "does", "doesn't", "isn't", "aren't", "hasn't"].includes(b)) add(i, 2);
+      else if (["you", "we", "they"].includes(a) && ["is", "am", "has", "does", "doesn't", "isn't", "hasn't"].includes(b)) add(i, 2);
+      else if (["you", "we", "they"].includes(a) && ["was", "wasn't"].includes(b) && !prev.includes("if")) add(i, 2);
+      else if (GR_MODAL.has(a) && GR_AFTER_MODAL.has(b)) add(i, 2);
+      else if (["don't", "doesn't", "didn't"].includes(a) && GR_AFTER_NEG.has(b)) add(i, 2);
+      else if (a === "a" && /^[aeiou]/.test(b) && !GR_A_OK.test(b) && toks[i + 1] !== toks[i + 1].toUpperCase()) add(i, 2);
+      else if (a === "an" && /^[b-df-hj-np-tv-z]/.test(b) && !GR_AN_OK.test(b) && toks[i + 1] !== toks[i + 1].toUpperCase()) add(i, 2);
+    }
+    return bad;
+  }
   function writeCtrl(w, area, ctx) {
     let old = wotdRec(w.w)?.s || "";
     area.innerHTML = `
@@ -4759,7 +4783,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       </ul>
       <p class="w-ex"><span class="w-lbl">Example</span> ${markWord(w.ex, w.w)}</p>
     </details>`;
-    let box = area.querySelector("#w-text"), list = area.querySelector("#w-checks"), norm = (s) => String(s).toLowerCase().replace(/[^a-z]+/g, " ").trim(), rwRule = (s) => {
+    let box = area.querySelector("#w-text"), list = area.querySelector("#w-checks"), norm = (s) => String(s).toLowerCase().replace(/[^a-z]+/g, " ").trim(), grRule = (s) => {
+      let bad = s ? grCheck(s) : [];
+      return ["Correct grammar" + (bad.length ? ` (check: ${bad.slice(0, 2).map((p) => `"${p}"`).join(", ")})` : ""), !!s && !bad.length];
+    }, rwRule = (s) => {
       let c = rwCheck(s, w.w, forms(w.w)), ok = !!s && c.bad.length === 0 && c.uniq >= 5;
       let tip = c.bad.length ? ` (check: ${c.bad.slice(0, 3).join(", ")})` : (s && c.uniq < 5 ? " (use different words)" : "");
       return ["Real English words" + (ok ? "" : tip), ok];
@@ -4769,6 +4796,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         [`Uses the word "${w.w}"`, usesWord(s, w.w)],
         ["At least 6 words", words.length >= 6],
         rwRule(s),
+        grRule(s),
         ["Starts with a capital letter", /^[A-Z]/.test(s)],
         ["Ends with . ? or !", /[.?!]["')]?$/.test(s)],
         ["Your own sentence, not the example", !!s && norm(s) !== norm(w.ex) && norm(s) !== norm(w.gap.replace("___", w.w))]
