@@ -1050,6 +1050,170 @@ body.playing .tabbar { display: none; }
   .cover-board .skill-strip span { width: 31px; height: 31px; }
   .cover-board .skill-strip svg { width: 17px; height: 17px; }
 }
+/* epz-patch:boss — Boss Battle */
+.app[data-tab="skills"] > .boss-home, .app[data-tab="ranking"] > .boss-home { display: none; }
+.boss-home { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: var(--r); text-decoration: none; color: #fff; position: relative; overflow: hidden;
+  background: radial-gradient(circle at 18% 30%, #4B2A8C 0, transparent 60%), linear-gradient(135deg, #261447, #120A26); box-shadow: 0 4px 0 #0A0518; border: 1.5px solid #3A2466; }
+.boss-home::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(-45deg, rgb(255 255 255 / .03) 0 8px, transparent 8px 16px); pointer-events: none; }
+.bh-art { width: 84px; height: 84px; flex-shrink: 0; position: relative; border-radius: 18px; background: rgb(255 255 255 / .07); display: grid; place-items: center; }
+.bh-art .boss-svg { width: 78px; height: 78px; }
+.bh-check { position: absolute; right: -4px; bottom: -4px; width: 28px; height: 28px; border-radius: 50%; background: #34C46E; color: #fff; display: grid; place-items: center; border: 2px solid #120A26; }
+.bh-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; position: relative; z-index: 1; }
+.bh-txt .eyebrow { color: #FFB4C2; display: flex; align-items: center; gap: 5px; }
+.bh-name { font-family: var(--display); font-size: 1.35rem; font-weight: 800; line-height: 1.15; }
+.bh-sub { font-size: .86rem; font-weight: 600; color: #CFC3EA; }
+.bh-pill { align-self: flex-start; margin-top: 5px; font-size: .78rem; font-weight: 800; padding: 3px 9px; border-radius: 99px; background: #FFD83D; color: #2B2300; }
+.boss-home.won .bh-pill { background: #34C46E; color: #062B14; }
+.bh-go { flex-shrink: 0; position: relative; z-index: 1; font-family: var(--display); font-weight: 800; font-size: 1.05rem; color: #fff; background: #E11D48; border-radius: 14px; padding: 12px 14px; box-shadow: 0 4px 0 #8A0F2B; animation: bh-pulse 1.8s ease-in-out infinite; }
+.boss-home.won .bh-go { background: #4B2A8C; box-shadow: 0 4px 0 #2A1652; animation: none; }
+.boss-home:active .bh-go { transform: translateY(3px); box-shadow: 0 1px 0 #8A0F2B; }
+@keyframes bh-pulse { 50% { transform: scale(1.06); } }
+
+/* boss art */
+.boss-svg { display: block; overflow: visible; }
+.boss-svg .boss-body, .boss-svg .boss-shadow { transform-box: fill-box; transform-origin: 50% 100%; }
+.boss-svg.idle .boss-body { animation: boss-bob 2.2s ease-in-out infinite; }
+.boss-svg.idle .boss-shadow { animation: boss-shadow 2.2s ease-in-out infinite; }
+.boss-svg .brow { opacity: 0; transition: opacity .3s; }
+.boss-svg.beaten { filter: grayscale(.7) brightness(.85); transform: rotate(-8deg); }
+.boss-svg.beaten .eye { transform-box: fill-box; transform-origin: center; transform: scaleY(.15); }
+.boss-svg.shadowed .boss-body { filter: brightness(0) opacity(.55); }
+.boss-svg.laugh .boss-body { animation: boss-laugh .5s ease-in-out infinite; }
+.boss-svg.laugh .brow { opacity: 1; }
+.eye.glow rect { filter: drop-shadow(0 0 4px #FDE047); }
+@keyframes boss-bob { 50% { transform: translateY(-6px) scale(1.02, .98); } }
+@keyframes boss-shadow { 50% { transform: scaleX(.88); opacity: .14; } }
+@keyframes boss-laugh { 0%, 100% { transform: rotate(-3deg) translateY(0); } 50% { transform: rotate(3deg) translateY(-5px); } }
+
+/* boss page */
+.boss-mute { font-size: 1.2rem; }
+.boss-intro { text-align: center; color: #fff; border-radius: var(--r); padding: 16px 16px 18px; display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; overflow: hidden;
+  background: radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--bc) 55%, transparent) 0, transparent 55%), linear-gradient(180deg, #261447, #120A26); box-shadow: 0 4px 0 #0A0518; }
+.bi-week { font-size: .8rem; font-weight: 800; color: #FFB4C2; background: rgb(255 255 255 / .08); padding: 3px 10px; border-radius: 99px; }
+.bi-art .boss-svg { width: 190px; height: 190px; margin: 4px auto 0; }
+.boss-intro h1 { font-size: 2rem; font-weight: 800; color: #fff; }
+.bi-title { color: #CFC3EA; font-weight: 600; margin: 0; }
+.bi-taunt { font-family: 'Kalam', var(--display); font-size: 1.15rem; color: #FFD83D; margin: 2px 0 6px; }
+.bi-stats { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.bi-stats span { background: rgb(255 255 255 / .09); border-radius: 10px; padding: 5px 10px; font-size: .84rem; color: #E6DDF7; }
+.bi-stats b { color: #fff; font-family: var(--display); }
+.bi-reward { margin: 10px 0 4px; font-weight: 700; color: #FFE58A; display: flex; align-items: center; gap: 6px; justify-content: center; flex-wrap: wrap; }
+.bi-reward.done { color: #9BF0BD; flex-direction: column; gap: 0; }
+.bi-reward.done small { color: #CFC3EA; font-weight: 600; }
+.boss-fight { width: 100%; margin-top: 6px; background: #E11D48; color: #fff; box-shadow: 0 5px 0 #8A0F2B; font-size: 1.25rem; border: 0; }
+.boss-fight:active { transform: translateY(3px); box-shadow: 0 2px 0 #8A0F2B; }
+.boss-rules { padding: 14px 16px; }
+.boss-rules h2 { font-size: 1.2rem; margin-bottom: 6px; }
+.boss-rules ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 7px; }
+.boss-rules li { display: flex; gap: 10px; align-items: flex-start; font-size: .94rem; line-height: 1.4; }
+.br-ic { width: 30px; height: 30px; flex-shrink: 0; border-radius: 9px; background: var(--surface-2); display: grid; place-items: center; font-size: 1rem; }
+.br-powers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
+.br-powers span { background: var(--surface-2); border-radius: 12px; padding: 8px 6px; font-size: .76rem; color: var(--muted); text-align: center; line-height: 1.3; display: flex; flex-direction: column; gap: 2px; }
+.br-powers b { color: var(--ink); font-size: .84rem; }
+.boss-next { display: flex; gap: 12px; align-items: center; padding: 12px 14px; }
+.boss-next > div:last-child { display: flex; flex-direction: column; font-size: .88rem; color: var(--muted); }
+.boss-next b { color: var(--ink); }
+.bn-art .boss-svg { width: 64px; height: 64px; }
+.boss-intro, .boss-rules, .boss-next { border: 1.5px solid var(--line); }
+.boss-rules, .boss-next { box-shadow: 0 3px 0 var(--line); background: var(--surface); border-radius: var(--r); }
+
+/* battle */
+.boss-play { gap: 10px; }
+.boss-bar { display: flex; align-items: center; gap: 8px; }
+.hearts { display: flex; align-items: center; gap: 2px; font-size: 1.45rem; flex: 1; }
+.heart { display: inline-block; line-height: 1; }
+.heart.lost { opacity: .35; filter: grayscale(1); }
+.heart.break { animation: heart-break .6s ease; }
+@keyframes heart-break { 0% { transform: scale(1); } 30% { transform: scale(1.6) rotate(-12deg); } 100% { transform: scale(1); } }
+.shield-on { font-size: 1.3rem; margin-left: 4px; animation: shield-glow 1.4s ease-in-out infinite; }
+@keyframes shield-glow { 50% { transform: scale(1.15); filter: drop-shadow(0 0 6px #7DD3FC); } }
+.combo { font-family: var(--display); font-weight: 800; font-size: 1.05rem; color: #fff; background: linear-gradient(135deg, #F97316, #E11D48); padding: 4px 10px; border-radius: 99px; box-shadow: 0 3px 0 #9A1A2E; }
+.combo.pop { animation: combo-pop .35s ease; }
+@keyframes combo-pop { 40% { transform: scale(1.3); } }
+.boss-stage { position: relative; border-radius: var(--r); padding: 10px 12px 8px; color: #fff; overflow: hidden;
+  background: radial-gradient(circle at 50% 70%, color-mix(in srgb, var(--bc) 45%, transparent) 0, transparent 60%), linear-gradient(180deg, #2A1650, #120A26); box-shadow: 0 4px 0 #0A0518; transition: background .6s; }
+.boss-stage.enraged { background: radial-gradient(circle at 50% 70%, rgb(239 68 68 / .55) 0, transparent 62%), linear-gradient(180deg, #4A0F1E, #1A0710); }
+.bs-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: .86rem; }
+.bs-head b { font-family: var(--display); font-size: 1.1rem; }
+.bs-head span { font-variant-numeric: tabular-nums; font-weight: 700; color: #E6DDF7; }
+.hpbar { position: relative; height: 14px; border-radius: 99px; background: rgb(0 0 0 / .45); overflow: hidden; margin: 4px 0 2px; border: 1.5px solid rgb(255 255 255 / .2); }
+.hpbar i { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; border-radius: 99px; }
+.hp-lag { background: #FDE68A; transition: width .6s ease .1s; }
+.hp-fill { background: linear-gradient(90deg, #22C55E, #86EFAC); transition: width .3s ease; }
+.hpbar.low .hp-fill { background: linear-gradient(90deg, #EF4444, #FCA5A5); }
+.hpbar.end { width: 100%; max-width: 280px; margin: 4px auto 0; background: var(--surface-2); border-color: var(--line); }
+.hpbar.end .hp-fill { background: linear-gradient(90deg, #EF4444, #FCA5A5); }
+.bs-arena { position: relative; height: 150px; display: grid; place-items: center; }
+.boss-wrap { width: 150px; height: 150px; position: relative; }
+.boss-wrap .boss-svg { width: 150px; height: 150px; }
+.boss-stage.enraged .boss-svg .brow { opacity: 1; }
+.boss-stage.enraged .boss-wrap { filter: drop-shadow(0 0 14px rgb(239 68 68 / .85)); }
+.boss-stage.enraged .boss-svg.idle .boss-body { animation-duration: 1s; }
+.boss-wrap.enter { animation: boss-enter .9s cubic-bezier(.2, 1.4, .4, 1); }
+.boss-wrap.hit { animation: boss-hit .45s ease; }
+.boss-wrap.attack { animation: boss-attack .6s ease; }
+@keyframes boss-enter { 0% { transform: translateY(-60px) scale(.3); opacity: 0; } 100% { transform: none; opacity: 1; } }
+@keyframes boss-hit { 0% { filter: brightness(3) saturate(0); transform: translateX(0); } 25% { transform: translateX(-10px) rotate(-4deg); } 50% { transform: translateX(8px) rotate(3deg); filter: brightness(1.6); } 100% { transform: none; filter: none; } }
+@keyframes boss-attack { 0% { transform: none; } 35% { transform: translateY(-14px) scale(.92); } 60% { transform: translateY(26px) scale(1.35); } 100% { transform: none; } }
+.boss-stage.dying .boss-wrap { animation: boss-die 1.5s ease forwards; }
+@keyframes boss-die { 0% { filter: brightness(3); transform: none; } 20% { transform: translateX(-8px) rotate(-6deg); } 40% { transform: translateX(8px) rotate(6deg); filter: brightness(2.5); } 100% { transform: scale(.1) rotate(200deg); opacity: 0; filter: brightness(4); } }
+.boss-stage.boss-wins .boss-svg .boss-body { animation: boss-laugh .45s ease-in-out infinite; }
+.boss-stage.boss-wins .brow { opacity: 1; }
+.fx { position: absolute; inset: 0; pointer-events: none; }
+.dmg { position: absolute; top: 34%; transform: translateX(-50%); font-family: var(--display); font-weight: 800; font-size: 1.6rem; color: #fff; text-shadow: 0 2px 0 #000, 0 0 10px rgb(0 0 0 / .6); white-space: nowrap; animation: dmg-up 1.3s ease-out forwards; }
+.dmg.crit { color: #FFD83D; font-size: 1.85rem; }
+.dmg.super { color: #FF7AB6; font-size: 1.9rem; }
+.dmg.block { color: #7DD3FC; }
+@keyframes dmg-up { 0% { transform: translate(-50%, 10px) scale(.6); opacity: 0; } 15% { transform: translate(-50%, 0) scale(1.15); opacity: 1; } 100% { transform: translate(-50%, -60px) scale(1); opacity: 0; } }
+.slash { position: absolute; left: 50%; top: 50%; width: 170px; height: 8px; margin: -4px 0 0 -85px; border-radius: 99px; background: linear-gradient(90deg, transparent, #fff 40%, #FFD83D 60%, transparent); box-shadow: 0 0 14px #fff; transform: rotate(var(--r)) scaleX(0); animation: slash .45s ease-out forwards; }
+@keyframes slash { 0% { transform: rotate(var(--r)) scaleX(0); opacity: 1; } 50% { transform: rotate(var(--r)) scaleX(1.1); opacity: 1; } 100% { transform: rotate(var(--r)) scaleX(1.2); opacity: 0; } }
+.spark { position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; border-radius: 50%; animation: spark .85s ease-out forwards; }
+@keyframes spark { 0% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(.2); opacity: 0; } }
+.angry-banner { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-6deg); font-family: var(--display); font-weight: 800; font-size: 1.5rem; color: #fff; background: #DC2626; padding: 6px 16px; border-radius: 12px; box-shadow: 0 4px 0 #7F1D1D; white-space: nowrap; opacity: 0; pointer-events: none; }
+.angry-banner.show { animation: angry 1.8s ease forwards; }
+@keyframes angry { 0% { opacity: 0; transform: translate(-50%, -50%) rotate(-6deg) scale(2.2); } 15% { opacity: 1; transform: translate(-50%, -50%) rotate(-6deg) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -50%) rotate(-6deg) scale(.9); } }
+.boss-play.shake { animation: shake .55s ease; }
+.boss-play.hurt { animation: shake .55s ease; }
+.boss-play.hurt::after, .boss-play.flash::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; animation: vignette .55s ease forwards; }
+.boss-play.hurt::after { box-shadow: inset 0 0 90px 30px rgb(220 38 38 / .75); }
+.boss-play.flash::after { background: rgb(255 255 255 / .6); animation-duration: .35s; }
+@keyframes vignette { from { opacity: 1; } to { opacity: 0; } }
+@keyframes shake { 15% { transform: translate(-6px, 2px); } 30% { transform: translate(6px, -2px); } 45% { transform: translate(-4px, 1px); } 60% { transform: translate(4px, -1px); } 80% { transform: translate(-2px, 0); } }
+.boss-tools { display: flex; flex-direction: column; gap: 8px; }
+.powers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.pw { display: flex; align-items: center; justify-content: center; gap: 5px; min-height: 44px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-weight: 800; font-size: .86rem; cursor: pointer; box-shadow: 0 3px 0 var(--line); }
+.pw span { font-size: 1.1rem; }
+.pw.locked { opacity: .45; filter: grayscale(1); }
+.pw.used { opacity: .35; text-decoration: line-through; box-shadow: none; transform: translateY(3px); }
+.pw.ready { border-color: #F59E0B; background: color-mix(in srgb, #FFD83D 30%, var(--surface)); box-shadow: 0 3px 0 #B7791F; animation: pw-ready 1.4s ease-in-out infinite; }
+.pw.ready.wait { animation: none; opacity: .75; }
+.pw:active { transform: translateY(3px); box-shadow: none; }
+@keyframes pw-ready { 50% { box-shadow: 0 3px 0 #B7791F, 0 0 0 4px rgb(255 216 61 / .45); } }
+.tbar { position: relative; height: 22px; border-radius: 99px; background: var(--surface-2); border: 1.5px solid var(--line); overflow: hidden; }
+.tbar i { position: absolute; inset: 0 auto 0 0; width: 100%; background: linear-gradient(90deg, #3B82F6, #60A5FA); transition: width .1s linear; }
+.tbar.hurry i { background: linear-gradient(90deg, #EF4444, #F87171); }
+.tbar.frozen i { background: linear-gradient(90deg, #67E8F9, #E0F2FE); }
+.tbar span { position: absolute; inset: 0; display: grid; place-items: center; font-size: .78rem; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tbar.hurry span { animation: hurry .5s ease-in-out infinite alternate; }
+@keyframes hurry { to { transform: scale(1.12); } }
+.boss-play .qarea > .skill-pill { margin-bottom: 8px; }
+.opt.cut { opacity: .25; text-decoration: line-through; }
+
+/* result */
+.boss-result .br-art { position: relative; }
+.boss-result .br-art .boss-svg { width: 150px; height: 150px; margin: 0 auto; }
+.br-stars { position: absolute; left: 50%; top: -6px; transform: translateX(-50%); font-size: 1.5rem; letter-spacing: 4px; animation: combo-pop .6s ease .2s both; }
+.boss-result.lose h1 { color: var(--bad); }
+.boss-review { width: 100%; text-align: left; background: var(--surface-2); border-radius: var(--r-s); padding: 10px 12px; }
+.boss-review summary { font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+.boss-review ol { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 8px; }
+.boss-review li { display: flex; flex-direction: column; gap: 2px; font-size: .92rem; }
+.rv-q { font-weight: 700; overflow-wrap: anywhere; }
+.rv-a { color: var(--good-ink); background: var(--good-bg); border-radius: 8px; padding: 3px 8px; align-self: flex-start; font-weight: 700; display: inline-flex; gap: 4px; align-items: center; overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) {
+  .boss-svg.idle .boss-body, .boss-svg.idle .boss-shadow, .bh-go, .pw.ready, .shield-on, .boss-play.shake, .boss-play.hurt, .boss-wrap.hit, .boss-wrap.attack, .boss-wrap.enter, .boss-svg.laugh .boss-body, .boss-stage.boss-wins .boss-svg .boss-body { animation: none !important; }
+}
+
 </style>
 </head>
 <body>
@@ -3663,7 +3827,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     medium: { name: "Level Up", desc: "Score 70% or more on Medium", icon: "award" },
     challenge: { name: "Challenger", desc: "Score 70% or more on Hard", icon: "medal" },
     pts1000: { name: "1,000 Club", desc: "Reach 1,000 points", icon: "trophy" },
-    pts5000: { name: "Champion", desc: "Reach 5,000 points", icon: "trophy" }
+    pts5000: { name: "Champion", desc: "Reach 5,000 points", icon: "trophy" },
+    bossSlayer: { name: "Boss Slayer", desc: "Beat a Boss Battle", icon: "sword" },
+    bossFlawless: { name: "Untouchable", desc: "Beat a boss without losing a heart", icon: "shield" },
+    bossFast: { name: "Lightning Hero", desc: "Beat a boss in under 2 minutes", icon: "bolt" }
   }, DAILY_GOAL = 3, QUICK_SIZE = 8, CLASS = { updated_at: null, board: null, students: [], activities: {}, hidden: [] };
   try {
     let el = document.getElementById("epz-class");
@@ -3834,7 +4001,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       medium: rs.some((r) => r.level === "medium" && r.acc >= 70),
       challenge: rs.some((r) => r.level === "challenge" && r.acc >= 70),
       pts1000: pts >= 1e3,
-      pts5000: pts >= 5e3
+      pts5000: pts >= 5e3,
+      ...bossBadgeRules()
     }, now = (/* @__PURE__ */ new Date()).toISOString();
     for (let [k, ok] of Object.entries(rules)) ok && !state.badges[k] && (state.badges[k] = now);
   }
@@ -3846,7 +4014,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   }
   var WOTD_ACTS = ["meaning", "sentence", "listen", "scramble", "write", "synonym"], WOTD_PTS = { first: 10, second: 5, bonus: 20 };
   function wotdPoints(keep = null) {
-    let n = 0;
+    let n = bossPts(keep);
     for (let r of Object.values(state.wotd || {})) {
       for (let a of Object.values(r.a || {})) (!keep || keep(a.at)) && (n += a.p || 0);
       r.b && (!keep || keep(r.b.at)) && (n += r.b.p || 0);
@@ -4989,6 +5157,454 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let show = !!(me().name && me().grade) && h !== "setup", tab = h === "skills" || h === "quick" || h.startsWith("play-") ? "skills" : h === "ranking" ? "ranking" : h === "dashboard" ? "dashboard" : h === "word" || h === "words" || h.startsWith("word/") ? "word" : "home";
     nav.hidden = !show, document.body.classList.toggle("has-nav", show), nav.innerHTML = `<div class="tabbar-in">${TABS.map(([id, label, ic]) => `<a class="tab" href="#${id}"${id === tab ? ' aria-current="page"' : ""}><span class="tab-ic">${icon(ic, 22)}</span><span>${label}</span></a>`).join("")}</div>`;
   }
+  // epz-patch:boss — Boss Battle (one boss per week, played alone, saved on this phone)
+  var BOSS_START_UTC = Date.UTC(2026, 10, 15), BOSS_REWARD = 100, BOSS_FAST_SECS = 120;
+  var BOSS_EYE = (cx, cy, r) => `<g class="eye"><circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff"/><circle class="pupil" cx="${cx}" cy="${cy + r * 0.12}" r="${r * 0.52}" fill="#1B1B2F"/><circle cx="${cx - r * 0.22}" cy="${cy - r * 0.18}" r="${r * 0.17}" fill="#fff"/></g>`;
+  var BOSS_BROW = (x1, y1, x2, y2, c = "#1B1B2F") => `<path class="brow" d="M${x1} ${y1} L${x2} ${y2}" stroke="${c}" stroke-width="7" stroke-linecap="round"/>`;
+  var BOSSES = [
+    { id: "blob", name: "Typo Blob", title: "Spills spelling mistakes everywhere", taunt: "Your spelling is mine!", color: "#34C46E", dark: "#1F8A4A",
+      art: (c, d) => `<path d="M38 152 C28 104 56 52 100 52 C144 52 172 104 162 152 C160 166 150 168 146 158 C141 172 128 172 125 158 C119 170 107 170 102 158 C95 170 82 170 78 158 C72 170 58 168 56 156 C48 166 40 162 38 152Z" fill="${c}" stroke="${d}" stroke-width="5"/><ellipse cx="68" cy="82" rx="13" ry="7" fill="#fff" opacity=".35" transform="rotate(-32 68 82)"/>${BOSS_EYE(80, 102, 16)}${BOSS_EYE(122, 102, 16)}${BOSS_BROW(64, 78, 92, 90)}${BOSS_BROW(138, 78, 110, 90)}<path d="M84 130 Q100 144 116 130" stroke="#14532D" stroke-width="5" fill="none" stroke-linecap="round"/><rect x="96" y="132" width="9" height="8" rx="2" fill="#fff"/>` },
+    { id: "troll", name: "Tense Troll", title: "Mixes up the past and the present", taunt: "Yesterday I eat your points!", color: "#8B5CF6", dark: "#5B34C4",
+      art: (c, d) => `<path d="M54 72 L36 26 L78 58Z" fill="#F3E8C8" stroke="${d}" stroke-width="4" stroke-linejoin="round"/><path d="M146 72 L164 26 L122 58Z" fill="#F3E8C8" stroke="${d}" stroke-width="4" stroke-linejoin="round"/><rect x="40" y="52" width="120" height="126" rx="46" fill="${c}" stroke="${d}" stroke-width="5"/><circle cx="100" cy="72" r="11" fill="#fff" stroke="${d}" stroke-width="3"/><path d="M100 65 V72 L106 75" stroke="${d}" stroke-width="2.5" fill="none" stroke-linecap="round"/>${BOSS_EYE(78, 104, 15)}${BOSS_EYE(122, 104, 15)}${BOSS_BROW(62, 84, 90, 94)}${BOSS_BROW(138, 84, 110, 94)}<path d="M68 138 Q100 158 132 138" stroke="#3B1A8C" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M76 140 L80 120 L88 144Z" fill="#fff" stroke="${d}" stroke-width="2"/><path d="M124 140 L120 120 L112 144Z" fill="#fff" stroke="${d}" stroke-width="2"/>` },
+    { id: "kraken", name: "Comma Kraken", title: "Hides commas in the wrong places", taunt: "Stop, wait, comma, run!", color: "#14B8A6", dark: "#0F766E",
+      art: (c, d) => `<g stroke="${c}" stroke-width="16" fill="none" stroke-linecap="round"><path d="M60 134 C46 160 70 172 56 192"/><path d="M86 140 C80 166 98 176 88 194"/><path d="M114 140 C120 166 102 176 112 194"/><path d="M140 134 C154 160 130 172 144 192"/></g><path d="M40 118 C40 60 70 34 100 34 C130 34 160 60 160 118 C160 152 40 152 40 118Z" fill="${c}" stroke="${d}" stroke-width="5"/><circle cx="58" cy="78" r="6" fill="${d}" opacity=".35"/><circle cx="146" cy="88" r="8" fill="${d}" opacity=".35"/><circle cx="132" cy="56" r="5" fill="${d}" opacity=".35"/><circle cx="100" cy="56" r="7" fill="${d}"/><path d="M105 58 Q107 70 96 75" stroke="${d}" stroke-width="4" fill="none" stroke-linecap="round"/>${BOSS_EYE(78, 98, 17)}${BOSS_EYE(122, 98, 17)}${BOSS_BROW(60, 74, 90, 86)}${BOSS_BROW(140, 74, 110, 86)}<ellipse cx="100" cy="128" rx="9" ry="7" fill="#134E4A"/>` },
+    { id: "vampire", name: "Vocab Vampire", title: "Sucks the meaning out of words", taunt: "I will drink your vocabulary!", color: "#E11D48", dark: "#9F1239",
+      art: (c, d) => `<path d="M62 100 L10 70 L24 98 L4 112 L28 120 L18 142 L64 128Z" fill="#4C0519" stroke="${d}" stroke-width="4" stroke-linejoin="round"/><path d="M138 100 L190 70 L176 98 L196 112 L172 120 L182 142 L136 128Z" fill="#4C0519" stroke="${d}" stroke-width="4" stroke-linejoin="round"/><path d="M68 76 L60 34 L90 62Z" fill="${c}" stroke="${d}" stroke-width="4" stroke-linejoin="round"/><path d="M132 76 L140 34 L110 62Z" fill="${c}" stroke="${d}" stroke-width="4" stroke-linejoin="round"/><ellipse cx="100" cy="114" rx="52" ry="60" fill="${c}" stroke="${d}" stroke-width="5"/>${BOSS_EYE(80, 104, 15)}${BOSS_EYE(120, 104, 15)}${BOSS_BROW(62, 82, 92, 94)}${BOSS_BROW(138, 82, 108, 94)}<path d="M78 138 Q100 152 122 138" stroke="#4C0519" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M86 141 L90 158 L95 143Z" fill="#fff"/><path d="M114 141 L110 158 L105 143Z" fill="#fff"/>` },
+    { id: "golem", name: "Grammar Golem", title: "Made of broken sentences", taunt: "Me break all grammar rules!", color: "#94A3B8", dark: "#475569",
+      art: (c, d) => `<rect x="14" y="112" width="34" height="54" rx="12" fill="${c}" stroke="${d}" stroke-width="5"/><rect x="152" y="112" width="34" height="54" rx="12" fill="${c}" stroke="${d}" stroke-width="5"/><rect x="40" y="106" width="120" height="76" rx="14" fill="${c}" stroke="${d}" stroke-width="5"/><rect x="56" y="36" width="88" height="76" rx="12" fill="${c}" stroke="${d}" stroke-width="5"/><path d="M70 48 L80 62 L74 74" stroke="${d}" stroke-width="3" fill="none"/><path d="M130 124 L120 140 L128 152" stroke="${d}" stroke-width="3" fill="none"/><text x="92" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="24" fill="${d}" opacity=".55">A B C</text><g class="eye glow"><rect x="68" y="66" width="22" height="14" rx="4" fill="#FDE047"/></g><g class="eye glow"><rect x="110" y="66" width="22" height="14" rx="4" fill="#FDE047"/></g>${BOSS_BROW(66, 54, 92, 62)}${BOSS_BROW(134, 54, 108, 62)}<rect x="80" y="92" width="40" height="8" rx="3" fill="${d}"/>` },
+    { id: "king", name: "King Chaos", title: "The final boss of English", taunt: "Bow to the King of Mistakes!", color: "#4338CA", dark: "#1E1B4B",
+      art: (c, d) => `<path d="M34 178 C28 110 56 64 100 64 C144 64 172 110 166 178Z" fill="${c}" stroke="${d}" stroke-width="5"/><path d="M62 72 L56 28 L80 50 L100 18 L120 50 L144 28 L138 72Z" fill="#FACC15" stroke="#A16207" stroke-width="4" stroke-linejoin="round"/><circle cx="100" cy="56" r="6" fill="#EF4444"/><circle cx="74" cy="62" r="4" fill="#22D3EE"/><circle cx="126" cy="62" r="4" fill="#22D3EE"/>${BOSS_EYE(100, 110, 26)}<path class="brow" d="M66 80 L100 94 L134 80" stroke="${d}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M62 144 Q100 176 138 144 Q100 158 62 144Z" fill="${d}"/><path d="M70 147 L76 155 L83 150 L90 158 L96 152 L102 159 L108 152 L114 158 L120 150 L126 155 L131 148" stroke="#fff" stroke-width="3" fill="none" stroke-linejoin="round"/>` }
+  ];
+  function bossWeek(now = /* @__PURE__ */ new Date()) {
+    let t = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+    return Math.max(0, Math.floor((t - BOSS_START_UTC) / 864e5 / 7));
+  }
+  function bossDaysLeft(now = /* @__PURE__ */ new Date()) {
+    let t = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()), d = Math.floor((t - BOSS_START_UTC) / 864e5);
+    return d < 0 ? 7 : 7 - d % 7;
+  }
+  function bossOfWeek(w = bossWeek()) {
+    let b = BOSSES[w % BOSSES.length], tier = w + 1, t6 = Math.min(tier, 6), hp = Math.min(260, 80 + 20 * t6 + 10 * Math.max(0, tier - 6)), lv1 = tier <= 2 ? "easy" : tier <= 6 ? "medium" : "challenge", lv2 = lv1 === "easy" ? "medium" : "challenge";
+    return { ...b, week: w, tier, hp, lv1, lv2, speed: 1 - 0.04 * (t6 - 1) };
+  }
+  function bossSvg(b, cls = "") {
+    return `<svg class="boss-svg ${cls}" viewBox="0 0 200 200" aria-hidden="true"><ellipse class="boss-shadow" cx="100" cy="190" rx="58" ry="7" fill="#000" opacity=".2"/><g class="boss-body">${b.art(b.color, b.dark)}</g></svg>`;
+  }
+  function bossData() {
+    let s = state.boss;
+    return (!s || typeof s != "object") && (s = state.boss = { w: {}, wins: 0, plays: 0 }), s.w = s.w || {}, s;
+  }
+  function bossPts(keep = null) {
+    let n = 0, s = state.boss;
+    if (!s || !s.w) return 0;
+    for (let e of Object.values(s.w)) e && e.win && e.p && (!keep || keep(e.win)) && (n += e.p);
+    return n;
+  }
+  function bossBadgeRules() {
+    let s = state.boss || {};
+    return { bossSlayer: (s.wins || 0) >= 1, bossFlawless: !!s.flawless, bossFast: !!s.fast };
+  }
+  var P_SWORD = '<path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="m13 19 6-6M16 16l4 4M19 21l2-2"/>';
+  typeof P == "object" && (P.sword = P_SWORD);
+  // ---- sound effects only (no music): made on the phone with Web Audio
+  var bossAudio = null, bossMuted = (() => {
+    try {
+      return localStorage.getItem("epz-boss-mute") === "1";
+    } catch {
+      return !1;
+    }
+  })();
+  function sfxCtx() {
+    if (bossMuted) return null;
+    try {
+      return bossAudio || (bossAudio = new (window.AudioContext || window.webkitAudioContext)()), bossAudio.state === "suspended" && bossAudio.resume(), bossAudio;
+    } catch {
+      return null;
+    }
+  }
+  function sfxNoise(dur, freq, gain = 0.5, type = "lowpass", t0 = 0, sweep = 0) {
+    let a = sfxCtx();
+    if (!a) return;
+    let n = Math.floor(a.sampleRate * dur), buf = a.createBuffer(1, n, a.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2);
+    let src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(), t = a.currentTime + t0;
+    src.buffer = buf, f.type = type, f.frequency.setValueAtTime(freq, t), sweep && f.frequency.exponentialRampToValueAtTime(sweep, t + dur), g.gain.setValueAtTime(gain, t), g.gain.exponentialRampToValueAtTime(1e-3, t + dur), src.connect(f).connect(g).connect(a.destination), src.start(t), src.stop(t + dur + 0.05);
+  }
+  function sfxSweep(f1, f2, dur, gain = 0.25, wave = "sawtooth", t0 = 0) {
+    let a = sfxCtx();
+    if (!a) return;
+    let o = a.createOscillator(), g = a.createGain(), t = a.currentTime + t0;
+    o.type = wave, o.frequency.setValueAtTime(f1, t), o.frequency.exponentialRampToValueAtTime(f2, t + dur), g.gain.setValueAtTime(gain, t), g.gain.exponentialRampToValueAtTime(1e-3, t + dur), o.connect(g).connect(a.destination), o.start(t), o.stop(t + dur + 0.05);
+  }
+  var SFX = {
+    hit: () => (sfxNoise(0.18, 1800, 0.55, "bandpass", 0, 500), sfxSweep(180, 60, 0.16, 0.35, "square")),
+    crit: () => (sfxSweep(900, 2400, 0.12, 0.18, "triangle"), sfxNoise(0.25, 3e3, 0.6, "bandpass", 0.04, 600), sfxSweep(200, 50, 0.2, 0.4, "square", 0.04)),
+    super: () => (sfxSweep(300, 1600, 0.35, 0.2, "sawtooth"), sfxNoise(0.5, 4e3, 0.7, "lowpass", 0.25, 200), sfxSweep(120, 40, 0.45, 0.5, "square", 0.25)),
+    hurt: () => (sfxSweep(220, 70, 0.35, 0.35, "sawtooth"), sfxNoise(0.3, 600, 0.5, "lowpass")),
+    block: () => (sfxSweep(1400, 900, 0.12, 0.2, "triangle"), sfxNoise(0.2, 5e3, 0.3, "highpass")),
+    roar: () => (sfxSweep(90, 45, 0.9, 0.35, "sawtooth"), sfxNoise(0.9, 400, 0.6, "lowpass", 0, 120)),
+    power: () => (sfxSweep(500, 1500, 0.25, 0.15, "triangle"), sfxNoise(0.25, 6e3, 0.15, "highpass", 0.05)),
+    freeze: () => sfxNoise(0.6, 7e3, 0.3, "highpass", 0, 2e3),
+    tick: () => sfxNoise(0.03, 3e3, 0.15, "highpass"),
+    boom: () => (sfxNoise(1.4, 900, 0.9, "lowpass", 0, 60), sfxSweep(110, 30, 1, 0.5, "square"), sfxNoise(0.6, 6e3, 0.25, "highpass", 0.35)),
+    lose: () => (sfxSweep(300, 60, 0.9, 0.3, "sawtooth"), sfxNoise(0.8, 300, 0.4, "lowpass", 0.1)),
+    whoosh: () => sfxNoise(0.35, 300, 0.35, "bandpass", 0, 3e3)
+  };
+  var buzz = (ms) => {
+    try {
+      navigator.vibrate && navigator.vibrate(ms);
+    } catch {
+    }
+  };
+  // ---- home card
+  function bossCard() {
+    let b = bossOfWeek(), e = bossData().w[b.week], won = !!e?.win;
+    return `
+    <a class="boss-home${won ? " won" : ""}" href="#boss" aria-label="Boss Battle: ${esc(b.name)}">
+      <span class="bh-art">${bossSvg(b, won ? "beaten" : "")}${won ? `<span class="bh-check">${icon("check", 18)}</span>` : ""}</span>
+      <span class="bh-txt">
+        <span class="eyebrow">${icon("sword", 15)} Boss Battle</span>
+        <b class="bh-name">${esc(b.name)}</b>
+        <span class="bh-sub">Level ${b.tier} \xB7 ${b.hp} HP</span>
+        <span class="bh-pill">${won ? `Defeated! +${BOSS_REWARD} collected` : `Beat it: +${BOSS_REWARD} points`}</span>
+      </span>
+      <span class="bh-go">${won ? "Again" : "Fight"}</span>
+    </a>`;
+  }
+  // ---- boss page (before the fight)
+  function bossScreen() {
+    let b = bossOfWeek(), s = bossData(), e = s.w[b.week] || {}, won = !!e.win, days = bossDaysLeft(), next = bossOfWeek(b.week + 1);
+    app.dataset.tab = "home", window.scrollTo(0, 0), app.innerHTML = `
+    <header class="top">
+      <a class="icon-btn" href="#home" aria-label="Back to home">${icon("back", 24)}</a>
+      <div class="brand"><span>Boss Battle</span></div>
+      <button class="icon-btn boss-mute" id="bs-mute" type="button" aria-label="${bossMuted ? "Sound off" : "Sound on"}">${bossMuted ? "\u{1F507}" : "\u{1F50A}"}</button>
+    </header>
+    <section class="boss-intro" style="--bc:${b.color};--bd:${b.dark}">
+      <span class="bi-week">Boss of the week \xB7 Level ${b.tier}</span>
+      <div class="bi-art">${bossSvg(b, won ? "beaten" : "idle")}</div>
+      <h1>${esc(b.name)}</h1>
+      <p class="bi-title">${esc(b.title)}</p>
+      <p class="bi-taunt">“${esc(b.taunt)}”</p>
+      <div class="bi-stats"><span><b>${b.hp}</b> HP</span><span><b>${LEVELS2[b.lv1].name}</b> questions</span><span><b>3</b> hearts</span></div>
+      ${won ? `<p class="bi-reward done">${icon("check", 18)} You beat this boss! +${BOSS_REWARD} points collected.<br><small>Play again for fun (no extra points).</small></p>` : `<p class="bi-reward">${icon("star", 18)} Beat it this week: <b>+${BOSS_REWARD} points</b></p>`}
+      <button class="btn btn-big boss-fight" id="bs-fight" type="button">${icon("sword", 22)} ${won ? "Fight again" : "Fight!"}</button>
+    </section>
+    <section class="block boss-rules">
+      <h2>How to win</h2>
+      <ul>
+        <li><span class="br-ic">⚔️</span><span><b>Right answer</b> = you hit the boss.</span></li>
+        <li><span class="br-ic">⚡</span><span><b>Answer fast</b> = critical hit, almost double damage.</span></li>
+        <li><span class="br-ic">\u{1F525}</span><span><b>3 right in a row</b> = super strike and a power-up.</span></li>
+        <li><span class="br-ic">\u{1F494}</span><span><b>Wrong answer or time out</b> = the boss hits you. You have 3 hearts.</span></li>
+        <li><span class="br-ic">\u{1F621}</span><span>At <b>half HP</b> the boss gets angry: harder questions, less time.</span></li>
+      </ul>
+      <div class="br-powers"><span><b>\u{1F6E1}️ Shield</b>blocks one hit</span><span><b>✂️ 50/50</b>removes two wrong answers</span><span><b>❄️ Freeze</b>stops the timer</span></div>
+    </section>
+    <section class="block boss-next">
+      <div class="bn-art">${bossSvg(next, "shadowed")}</div>
+      <div><b>Next boss in ${days} day${days === 1 ? "" : "s"}</b><span>A new, stronger boss comes every Sunday.</span>${s.wins ? `<span>Bosses you beat: <b>${s.wins}</b></span>` : ""}${e.best ? `<span>Your best time this week: <b>${bossTime(e.best)}</b></span>` : ""}</div>
+    </section>
+    <footer class="foot"><b>English Practice Zone</b> by ${TEACHER_NAME}</footer>`, app.querySelector("#bs-fight").addEventListener("click", () => {
+      sfxCtx(), bossBattle(b);
+    }), app.querySelector("#bs-mute").addEventListener("click", (ev) => {
+      bossMuted = !bossMuted;
+      try {
+        localStorage.setItem("epz-boss-mute", bossMuted ? "1" : "0");
+      } catch {
+      }
+      ev.currentTarget.textContent = bossMuted ? "\u{1F507}" : "\u{1F50A}", ev.currentTarget.setAttribute("aria-label", bossMuted ? "Sound off" : "Sound on"), bossMuted || SFX.power();
+    });
+  }
+  var bossTime = (s) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, "0")}`;
+  function bossPool(level) {
+    let out = [];
+    for (let a of allActivities())
+      if (a.level === level && !a.passage && !a.audio_text && a.skill !== "reading" && a.skill !== "listening")
+        a.questions.forEach((q, i) => {
+          q.audio || out.push({ ...q, _skill: a.skill, _key: `${a.id}#${i}` });
+        });
+    return out;
+  }
+  var BOSS_TIME = { mcq: 20, truefalse: 20, fill: 30, correct: 45, build: 40, order: 60, match: 60 };
+  // ---- the battle
+  function bossBattle(b) {
+    let pools = { [b.lv1]: bossPool(b.lv1), [b.lv2]: bossPool(b.lv2) };
+    pools[b.lv1].length || (pools[b.lv1] = bossPool("easy")), pools[b.lv2].length || (pools[b.lv2] = pools[b.lv1]);
+    if (!pools[b.lv1].length) {
+      toast("No questions here yet.", "error"), go("home");
+      return;
+    }
+    let hp = b.hp, hearts = 3, heartsLost = 0, streak2 = 0, bestCombo = 0, correct = 0, wrong = 0, angry = !1, shield = !1, used = new Set(), lastSkill = "", mistakes = [], startAt = Date.now(), over = !1, q = null, ctrl = null, answered = !1, timer = null, tLimit = 0, tLeft = 0, frozen = !1, lastTick = 0, autoNext = null, powers = { shield: "locked", cut: "locked", freeze: "locked" };
+    document.body.classList.add("playing"), window.scrollTo(0, 0), app.innerHTML = `
+    <div class="play boss-play" id="bp" style="--bc:${b.color};--bd:${b.dark};--c:${b.color}">
+      <div class="play-bar boss-bar">
+        <button class="icon-btn" id="quit" aria-label="Run away">${icon("x", 24)}</button>
+        <div class="hearts" id="hearts" aria-label="3 hearts"></div>
+        <span class="combo" id="combo" hidden></span>
+        <button class="icon-btn boss-mute" id="mute" type="button" aria-label="${bossMuted ? "Sound off" : "Sound on"}">${bossMuted ? "\u{1F507}" : "\u{1F50A}"}</button>
+      </div>
+      <section class="boss-stage" id="stage">
+        <div class="bs-head"><b>${esc(b.name)}</b><span id="hp-num">${hp} / ${b.hp} HP</span></div>
+        <div class="hpbar" role="progressbar" aria-label="Boss HP" aria-valuemin="0" aria-valuemax="${b.hp}" aria-valuenow="${hp}"><i class="hp-lag" id="hp-lag"></i><i class="hp-fill" id="hp-fill"></i></div>
+        <div class="bs-arena"><div class="boss-wrap" id="boss">${bossSvg(b, "idle")}</div><div class="fx" id="fx"></div></div>
+        <div class="angry-banner" id="angry" hidden>${esc(b.name)} is ANGRY!</div>
+      </section>
+      <div class="boss-tools">
+        <div class="powers">
+          <button class="pw" data-pw="shield" type="button"><span>\u{1F6E1}️</span>Shield</button>
+          <button class="pw" data-pw="cut" type="button"><span>✂️</span>50/50</button>
+          <button class="pw" data-pw="freeze" type="button"><span>❄️</span>Freeze</button>
+        </div>
+        <div class="tbar" id="tbar"><i id="tfill"></i><span id="tnum"></span></div>
+      </div>
+      <section class="qarea" id="qarea" aria-live="polite"></section>
+    </div>
+    <div class="play-foot" id="foot">
+      <div class="foot-inner">
+        <div class="feedback" id="feedback" role="status" hidden></div>
+        <button class="btn btn-primary btn-big" id="check-btn" disabled>Attack!</button>
+        <button class="btn btn-big btn-next" id="next-btn" hidden>Continue ${icon("next", 20)}</button>
+      </div>
+    </div>`;
+    let $b = (s) => app.querySelector(s), bp = $b("#bp"), stage = $b("#stage"), bossEl = $b("#boss"), fx = $b("#fx"), qarea = $b("#qarea"), foot = $b("#foot"), feedback = $b("#feedback"), checkBtn = $b("#check-btn"), nextBtn = $b("#next-btn"), tfill = $b("#tfill"), tnum = $b("#tnum"), tbar = $b("#tbar");
+    foot.style.setProperty("--c", b.color);
+    function drawHearts() {
+      $b("#hearts").innerHTML = [0, 1, 2].map((i) => `<span class="heart ${i < hearts ? "" : "lost"}">${i < hearts ? "❤️" : "\u{1F5A4}"}</span>`).join("") + (shield ? '<span class="shield-on" title="Shield up">\u{1F6E1}️</span>' : ""), $b("#hearts").setAttribute("aria-label", `${hearts} heart${hearts === 1 ? "" : "s"}${shield ? ", shield up" : ""}`);
+    }
+    function drawHp() {
+      let p = Math.max(0, 100 * hp / b.hp);
+      $b("#hp-fill").style.width = `${p}%`, setTimeout(() => {
+        let el = $b("#hp-lag");
+        el && (el.style.width = `${p}%`);
+      }, 380), $b("#hp-num").textContent = `${Math.max(0, hp)} / ${b.hp} HP`, $b(".hpbar").setAttribute("aria-valuenow", Math.max(0, hp)), $b(".hpbar").classList.toggle("low", p <= 50);
+    }
+    function drawCombo() {
+      let c = $b("#combo");
+      c.hidden = streak2 < 2, c.textContent = `\u{1F525} x${streak2}`, c.classList.remove("pop"), c.offsetWidth, c.classList.add("pop");
+    }
+    function drawPowers() {
+      app.querySelectorAll(".pw").forEach((btn) => {
+        let k = btn.dataset.pw, st = powers[k], usable = st === "ready" && !answered && !over && (k === "shield" ? !shield : k === "cut" ? canCut() : timer && !frozen);
+        btn.className = `pw ${st}${st === "ready" && !usable ? " wait" : ""}`, btn.setAttribute("aria-label", `${btn.textContent.trim()}: ${st === "locked" ? "get 3 right in a row to unlock" : st === "used" ? "used" : "ready"}`);
+      });
+    }
+    let canCut = () => q && (q.type === "mcq" || !q.type && q.options) && (q.options || []).length >= 3 && qarea.querySelectorAll(".opt:not(.cut):not(:disabled)").length >= 3;
+    function float(text, cls) {
+      let s = document.createElement("span");
+      s.className = `dmg ${cls}`, s.textContent = text, s.style.left = `${38 + Math.random() * 24}%`, fx.appendChild(s), setTimeout(() => s.remove(), 1300);
+    }
+    function slash(n = 1) {
+      for (let i = 0; i < n; i++) {
+        let s = document.createElement("i");
+        s.className = "slash", s.style.setProperty("--r", `${-35 + i * 50 + Math.random() * 20}deg`), s.style.animationDelay = `${i * 0.09}s`, fx.appendChild(s), setTimeout(() => s.remove(), 700);
+      }
+    }
+    function sparks(n, color) {
+      for (let i = 0; i < n; i++) {
+        let s = document.createElement("b");
+        s.className = "spark", s.style.background = color || (i % 2 ? "#FFD83D" : b.color);
+        let a = Math.random() * Math.PI * 2, d = 50 + Math.random() * 90;
+        s.style.setProperty("--x", `${Math.cos(a) * d}px`), s.style.setProperty("--y", `${Math.sin(a) * d}px`), fx.appendChild(s), setTimeout(() => s.remove(), 900);
+      }
+    }
+    let anim = (el, cls, ms) => {
+      el.classList.remove(cls), el.offsetWidth, el.classList.add(cls), setTimeout(() => el.classList.remove(cls), ms);
+    };
+    function pickQuestion() {
+      let list = pools[angry ? b.lv2 : b.lv1], fresh = list.filter((x) => !used.has(x._key));
+      fresh.length || (used.clear(), fresh = list.slice());
+      let other = fresh.filter((x) => x._skill !== lastSkill), pickFrom = other.length ? other : fresh, skills = shuffle(Array.from(new Set(pickFrom.map((x) => x._skill)))), sk = skills[0], cand = pickFrom.filter((x) => x._skill === sk), pick = cand[Math.floor(Math.random() * cand.length)];
+      return used.add(pick._key), lastSkill = pick._skill, pick;
+    }
+    function stopTimer() {
+      timer && (clearInterval(timer), timer = null);
+    }
+    function startTimer() {
+      stopTimer(), tLimit = Math.round((BOSS_TIME[q.type] || 30) * b.speed * (angry ? 0.8 : 1) + (q.text ? 15 : 0)), tLeft = tLimit, frozen = !1, tbar.classList.remove("frozen", "hurry"), lastTick = Math.ceil(tLeft);
+      let last = Date.now();
+      timer = setInterval(() => {
+        let now = Date.now(), dt = (now - last) / 1e3;
+        if (last = now, frozen || document.hidden) return;
+        tLeft -= dt;
+        let p = Math.max(0, 100 * tLeft / tLimit);
+        tfill.style.width = `${p}%`, tnum.textContent = `${Math.max(0, Math.ceil(tLeft))}s`, tbar.classList.toggle("hurry", tLeft <= 5);
+        let sec = Math.ceil(tLeft);
+        tLeft <= 5 && sec < lastTick && sec > 0 && SFX.tick(), lastTick = sec, tLeft <= 0 && timeUp();
+      }, 100), tfill.style.width = "100%", tnum.textContent = `${tLimit}s`, drawPowers();
+    }
+    function show() {
+      if (over) return;
+      answered = !1, clearTimeout(autoNext), q = pickQuestion();
+      let s = SKILLS2[q._skill] || SKILLS2.grammar;
+      foot.className = "play-foot", feedback.hidden = !0, nextBtn.hidden = !0, checkBtn.disabled = !0, ctrl = mountQuestion(q, qarea, {
+        setReady: (r) => {
+          checkBtn.disabled = !r;
+        },
+        submitNow: () => check()
+      }), qarea.insertAdjacentHTML("afterbegin", `<span class="skill-pill" style="--c:${s.color}">${icon(s.icon, 16)} ${esc(s.name)}</span>`), checkBtn.hidden = !!ctrl.autoCheck, qarea.classList.remove("enter"), qarea.offsetWidth, qarea.classList.add("enter"), startTimer();
+    }
+    function check() {
+      if (answered || over) return;
+      answered = !0;
+      let used2 = tLimit - tLeft;
+      stopTimer();
+      let res = ctrl.evaluate();
+      resolve(res.ok, res.correctText, used2);
+    }
+    function timeUp() {
+      if (answered || over) return;
+      answered = !0, stopTimer();
+      try {
+        ctrl.lock && ctrl.lock(), ctrl.reveal && ctrl.reveal();
+      } catch {
+      }
+      resolve(!1, ctrl.correctText ? ctrl.correctText() : "", tLimit, !0);
+    }
+    function resolve(ok, correctText, secs, timedOut = !1) {
+      checkBtn.hidden = !0, drawPowers();
+      if (ok) {
+        correct++, streak2++, bestCombo = Math.max(bestCombo, streak2);
+        let isSuper = streak2 % 3 === 0, crit = !isSuper && secs <= tLimit * 0.35, dmg = isSuper ? 30 : crit ? 18 : 10;
+        hp -= dmg, drawCombo(), anim(bossEl, "hit", 450), isSuper ? (slash(3), sparks(18), anim(bp, "flash", 400), float(`-${dmg} SUPER STRIKE!`, "super"), SFX.super(), buzz(40)) : crit ? (slash(2), sparks(10), float(`-${dmg} CRITICAL!`, "crit"), SFX.crit()) : (slash(1), sparks(5), float(`-${dmg}`, ""), SFX.hit()), drawHp();
+        let gift = null;
+        if (isSuper) {
+          let locked = Object.keys(powers).filter((k) => powers[k] === "locked");
+          locked.length && (gift = locked[Math.floor(Math.random() * locked.length)], powers[gift] = "ready", setTimeout(() => SFX.power(), 350));
+        }
+        let names = { shield: "\u{1F6E1}️ Shield", cut: "✂️ 50/50", freeze: "❄️ Freeze" };
+        foot.className = "play-foot good", feedback.innerHTML = `
+        <span class="fb-ic">${icon("check", 22)}</span>
+        <div class="fb-txt"><strong>${isSuper ? "Super strike!" : crit ? "Critical hit!" : PRAISE2[Math.floor(Math.random() * PRAISE2.length)]} -${dmg} HP</strong>${gift ? `<p>New power-up: <b>${names[gift]}</b></p>` : ""}${q.explanation ? `<p class="small">${esc(q.explanation)}</p>` : ""}</div>`, feedback.hidden = !1, drawPowers();
+        if (hp <= 0) {
+          victory();
+          return;
+        }
+        let justAngry = !angry && hp <= b.hp / 2;
+        justAngry && (angry = !0, setTimeout(() => {
+          over || (stage.classList.add("enraged"), $b("#angry").hidden = !1, anim($b("#angry"), "show", 1800), anim(bp, "shake", 600), SFX.roar(), buzz([60, 40, 60]));
+        }, 500)), nextBtn.hidden = !1, nextBtn.innerHTML = `Next ${icon("next", 20)}`, autoNext = setTimeout(() => nextBtn.click(), justAngry ? 2400 : 1300);
+      } else {
+        wrong++, streak2 = 0, drawCombo(), $b("#combo").hidden = !0, mistakes.push({ q, correctText });
+        let blocked = shield;
+        blocked ? (shield = !1, setTimeout(() => {
+          float("BLOCKED!", "block"), SFX.block(), anim(bossEl, "attack", 600);
+        }, 150)) : (hearts--, heartsLost++, setTimeout(() => {
+          anim(bossEl, "attack", 600), anim(bp, "hurt", 550), SFX.hurt(), buzz(120);
+          let hs = app.querySelectorAll(".heart");
+          hs[hearts] && anim(hs[hearts], "break", 600);
+        }, 120)), setTimeout(drawHearts, blocked ? 200 : 520), foot.className = "play-foot bad", feedback.innerHTML = `
+        <span class="fb-ic">${icon("x", 22)}</span>
+        <div class="fb-txt"><strong>${timedOut ? "Time's up!" : "Not quite"} ${blocked ? "— shield blocked it!" : "— the boss hits you!"}</strong>${correctText ? `<p>Answer: <b>${esc(correctText)}</b></p>` : ""}${q.explanation ? `<p class="small">${esc(q.explanation)}</p>` : ""}</div>`, feedback.hidden = !1;
+        if (hearts <= 0) {
+          nextBtn.hidden = !1, nextBtn.innerHTML = `See result ${icon("flag", 20)}`, over = !0, drawPowers(), setTimeout(() => {
+            stage.classList.add("boss-wins"), SFX.lose();
+          }, 700);
+          return;
+        }
+        nextBtn.hidden = !1, nextBtn.innerHTML = `Continue ${icon("next", 20)}`;
+      }
+      nextBtn.focus({ preventScroll: !0 });
+    }
+    function victory() {
+      over = !0, stopTimer(), drawPowers(), setTimeout(() => {
+        stage.classList.add("dying"), SFX.boom(), sparks(40), anim(bp, "shake", 700), buzz([80, 50, 160]);
+      }, 450), setTimeout(() => finish(!0), 2100);
+    }
+    nextBtn.addEventListener("click", () => {
+      if (clearTimeout(autoNext), over) {
+        hearts <= 0 && finish(!1);
+        return;
+      }
+      answered && show();
+    }), checkBtn.addEventListener("click", check), app.querySelectorAll(".pw").forEach((btn) => btn.addEventListener("click", () => {
+      let k = btn.dataset.pw;
+      if (over || answered) return;
+      if (powers[k] === "locked") {
+        toast("Get 3 right in a row to unlock a power-up.", "info", 2200);
+        return;
+      }
+      if (powers[k] === "used") return;
+      if (k === "shield") {
+        if (shield) return;
+        shield = !0, drawHearts(), SFX.block(), toast("Shield up! It blocks the next hit.", "success", 1800);
+      } else if (k === "cut") {
+        if (!canCut()) {
+          toast("50/50 works on questions with options.", "info", 2200);
+          return;
+        }
+        let wrongs = Array.from(qarea.querySelectorAll(".opt")).filter((o) => !answerMatches(o.querySelector("span:last-child").textContent, q.answer));
+        shuffle(wrongs).slice(0, Math.min(2, wrongs.length - (wrongs.length > 2 ? 1 : 0))).forEach((o) => {
+          o.disabled = !0, o.classList.add("cut");
+        }), SFX.whoosh();
+      } else if (k === "freeze") {
+        if (!timer || frozen) return;
+        frozen = !0, tbar.classList.add("frozen"), tnum.textContent = "Frozen", SFX.freeze();
+      }
+      powers[k] = "used", drawPowers();
+    })), $b("#mute").addEventListener("click", (ev) => {
+      bossMuted = !bossMuted;
+      try {
+        localStorage.setItem("epz-boss-mute", bossMuted ? "1" : "0");
+      } catch {
+      }
+      ev.currentTarget.textContent = bossMuted ? "\u{1F507}" : "\u{1F50A}";
+    }), $b("#quit").addEventListener("click", () => {
+      if (over) return;
+      let m2 = openModal(`
+      <h2 class="modal-title">Run away from ${esc(b.name)}?</h2>
+      <p class="muted">This fight will not count. You can come back and try again.</p>
+      <div class="sheet-actions"><button class="btn btn-primary btn-big" data-close>Keep fighting</button><button class="btn btn-ghost btn-big" id="stop-yes">Run away</button></div>`);
+      m2.el.querySelector("#stop-yes").addEventListener("click", () => {
+        m2.close(), go("boss");
+      });
+    });
+    let onKey = (e) => {
+      if (over && hearts > 0) return;
+      let tag = (e.target.tagName || "").toLowerCase();
+      e.key === "Enter" && !e.shiftKey ? nextBtn.hidden ? !checkBtn.disabled && !checkBtn.hidden && tag !== "button" && (e.preventDefault(), checkBtn.click()) : (e.preventDefault(), nextBtn.click()) : !answered && /^[1-6]$/.test(e.key) && tag !== "input" && tag !== "textarea" && qarea.querySelectorAll(".opt")[Number(e.key) - 1]?.click();
+    };
+    document.addEventListener("keydown", onKey), cleanup = () => {
+      over = !0, stopTimer(), clearTimeout(autoNext), document.removeEventListener("keydown", onKey);
+    };
+    function finish(win) {
+      if (bp.dataset.done) return;
+      bp.dataset.done = "1", stopTimer(), clearTimeout(autoNext), document.removeEventListener("keydown", onKey);
+      let secs = Math.round((Date.now() - startAt) / 1e3), s = bossData(), key = String(b.week), e = s.w[key] || (s.w[key] = {}), firstWin = win && !e.win, leagueBefore = league().index, before = new Set(Object.keys(state.badges));
+      s.plays = (s.plays || 0) + 1, win && (firstWin && (e.win = (/* @__PURE__ */ new Date()).toISOString(), e.p = BOSS_REWARD, s.wins = (s.wins || 0) + 1), e.best = e.best ? Math.min(e.best, secs) : secs, heartsLost === 0 && (s.flawless = !0), secs <= BOSS_FAST_SECS && (s.fast = !0)), refreshBadges(), save();
+      let newBadges = Object.keys(state.badges).filter((k) => !before.has(k)), lgUp = league().index > leagueBefore ? league() : null;
+      win && firstWin && LIVE2 && syncBoard(), document.body.classList.remove("playing"), window.scrollTo(0, 0);
+      let total = correct + wrong, acc = total ? Math.round(100 * correct / total) : 0, review = mistakes.length ? `
+        <details class="boss-review"${win ? "" : " open"}>
+          <summary>${icon("book", 18)} Learn from your mistakes (${mistakes.length})</summary>
+          <ol>${mistakes.map((m) => `<li><span class="rv-q">${m.q.type === "order" ? "Put the sentences in order." : m.q.type === "match" ? "Match the words." : formatPrompt(m.q.prompt || "")}</span><span class="rv-a">${icon("check", 15)} ${esc(m.correctText || "")}</span></li>`).join("")}</ol>
+        </details>` : "";
+      app.innerHTML = `
+      <section class="results boss-result ${win ? "win" : "lose"}" style="--bc:${b.color};--bd:${b.dark};--c:${b.color}">
+        <div class="br-art">${bossSvg(b, win ? "beaten" : "laugh")}${win ? '<span class="br-stars">⭐⭐⭐</span>' : ""}</div>
+        <h1>${win ? `You beat ${esc(b.name)}!` : `${esc(b.name)} won this time`}</h1>
+        <p class="muted">${win ? heartsLost === 0 ? "A perfect fight. Not one heart lost!" : "Great fight. The boss is gone!" : `The boss had <b>${Math.max(0, hp)} HP</b> left. You can do it!`}</p>
+        ${win ? firstWin ? `<div class="earned-pts">${icon("star", 22)} +${BOSS_REWARD} points</div>` : '<p class="small muted">You already collected this week’s reward. This fight was for fun.</p>' : `<div class="hpbar end"><i class="hp-fill" style="width:${Math.max(0, 100 * hp / b.hp)}%"></i></div>`}
+        <div class="res-chips">
+          <span>⏱️ ${bossTime(secs)}</span>
+          <span>✅ ${correct} of ${total} right (${acc}%)</span>
+          <span>\u{1F525} Best combo x${bestCombo}</span>
+          <span>${hearts > 0 ? "❤️".repeat(hearts) : "\u{1F494}"} ${hearts} heart${hearts === 1 ? "" : "s"} left</span>
+        </div>
+        ${lgUp ? `<div class="unlock" style="--lg:${lgUp.color}"><span class="medal">${icon("medal", 24)}</span><div><b>New league: ${lgUp.name}!</b><span>Your class ranking shows your new league.</span></div></div>` : ""}
+        ${newBadges.map((k) => `<div class="unlock badge-new"><span class="badge-ic">${icon(BADGES[k].icon, 22)}</span><div><b>New badge: ${esc(BADGES[k].name)}</b><span>${esc(BADGES[k].desc)}</span></div></div>`).join("")}
+        ${review}
+        <div class="res-actions">
+          <button class="btn btn-primary btn-big" id="again">${icon(win ? "sword" : "refresh", 20)} ${win ? "Fight again" : "Try again"}</button>
+          <button class="btn btn-ghost btn-big" id="res-home">${icon("home", 20)} Home</button>
+        </div>
+      </section>`, win && confetti(90), app.querySelector("#again").addEventListener("click", () => {
+        sfxCtx(), bossBattle(bossOfWeek());
+      }), app.querySelector("#res-home").addEventListener("click", () => go("home")), storageOk || toast("This browser is not saving your points. Open the link in a normal (not private) window.", "error", 6e3);
+    }
+    drawHearts(), drawHp(), drawPowers(), SFX.roar(), anim(bossEl, "enter", 900), setTimeout(show, 250);
+  }
+
   function route2() {
     cleanup && (cleanup(), cleanup = null), stopSpeaking(), document.querySelectorAll(".confetti").forEach((c2) => c2.remove()), document.body.classList.remove("playing"), app.classList.remove("wide");
     let h = location.hash.replace(/^#/, "");
@@ -5003,6 +5619,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     }
     if (h === "quick") {
       play({ quick: !0 });
+      return;
+    }
+    if (h === "boss") {
+      bossScreen();
       return;
     }
     if (h === "words" || h === "word" || h.startsWith("word/")) {
@@ -5167,6 +5787,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       </div>
       <a class="play-btn" href="#quick" aria-label="Play Quick Play">${icon("play", 28)}<span>Play</span></a>
     </section>
+
+    ${bossCard()}
 
     ${homeCard()}
 
