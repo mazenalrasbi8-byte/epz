@@ -1117,6 +1117,15 @@ body.playing .tabbar { display: none; }
 .boss-intro, .boss-rules, .boss-next { border: 1.5px solid var(--line); }
 .boss-rules, .boss-next { box-shadow: 0 3px 0 var(--line); background: var(--surface); border-radius: var(--r); }
 
+.bi-tries { display: flex; gap: 8px; margin-top: 10px; }
+.bi-tries i { font-style: normal; min-width: 54px; height: 40px; padding: 0 8px; border-radius: 12px; display: grid; place-items: center; background: rgb(255 255 255 / .1); border: 1.5px dashed rgb(255 255 255 / .35); font-size: 1.1rem; }
+.bi-tries i.used { border-style: solid; background: #FFD83D; color: #2B2300; font-family: var(--display); font-weight: 800; font-size: 1rem; }
+.bi-small { margin: 2px 0 0; font-size: .86rem; color: #CFC3EA; font-weight: 600; }
+.bi-small b, .boss-wait b { font-variant-numeric: tabular-nums; }
+.boss-fight:disabled { background: #4B3A6B; box-shadow: 0 5px 0 #2A1652; color: #CFC3EA; cursor: default; }
+.boss-wait { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 4px 0; font-weight: 700; color: var(--muted); }
+[data-boss-cd] { font-variant-numeric: tabular-nums; }
+
 /* battle */
 .boss-play { gap: 10px; }
 .boss-bar { display: flex; align-items: center; gap: 8px; }
@@ -5158,7 +5167,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     nav.hidden = !show, document.body.classList.toggle("has-nav", show), nav.innerHTML = `<div class="tabbar-in">${TABS.map(([id, label, ic]) => `<a class="tab" href="#${id}"${id === tab ? ' aria-current="page"' : ""}><span class="tab-ic">${icon(ic, 22)}</span><span>${label}</span></a>`).join("")}</div>`;
   }
   // epz-patch:boss — Boss Battle (one boss per week, played alone, saved on this phone)
-  var BOSS_START_UTC = Date.UTC(2026, 10, 15), BOSS_REWARD = 100, BOSS_FAST_SECS = 120;
+  var BOSS_START_UTC = Date.UTC(2026, 10, 15), BOSS_REWARD = 500, BOSS_TRIES = 2, BOSS_WINDOW = 864e5, BOSS_FAST_SECS = 120;
   var BOSS_EYE = (cx, cy, r) => `<g class="eye"><circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff"/><circle class="pupil" cx="${cx}" cy="${cy + r * 0.12}" r="${r * 0.52}" fill="#1B1B2F"/><circle cx="${cx - r * 0.22}" cy="${cy - r * 0.18}" r="${r * 0.17}" fill="#fff"/></g>`;
   var BOSS_BROW = (x1, y1, x2, y2, c = "#1B1B2F") => `<path class="brow" d="M${x1} ${y1} L${x2} ${y2}" stroke="${c}" stroke-width="7" stroke-linecap="round"/>`;
   var BOSSES = [
@@ -5196,10 +5205,43 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   }
   function bossPts(keep = null) {
     let n = 0, s = state.boss;
-    if (!s || !s.w) return 0;
-    for (let e of Object.values(s.w)) e && e.win && e.p && (!keep || keep(e.win)) && (n += e.p);
+    if (!s) return 0;
+    for (let e of Object.values(s.w || {})) e && e.win && e.p && (!keep || keep(e.win)) && (n += e.p);
+    for (let e of Object.values(s.d || {})) e && e.p && e.at && (!keep || keep(e.at)) && (n += e.p);
     return n;
   }
+  // 2 tries every 24 hours (from the first try); the best try gives the points (max 500)
+  function bossWindow(now = Date.now()) {
+    let s = bossData(), d = s.d || (s.d = {}), key = Object.keys(d).sort().pop(), cur = key && now - Date.parse(key) < BOSS_WINDOW ? d[key] : null, used = cur ? cur.s.length : 0;
+    return { key: cur ? key : null, cur, used, left: Math.max(0, BOSS_TRIES - used), best: cur ? cur.p || 0 : 0, resetAt: cur ? Date.parse(key) + BOSS_WINDOW : null };
+  }
+  function bossStartTry() {
+    let s = bossData(), w = bossWindow();
+    if (w.left <= 0) return null;
+    let key = w.key || (/* @__PURE__ */ new Date()).toISOString(), e = s.d[key] || (s.d[key] = { s: [], p: 0 });
+    return e.s.push(0), s.plays = (s.plays || 0) + 1, save(), { key, i: e.s.length - 1 };
+  }
+  function bossSetScore(t, score) {
+    let e = bossData().d[t.key];
+    if (!e) return;
+    score = Math.max(0, Math.min(BOSS_REWARD, Math.round(score))), e.s[t.i] = Math.max(e.s[t.i] || 0, score);
+    let best = Math.max(...e.s);
+    best > (e.p || 0) && (e.p = best, e.at = (/* @__PURE__ */ new Date()).toISOString()), save();
+  }
+  function bossCountdown(ms) {
+    let t = Math.max(0, Math.ceil(ms / 1e3)), h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), sec = t % 60;
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+  }
+  var bossTicker = setInterval(() => {
+    let els = document.querySelectorAll("[data-boss-cd]");
+    if (!els.length) return;
+    let w = bossWindow();
+    if (!w.resetAt || Date.now() >= w.resetAt) {
+      location.hash === "#boss" && !document.body.classList.contains("playing") && !document.querySelector(".boss-result") ? bossScreen() : (location.hash === "" || location.hash === "#home") && typeof redrawIf == "function" && redrawIf("home");
+      return;
+    }
+    els.forEach((el) => el.textContent = bossCountdown(w.resetAt - Date.now()));
+  }, 1e3);
   function bossBadgeRules() {
     let s = state.boss || {};
     return { bossSlayer: (s.wins || 0) >= 1, bossFlawless: !!s.flawless, bossFast: !!s.fast };
@@ -5258,22 +5300,22 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   };
   // ---- home card
   function bossCard() {
-    let b = bossOfWeek(), e = bossData().w[b.week], won = !!e?.win;
+    let b = bossOfWeek(), w = bossWindow(), won = w.left === 0;
     return `
     <a class="boss-home${won ? " won" : ""}" href="#boss" aria-label="Boss Battle: ${esc(b.name)}">
-      <span class="bh-art">${bossSvg(b, won ? "beaten" : "")}${won ? `<span class="bh-check">${icon("check", 18)}</span>` : ""}</span>
+      <span class="bh-art">${bossSvg(b, won ? "beaten" : "")}${w.best >= BOSS_REWARD ? `<span class="bh-check">${icon("check", 18)}</span>` : ""}</span>
       <span class="bh-txt">
         <span class="eyebrow">${icon("sword", 15)} Boss Battle</span>
         <b class="bh-name">${esc(b.name)}</b>
         <span class="bh-sub">Level ${b.tier} \xB7 ${b.hp} HP</span>
-        <span class="bh-pill">${won ? `Defeated! +${BOSS_REWARD} collected` : `Beat it: +${BOSS_REWARD} points`}</span>
+        <span class="bh-pill">${w.left ? `${w.left} ${w.left === 1 ? "try" : "tries"} left \xB7 up to +${BOSS_REWARD}` : `Got ${w.best} \xB7 new tries in <span data-boss-cd>${bossCountdown(w.resetAt - Date.now())}</span>`}</span>
       </span>
-      <span class="bh-go">${won ? "Again" : "Fight"}</span>
+      <span class="bh-go">${w.left ? "Fight" : "Wait"}</span>
     </a>`;
   }
   // ---- boss page (before the fight)
   function bossScreen() {
-    let b = bossOfWeek(), s = bossData(), e = s.w[b.week] || {}, won = !!e.win, days = bossDaysLeft(), next = bossOfWeek(b.week + 1);
+    let b = bossOfWeek(), s = bossData(), e = s.w[b.week] || {}, w = bossWindow(), won = w.left === 0, days = bossDaysLeft(), next = bossOfWeek(b.week + 1);
     app.dataset.tab = "home", window.scrollTo(0, 0), app.innerHTML = `
     <header class="top">
       <a class="icon-btn" href="#home" aria-label="Back to home">${icon("back", 24)}</a>
@@ -5287,8 +5329,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       <p class="bi-title">${esc(b.title)}</p>
       <p class="bi-taunt">“${esc(b.taunt)}”</p>
       <div class="bi-stats"><span><b>${b.hp}</b> HP</span><span><b>${LEVELS2[b.lv1].name}</b> questions</span><span><b>3</b> hearts</span></div>
-      ${won ? `<p class="bi-reward done">${icon("check", 18)} You beat this boss! +${BOSS_REWARD} points collected.<br><small>Play again for fun (no extra points).</small></p>` : `<p class="bi-reward">${icon("star", 18)} Beat it this week: <b>+${BOSS_REWARD} points</b></p>`}
-      <button class="btn btn-big boss-fight" id="bs-fight" type="button">${icon("sword", 22)} ${won ? "Fight again" : "Fight!"}</button>
+      <div class="bi-tries" aria-label="${w.left} of ${BOSS_TRIES} tries left">${Array.from({ length: BOSS_TRIES }, (_, i) => `<i class="${i < w.used ? "used" : ""}">${i < w.used ? `${w.cur.s[i]}` : "\u2694\uFE0F"}</i>`).join("")}</div>
+      ${w.used ? `<p class="bi-reward">${icon("star", 18)} Your best try: <b>${w.best} points</b></p>` : `<p class="bi-reward">${icon("star", 18)} Win = <b>+${BOSS_REWARD} points</b></p>`}
+      ${won ? `<p class="bi-reward done">You used your 2 tries.<br><small>New tries in <b data-boss-cd>${bossCountdown(w.resetAt - Date.now())}</b></small></p>` : `<p class="bi-small">${w.left} of ${BOSS_TRIES} tries left${w.resetAt ? ` \xB7 new tries in <b data-boss-cd>${bossCountdown(w.resetAt - Date.now())}</b>` : " \xB7 every 24 hours"}</p>`}
+      <button class="btn btn-big boss-fight" id="bs-fight" type="button"${won ? " disabled" : ""}>${icon("sword", 22)} ${won ? "Come back later" : w.used ? "Use my last try" : "Fight!"}</button>
     </section>
     <section class="block boss-rules">
       <h2>How to win</h2>
@@ -5297,6 +5341,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         <li><span class="br-ic">⚡</span><span><b>Answer fast</b> = critical hit, almost double damage.</span></li>
         <li><span class="br-ic">\u{1F525}</span><span><b>3 right in a row</b> = super strike and a power-up.</span></li>
         <li><span class="br-ic">\u{1F494}</span><span><b>Wrong answer or time out</b> = the boss hits you. You have 3 hearts.</span></li>
+        <li><span class="br-ic">\u{1F3C6}</span><span><b>2 tries every 24 hours.</b> Your best try counts: win = ${BOSS_REWARD} points, or points for the damage you did.</span></li>
         <li><span class="br-ic">\u{1F621}</span><span>At <b>half HP</b> the boss gets angry: harder questions, less time.</span></li>
       </ul>
       <div class="br-powers"><span><b>\u{1F6E1}️ Shield</b>blocks one hit</span><span><b>✂️ 50/50</b>removes two wrong answers</span><span><b>❄️ Freeze</b>stops the timer</span></div>
@@ -5306,7 +5351,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       <div><b>Next boss in ${days} day${days === 1 ? "" : "s"}</b><span>A new, stronger boss comes every Sunday.</span>${s.wins ? `<span>Bosses you beat: <b>${s.wins}</b></span>` : ""}${e.best ? `<span>Your best time this week: <b>${bossTime(e.best)}</b></span>` : ""}</div>
     </section>
     <footer class="foot"><b>English Practice Zone</b> by ${TEACHER_NAME}</footer>`, app.querySelector("#bs-fight").addEventListener("click", () => {
-      sfxCtx(), bossBattle(b);
+      won || (sfxCtx(), bossBattle(b));
     }), app.querySelector("#bs-mute").addEventListener("click", (ev) => {
       bossMuted = !bossMuted;
       try {
@@ -5335,6 +5380,12 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       toast("No questions here yet.", "error"), go("home");
       return;
     }
+    let tryRef = bossStartTry();
+    if (!tryRef) {
+      toast("You used your 2 tries. Come back later!", "info", 2600), go("boss");
+      return;
+    }
+    let leagueBefore = league().index, badgesBefore = new Set(Object.keys(state.badges)), scoreNow = () => hp <= 0 ? BOSS_REWARD : Math.min(BOSS_REWARD - 1, Math.floor(BOSS_REWARD * (b.hp - hp) / b.hp));
     let hp = b.hp, hearts = 3, heartsLost = 0, streak2 = 0, bestCombo = 0, correct = 0, wrong = 0, angry = !1, shield = !1, used = new Set(), lastSkill = "", mistakes = [], startAt = Date.now(), over = !1, q = null, ctrl = null, answered = !1, timer = null, tLimit = 0, tLeft = 0, frozen = !1, lastTick = 0, autoNext = null, powers = { shield: "locked", cut: "locked", freeze: "locked" };
     document.body.classList.add("playing"), window.scrollTo(0, 0), app.innerHTML = `
     <div class="play boss-play" id="bp" style="--bc:${b.color};--bd:${b.dark};--c:${b.color}">
@@ -5466,7 +5517,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (ok) {
         correct++, streak2++, bestCombo = Math.max(bestCombo, streak2);
         let isSuper = streak2 % 3 === 0, crit = !isSuper && secs <= tLimit * 0.35, dmg = isSuper ? 30 : crit ? 18 : 10;
-        hp -= dmg, drawCombo(), anim(bossEl, "hit", 450), isSuper ? (slash(3), sparks(18), anim(bp, "flash", 400), float(`-${dmg} SUPER STRIKE!`, "super"), SFX.super(), buzz(40)) : crit ? (slash(2), sparks(10), float(`-${dmg} CRITICAL!`, "crit"), SFX.crit()) : (slash(1), sparks(5), float(`-${dmg}`, ""), SFX.hit()), drawHp();
+        hp -= dmg, bossSetScore(tryRef, scoreNow()), drawCombo(), anim(bossEl, "hit", 450), isSuper ? (slash(3), sparks(18), anim(bp, "flash", 400), float(`-${dmg} SUPER STRIKE!`, "super"), SFX.super(), buzz(40)) : crit ? (slash(2), sparks(10), float(`-${dmg} CRITICAL!`, "crit"), SFX.crit()) : (slash(1), sparks(5), float(`-${dmg}`, ""), SFX.hit()), drawHp();
         let gift = null;
         if (isSuper) {
           let locked = Object.keys(powers).filter((k) => powers[k] === "locked");
@@ -5553,10 +5604,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (over) return;
       let m2 = openModal(`
       <h2 class="modal-title">Run away from ${esc(b.name)}?</h2>
-      <p class="muted">This fight will not count. You can come back and try again.</p>
+      <p class="muted">This counts as one of your ${BOSS_TRIES} tries. You keep the points for the damage you did (${scoreNow()} points).</p>
       <div class="sheet-actions"><button class="btn btn-primary btn-big" data-close>Keep fighting</button><button class="btn btn-ghost btn-big" id="stop-yes">Run away</button></div>`);
       m2.el.querySelector("#stop-yes").addEventListener("click", () => {
-        m2.close(), go("boss");
+        m2.close(), finish(!1, !0);
       });
     });
     let onKey = (e) => {
@@ -5567,13 +5618,13 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     document.addEventListener("keydown", onKey), cleanup = () => {
       over = !0, stopTimer(), clearTimeout(autoNext), document.removeEventListener("keydown", onKey);
     };
-    function finish(win) {
+    function finish(win, ranAway = !1) {
       if (bp.dataset.done) return;
       bp.dataset.done = "1", stopTimer(), clearTimeout(autoNext), document.removeEventListener("keydown", onKey);
-      let secs = Math.round((Date.now() - startAt) / 1e3), s = bossData(), key = String(b.week), e = s.w[key] || (s.w[key] = {}), firstWin = win && !e.win, leagueBefore = league().index, before = new Set(Object.keys(state.badges));
-      s.plays = (s.plays || 0) + 1, win && (firstWin && (e.win = (/* @__PURE__ */ new Date()).toISOString(), e.p = BOSS_REWARD, s.wins = (s.wins || 0) + 1), e.best = e.best ? Math.min(e.best, secs) : secs, heartsLost === 0 && (s.flawless = !0), secs <= BOSS_FAST_SECS && (s.fast = !0)), refreshBadges(), save();
-      let newBadges = Object.keys(state.badges).filter((k) => !before.has(k)), lgUp = league().index > leagueBefore ? league() : null;
-      win && firstWin && LIVE2 && syncBoard(), document.body.classList.remove("playing"), window.scrollTo(0, 0);
+      let secs = Math.round((Date.now() - startAt) / 1e3), s = bossData(), key = String(b.week), e = s.w[key] || (s.w[key] = {}), ptsBefore = bossWindow().best, tryPts = scoreNow();
+      win && (s.wins = (s.wins || 0) + 1, e.best = e.best ? Math.min(e.best, secs) : secs, heartsLost === 0 && (s.flawless = !0), secs <= BOSS_FAST_SECS && (s.fast = !0)), bossSetScore(tryRef, tryPts), refreshBadges(), save();
+      let w = bossWindow(), newBadges = Object.keys(state.badges).filter((k) => !badgesBefore.has(k)), lgUp = league().index > leagueBefore ? league() : null, otherBest = Math.max(0, ...w.cur.s.filter((_, i) => i !== tryRef.i));
+      LIVE2 && syncBoard(), document.body.classList.remove("playing"), cleanup = null, window.scrollTo(0, 0);
       let total = correct + wrong, acc = total ? Math.round(100 * correct / total) : 0, review = mistakes.length ? `
         <details class="boss-review"${win ? "" : " open"}>
           <summary>${icon("book", 18)} Learn from your mistakes (${mistakes.length})</summary>
@@ -5582,9 +5633,11 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       app.innerHTML = `
       <section class="results boss-result ${win ? "win" : "lose"}" style="--bc:${b.color};--bd:${b.dark};--c:${b.color}">
         <div class="br-art">${bossSvg(b, win ? "beaten" : "laugh")}${win ? '<span class="br-stars">⭐⭐⭐</span>' : ""}</div>
-        <h1>${win ? `You beat ${esc(b.name)}!` : `${esc(b.name)} won this time`}</h1>
+        <h1>${win ? `You beat ${esc(b.name)}!` : ranAway ? "You ran away" : `${esc(b.name)} won this time`}</h1>
         <p class="muted">${win ? heartsLost === 0 ? "A perfect fight. Not one heart lost!" : "Great fight. The boss is gone!" : `The boss had <b>${Math.max(0, hp)} HP</b> left. You can do it!`}</p>
-        ${win ? firstWin ? `<div class="earned-pts">${icon("star", 22)} +${BOSS_REWARD} points</div>` : '<p class="small muted">You already collected this week’s reward. This fight was for fun.</p>' : `<div class="hpbar end"><i class="hp-fill" style="width:${Math.max(0, 100 * hp / b.hp)}%"></i></div>`}
+        ${win ? "" : `<div class="hpbar end"><i class="hp-fill" style="width:${Math.max(0, 100 * hp / b.hp)}%"></i></div>`}
+        <div class="earned-pts">${icon("star", 22)} This try: ${tryPts} points</div>
+        <p class="small ${tryPts > otherBest ? "good-text" : "muted"}">${tryPts >= BOSS_REWARD && tryPts > otherBest ? `Full points! ${BOSS_REWARD} is the most you can get in 24 hours.` : w.cur.s.length < 2 ? tryPts ? `Added to your points. Your next try can only add more (best try counts, max ${BOSS_REWARD}).` : `Your best try counts (max ${BOSS_REWARD}).` : tryPts > otherBest ? `Your best try today! It counts: ${w.best} points.` : `Your other try was better (${otherBest} points). That one counts.`}</p>
         <div class="res-chips">
           <span>⏱️ ${bossTime(secs)}</span>
           <span>✅ ${correct} of ${total} right (${acc}%)</span>
@@ -5595,10 +5648,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         ${newBadges.map((k) => `<div class="unlock badge-new"><span class="badge-ic">${icon(BADGES[k].icon, 22)}</span><div><b>New badge: ${esc(BADGES[k].name)}</b><span>${esc(BADGES[k].desc)}</span></div></div>`).join("")}
         ${review}
         <div class="res-actions">
-          <button class="btn btn-primary btn-big" id="again">${icon(win ? "sword" : "refresh", 20)} ${win ? "Fight again" : "Try again"}</button>
+          ${w.left ? `<button class="btn btn-primary btn-big" id="again">${icon("sword", 20)} Use my last try</button>` : `<p class="bi-small boss-wait">${icon("clock", 18)} New tries in <b data-boss-cd>${bossCountdown(w.resetAt - Date.now())}</b></p>`}
           <button class="btn btn-ghost btn-big" id="res-home">${icon("home", 20)} Home</button>
         </div>
-      </section>`, win && confetti(90), app.querySelector("#again").addEventListener("click", () => {
+      </section>`, win && confetti(90), app.querySelector("#again")?.addEventListener("click", () => {
         sfxCtx(), bossBattle(bossOfWeek());
       }), app.querySelector("#res-home").addEventListener("click", () => go("home")), storageOk || toast("This browser is not saving your points. Open the link in a normal (not private) window.", "error", 6e3);
     }
