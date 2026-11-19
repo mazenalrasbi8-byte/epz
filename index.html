@@ -1223,6 +1223,94 @@ body.playing .tabbar { display: none; }
   .boss-svg.idle .boss-body, .boss-svg.idle .boss-shadow, .bh-go, .pw.ready, .shield-on, .boss-play.shake, .boss-play.hurt, .boss-wrap.hit, .boss-wrap.attack, .boss-wrap.enter, .boss-svg.laugh .boss-body, .boss-stage.boss-wins .boss-svg .boss-body { animation: none !important; }
 }
 
+/* epz-patch:luck — Lucky Box */
+.app[data-tab="skills"] > .luck-home, .app[data-tab="ranking"] > .luck-home { display: none; }
+.luck-home { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--r); text-decoration: none; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); box-shadow: 0 3px 0 var(--line); }
+.luck-home.ready { background: linear-gradient(135deg, #FFF4C2, #FFE1F0); border-color: #F5B70A; box-shadow: 0 4px 0 #D99A06; color: #2B2300; }
+.luck-home.golden { background: linear-gradient(135deg, #FFE27A, #FFB800); }
+.lh-art { width: 64px; height: 64px; flex-shrink: 0; }
+.lh-art .luck-box { width: 64px; height: 64px; }
+.lh-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.lh-txt .eyebrow { color: #C2410C; }
+.luck-home:not(.ready) .lh-txt .eyebrow { color: var(--muted); }
+.lh-txt > b { font-family: var(--display); font-size: 1.15rem; line-height: 1.2; }
+.lh-sub { font-size: .86rem; font-weight: 600; opacity: .8; }
+.lh-sub b, [data-luck-cd] { font-variant-numeric: tabular-nums; }
+.lh-go { flex-shrink: 0; font-family: var(--display); font-weight: 800; font-size: 1.05rem; padding: 11px 14px; border-radius: 14px; background: var(--surface-2); color: var(--muted); }
+.luck-home.ready .lh-go { background: #E11D48; color: #fff; box-shadow: 0 4px 0 #8A0F2B; animation: bh-pulse 1.6s ease-in-out infinite; }
+
+.luck-box { display: block; overflow: visible; }
+.luck-box .lb-body, .luck-box .lb-lid, .luck-box .lb-shadow { transform-box: fill-box; }
+.luck-box .lb-lid { transform-origin: 50% 100%; transition: transform .5s cubic-bezier(.3, 1.6, .5, 1), opacity .5s; }
+.luck-box.wiggle { animation: lb-wiggle 2.4s ease-in-out infinite; transform-origin: 50% 90%; }
+.luck-box.shut { filter: grayscale(.6) opacity(.7); }
+.luck-box.shake1 { animation: lb-shake .35s ease; transform-origin: 50% 90%; }
+.luck-box.shake2 { animation: lb-shake .25s ease 2; transform-origin: 50% 90%; }
+.luck-box.open .lb-lid { transform: translate(18px, -70px) rotate(28deg); opacity: 0; }
+.luck-box.open .lb-body { animation: lb-pop .5s ease; transform-origin: 50% 100%; }
+@keyframes lb-wiggle { 0%, 60%, 100% { transform: rotate(0); } 65% { transform: rotate(-6deg); } 72% { transform: rotate(6deg); } 79% { transform: rotate(-4deg); } 86% { transform: rotate(3deg); } }
+@keyframes lb-shake { 20% { transform: rotate(-10deg) scale(1.05); } 40% { transform: rotate(10deg) scale(1.08); } 60% { transform: rotate(-8deg) scale(1.08); } 80% { transform: rotate(6deg); } }
+@keyframes lb-pop { 40% { transform: scale(1.12, .9); } }
+
+.luck-intro { text-align: center; color: #fff; border-radius: var(--r); padding: 16px 16px 20px; display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, rgb(168 85 247 / .55) 0, transparent 60%), linear-gradient(180deg, #2A1650, #120A26); box-shadow: 0 4px 0 #0A0518; border: 1.5px solid var(--line); }
+.luck-intro.golden { background: radial-gradient(circle at 50% 40%, rgb(250 204 21 / .6) 0, transparent 60%), linear-gradient(180deg, #3D2A05, #1A1203); }
+.li-day { font-size: .82rem; font-weight: 800; color: #FFD83D; background: rgb(255 255 255 / .1); padding: 3px 12px; border-radius: 99px; }
+.li-art .luck-box { width: 170px; height: 170px; margin: 4px auto 0; }
+.luck-intro h1 { font-size: 1.7rem; color: #fff; }
+.li-sub { margin: 0; color: #E6DDF7; font-weight: 600; }
+.li-cd { margin: 0; font-family: var(--display); font-size: 2.4rem; font-weight: 800; color: #FFD83D; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.li-last { margin: 4px 0 0; font-size: .9rem; color: #CFC3EA; }
+.li-last b { filter: brightness(1.4); }
+.luck-start { width: 100%; margin-top: 8px; background: #FFD83D; color: #2B2300; box-shadow: 0 5px 0 #B7791F; border: 0; font-size: 1.2rem; }
+.luck-start:active { transform: translateY(3px); box-shadow: 0 2px 0 #B7791F; }
+.luck-dots { display: flex; gap: 6px; margin: 2px 0 4px; }
+.luck-dots i { width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgb(255 255 255 / .35); display: grid; place-items: center; font-style: normal; font-size: .7rem; }
+.luck-dots i.on { background: #F97316; border-color: #F97316; }
+.luck-dots i.gold { border-color: #FACC15; }
+.luck-dots i.gold.on { background: #FACC15; }
+.luck-dots i.now { border-color: #FFD83D; box-shadow: 0 0 0 3px rgb(255 216 61 / .35); animation: hurry .6s ease-in-out infinite alternate; }
+.luck-odds { padding: 14px 16px; background: var(--surface); border-radius: var(--r); border: 1.5px solid var(--line); box-shadow: 0 3px 0 var(--line); }
+.luck-odds h2 { font-size: 1.2rem; margin-bottom: 8px; }
+.luck-odds ul { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 6px; }
+.luck-odds li { display: flex; align-items: center; gap: 10px; }
+.luck-odds li i { width: 14px; height: 14px; border-radius: 4px; background: var(--t); }
+.luck-odds li b { flex: 1; }
+.luck-odds li span { color: var(--muted); font-weight: 700; font-size: .9rem; }
+
+.luck-play { gap: 12px; }
+.luck-keys { flex: 1; display: flex; gap: 8px; justify-content: center; }
+.luck-keys i { font-style: normal; font-size: 1.6rem; filter: grayscale(1) opacity(.3); }
+.luck-keys i.on { filter: none; }
+.luck-keys i.pop { animation: combo-pop .5s ease; }
+.lk-mini .luck-box { width: 40px; height: 40px; }
+.luck-play .qarea > .skill-pill { margin-bottom: 8px; }
+
+.lr-box { background: none; border: 0; padding: 0; cursor: pointer; position: relative; margin: 10px auto 0; display: block; -webkit-tap-highlight-color: transparent; }
+.lr-box .luck-box { width: 210px; height: 210px; position: relative; z-index: 1; }
+.lr-rays { position: absolute; left: 50%; top: 55%; width: 340px; height: 340px; margin: -170px 0 0 -170px; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: repeating-conic-gradient(from 0deg, var(--tg, #fff) 0 10deg, transparent 10deg 20deg); -webkit-mask: radial-gradient(circle, #000 20%, transparent 68%); mask: radial-gradient(circle, #000 20%, transparent 68%); }
+.luck-reveal.opened .lr-rays { opacity: .8; animation: lr-spin 8s linear infinite, lr-in .6s ease; }
+.luck-reveal.opened { box-shadow: 0 4px 0 #0A0518, inset 0 0 80px color-mix(in srgb, var(--t) 60%, transparent); }
+@keyframes lr-spin { to { transform: rotate(360deg); } }
+@keyframes lr-in { from { transform: scale(.2); opacity: 0; } }
+.lr-prize { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 100%; animation: lp-in .5s cubic-bezier(.2, 1.5, .4, 1); position: relative; z-index: 2; }
+@keyframes lp-in { from { transform: scale(.4); opacity: 0; } }
+.lp-tier { font-family: var(--display); font-weight: 800; font-size: 1.05rem; color: #fff; background: var(--t); padding: 4px 16px; border-radius: 99px; box-shadow: 0 3px 0 rgb(0 0 0 / .35); text-transform: uppercase; letter-spacing: .04em; }
+.lp-pts { font-family: var(--display); font-weight: 800; font-size: 3.6rem; line-height: 1; color: #FFD83D; text-shadow: 0 3px 0 rgb(0 0 0 / .35); margin-top: 8px; font-variant-numeric: tabular-nums; }
+.lp-lbl { font-weight: 800; color: #E6DDF7; margin-top: -2px; }
+.lp-streak { margin: 8px 0 2px; font-weight: 700; color: #FFD8B0; }
+.lp-next { margin: 4px 0 8px; color: #CFC3EA; font-size: .9rem; }
+.lr-prize .unlock { width: 100%; text-align: left; color: var(--ink); }
+.lr-prize .btn { width: 100%; }
+.luck-reveal.t-legend .lp-pts { animation: lp-glow 1.2s ease-in-out infinite alternate; }
+@keyframes lp-glow { to { text-shadow: 0 3px 0 rgb(0 0 0 / .35), 0 0 24px #F0ABFC; } }
+@media (prefers-reduced-motion: reduce) {
+  .luck-box.wiggle, .luck-box.shake1, .luck-box.shake2, .luck-reveal.opened .lr-rays, .luck-home.ready .lh-go, .luck-dots i.now, .lp-pts { animation: none !important; }
+}
+.lr-box .luck-box { transition: width .5s ease, height .5s ease; }
+.luck-reveal.opened .lr-box .luck-box { width: 130px; height: 130px; }
+
 </style>
 </head>
 <body>
@@ -3839,7 +3927,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     pts5000: { name: "Champion", desc: "Reach 5,000 points", icon: "trophy" },
     bossSlayer: { name: "Boss Slayer", desc: "Beat a Boss Battle", icon: "sword" },
     bossFlawless: { name: "Untouchable", desc: "Beat a boss without losing a heart", icon: "shield" },
-    bossFast: { name: "Lightning Hero", desc: "Beat a boss in under 2 minutes", icon: "bolt" }
+    bossFast: { name: "Lightning Hero", desc: "Beat a boss in under 2 minutes", icon: "bolt" },
+    luckyStar: { name: "Lucky Star", desc: "Get a Legendary Lucky Box", icon: "star" }
   }, DAILY_GOAL = 3, QUICK_SIZE = 8, CLASS = { updated_at: null, board: null, students: [], activities: {}, hidden: [] };
   try {
     let el = document.getElementById("epz-class");
@@ -4011,7 +4100,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       challenge: rs.some((r) => r.level === "challenge" && r.acc >= 70),
       pts1000: pts >= 1e3,
       pts5000: pts >= 5e3,
-      ...bossBadgeRules()
+      ...bossBadgeRules(),
+      luckyStar: !!state.luck?.legend
     }, now = (/* @__PURE__ */ new Date()).toISOString();
     for (let [k, ok] of Object.entries(rules)) ok && !state.badges[k] && (state.badges[k] = now);
   }
@@ -4023,7 +4113,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   }
   var WOTD_ACTS = ["meaning", "sentence", "listen", "scramble", "write", "synonym"], WOTD_PTS = { first: 10, second: 5, bonus: 20 };
   function wotdPoints(keep = null) {
-    let n = bossPts(keep);
+    let n = bossPts(keep) + luckPts(keep);
     for (let r of Object.values(state.wotd || {})) {
       for (let a of Object.values(r.a || {})) (!keep || keep(a.at)) && (n += a.p || 0);
       r.b && (!keep || keep(r.b.at)) && (n += r.b.p || 0);
@@ -5658,6 +5748,223 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     drawHearts(), drawHp(), drawPowers(), SFX.roar(), anim(bossEl, "enter", 900), setTimeout(show, 250);
   }
 
+  // epz-patch:luck — Lucky Box: once every 24 hours, answer 3 questions right, then open a box with random points
+  var LUCK_GAP = 864e5, LUCK_KEEP = 1728e5, LUCK_NEED = 3;
+  var LUCK_TIERS = {
+    common: { name: "Common", color: "#94A3B8", glow: "#E2E8F0", min: 10, max: 30 },
+    good: { name: "Good", color: "#22C55E", glow: "#BBF7D0", min: 40, max: 60 },
+    rare: { name: "Rare", color: "#3B82F6", glow: "#BFDBFE", min: 80, max: 100 },
+    legend: { name: "Legendary", color: "#A855F7", glow: "#F0ABFC", min: 200, max: 200 }
+  };
+  function luckData() {
+    let s = state.luck;
+    return (!s || typeof s != "object") && (s = state.luck = { o: [], streak: 0 }), s.o = s.o || [], s;
+  }
+  function luckPts(keep = null) {
+    let n = 0, s = state.luck;
+    if (!s || !s.o) return 0;
+    for (let e of s.o) e && e.p && (!keep || keep(e.at)) && (n += e.p);
+    return n;
+  }
+  function luckStatus(now = Date.now()) {
+    let s = luckData(), last = s.o.length ? Date.parse(s.o[s.o.length - 1].at) : 0, ready = !last || now - last >= LUCK_GAP, alive = last && now - last < LUCK_GAP + LUCK_KEEP, streak = alive ? s.streak || 0 : 0, next = ready ? streak + 1 : streak;
+    return { ready, readyAt: last ? last + LUCK_GAP : 0, streak, next, golden: ready && next % 7 === 0, last: s.o[s.o.length - 1] || null };
+  }
+  function luckRoll(day, golden) {
+    let k = Math.min(Math.max(day, 1), 6) - 1, legend = golden ? 25 : 5 + k, rare = golden ? 75 : 15 + 2 * k, good = golden ? 0 : 30, r = Math.random() * 100, tier = r < legend ? "legend" : r < legend + rare ? "rare" : r < legend + rare + good ? "good" : "common", t = LUCK_TIERS[tier];
+    return { tier, p: t.min + Math.round(Math.random() * (t.max - t.min) / 5) * 5 };
+  }
+  var luckCd = (ms) => typeof bossCountdown == "function" ? bossCountdown(ms) : `${Math.ceil(ms / 36e5)}h`;
+  function luckBoxSvg(golden, cls = "") {
+    let body = golden ? "#F5B70A" : "#8B5CF6", dark = golden ? "#B7791F" : "#5B34C4", rib = golden ? "#E11D48" : "#FFD83D", ribD = golden ? "#9F1239" : "#C99A06";
+    return `<svg class="luck-box ${cls}" viewBox="0 0 200 200" aria-hidden="true">
+      <ellipse class="lb-shadow" cx="100" cy="186" rx="62" ry="8" fill="#000" opacity=".18"/>
+      <g class="lb-body"><rect x="38" y="92" width="124" height="88" rx="10" fill="${body}" stroke="${dark}" stroke-width="5"/>
+        <rect x="88" y="92" width="24" height="88" fill="${rib}" stroke="${ribD}" stroke-width="3"/>
+        <rect x="46" y="100" width="20" height="60" rx="6" fill="#fff" opacity=".18"/>
+        <text x="100" y="152" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="30" fill="#fff" opacity=".9">?</text></g>
+      <g class="lb-lid"><rect x="30" y="70" width="140" height="28" rx="8" fill="${body}" stroke="${dark}" stroke-width="5"/>
+        <rect x="88" y="70" width="24" height="28" fill="${rib}" stroke="${ribD}" stroke-width="3"/>
+        <path d="M100 70 C80 40 52 46 62 62 C68 72 88 72 100 70Z" fill="${rib}" stroke="${ribD}" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M100 70 C120 40 148 46 138 62 C132 72 112 72 100 70Z" fill="${rib}" stroke="${ribD}" stroke-width="4" stroke-linejoin="round"/>
+        <circle cx="100" cy="68" r="8" fill="${rib}" stroke="${ribD}" stroke-width="4"/></g>
+    </svg>`;
+  }
+  function luckDots(st) {
+    let n = st.ready ? st.next : st.streak, pos = (n - 1) % 7 + 1, done = st.ready ? pos - 1 : pos;
+    return `<span class="luck-dots" aria-label="Day ${pos} of 7">${Array.from({ length: 7 }, (_, i) => `<i class="${i < done ? "on" : ""}${i === 6 ? " gold" : ""}${st.ready && i === pos - 1 ? " now" : ""}">${i === 6 ? "⭐" : ""}</i>`).join("")}</span>`;
+  }
+  function luckCard() {
+    let st = luckStatus();
+    return `
+    <a class="luck-home${st.ready ? " ready" : ""}${st.golden ? " golden" : ""}" href="#luck" aria-label="Lucky Box">
+      <span class="lh-art">${luckBoxSvg(st.golden, st.ready ? "wiggle" : "shut")}</span>
+      <span class="lh-txt">
+        <span class="eyebrow">\u{1F381} Lucky Box${st.streak || st.ready && st.next > 1 ? ` \xB7 \u{1F525} day ${st.ready ? st.next : st.streak}` : ""}</span>
+        <b>${st.ready ? st.golden ? "Golden box is ready!" : "Your box is ready!" : "Next box soon"}</b>
+        <span class="lh-sub">${st.ready ? `Answer ${LUCK_NEED} questions to open it` : `Opens in <b data-luck-cd>${luckCd(st.readyAt - Date.now())}</b>`}</span>
+      </span>
+      <span class="lh-go">${st.ready ? "Open" : "⏳"}</span>
+    </a>`;
+  }
+  var luckTicker = setInterval(() => {
+    let els = document.querySelectorAll("[data-luck-cd]");
+    if (!els.length) return;
+    let st = luckStatus();
+    if (st.ready) {
+      location.hash === "#luck" && !document.body.classList.contains("playing") && !document.querySelector(".luck-reveal") ? luckScreen() : (location.hash === "" || location.hash === "#home") && typeof redrawIf == "function" && redrawIf("home");
+      return;
+    }
+    els.forEach((el) => el.textContent = luckCd(st.readyAt - Date.now()));
+  }, 1e3);
+  function luckHeader() {
+    return `<header class="top">
+      <a class="icon-btn" href="#home" aria-label="Back to home">${icon("back", 24)}</a>
+      <div class="brand"><span>Lucky Box</span></div>
+      <span class="icon-btn" aria-hidden="true"></span>
+    </header>`;
+  }
+  function luckScreen() {
+    let st = luckStatus(), last = st.last, lt = last && LUCK_TIERS[last.r];
+    app.dataset.tab = "home", window.scrollTo(0, 0), app.innerHTML = `
+    ${luckHeader()}
+    <section class="luck-intro${st.golden ? " golden" : ""}">
+      <span class="li-day">${st.golden ? "⭐ Day 7: Golden box ⭐" : `\u{1F525} Day ${st.ready ? (st.next - 1) % 7 + 1 : (st.streak - 1) % 7 + 1} of 7`}</span>
+      <div class="li-art">${luckBoxSvg(st.golden, st.ready ? "wiggle" : "shut")}</div>
+      ${luckDots(st)}
+      ${st.ready ? `<h1>${st.golden ? "A golden box!" : "Your Lucky Box is ready"}</h1>
+        <p class="li-sub">Answer <b>${LUCK_NEED} questions</b> right to get the key \u{1F511}</p>
+        <button class="btn btn-big luck-start" id="lk-start" type="button">\u{1F511} Get the key</button>` : `<h1>Come back soon</h1>
+        <p class="li-sub">Your next box opens in</p>
+        <p class="li-cd" data-luck-cd>${luckCd(st.readyAt - Date.now())}</p>
+        ${last ? `<p class="li-last">Last box: <b style="color:${lt.color}">${lt.name}</b> \xB7 +${last.p} points</p>` : ""}`}
+    </section>
+    <section class="block luck-odds">
+      <h2>What is inside?</h2>
+      <ul>${Object.entries(LUCK_TIERS).map(([k, t]) => `<li style="--t:${t.color}"><i></i><b>${t.name}</b><span>${t.min === t.max ? t.min : `${t.min}–${t.max}`} points</span></li>`).join("")}</ul>
+      <p class="small muted">Open a box every day to keep your \u{1F525} streak. Each day in a row gives better luck, and <b>day 7 is a golden box</b> with a Rare or Legendary prize for sure. Miss a day and the streak starts again.</p>
+    </section>
+    <footer class="foot"><b>English Practice Zone</b> by ${TEACHER_NAME}</footer>`, app.querySelector("#lk-start")?.addEventListener("click", () => {
+      typeof sfxCtx == "function" && sfxCtx(), luckQuiz();
+    });
+  }
+  function luckPool() {
+    let out = [], lv = state.level || "easy";
+    for (let a of allActivities())
+      if (a.level === lv && !a.passage && !a.audio_text)
+        for (let q of a.questions) (q.type === "mcq" || q.type === "truefalse") && !q.audio && !q.text && out.push({ ...q, _skill: a.skill });
+    return out.length ? out : allActivities().flatMap((a) => a.passage || a.audio_text ? [] : a.questions.filter((q) => q.type === "mcq" && !q.audio).map((q) => ({ ...q, _skill: a.skill })));
+  }
+  function luckQuiz() {
+    let st = luckStatus();
+    if (!st.ready) {
+      luckScreen();
+      return;
+    }
+    let pool = shuffle(luckPool()), idx = 0, got = 0, answered = !1, ctrl = null;
+    if (!pool.length) {
+      toast("No questions here yet.", "error"), go("home");
+      return;
+    }
+    document.body.classList.add("playing"), window.scrollTo(0, 0), app.innerHTML = `
+    <div class="play luck-play">
+      <div class="play-bar">
+        <button class="icon-btn" id="quit" aria-label="Stop">${icon("x", 24)}</button>
+        <div class="luck-keys" id="keys"></div>
+        <span class="lk-mini">${luckBoxSvg(st.golden, "shut")}</span>
+      </div>
+      <section class="qarea" id="qarea" aria-live="polite"></section>
+    </div>
+    <div class="play-foot" id="foot">
+      <div class="foot-inner">
+        <div class="feedback" id="feedback" role="status" hidden></div>
+        <button class="btn btn-big btn-next" id="next-btn" hidden>Continue ${icon("next", 20)}</button>
+      </div>
+    </div>`;
+    let qarea = app.querySelector("#qarea"), foot = app.querySelector("#foot"), feedback = app.querySelector("#feedback"), nextBtn = app.querySelector("#next-btn"), keys = app.querySelector("#keys");
+    let drawKeys = (pop = -1) => keys.innerHTML = Array.from({ length: LUCK_NEED }, (_, i) => `<i class="${i < got ? "on" : ""}${i === pop ? " pop" : ""}">\u{1F511}</i>`).join("");
+    function show() {
+      answered = !1;
+      let q = pool[idx % pool.length], s = SKILLS2[q._skill] || SKILLS2.grammar;
+      foot.className = "play-foot", foot.style.setProperty("--c", s.color), feedback.hidden = !0, nextBtn.hidden = !0, ctrl = mountQuestion(q, qarea, { setReady: () => {
+      }, submitNow: () => check() }), qarea.insertAdjacentHTML("afterbegin", `<span class="skill-pill" style="--c:${s.color}">${icon(s.icon, 16)} ${esc(s.name)}</span>`), qarea.classList.remove("enter"), qarea.offsetWidth, qarea.classList.add("enter");
+    }
+    function check() {
+      if (answered) return;
+      answered = !0;
+      let q = pool[idx % pool.length], res = ctrl.evaluate();
+      res.ok ? (got++, drawKeys(got - 1), typeof SFX == "object" && SFX.power()) : typeof SFX == "object" && SFX.block(), foot.className = `play-foot ${res.ok ? "good" : "bad"}`, feedback.innerHTML = `
+      <span class="fb-ic">${icon(res.ok ? "check" : "x", 22)}</span>
+      <div class="fb-txt"><strong>${res.ok ? got >= LUCK_NEED ? "You have the key!" : `Key ${got} of ${LUCK_NEED}!` : "Not quite. Try another one!"}</strong>${!res.ok && res.correctText ? `<p>Answer: <b>${esc(res.correctText)}</b></p>` : ""}</div>`, feedback.hidden = !1, nextBtn.hidden = !1, nextBtn.innerHTML = got >= LUCK_NEED ? `\u{1F381} Open my box` : `Continue ${icon("next", 20)}`, nextBtn.focus({ preventScroll: !0 });
+    }
+    nextBtn.addEventListener("click", () => {
+      answered && (got >= LUCK_NEED ? luckOpen() : (idx++, show()));
+    }), app.querySelector("#quit").addEventListener("click", () => go("luck"));
+    let onKey = (e) => {
+      let tag = (e.target.tagName || "").toLowerCase();
+      e.key === "Enter" && !nextBtn.hidden ? (e.preventDefault(), nextBtn.click()) : !answered && /^[1-6]$/.test(e.key) && tag !== "input" && qarea.querySelectorAll(".opt")[Number(e.key) - 1]?.click();
+    };
+    document.addEventListener("keydown", onKey), cleanup = () => document.removeEventListener("keydown", onKey), drawKeys(), show();
+  }
+  function luckOpen() {
+    cleanup && (cleanup(), cleanup = null);
+    let st = luckStatus();
+    if (!st.ready) {
+      luckScreen();
+      return;
+    }
+    document.body.classList.remove("playing"), window.scrollTo(0, 0), app.innerHTML = `
+    ${luckHeader()}
+    <section class="luck-intro luck-reveal${st.golden ? " golden" : ""}" id="lr">
+      <span class="li-day">${st.golden ? "⭐ Golden box ⭐" : `\u{1F525} Day ${(st.next - 1) % 7 + 1} of 7`}</span>
+      <button class="lr-box" id="lr-box" type="button" aria-label="Tap the box to open it">${luckBoxSvg(st.golden, "wiggle")}<span class="lr-rays" aria-hidden="true"></span></button>
+      <p class="li-sub" id="lr-hint"><b>Tap the box</b> to open it!</p>
+      <div class="lr-prize" id="lr-prize" hidden></div>
+    </section>`;
+    let box = app.querySelector("#lr-box"), taps = 0, opened = !1, prize = null;
+    box.addEventListener("click", () => {
+      if (opened) return;
+      taps++;
+      let svg = box.querySelector(".luck-box");
+      if (svg.classList.remove("wiggle", "shake1", "shake2"), svg.offsetWidth, taps < 3) {
+        svg.classList.add(taps === 1 ? "shake1" : "shake2"), typeof sfxNoise == "function" && sfxNoise(0.25, 900 + taps * 500, 0.4, "bandpass"), app.querySelector("#lr-hint").innerHTML = taps === 1 ? "<b>Again!</b>" : "<b>One more time!</b>";
+        try {
+          navigator.vibrate && navigator.vibrate(30 * taps);
+        } catch {
+        }
+        return;
+      }
+      opened = !0, prize = luckRoll(st.next, st.golden);
+      let s = luckData(), leagueBefore = league().index, before = new Set(Object.keys(state.badges)), at = (/* @__PURE__ */ new Date()).toISOString();
+      s.o.push({ at, p: prize.p, r: prize.tier }), s.streak = st.next, prize.tier === "legend" && (s.legend = !0), s.best = Math.max(s.best || 0, s.streak), refreshBadges(), save(), LIVE2 && syncBoard();
+      let newBadges = Object.keys(state.badges).filter((k) => !before.has(k)), lgUp = league().index > leagueBefore ? league() : null, t = LUCK_TIERS[prize.tier], big = prize.tier === "rare" || prize.tier === "legend";
+      svg.classList.add("open"), app.querySelector("#lr").style.setProperty("--t", t.color), app.querySelector("#lr").style.setProperty("--tg", t.glow), app.querySelector("#lr").classList.add("opened", `t-${prize.tier}`), app.querySelector("#lr-hint").hidden = !0;
+      typeof SFX == "object" && (big ? (SFX.boom(), setTimeout(() => SFX.super(), 250)) : SFX.crit());
+      try {
+        navigator.vibrate && navigator.vibrate(big ? [60, 40, 120] : 60);
+      } catch {
+      }
+      setTimeout(() => {
+        let el = app.querySelector("#lr-prize");
+        if (!el) return;
+        el.hidden = !1, el.innerHTML = `
+        <span class="lp-tier">${t.name}${prize.tier === "legend" ? " \u{1F31F}" : ""}</span>
+        <span class="lp-pts">+<b id="lp-n">0</b></span>
+        <span class="lp-lbl">points</span>
+        <p class="lp-streak">\u{1F525} ${s.streak} day${s.streak === 1 ? "" : "s"} in a row${s.streak % 7 === 6 ? " \xB7 tomorrow is a golden box!" : ""}</p>
+        ${lgUp ? `<div class="unlock" style="--lg:${lgUp.color}"><span class="medal">${icon("medal", 24)}</span><div><b>New league: ${lgUp.name}!</b><span>Your class ranking shows your new league.</span></div></div>` : ""}
+        ${newBadges.map((k) => `<div class="unlock badge-new"><span class="badge-ic">${icon(BADGES[k].icon, 22)}</span><div><b>New badge: ${esc(BADGES[k].name)}</b><span>${esc(BADGES[k].desc)}</span></div></div>`).join("")}
+        <p class="lp-next">Next box in <b data-luck-cd>${luckCd(LUCK_GAP)}</b></p>
+        <button class="btn btn-primary btn-big" id="lr-home" type="button">${icon("home", 20)} Home</button>`, el.querySelector("#lr-home").addEventListener("click", () => go("home"));
+        let n = el.querySelector("#lp-n"), t0 = performance.now(), dur = big ? 1200 : 700, step = (now) => {
+          let k = Math.min(1, (now - t0) / dur);
+          n.textContent = Math.round(prize.p * (1 - Math.pow(1 - k, 3))), k < 1 && requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step), big && confetti(prize.tier === "legend" ? 140 : 80);
+      }, 650);
+    });
+  }
+
   function route2() {
     cleanup && (cleanup(), cleanup = null), stopSpeaking(), document.querySelectorAll(".confetti").forEach((c2) => c2.remove()), document.body.classList.remove("playing"), app.classList.remove("wide");
     let h = location.hash.replace(/^#/, "");
@@ -5676,6 +5983,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     }
     if (h === "boss") {
       bossScreen();
+      return;
+    }
+    if (h === "luck") {
+      luckScreen();
       return;
     }
     if (h === "words" || h === "word" || h.startsWith("word/")) {
@@ -5842,6 +6153,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     </section>
 
     ${bossCard()}
+
+    ${luckCard()}
 
     ${homeCard()}
 
