@@ -1321,6 +1321,41 @@ body.playing .tabbar { display: none; }
 .hr-go { display: grid; place-items: center; width: 38px; border-radius: 12px; background: var(--sun); color: var(--sun-ink); flex-shrink: 0; }
 .bh-pill { white-space: nowrap; }
 .hello-rank:active .hr-go { transform: translateY(2px); }
+
+/* epz-patch:league */
+.hello-league { flex-basis: 100%; display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--chalk);
+  background: rgb(255 255 255 / .08); border: 2px solid var(--lg); border-radius: 16px; padding: 10px 12px; margin-top: 2px;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .06); }
+.hl-medal { flex-shrink: 0; width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; color: #fff;
+  background: radial-gradient(circle at 32% 28%, rgb(255 255 255 / .45), transparent 45%), var(--lg);
+  box-shadow: 0 0 0 4px rgb(255 255 255 / .14), 0 4px 0 rgb(0 0 0 / .25); }
+.hl-medal .ic { filter: drop-shadow(0 1px 0 rgb(0 0 0 / .25)); }
+.hl-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.hl-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.hl-eyebrow { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--sun); }
+.hl-pips { display: flex; gap: 4px; }
+.hl-pips i { width: 9px; height: 9px; border-radius: 50%; background: rgb(255 255 255 / .18); }
+.hl-pips i.on { background: var(--pc); box-shadow: 0 0 0 1.5px rgb(255 255 255 / .5); }
+.hl-name { font-family: var(--display); font-size: 1.55rem; font-weight: 800; line-height: 1.1; color: var(--chalk); }
+.hl-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hl-name small { font-size: .72em; font-weight: 800; color: var(--chalk-dim); }
+.hl-bar { display: block; height: 8px; border-radius: 99px; background: rgb(255 255 255 / .15); overflow: hidden; margin-top: 2px; }
+.hl-bar i { display: block; height: 100%; border-radius: 99px; background: var(--lg); box-shadow: inset 0 -2px 0 rgb(0 0 0 / .15); }
+.hl-next { font-size: .85rem; font-weight: 600; color: var(--chalk-dim); }
+.hl-next b { color: var(--chalk); font-weight: 800; }
+.hl-medal.hl-emblem { position: relative; width: 66px; height: 66px; background: none; box-shadow: none; border-radius: 0; }
+.hl-emblem > svg:first-child { animation: hl-float 3.2s ease-in-out infinite, hl-glow 3.2s ease-in-out infinite; }
+.hl-shine { transform-box: view-box; animation: hl-sweep 3.2s ease-in-out infinite; }
+.hl-spark { position: absolute; opacity: 0; animation: hl-twinkle 3.2s ease-in-out infinite; filter: drop-shadow(0 0 3px #fff); }
+.hl-spark.s1 { top: 0; right: 2px; animation-delay: .9s; }
+.hl-spark.s2 { bottom: 10px; left: 0; animation-delay: 1.7s; }
+@keyframes hl-sweep { 0% { transform: translateX(-10px) rotate(20deg); } 45%, 100% { transform: translateX(92px) rotate(20deg); } }
+@keyframes hl-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes hl-glow { 0%, 100% { filter: drop-shadow(0 3px 0 rgb(0 0 0 / .25)) drop-shadow(0 0 3px var(--lg)); } 50% { filter: drop-shadow(0 3px 0 rgb(0 0 0 / .25)) drop-shadow(0 0 12px var(--lg)); } }
+@keyframes hl-twinkle { 0%, 60%, 100% { opacity: 0; transform: scale(.3) rotate(0deg); } 70% { opacity: 1; transform: scale(1) rotate(45deg); } 82% { opacity: 0; transform: scale(.4) rotate(90deg); } }
+@media (prefers-reduced-motion: reduce) { .hl-emblem > svg:first-child, .hl-shine, .hl-spark { animation: none; } .hl-emblem > svg:first-child { filter: drop-shadow(0 3px 0 rgb(0 0 0 / .25)); } }
+.hello-league:active { transform: translateY(1px); }
+.hello-league:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
 </style>
 </head>
 <body>
@@ -4079,6 +4114,40 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       n++, d.setDate(d.getDate() - 1);
     return n;
   }
+  // epz-patch:emblem
+  function lgMix(hex, amt) { // amt>0 -> lighter, amt<0 -> darker
+    let n = parseInt(hex.slice(1), 16), c = [n >> 16, n >> 8 & 255, n & 255], t = amt > 0 ? 255 : 0, a = Math.abs(amt);
+    return "#" + c.map((v) => Math.round(v + (t - v) * a).toString(16).padStart(2, "0")).join("");
+  }
+  function leagueEmblem(lg, style) {
+    let c = lg.color, hi = lgMix(c, .45), lo = lgMix(c, -.35), id = "lg" + lg.index + style, n = lg.index + 1;
+    let star = (cx, cy, r) => { let p = []; for (let k = 0; k < 10; k++) { let a = -Math.PI / 2 + k * Math.PI / 5, rr = k % 2 ? r * .45 : r; p.push((cx + rr * Math.cos(a)).toFixed(1) + "," + (cy + rr * Math.sin(a)).toFixed(1)); } return p.join(" "); };
+    let defs = `<defs><linearGradient id="${id}m" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${hi}"/><stop offset=".55" stop-color="${c}"/><stop offset="1" stop-color="${lo}"/></linearGradient><linearGradient id="${id}r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${lgMix(c, -.15)}"/><stop offset="1" stop-color="${lo}"/></linearGradient></defs>`;
+    if (style === "shield") return `<svg viewBox="0 0 64 72" width="58" height="66" aria-hidden="true">${defs}
+      <path d="M32 3 L58 12 V34 C58 52 46 63 32 69 C18 63 6 52 6 34 V12 Z" fill="${lo}"/>
+      <path d="M32 7 L54 15 V34 C54 49 44 59 32 64 C20 59 10 49 10 34 V15 Z" fill="url(#${id}m)"/>
+      <path d="M32 7 L54 15 V34 C54 37 53.6 39.8 52.9 42.4 C45 30 20 26 10 31 V15 Z" fill="#fff" opacity=".18"/>
+      <polygon points="${star(32, 35, 13)}" fill="#fff" stroke="${lo}" stroke-width="1.5" stroke-linejoin="round"/>
+      <clipPath id="${id}c"><path d="M32 7 L54 15 V34 C54 49 44 59 32 64 C20 59 10 49 10 34 V15 Z"/></clipPath>
+      <g clip-path="url(#${id}c)"><rect class="hl-shine" x="-26" y="-10" width="16" height="92" fill="#fff" opacity=".6" transform="rotate(20 32 36)"/></g></svg>
+      <svg class="hl-spark s1" viewBox="0 0 10 10" width="12" height="12" aria-hidden="true"><path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill="#fff"/></svg>
+      <svg class="hl-spark s2" viewBox="0 0 10 10" width="9" height="9" aria-hidden="true"><path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill="#fff"/></svg>`;
+    if (style === "medal") return `<svg viewBox="0 0 64 76" width="56" height="66" aria-hidden="true">${defs}
+      <path d="M14 2 H28 L36 26 H22 Z" fill="#E5484D"/><path d="M50 2 H36 L28 26 H42 Z" fill="#2F6FED"/>
+      <path d="M14 2 H28 L30 8 H16 Z" fill="#000" opacity=".15"/><path d="M50 2 H36 L34 8 H48 Z" fill="#000" opacity=".15"/>
+      <circle cx="32" cy="48" r="25" fill="${lo}"/><circle cx="32" cy="48" r="21.5" fill="url(#${id}m)"/>
+      <circle cx="32" cy="48" r="16" fill="none" stroke="${hi}" stroke-width="1.5" opacity=".9"/>
+      <polygon points="${star(32, 48, 11)}" fill="#fff" stroke="${lo}" stroke-width="1.2" stroke-linejoin="round"/>
+      <ellipse cx="24" cy="38" rx="7" ry="4" fill="#fff" opacity=".28" transform="rotate(-30 24 38)"/></svg>`;
+    // gem: hexagon with league number and wings
+    return `<svg viewBox="0 0 76 64" width="66" height="56" aria-hidden="true">${defs}
+      <path d="M14 22 C6 22 2 28 2 34 C8 32 12 33 15 36 Z M62 22 C70 22 74 28 74 34 C68 32 64 33 61 36 Z" fill="${hi}"/>
+      <path d="M12 30 C5 31 3 37 4 42 C9 39 13 40 16 42 Z M64 30 C71 31 73 37 72 42 C67 39 63 40 60 42 Z" fill="${c}"/>
+      <polygon points="38,2 63,16.5 63,45.5 38,60 13,45.5 13,16.5" fill="${lo}"/>
+      <polygon points="38,7 58.5,19 58.5,43 38,55 17.5,43 17.5,19" fill="url(#${id}m)"/>
+      <polygon points="38,7 58.5,19 38,31 17.5,19" fill="#fff" opacity=".2"/>
+      <text x="38" y="40" text-anchor="middle" font-family="Poppins,Arial,sans-serif" font-weight="800" font-size="22" fill="#fff" stroke="${lo}" stroke-width="1" paint-order="stroke">${n}</text></svg>`;
+  }
   function league(points = totalPoints()) {
     let i = 0;
     LEAGUES.forEach((l, k) => {
@@ -6169,8 +6238,17 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       <div class="hello-txt">
         <h1>Hi, ${esc(firstName(m2.name))}!</h1>
         <button type="button" class="class-chip" id="class-btn" aria-label="Change your grade or class">${esc(classLabel())}<span>Change</span></button>
-        <p><span class="lg-dot" style="--lg:${lg.color}"></span>${lg.name} league <span class="sep">\xB7</span> ${icon("flame", 16, "flame")}${st ? `${st} day${st === 1 ? "" : "s"} in a row` : "Start a streak today"}</p>
+        <p>${icon("flame", 16, "flame")}${st ? `${st} day${st === 1 ? "" : "s"} in a row` : "Start a streak today"}</p>
       </div>
+      <a class="hello-league" href="#dashboard" style="--lg:${lg.color}" aria-label="You are in the ${lg.name} league. ${lg.next ? `${fmtNum(lg.toNext)} points to ${lg.next.name}` : "Top league"}"><!-- epz-patch:league -->
+        <span class="hl-medal hl-emblem" aria-hidden="true">${leagueEmblem(lg, "shield")}</span>
+        <span class="hl-main">
+          <span class="hl-top"><span class="hl-eyebrow">My league</span><span class="hl-pips" aria-hidden="true">${LEAGUES.map((l, k) => `<i class="${k <= lg.index ? "on" : ""}" style="--pc:${l.color}"></i>`).join("")}</span></span>
+          <b class="hl-name">${esc(lg.name)} <small>League</small></b>
+          <span class="hl-bar"><i style="width:${Math.max(4, lg.progress)}%"></i></span>
+          <span class="hl-next">${lg.next ? `<b>${fmtNum(lg.toNext)}</b> points to <b style="color:${lg.next.color === "#7F8C9B" ? "#C9D2DC" : lg.next.color}">${esc(lg.next.name)}</b>` : "You are in the top league!"}</span>
+        </span>
+      </a>
       <a class="hello-rank" href="#dashboard" aria-label="My progress: open my dashboard"><!-- epz-patch:layout -->
         <span class="hr-cell">${icon("trophy", 20)}<span>${rank ? `<b>#${rank.rank}</b> in ${esc(rankScope())}` : `<b>\u2014</b> not ranked yet`}</span></span>
         <span class="hr-cell">${icon("star", 20)}<span><b>${fmtNum(dailyPoints(7).reduce((a, d) => a + d.pts, 0))}</b> this week</span></span>
