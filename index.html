@@ -1356,6 +1356,238 @@ body.playing .tabbar { display: none; }
 @media (prefers-reduced-motion: reduce) { .hl-emblem > svg:first-child, .hl-shine, .hl-spark { animation: none; } .hl-emblem > svg:first-child { filter: drop-shadow(0 3px 0 rgb(0 0 0 / .25)); } }
 .hello-league:active { transform: translateY(1px); }
 .hello-league:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+/* ------------------------------------------------------------ epz-patch:duel — Challenge a friend */
+.hello { position: relative; }
+.hello h1 { padding-right: 62px; }
+.hello-prog { position: absolute; top: 14px; right: 14px; z-index: 2; display: grid; place-items: center; gap: 1px; width: 58px; height: 58px; border-radius: 16px; background: var(--sun); color: var(--sun-ink); text-decoration: none; font-weight: 800; font-size: .66rem; box-shadow: 0 4px 0 rgb(0 0 0 / .25); }
+.hello-prog .ic { margin-top: 4px; }
+.hello-prog:active { transform: translateY(2px); box-shadow: 0 2px 0 rgb(0 0 0 / .25); }
+.hello-prog:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.tab-ic { position: relative; }
+.tab-dot { position: absolute; top: -4px; right: 4px; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 99px; background: #E5484D; color: #fff; font-style: normal; font-size: .7rem; font-weight: 900; line-height: 18px; text-align: center; box-shadow: 0 0 0 2px var(--surface); animation: dot-pulse 1.6s ease-in-out infinite; }
+@keyframes dot-pulse { 50% { transform: scale(1.15); } }
+
+.duel-alert { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; text-decoration: none; color: #fff; background: linear-gradient(135deg, #E5484D, #B4236F); box-shadow: 0 4px 0 #8E1C3B; animation: da-in .5s ease both; }
+.da-ic { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: rgb(255 255 255 / .18); animation: da-swing 1.4s ease-in-out infinite; }
+.da-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.da-txt b { font-family: var(--display); font-size: 1.15rem; line-height: 1.15; }
+.da-txt small { opacity: .9; font-weight: 600; }
+.da-go { background: #FACC15; color: #3A2600; font-weight: 900; border-radius: 12px; padding: 8px 14px; box-shadow: 0 3px 0 #A16207; }
+@keyframes da-in { from { opacity: 0; transform: translateY(-8px); } }
+@keyframes da-swing { 50% { transform: rotate(-10deg) scale(1.06); } }
+
+/* ---- arena */
+.ar { position: fixed; inset: 0; z-index: 40; display: flex; flex-direction: column; background: #16241A; color: #fff; user-select: none; -webkit-user-select: none; touch-action: none; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); max-width: 560px; margin: 0 auto; font-family: var(--font); }
+.ar-top { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: linear-gradient(#5A1E2A, #3E1520); }
+.ar-flag { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; border: 0; background: rgb(255 255 255 / .14); color: #fff; cursor: pointer; flex-shrink: 0; }
+.ar-who { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; }
+.ar-av { display: grid; place-items: center; width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; font-family: var(--display); font-weight: 800; font-size: .9rem; color: #fff; background: #E5484D; box-shadow: 0 0 0 2px rgb(255 255 255 / .7); }
+.ar-who.me .ar-av, .ar-av.me { background: #2F7BEF; }
+.ar-av.big { width: 64px; height: 64px; font-size: 1.5rem; box-shadow: 0 0 0 4px rgb(255 255 255 / .8), 0 6px 0 rgb(0 0 0 / .25); }
+.ar-av.sm { width: 38px; height: 38px; font-size: .85rem; }
+.ar-av.foe { background: #E5484D; }
+.ar-nm { display: flex; flex-direction: column; min-width: 0; line-height: 1.15; }
+.ar-nm b { font-weight: 800; font-size: .92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ar-nm small { font-size: .7rem; opacity: .75; }
+.ar-crowns { display: flex; gap: 2px; margin-left: auto; }
+.ar-crowns.pop { animation: cr-pop .6s ease; }
+@keyframes cr-pop { 30% { transform: scale(1.45) rotate(-6deg); } }
+.ar-wave { font-family: var(--display); font-weight: 800; background: rgb(0 0 0 / .3); border-radius: 10px; padding: 4px 9px; font-size: .9rem; flex-shrink: 0; }
+
+.ar-field { container-type: size; position: relative; flex: 1; min-height: 280px; overflow: hidden; background-color: #5DAE48; background-image: repeating-conic-gradient(#64B84F 0 25%, #57A642 0 50%); background-size: 46px 46px; box-shadow: inset 0 0 40px rgb(0 0 0 / .25); }
+.ar-river { position: absolute; left: 0; right: 0; top: 46%; height: 8%; overflow: hidden; background: linear-gradient(#4FB7EC, #2B8ACB); box-shadow: inset 0 3px 0 rgb(255 255 255 / .35), inset 0 -3px 0 rgb(0 0 0 / .18); }
+.ar-river::after { content: ""; position: absolute; top: 0; bottom: 0; left: -122px; right: 0; background: repeating-linear-gradient(90deg, rgb(255 255 255 / .16) 0 6px, transparent 6px 30.5px); animation: river 4s linear infinite; will-change: transform; }
+@keyframes river { to { transform: translate3d(122px, 0, 0); } }
+.ar-lane { position: absolute; top: 13%; bottom: 13%; width: 12%; background: rgb(222 196 140 / .6); border-radius: 14px; box-shadow: inset 0 0 0 2px rgb(150 120 70 / .25); }
+.ar-lane.l0 { left: 19%; } .ar-lane.l1 { left: 69%; }
+.ar-bridge { position: absolute; top: 43.5%; height: 13%; width: 17%; background: repeating-linear-gradient(0deg, #B07A44 0 9px, #8E5E31 9px 11px); border-left: 4px solid #6B4423; border-right: 4px solid #6B4423; border-radius: 4px; box-shadow: 0 3px 0 rgb(0 0 0 / .2); }
+.ar-bridge.b0 { left: 16.5%; } .ar-bridge.b1 { left: 66.5%; }
+.ar-tower { position: absolute; width: min(18%, 9.5vh); width: min(18cqw, 13cqh); max-width: 76px; transform: translate(-50%, -50%); z-index: 2; }
+.ar-tower.king { width: min(21%, 11vh); width: min(21cqw, 15cqh); max-width: 88px; }
+.ar-tower.foe.t0 { left: 25%; top: 26%; } .ar-tower.foe.t1 { left: 75%; top: 26%; } .ar-tower.foe.t2 { left: 50%; top: 12%; }
+.ar-tower.me.t0 { left: 25%; top: 74%; } .ar-tower.me.t1 { left: 75%; top: 74%; } .ar-tower.me.t2 { left: 50%; top: 88%; }
+.tw-art svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 4px 0 rgb(0 0 0 / .22)); }
+.ar-hp { position: relative; height: 12px; margin: 0 4px 3px; border-radius: 6px; background: rgb(0 0 0 / .5); overflow: hidden; box-shadow: 0 0 0 1.5px rgb(255 255 255 / .6); }
+.ar-hp i { position: absolute; inset: 0; width: 100% !important; background: #2F7BEF; transform-origin: left center; transition: transform .35s ease; }
+.ar-tower.foe .ar-hp i { background: #E5484D; }
+.ar-hp b { position: relative; display: block; text-align: center; font-size: .62rem; line-height: 12px; font-weight: 900; text-shadow: 0 1px 1px rgb(0 0 0 / .7); }
+.ar-tower.down .ar-hp { opacity: 0; }
+.ar-tower.shake { animation: tw-shake .35s ease; }
+@keyframes tw-shake { 25% { transform: translate(calc(-50% - 4px), -50%); } 50% { transform: translate(calc(-50% + 4px), calc(-50% + 1px)); } 75% { transform: translate(calc(-50% - 2px), -50%); } }
+.ar-troop { position: absolute; left: 0; top: 0; z-index: 4; pointer-events: none; will-change: transform; }
+.ar-troop .tr-svg { display: block; animation: tr-walk .32s ease-in-out infinite alternate; will-change: transform; }
+.ar-troop.d { z-index: 5; }
+.ar-troop.d .tr-svg { animation: tr-fly .5s ease-in-out infinite alternate; }
+.ar-troop.strike .tr-svg { animation: tr-strike .28s ease; }
+.ar-troop.poof { opacity: 0; transition: opacity .3s; }
+.ar-troop.poof .tr-svg { transform: scale(.4); transition: transform .3s; animation: none; }
+@keyframes tr-walk { to { transform: translateY(-3px) rotate(2deg); } }
+@keyframes tr-fly { to { transform: translateY(-6px) scale(1.04); } }
+@keyframes tr-strike { 40% { transform: scale(1.35) rotate(-8deg); } }
+.ar-arrow { position: absolute; left: 0; top: 0; z-index: 5; width: 4px; height: 24px; margin: -12px 0 0 -2px; border-radius: 2px; background: linear-gradient(#64748B 0 20%, #7C4A1E 20%); pointer-events: none; }
+.ar-fire { position: absolute; z-index: 5; width: 70px; height: 70px; margin: -35px 0 0 -35px; border-radius: 50%; background: radial-gradient(circle, #FFF7AE 0 18%, #FDBA4A 35%, #F97316 55%, rgb(239 68 68 / 0) 72%); animation: fire .6s ease-out forwards; pointer-events: none; }
+@keyframes fire { from { transform: scale(.2); opacity: 1; } to { transform: scale(1.4); opacity: 0; } }
+.ar-boom { position: absolute; z-index: 6; width: 0; height: 0; pointer-events: none; }
+.ar-boom::before { content: ""; position: absolute; width: 90px; height: 90px; margin: -45px 0 0 -45px; border-radius: 50%; background: radial-gradient(circle, #fff 0 15%, #FDE047 30%, #F97316 55%, rgb(120 53 15 / 0) 72%); animation: fire .7s ease-out forwards; }
+.ar-boom.big::before { width: 140px; height: 140px; margin: -70px 0 0 -70px; }
+.ar-boom i { position: absolute; width: 9px; height: 9px; border-radius: 2px; background: #A8977F; animation: chip .8s ease-out forwards; }
+.ar-boom i:nth-child(1) { --dx: -46px; --dy: -40px; } .ar-boom i:nth-child(2) { --dx: 44px; --dy: -46px; } .ar-boom i:nth-child(3) { --dx: -54px; --dy: 10px; } .ar-boom i:nth-child(4) { --dx: 52px; --dy: 14px; }
+.ar-boom i:nth-child(5) { --dx: -20px; --dy: -60px; background: #FACC15; } .ar-boom i:nth-child(6) { --dx: 24px; --dy: -58px; background: #F97316; } .ar-boom i:nth-child(7) { --dx: -30px; --dy: 40px; } .ar-boom i:nth-child(8) { --dx: 34px; --dy: 38px; background: #FACC15; }
+@keyframes chip { to { transform: translate(var(--dx), var(--dy)) rotate(200deg); opacity: 0; } }
+.ar-float { position: absolute; z-index: 7; transform: translate(-50%, 0); font-family: var(--display); font-weight: 800; font-size: 1.15rem; color: #fff; -webkit-text-stroke: 1px rgb(0 0 0 / .4); text-shadow: 0 2px 0 rgb(0 0 0 / .45); animation: float-up 1.1s ease-out forwards; pointer-events: none; }
+.ar-float.good { color: #FDE047; } .ar-float.bad { color: #FCA5A5; }
+@keyframes float-up { from { transform: translate(-50%, 6px) scale(.7); opacity: 0; } 20% { transform: translate(-50%, -6px) scale(1.15); opacity: 1; } to { transform: translate(-50%, -38px) scale(1); opacity: 0; } }
+.ar-drop { position: absolute; top: 54%; bottom: 2%; width: 48%; display: none; place-items: center; border: 3px dashed rgb(255 255 255 / .7); border-radius: 18px; background: rgb(255 255 255 / .12); z-index: 3; }
+.ar-drop span { transform: rotate(-90deg); opacity: .9; }
+.ar-drop.d0 { left: 1%; } .ar-drop.d1 { right: 1%; }
+.dropping .ar-drop { display: grid; }
+.ar-drop.hot { background: rgb(250 204 21 / .35); border-color: #FACC15; }
+.ar-ticker { position: absolute; left: 50%; top: 31%; z-index: 8; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; pointer-events: none; width: 92%; }
+.tk { display: inline-flex; align-items: center; gap: 4px; padding: 4px 11px; border-radius: 99px; background: rgb(0 0 0 / .6); font-weight: 800; font-size: .85rem; animation: tk 2.2s ease forwards; white-space: nowrap; }
+.tk.good { background: rgb(29 78 216 / .85); } .tk.bad { background: rgb(185 28 28 / .85); }
+.tk svg { width: 22px; height: 22px; }
+@keyframes tk { 0% { transform: translateY(8px) scale(.8); opacity: 0; } 12% { transform: none; opacity: 1; } 80% { opacity: 1; } to { opacity: 0; transform: translateY(-10px); } }
+.ar-over { position: absolute; inset: 0; z-index: 9; display: none; place-items: center; background: rgb(0 0 0 / .45); }
+.ar-over.show { display: grid; }
+.ar-vs { display: flex; align-items: center; gap: 18px; animation: vs-in .5s cubic-bezier(.2, 1.4, .4, 1) both; }
+.vs-side { display: flex; flex-direction: column; align-items: center; gap: 8px; font-family: var(--display); font-size: 1.2rem; }
+.vs-side.me { animation: vs-l .5s ease both; } .vs-side.foe { animation: vs-r .5s ease both; }
+.vs-x { font-family: var(--display); font-weight: 800; font-size: 2.6rem; color: #FACC15; -webkit-text-stroke: 2px #7C2D12; text-shadow: 0 4px 0 #7C2D12; }
+.vs-x.small { font-size: 1.6rem; }
+@keyframes vs-in { from { transform: scale(.4); opacity: 0; } }
+@keyframes vs-l { from { transform: translateX(-80px); } } @keyframes vs-r { from { transform: translateX(80px); } }
+.ar-count { font-family: var(--display); font-weight: 800; font-size: 6rem; color: #fff; -webkit-text-stroke: 3px #1E3A8A; text-shadow: 0 6px 0 #1E3A8A; animation: count .7s ease both; }
+.ar-count.go { font-size: 4rem; color: #FACC15; -webkit-text-stroke: 3px #7C2D12; text-shadow: 0 6px 0 #7C2D12; }
+@keyframes count { from { transform: scale(2.2); opacity: 0; } 30% { transform: scale(1); opacity: 1; } }
+
+.ar-bottom { display: flex; flex-direction: column; gap: 8px; padding: 8px 10px 10px; background: linear-gradient(#1F3B8A, #172B66); }
+.ar-scroll { position: relative; background: linear-gradient(#FBF0D2, #F1DFB2); color: #3B2A12; border: 3px solid #C89B4A; border-radius: 14px; padding: 10px 12px; min-height: 54px; display: grid; place-items: center; text-align: center; box-shadow: 0 4px 0 #8A6524; }
+.ar-scroll.in .ar-sentence { animation: scroll-in .28s ease-out; }
+@keyframes scroll-in { from { transform: translateY(8px); opacity: 0; } }
+.ar-sentence { font-weight: 800; font-size: 1.08rem; line-height: 1.35; }
+.ar-gap { position: relative; display: inline-block; min-width: 54px; padding: 0 8px; margin: 0 2px; border-radius: 8px; background: #FEF3C7; color: #B45309; border: 2px dashed #D97706; }
+.ar-gap::after { content: ""; position: absolute; inset: -6px; border-radius: 12px; border: 3px solid rgb(250 204 21 / .8); animation: gap 1s ease-in-out infinite alternate; will-change: opacity; pointer-events: none; }
+.ar-gap.ok::after, .ar-gap.no::after { display: none; }
+.ar-gap.ok { background: #16A34A; color: #fff; border: 2px solid #15803D; animation: pop-in .3s ease; }
+.ar-gap.no { background: #DC2626; color: #fff; border: 2px solid #991B1B; animation: pop-in .3s ease; }
+@keyframes pop-in { 40% { transform: scale(1.18); } }
+@keyframes gap { from { opacity: 0; } to { opacity: 1; } }
+.ar-power { position: relative; height: 16px; border-radius: 99px; background: rgb(0 0 0 / .35); overflow: hidden; box-shadow: inset 0 0 0 2px rgb(255 255 255 / .2); }
+.ar-power i { position: absolute; inset: 0; background: #8B5CF6; border-radius: 99px; box-shadow: inset 0 -3px 0 rgb(0 0 0 / .2); transform-origin: left center; will-change: transform; transition: background-color .25s, opacity .2s; }
+.ar-power .pw-mark { position: absolute; top: 2px; bottom: 2px; width: 2px; background: rgb(255 255 255 / .55); }
+.ar-power b { position: absolute; right: 10px; top: 0; font-size: .68rem; line-height: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; text-shadow: 0 1px 1px rgb(0 0 0 / .6); }
+.ar-power.off { visibility: hidden; }
+.ar-hand { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; min-height: 152px; }
+.ar-hand.drop-tier .ac-art { animation: tier .45s ease; }
+@keyframes tier { 40% { transform: scale(.8) rotate(-8deg); } }
+.ar-card { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; padding: 10px 8px 0; border-radius: 16px; border: 3px solid #FACC15; background: radial-gradient(circle at 50% 30%, #4F6BD8, #22366F 70%); color: #fff; cursor: grab; touch-action: none; overflow: hidden; box-shadow: 0 5px 0 #A16207, 0 8px 16px rgb(0 0 0 / .35); font: inherit; min-height: 150px; transition: transform .25s, opacity .25s; }
+.ar-card:active { transform: translateY(2px) scale(.98); }
+.ar-card:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.ar-card.deal { animation: deal .3s cubic-bezier(.2, 1.2, .4, 1) both; }
+@keyframes deal { from { transform: translate3d(0, 50px, 0) scale(.85); opacity: 0; } }
+.ar-card.lifted { opacity: .35; }
+.ac-cost { position: absolute; top: 6px; left: 6px; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: #D946EF; color: #fff; box-shadow: 0 2px 0 #86198F; }
+.ac-art { display: grid; place-items: center; filter: drop-shadow(0 4px 2px rgb(0 0 0 / .35)); }
+.ac-word { width: calc(100% + 16px); margin-top: auto; padding: 8px 6px 9px; background: linear-gradient(#FFFFFF, #E2E8F0); color: #172554; font-family: var(--display); font-weight: 800; font-size: 1.12rem; line-height: 1.1; text-align: center; overflow-wrap: anywhere; }
+.ar-card.used { transform: translate3d(0, -140px, 0) scale(.5); opacity: 0; }
+.ar-card.right { border-color: #4ADE80; box-shadow: 0 0 0 4px rgb(74 222 128 / .55), 0 5px 0 #15803D; }
+.ar-card.burn { animation: burn .5s ease forwards; }
+@keyframes burn { 20% { transform: translateX(-8px) rotate(-3deg); } 40% { transform: translateX(8px) rotate(3deg); } to { transform: scale(.85); filter: grayscale(1) brightness(.6); opacity: .55; } }
+.ar-card:disabled { cursor: default; }
+.ar-card.dragging { position: fixed; left: 0; top: 0; z-index: 60; width: 120px; min-height: 0; pointer-events: none; opacity: .95; transition: none; will-change: transform; animation: none; }
+.ar-hint { margin: 0; text-align: center; font-size: .78rem; opacity: .7; min-height: 1em; }
+@media (max-height: 700px) { .ar-bottom { gap: 6px; padding: 6px 8px 8px; } .ar-who.me .ar-av { width: 26px; height: 26px; font-size: .7rem; } .ar-scroll { min-height: 44px; padding: 6px 10px; } .ar-sentence { font-size: .95rem; } .ar-power { height: 12px; } .ar-power b { line-height: 12px; font-size: .6rem; } .ar-card { min-height: 98px; padding-top: 6px; } .ar-hand { min-height: 100px; } .ac-art svg { width: 42px; height: 42px; } .ac-word { font-size: 1rem; padding: 6px 4px 7px; } .ar-hint { display: none; } .ar-top { padding: 5px 8px; } }
+
+/* ---- result */
+.ar-res { position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; min-height: 100vh; padding: 28px 16px 40px; color: #fff; background: linear-gradient(#1F3B8A, #0F1B44); }
+.ar-res.win { background: linear-gradient(#1E40AF, #172554); }
+.ar-res.lose { background: linear-gradient(#475569, #1E293B); }
+.ar-res.draw { background: linear-gradient(#6D28D9, #2E1065); }
+.ar-res.sent { background: linear-gradient(#0E7490, #083344); }
+.ar-res.wait { justify-content: center; }
+.res-rays { will-change: transform; position: absolute; top: -40%; left: 50%; width: 900px; height: 900px; margin-left: -450px; background: repeating-conic-gradient(rgb(255 255 255 / .07) 0 10deg, transparent 10deg 20deg); animation: rays 30s linear infinite; pointer-events: none; }
+@keyframes rays { to { transform: rotate(360deg); } }
+.ar-res > *:not(.res-rays) { position: relative; }
+.res-title { font-family: var(--display); font-weight: 800; font-size: clamp(2.4rem, 12vw, 3.4rem); line-height: 1; color: #FACC15; -webkit-text-stroke: 2px #7C2D12; text-shadow: 0 5px 0 #7C2D12; animation: res-pop .6s cubic-bezier(.2, 1.5, .4, 1) both; margin-top: 10px; }
+.ar-res.lose .res-title { color: #E2E8F0; -webkit-text-stroke-color: #334155; text-shadow: 0 5px 0 #334155; }
+@keyframes res-pop { from { transform: scale(.3); opacity: 0; } }
+.res-vs { display: grid; grid-template-columns: 1fr auto 1fr; align-items: start; gap: 8px; width: 100%; max-width: 440px; }
+.res-side { display: flex; flex-direction: column; align-items: center; gap: 6px; background: rgb(0 0 0 / .22); border-radius: 18px; padding: 14px 8px; }
+.res-side b { font-family: var(--display); font-size: 1.15rem; }
+.res-side small { opacity: .8; font-size: .78rem; }
+.res-cr { display: flex; gap: 3px; }
+.res-cr svg { width: 28px; height: 22px; }
+.res-wait { font-size: 1.8rem; }
+.res-x { align-self: center; font-family: var(--display); font-weight: 800; font-size: 1.6rem; color: #FACC15; }
+.res-pts { display: inline-flex; align-items: center; gap: 8px; background: #FACC15; color: #3A2600; font-family: var(--display); font-weight: 800; font-size: 1.4rem; padding: 6px 18px; border-radius: 99px; box-shadow: 0 4px 0 #A16207; }
+.res-note { margin: 0; max-width: 420px; opacity: .92; }
+.res-btns { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 360px; }
+.res-btns .btn { width: 100%; justify-content: center; }
+.res-words { width: 100%; max-width: 440px; text-align: left; background: rgb(255 255 255 / .08); border-radius: 16px; padding: 10px 14px; }
+.res-words summary { cursor: pointer; font-weight: 800; }
+.res-words ol { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.res-words li { display: flex; align-items: flex-start; gap: 8px; font-size: .92rem; }
+.res-words li p { margin: 0; flex: 1; }
+.res-words li b { color: #FACC15; }
+.res-words li.ok > span { color: #4ADE80; } .res-words li.no > span { color: #F87171; }
+.res-words em { font-style: normal; font-size: .72rem; opacity: .7; }
+.ar-spin { width: 48px; height: 48px; border-radius: 50%; border: 5px solid rgb(255 255 255 / .2); border-top-color: #FACC15; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.res-pop.win .modal-title { color: var(--good); }
+.res-pop .res-pts { font-size: 1.1rem; }
+
+/* ---- the Challenge tab */
+.duel-hero { position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; padding: 20px 16px 18px; border-radius: 24px; color: #fff; background: radial-gradient(circle at 50% 0%, #3B5BDB, #1E2A66 70%); box-shadow: 0 5px 0 #0F1B44; }
+.duel-hero::before { content: ""; position: absolute; inset: auto -20% -60% -20%; height: 70%; background: repeating-conic-gradient(#64B84F 0 25%, #57A642 0 50%) 0 0 / 34px 34px; border-radius: 50% 50% 0 0; opacity: .35; }
+.duel-hero > * { position: relative; }
+.dh-art { display: flex; align-items: center; gap: 4px; }
+.dh-t { display: grid; animation: tr-walk .6s ease-in-out infinite alternate; }
+.dh-t.foe { animation-delay: .3s; transform: scaleX(-1); }
+.dh-t.foe svg { transform: scaleX(-1); }
+.dh-x { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: #FACC15; color: #7C2D12; box-shadow: 0 4px 0 #A16207; }
+.duel-hero h1 { font-family: var(--display); font-weight: 800; font-size: 1.9rem; line-height: 1.1; }
+.duel-hero p { margin: 0; opacity: .92; }
+.dh-left { display: inline-flex; align-items: center; gap: 8px; background: rgb(0 0 0 / .28); padding: 6px 14px; border-radius: 99px; font-weight: 800; font-size: .9rem; }
+.dh-dots { display: flex; gap: 4px; }
+.dh-dots i { width: 12px; height: 12px; border-radius: 50%; background: rgb(255 255 255 / .25); }
+.dh-dots i.on { background: #FACC15; box-shadow: 0 0 6px #FACC15; }
+.dh-go { background: #FACC15; color: #3A2600; border: 0; box-shadow: 0 5px 0 #A16207; font-size: 1.15rem; padding-inline: 26px; }
+.dh-go:disabled { opacity: .55; }
+.dh-msg { background: rgb(0 0 0 / .25); border-radius: 12px; padding: 8px 12px; font-weight: 700; }
+.dh-score { display: flex; gap: 14px; font-weight: 800; font-size: .88rem; }
+.dh-score span { display: inline-flex; align-items: center; gap: 4px; }
+.inc-list, .dl-list, .pk-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.inc-list li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 16px; background: linear-gradient(135deg, #FEE2E2, #FCE7F3); color: #4A0D1C; border: 2px solid #FCA5A5; }
+.inc-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.inc-txt small { opacity: .8; }
+.inc-go { background: #E5484D; color: #fff; border-color: #E5484D; animation: inc-glow 1.4s ease-in-out infinite; }
+@keyframes inc-glow { 50% { box-shadow: 0 0 0 5px rgb(229 72 77 / .3); } }
+.dl { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 16px; background: var(--surface); border: 2px solid var(--line); }
+.dl.win { border-color: #86EFAC; } .dl.lose { border-color: #FCA5A5; } .dl.new { box-shadow: 0 0 0 3px #FACC15; }
+.dl-nm { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.dl-nm small { color: var(--muted); font-weight: 700; }
+.dl-sub { display: flex; align-items: center; gap: 4px; font-size: .82rem; color: var(--muted); font-weight: 700; }
+.dl-cr { display: inline-flex; gap: 1px; } .dl-cr svg { width: 18px; height: 14px; }
+.dl .dl-cr svg path[fill^="rgba"] { fill: var(--line); stroke: var(--muted); }
+.dl-tag { font-weight: 900; font-size: .85rem; white-space: nowrap; }
+.dl.win .dl-tag { color: var(--good); } .dl.lose .dl-tag { color: var(--bad); }
+.duel-train { display: flex; align-items: center; gap: 12px; }
+.dt-txt { flex: 1; display: flex; flex-direction: column; }
+.dt-txt span { color: var(--muted); font-size: .88rem; }
+.duel-how summary { cursor: pointer; font-weight: 800; }
+.duel-how ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; color: var(--muted); }
+.pk-search { width: 100%; font: inherit; padding: 11px 14px; border-radius: 12px; border: 2px solid var(--line); background: var(--surface); color: var(--ink); margin: 6px 0 10px; }
+.pk-list { max-height: 55vh; overflow-y: auto; }
+.pk-list li { display: flex; align-items: center; gap: 10px; padding: 8px 4px; border-bottom: 1px solid var(--line); }
+.pk-nm { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.pk-nm b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pk-nm small { color: var(--muted); font-weight: 700; }
+.pk-busy { font-size: .78rem; font-weight: 800; color: var(--muted); }
+.pk-none { justify-content: center; color: var(--muted); border: 0 !important; }
+.pk-confirm { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 6px 0 12px; }
+@media (prefers-reduced-motion: reduce) {
+  .ar *, .ar-res *, .duel-hero *, .duel-alert, .tab-dot, .inc-go { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
 </style>
 </head>
 <body>
@@ -4193,7 +4425,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   }
   var WOTD_ACTS = ["meaning", "sentence", "listen", "scramble", "write", "synonym"], WOTD_PTS = { first: 10, second: 5, bonus: 20 };
   function wotdPoints(keep = null) {
-    let n = bossPts(keep) + luckPts(keep);
+    let n = bossPts(keep) + luckPts(keep) + duelPts(keep);
     for (let r of Object.values(state.wotd || {})) {
       for (let a of Object.values(r.a || {})) (!keep || keep(a.at)) && (n += a.p || 0);
       r.b && (!keep || keep(r.b.at)) && (n += r.b.p || 0);
@@ -4412,6 +4644,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
           st: (seen === today2 || seen === yesterday) && x2.streak || 0,
           sk: x2.skills && Object.keys(x2.skills).length ? x2.skills : void 0,
           c: x2.class_name || "",
+          id: x2.id,
           self: !!id && x2.id === id
         };
       }), sig = JSON.stringify(rows), changed = sig !== liveSig || boardState !== "ok";
@@ -5355,12 +5588,12 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     location.hash === `#${name}` ? route2() : location.hash = name;
   }
   // epz-patch:theme — bottom tab bar
-  var TABS = [["home", "Home", "home"], ["skills", "Practice", "book"], ["word", "Word", "calendar"], ["ranking", "Ranking", "trophy"], ["dashboard", "Progress", "progress"]];
+  var TABS = [["home", "Home", "home"], ["skills", "Practice", "book"], ["word", "Word", "calendar"], ["ranking", "Ranking", "trophy"], ["duel", "Challenge", "duel"]];
   function drawTabs(h) {
     let nav = document.getElementById("tabbar");
     if (!nav) return;
-    let show = !!(me().name && me().grade) && h !== "setup", tab = h === "skills" || h === "quick" || h.startsWith("play-") ? "skills" : h === "ranking" ? "ranking" : h === "dashboard" ? "dashboard" : h === "word" || h === "words" || h.startsWith("word/") ? "word" : "home";
-    nav.hidden = !show, document.body.classList.toggle("has-nav", show), nav.innerHTML = `<div class="tabbar-in">${TABS.map(([id, label, ic]) => `<a class="tab" href="#${id}"${id === tab ? ' aria-current="page"' : ""}><span class="tab-ic">${icon(ic, 22)}</span><span>${label}</span></a>`).join("")}</div>`;
+    let show = !!(me().name && me().grade) && h !== "setup", tab = h === "skills" || h === "quick" || h.startsWith("play-") ? "skills" : h === "ranking" ? "ranking" : h === "duel" ? "duel" : h === "dashboard" ? "dashboard" : h === "word" || h === "words" || h.startsWith("word/") ? "word" : "home";
+    nav.hidden = !show, document.body.classList.toggle("has-nav", show), nav.innerHTML = `<div class="tabbar-in">${TABS.map(([id, label, ic]) => `<a class="tab" href="#${id}"${id === tab ? ' aria-current="page"' : ""}><span class="tab-ic">${icon(ic, 22)}${id === "duel" && duelIncoming().length ? `<i class="tab-dot">${duelIncoming().length}</i>` : ""}</span><span>${label}</span></a>`).join("")}</div>`;
   }
   // epz-patch:boss — Boss Battle (one boss per week, played alone, saved on this phone)
   var BOSS_START_UTC = Date.UTC(2026, 10, 15), BOSS_REWARD = 500, BOSS_TRIES = 2, BOSS_WINDOW = 864e5, BOSS_FAST_SECS = 120;
@@ -6071,6 +6304,588 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     });
   }
 
+  // epz-patch:duel — Challenge a friend: a card battle. Each wave: a sentence with a gap and two word cards;
+  // the right card sends a troop (faster = stronger). The friend later fights a replay of this attack.
+  var DUEL_MAX = 2, DUEL_WIN = 50, DUEL_PER_RIGHT = 10, DUEL_WAVES = 10, DUEL_TIME = 6e3, DUEL_PAUSE = 800, DUEL_GRACE = 250, DUEL_LIFE = 24 * 36e5;
+  var DUEL_TROOPS = {
+    d: { name: "Dragon", dmg: 350, until: 2500, color: "#8B5CF6" },
+    a: { name: "Archer", dmg: 250, until: 4e3, color: "#16A34A" },
+    k: { name: "Knight", dmg: 150, until: 6e3, color: "#64748B" }
+  };
+  var DUEL_HP = { p: 1e3, k: 1500 };
+  var TEAM = { me: ["#2F7BEF", "#1B4FA8"], foe: ["#E5484D", "#A3262A"] };
+  var P_DUEL = '<path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="m13 19 6-6M16 16l4 4M19 21l2-2"/><path d="M9.5 6.5 21 18v3h-3L6.5 9.5"/>';
+  typeof P == "object" && (P.duel = P_DUEL);
+  var duelTier = (ms) => ms < DUEL_TROOPS.d.until ? "d" : ms < DUEL_TROOPS.a.until ? "a" : "k";
+
+  // ---------- art (drawn here, original)
+  function troopSvg(type, team, size = 56, ring = !1) {
+    let [c, d] = TEAM[team], sh = ring ? `<ellipse cx="32" cy="58" rx="17" ry="5.5" fill="${c}" opacity=".55"/><ellipse cx="32" cy="58" rx="12" ry="3.4" fill="rgba(0,0,0,.3)"/>` : '<ellipse cx="32" cy="59" rx="13" ry="3.6" fill="rgba(0,0,0,.28)"/>', body = "";
+    if (type === "k") body = `${sh}<rect x="24" y="44" width="6" height="12" rx="2" fill="#4B5563"/><rect x="34" y="44" width="6" height="12" rx="2" fill="#4B5563"/>
+      <path d="M20 30 Q32 23 44 30 L42 48 Q32 53 22 48Z" fill="${c}" stroke="${d}" stroke-width="2.4"/><path d="M27 33 h10 v9 h-10z" fill="#fff" opacity=".22"/>
+      <rect x="47" y="10" width="4" height="27" rx="1.5" fill="#EEF2F6" stroke="#64748B" stroke-width="1.4"/><rect x="43" y="35" width="12" height="3.4" rx="1.5" fill="#8A5A2B"/>
+      <circle cx="32" cy="19" r="11" fill="#D5DCE4" stroke="#64748B" stroke-width="2.2"/><rect x="24" y="17" width="16" height="4" rx="2" fill="#1F2933"/>
+      <path d="M31 8 Q36 0 45 4 Q39 6 35 11Z" fill="${c}" stroke="${d}" stroke-width="1.4"/>
+      <path d="M10 29 h14 v10 q0 9 -7 12 q-7 -3 -7 -12z" fill="${c}" stroke="#fff" stroke-width="2.2"/><path d="M17 32 v15 M12 38 h10" stroke="#fff" stroke-width="2" opacity=".8"/>`;
+    else if (type === "a") body = `${sh}<rect x="25" y="45" width="5" height="11" rx="2" fill="#6B4423"/><rect x="34" y="45" width="5" height="11" rx="2" fill="#6B4423"/>
+      <path d="M21 30 Q32 24 43 30 L41 50 Q32 54 23 50Z" fill="${c}" stroke="${d}" stroke-width="2.4"/><path d="M23 38 h18" stroke="#7C4A1E" stroke-width="3"/>
+      <circle cx="32" cy="20" r="9" fill="#F1C69C"/><circle cx="29" cy="20" r="1.4" fill="#1F2933"/><circle cx="35" cy="20" r="1.4" fill="#1F2933"/>
+      <path d="M20.5 24 Q20 6 32 6 Q44 6 43.5 24 Q41 13 32 13 Q23 13 20.5 24Z" fill="${d}"/>
+      <path d="M48 8 Q62 30 48 52" fill="none" stroke="#8A5A2B" stroke-width="3.2" stroke-linecap="round"/><path d="M48 8 V52" stroke="#E5E7EB" stroke-width="1"/>
+      <path d="M28 30 H54" stroke="#5B3A1E" stroke-width="2"/><path d="M54 27 l5 3 -5 3z" fill="#94A3B8"/>`;
+    else body = `${ring ? `<ellipse cx="32" cy="60" rx="15" ry="4.5" fill="${c}" opacity=".45"/>` : ""}<ellipse cx="32" cy="60" rx="12" ry="3" fill="rgba(0,0,0,.22)"/>
+      <path d="M28 30 Q12 4 3 22 Q13 21 15 32Z" fill="${d}" stroke="${d}" stroke-width="1.5"/><path d="M36 30 Q52 4 61 22 Q51 21 49 32Z" fill="${d}" stroke="${d}" stroke-width="1.5"/>
+      <path d="M22 42 Q8 46 9 56 Q14 48 24 47Z" fill="${c}" stroke="${d}" stroke-width="1.6"/>
+      <ellipse cx="32" cy="38" rx="14" ry="11.5" fill="${c}" stroke="${d}" stroke-width="2.4"/><ellipse cx="32" cy="42" rx="8" ry="6" fill="#FDE68A"/>
+      <circle cx="32" cy="21" r="10" fill="${c}" stroke="${d}" stroke-width="2.4"/><path d="M25 14 l-3 -8 6 5z M39 14 l3 -8 -6 5z" fill="#FDE68A" stroke="${d}" stroke-width="1.2"/>
+      <circle cx="28" cy="20" r="3" fill="#fff"/><circle cx="36" cy="20" r="3" fill="#fff"/><circle cx="28.6" cy="20.6" r="1.6" fill="#1F2933"/><circle cx="36.6" cy="20.6" r="1.6" fill="#1F2933"/>
+      <path d="M28 27 Q32 30 36 27" stroke="${d}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+    return `<svg class="tr-svg tr-${type}" viewBox="0 0 64 64" width="${size}" height="${size}" aria-hidden="true">${body}</svg>`;
+  }
+  function towerSvg(kind, team, broken) {
+    let [c, d] = TEAM[team], king = kind === "k";
+    if (broken) return `<svg viewBox="0 0 64 72" aria-hidden="true"><path d="M8 70 Q14 54 24 58 Q30 48 38 56 Q48 50 56 70Z" fill="#8C7B66" stroke="#5E5040" stroke-width="2"/><path d="M18 64 l6 -5 5 6z M36 62 l7 -6 4 7z" fill="#A8977F"/></svg>`;
+    return `<svg viewBox="0 0 64 72" aria-hidden="true">
+      <path d="M10 71 L14 ${king ? 26 : 30} H50 L54 71Z" fill="#C9B79C" stroke="#7A6650" stroke-width="2.2"/>
+      <path d="M16 44 h32 M15 56 h34 M24 34 v10 M40 34 v10 M30 44 v12 M20 56 v14 M44 56 v14" stroke="#9C8A70" stroke-width="1.4"/>
+      <path d="M9 ${king ? 26 : 30} V${king ? 15 : 20} h8 v6 h6 v-6 h8 v6 h6 v-6 h8 v6 h6 v-6 h8 V${king ? 26 : 30}Z" fill="#DCCBAF" stroke="#7A6650" stroke-width="2.2"/>
+      <path d="M26 71 V59 a6 6 0 0 1 12 0 V71Z" fill="#5A3E2B"/>
+      <path d="M23 33 h18 v13 l-9 -4 -9 4z" fill="${c}" stroke="${d}" stroke-width="1.4"/>
+      ${king ? `<path d="M20 15 L22 4 L28 10 L32 1 L36 10 L42 4 L44 15Z" fill="#FACC15" stroke="#A16207" stroke-width="1.8" stroke-linejoin="round"/><circle cx="32" cy="9" r="1.8" fill="#EF4444"/>` : `<path d="M32 20 V4" stroke="#5A3E2B" stroke-width="2"/><path d="M32 4 h13 l-4 4 4 4 h-13z" fill="${c}"/>`}
+    </svg>`;
+  }
+  var crownSvg = (on) => `<svg viewBox="0 0 24 18" width="22" height="17" aria-hidden="true"><path d="M2 16 L3 4 L8 9 L12 2 L16 9 L21 4 L22 16Z" fill="${on ? "#FACC15" : "rgba(255,255,255,.18)"}" stroke="${on ? "#A16207" : "rgba(255,255,255,.35)"}" stroke-width="1.6" stroke-linejoin="round"/></svg>`;
+
+  // ---------- local data on this phone
+  function duelData() {
+    let s = state.duel;
+    return (!s || typeof s != "object") && (s = state.duel = {}), s.p = s.p || {}, s.w = s.w || {}, s.seen = s.seen || {}, s;
+  }
+  function duelPts(keep = null) {
+    let s = state.duel, n = 0;
+    if (!s) return 0;
+    for (let e of Object.values(s.p || {})) e && e.p && (!keep || keep(e.at)) && (n += e.p);
+    for (let e of Object.values(s.w || {})) e && e.p && (!keep || keep(e.at)) && (n += e.p);
+    return n;
+  }
+  var duelLive = null;
+  var duelNet = { loaded: !1, busy: null, error: "", used: 0, duels: [], at: 0, now: 0 };
+  async function duelCall(name, body) {
+    let id = studentId(), secret = studentSecret();
+    if (!LIVE || !id || !secret) throw new Error("offline");
+    let res = await call(`rpc/${name}`, { method: "POST", body: JSON.stringify({ p_id: id, p_secret: secret, ...body }) });
+    return res.json();
+  }
+  function duelLoad(force = !1) {
+    if (!LIVE) return duelNet.error = "offline", Promise.resolve(!1);
+    if (duelNet.busy) return duelNet.busy;
+    if (!force && duelNet.loaded && Date.now() - duelNet.at < 15e3) return Promise.resolve(!1);
+    return duelNet.busy = duelCall("duel_list", {}).then((r) => {
+      if (!r || !r.ok) throw new Error("bad");
+      let sig = JSON.stringify([r.used, r.duels]), changed = sig !== duelNet.sig || !duelNet.loaded || duelNet.error;
+      return Object.assign(duelNet, { loaded: !0, error: "", used: r.used || 0, duels: r.duels || [], at: Date.now(), now: Date.parse(r.now) || Date.now(), skew: (Date.parse(r.now) || Date.now()) - Date.now(), sig }), duelAwardWins(), !!changed;
+    }).catch((e) => {
+      let m = String(e && e.message || "");
+      return duelNet.error = /HTTP 404|PGRST202|Could not find the function/.test(m) ? "nosql" : /removed/i.test(m) ? "removed" : "offline", duelNet.at = Date.now(), !0;
+    }).finally(() => {
+      duelNet.busy = null, drawTabs(location.hash.replace(/^#/, ""));
+    });
+  }
+  var duelNow = () => Date.now() + (duelNet.skew || 0);
+  var duelOpen = (d) => !d.done_at && duelNow() - Date.parse(d.created_at) < DUEL_LIFE;
+  var duelIncoming = () => duelNet.duels.filter((d) => d.me === "b" && duelOpen(d) && !duelData().started?.[d.id]);
+  function duelUsedToday() {
+    let s = duelData(), day = todayKey(), local = Object.values(s.p).filter((e) => e && e.at && dayKey(e.at) === day).length;
+    return Math.max(local, duelNet.loaded ? duelNet.used : 0);
+  }
+  var duelLeft = () => Math.max(0, DUEL_MAX - duelUsedToday());
+  function duelResult(d) {
+    if (!d.done_at) return null;
+    return d.winner === "draw" ? "draw" : d.winner === d.me ? "win" : "lose";
+  }
+  function duelAwardWins() {
+    let s = duelData(), changed = !1;
+    for (let d of duelNet.duels) duelResult(d) === "win" && !s.w[d.id] && (s.w[d.id] = { p: DUEL_WIN, at: d.done_at }, changed = !0);
+    changed && (refreshBadges(), save(), LIVE && syncBoard());
+  }
+
+  // ---------- questions: sentences with a gap and two short words, from this student's grade
+  function duelPool() {
+    let seen = new Set(), out = [];
+    for (let a of allActivities()) {
+      if (a.skill !== "grammar" && a.skill !== "vocabulary") continue;
+      for (let q of a.questions || []) {
+        let o = q.options || [], p2 = String(q.prompt || "");
+        if (q.type !== "mcq" || !/_{3}/.test(p2) || p2.length > 90 || /\n/.test(p2) || o.length < 2 || q.answer !== o[0]) continue;
+        if (o.some((x2) => String(x2).length > 18 || String(x2).split(/\s+/).length > 3) || new Set(o.map((x2) => String(x2).toLowerCase())).size < o.length) continue;
+        let k = p2.toLowerCase();
+        seen.has(k) || (seen.add(k), out.push({ p: p2, a: o[0], wrong: o.slice(1) }));
+      }
+    }
+    return out;
+  }
+  function duelCards() {
+    let pool = shuffle(duelPool()).slice(0, DUEL_WAVES);
+    return pool.map((q) => ({ p: q.p, a: q.a, b: q.wrong[Math.floor(Math.random() * q.wrong.length)] }));
+  }
+
+  // ---------- the score: same result on every phone. run = [[ms, lane, type], ...] (type x = no troop)
+  function duelSim(run) {
+    let hp = [DUEL_HP.p, DUEL_HP.p, DUEL_HP.k], dmg = 0, right = 0;
+    for (let m of run || []) {
+      let t = DUEL_TROOPS[m && m[2]];
+      if (!t) continue;
+      right++;
+      let lane = m[1] ? 1 : 0, left = t.dmg;
+      if (hp[lane] > 0) {
+        let hit = Math.min(hp[lane], left);
+        hp[lane] -= hit, dmg += hit, left -= hit;
+      }
+      if (left > 0 && hp[2] > 0) {
+        let hit = Math.min(hp[2], left);
+        hp[2] -= hit, dmg += hit;
+      }
+    }
+    let crowns = hp[2] <= 0 ? 3 : (hp[0] <= 0 ? 1 : 0) + (hp[1] <= 0 ? 1 : 0);
+    return { score: dmg, crowns, right };
+  }
+  var cleanRun = (run) => (Array.isArray(run) ? run : []).slice(0, DUEL_WAVES).map((m) => [Math.max(0, Math.min(DUEL_TIME, Math.round(+(m && m[0]) || 0))), m && m[1] ? 1 : 0, DUEL_TROOPS[m && m[2]] ? m[2] : "x"]);
+  function botRun() {
+    return Array.from({ length: DUEL_WAVES }, () => {
+      let ms = 1300 + Math.random() * 3e3;
+      return Math.random() < 0.72 ? [Math.round(ms), Math.random() < 0.5 ? 0 : 1, duelTier(ms)] : [Math.round(ms), 0, "x"];
+    });
+  }
+
+  // ---------- the battle screen
+  function duelBattle(opts) {
+    // opts: { mode: "send" | "answer" | "practice", foe: {name, cls}, cards, ghost (run or null), duel, onDone(run) }
+    document.body.classList.add("playing"), app.classList.add("wide"), window.scrollTo(0, 0);
+    let myName = me().name, foe = opts.foe, cards = opts.cards, ghost = opts.ghost ? cleanRun(opts.ghost) : null, timers = [], raf = 0, over = !1, ended = !1, run = [], wave = -1, waveStart = 0, waveLock = !0, hpMe = [DUEL_HP.p, DUEL_HP.p, DUEL_HP.k], hpFoe = [DUEL_HP.p, DUEL_HP.p, DUEL_HP.k], flying = 0, myDone = !1, ghostDone = !ghost, crownsMe = 0, crownsFoe = 0, order = [];
+    let later = (f2, ms) => {
+      let t = setTimeout(() => !over && f2(), ms);
+      return timers.push(t), t;
+    };
+    app.innerHTML = `
+    <div class="ar" id="ar">
+      <div class="ar-top">
+        <button type="button" class="ar-flag" id="ar-quit" aria-label="Leave the battle">${icon("x", 20)}</button>
+        <div class="ar-who foe"><span class="ar-av">${esc(initials(foe.name))}</span><span class="ar-nm"><b>${esc(foe.name)}</b><small>${opts.mode === "send" ? "Fights back later" : opts.mode === "practice" ? "Training" : esc(foe.cls || "")}</small></span><span class="ar-crowns" id="cr-foe">${crownSvg(0) + crownSvg(0) + crownSvg(0)}</span></div>
+        <span class="ar-wave" id="ar-wave">1/${DUEL_WAVES}</span>
+      </div>
+      <div class="ar-field" id="ar-field">
+        <div class="ar-river"></div><div class="ar-lane l0"></div><div class="ar-lane l1"></div><div class="ar-bridge b0"></div><div class="ar-bridge b1"></div>
+        ${[["foe", 0, "p"], ["foe", 1, "p"], ["foe", 2, "k"], ["me", 0, "p"], ["me", 1, "p"], ["me", 2, "k"]].map(([tm, i, k]) => `<div class="ar-tower ${tm} t${i} ${k === "k" ? "king" : ""}" id="tw-${tm}-${i}"><div class="ar-hp"><i style="width:100%"></i><b>${DUEL_HP[k]}</b></div><div class="tw-art">${towerSvg(k, tm)}</div></div>`).join("")}
+        <div class="ar-drop d0" id="drop0"><span>${icon("next", 18)}</span></div><div class="ar-drop d1" id="drop1"><span>${icon("next", 18)}</span></div>
+        <div class="ar-ticker" id="ar-ticker" aria-live="polite"></div>
+        <div class="ar-over" id="ar-over"></div>
+      </div>
+      <div class="ar-bottom">
+        <div class="ar-who me"><span class="ar-av">${esc(initials(myName))}</span><span class="ar-nm"><b>You</b></span><span class="ar-crowns" id="cr-me">${crownSvg(0) + crownSvg(0) + crownSvg(0)}</span></div>
+        <div class="ar-scroll" id="ar-scroll"><span class="ar-sentence" id="ar-sentence">Get ready…</span></div>
+        <div class="ar-power" id="ar-power"><i id="ar-power-bar"></i><span class="pw-mark" style="left:${100 * (1 - DUEL_TROOPS.d.until / DUEL_TIME)}%"></span><span class="pw-mark" style="left:${100 * (1 - DUEL_TROOPS.a.until / DUEL_TIME)}%"></span><b id="ar-power-txt"></b></div>
+        <div class="ar-hand" id="ar-hand"></div>
+        <p class="ar-hint" id="ar-hint">Tap the right card, or drag it to a lane.</p>
+      </div>
+    </div>`;
+    duelLive = { cards, mode: opts.mode, get wave() {
+      return wave;
+    }, run };
+    let $a = (sel) => app.querySelector(sel), field = $a("#ar-field"), hand = $a("#ar-hand"), sentence = $a("#ar-sentence"), bar = $a("#ar-power-bar"), barTxt = $a("#ar-power-txt"), overEl = $a("#ar-over");
+    let FW = 1, FH = 1, measure = () => {
+      FW = field.clientWidth || 1, FH = field.clientHeight || 1;
+    };
+    measure();
+    let ro = typeof ResizeObserver == "function" ? new ResizeObserver(measure) : null;
+    ro && ro.observe(field);
+    let pos = (team, lane, y) => [(lane === 2 ? 0.5 : lane ? 0.75 : 0.25) * FW, y * FH];
+    let TY = { foe: [0.26, 0.26, 0.12], me: [0.74, 0.74, 0.88] };
+    function ticker(html, cls = "") {
+      let t = document.createElement("div");
+      t.className = `tk ${cls}`, t.innerHTML = html, $a("#ar-ticker").appendChild(t), setTimeout(() => t.remove(), 2200);
+    }
+    function floatText(x2, y, txt, cls) {
+      let t = document.createElement("span");
+      t.className = `ar-float ${cls || ""}`, t.textContent = txt, t.style.left = x2 + "px", t.style.top = y + "px", field.appendChild(t), setTimeout(() => t.remove(), 1100);
+    }
+    function boom(x2, y, big) {
+      let b = document.createElement("span");
+      b.className = `ar-boom ${big ? "big" : ""}`, b.style.left = x2 + "px", b.style.top = y + "px", b.innerHTML = "<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>", field.appendChild(b), setTimeout(() => b.remove(), 900);
+    }
+    function setCrowns(team, n) {
+      $a(team === "me" ? "#cr-me" : "#cr-foe").innerHTML = [0, 1, 2].map((i) => crownSvg(i < n)).join("");
+      let el = $a(team === "me" ? "#cr-me" : "#cr-foe");
+      el.classList.remove("pop"), void el.offsetWidth, el.classList.add("pop");
+    }
+    // a hit on a tower of "side" (the side that is attacked)
+    function hitTower(side, lane, amount) {
+      let hp = side === "foe" ? hpFoe : hpMe, targets = [];
+      if (hp[lane] > 0) {
+        let h = Math.min(hp[lane], amount);
+        hp[lane] -= h, amount -= h, targets.push([lane, h]);
+      }
+      amount > 0 && hp[2] > 0 && (targets.push([2, Math.min(hp[2], amount)]), hp[2] -= Math.min(hp[2], amount));
+      for (let [i, h] of targets) {
+        let el = $a(`#tw-${side}-${i}`), full = i === 2 ? DUEL_HP.k : DUEL_HP.p, [x2, y] = pos(side, i, TY[side][i]);
+        el.querySelector(".ar-hp i").style.transform = `scaleX(${Math.max(0, hp[i] / full)})`, el.querySelector(".ar-hp b").textContent = Math.max(0, Math.ceil(hp[i])), el.animate([{ transform: "translate(-50%, -50%)" }, { transform: "translate(calc(-50% - 4px), -50%)" }, { transform: "translate(calc(-50% + 4px), -50%)" }, { transform: "translate(-50%, -50%)" }], { duration: 300 }), floatText(x2, y - 30, `-${h}`, side === "foe" ? "good" : "bad"), SFX.hit();
+        if (hp[i] <= 0 && !el.classList.contains("down")) {
+          el.classList.add("down"), el.querySelector(".tw-art").innerHTML = towerSvg(i === 2 ? "k" : "p", side, !0), boom(x2, y, i === 2), SFX.boom(), buzz(60);
+          let attacker = side === "foe" ? "me" : "foe", n = hp[2] <= 0 ? 3 : (hp[0] <= 0 ? 1 : 0) + (hp[1] <= 0 ? 1 : 0);
+          attacker === "me" ? (crownsMe = n, setCrowns("me", n), ticker(`${crownSvg(!0)} Tower down!`, "good")) : (crownsFoe = n, setCrowns("foe", n), ticker(`${crownSvg(!0)} ${esc(firstName(foe.name))} took a tower!`, "bad"));
+        }
+      }
+    }
+    // send a troop: team "me" attacks the foe towers (upwards), team "foe" attacks mine (downwards)
+    function sendTroop(team, lane, type) {
+      let target = team === "me" ? "foe" : "me", hp = target === "foe" ? hpFoe : hpMe, aim = hp[lane] > 0 ? lane : 2, up = team === "me", t = DUEL_TROOPS[type];
+      let el = document.createElement("div");
+      el.className = `ar-troop ${team} ${type}`, el.innerHTML = troopSvg(type, team, type === "d" ? 50 : 44, !0), field.appendChild(el), flying++;
+      let side = up ? 0.04 : -0.04, [sx, sy] = pos(team, lane, up ? 0.66 : 0.34), [lx] = pos(team, lane, 0), [tx, ty] = pos(target, aim, TY[target][aim]);
+      sx += side * FW, lx += side * FW;
+      let stop = type === "a" ? (up ? 0.15 : -0.15) * FH : (up ? 0.07 : -0.07) * FH, ey = ty + stop, ex = aim === 2 ? tx + (lane ? 18 : -18) : lx;
+      let mid = type === "d" ? [[(sx + ex) / 2, (sy + ey) / 2]] : [[lx, up ? 0.32 * FH : 0.68 * FH]];
+      let pts2 = [[sx, sy], ...mid, [ex, ey]], dur = type === "d" ? 1500 : type === "a" ? 2100 : 2500;
+      let seg = pts2.slice(1).map(([x2, y], i) => Math.hypot(x2 - pts2[i][0], y - pts2[i][1])), len = seg.reduce((a, b) => a + b, 0) || 1, acc = 0;
+      let kf = pts2.map(([x2, y], i) => (i && (acc += seg[i - 1]), { transform: `translate3d(${x2}px, ${y}px, 0) translate(-50%, -60%)${team === "foe" ? " scaleX(-1)" : ""}`, offset: Math.min(1, acc / len) }));
+      el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 180, fill: "backwards" });
+      let anim = el.animate(kf, { duration: dur, easing: "linear", fill: "forwards" });
+      anim.onfinish = () => {
+        if (over) return;
+        let land = () => {
+          hitTower(target, lane, t.dmg), el.classList.add("strike"), setTimeout(() => {
+            el.classList.add("poof"), setTimeout(() => el.remove(), 350);
+          }, 280), flying--, later(checkEnd, 200);
+        };
+        if (type === "a") {
+          let ar = document.createElement("span");
+          ar.className = `ar-arrow ${team}`, field.appendChild(ar), SFX.whoosh(), ar.animate([{ transform: `translate(${ex}px, ${ey - 20}px) rotate(${up ? -90 : 90}deg)` }, { transform: `translate(${tx}px, ${ty}px) rotate(${up ? -90 : 90}deg)` }], { duration: 330, easing: "ease-in", fill: "forwards" }).onfinish = () => {
+            ar.remove(), !over && land();
+          };
+        } else if (type === "d") {
+          let fire = document.createElement("span");
+          fire.className = "ar-fire", fire.style.left = tx + "px", fire.style.top = ty + "px", field.appendChild(fire), setTimeout(() => fire.remove(), 600), land();
+        } else land();
+      };
+    }
+    // ---- my waves
+    function drawCards() {
+      let c = cards[wave], words = shuffle([c.a, c.b]);
+      sentence.innerHTML = esc(c.p).replace(/_{3,}/, '<span class="ar-gap">?</span>'), sentence.parentElement.classList.remove("in"), void sentence.offsetWidth, sentence.parentElement.classList.add("in");
+      hand.innerHTML = words.map((w, i) => `<button type="button" class="ar-card deal" data-w="${esc(w)}" style="animation-delay:${i * 70}ms"><span class="ac-cost">${icon("star", 12)}</span><span class="ac-art">${troopSvg("d", "me", 66)}</span><span class="ac-word">${esc(w)}</span></button>`).join("");
+      wireCards();
+    }
+    function nextWave() {
+      if (over) return;
+      if (wave + 1 >= DUEL_WAVES) {
+        myDone = !0, hand.innerHTML = "", sentence.textContent = ghost && !ghostDone ? `${firstName(foe.name)} sends the last troops…` : "Last troops on the way…", $a("#ar-power").classList.add("off"), $a("#ar-hint").textContent = "", hurryGhost(), checkEnd();
+        return;
+      }
+      wave++, $a("#ar-wave").textContent = `${wave + 1}/${DUEL_WAVES}`, drawCards(), waveStart = performance.now(), waveLock = !1, startTimer();
+    }
+    let barAnim = null, tierTimers = [], curTier = "d";
+    function setTier(tier) {
+      if (over || waveLock || tier === curTier) return;
+      curTier = tier, bar.style.background = DUEL_TROOPS[tier].color, barTxt.textContent = `${DUEL_TROOPS[tier].name} power`, hand.querySelectorAll(".ac-art").forEach((a) => a.innerHTML = troopSvg(tier, "me", 66)), hand.classList.remove("drop-tier"), void hand.offsetWidth, hand.classList.add("drop-tier"), SFX.tick();
+    }
+    function startTimer() {
+      curTier = "d", bar.style.background = DUEL_TROOPS.d.color, barTxt.textContent = "Dragon power", barAnim && barAnim.cancel(), bar.style.opacity = "", barAnim = bar.animate([{ transform: "scaleX(1)" }, { transform: "scaleX(0)" }], { duration: DUEL_TIME, delay: DUEL_GRACE, easing: "linear", fill: "both" }), tierTimers = [later(() => setTier("a"), DUEL_GRACE + DUEL_TROOPS.d.until), later(() => setTier("k"), DUEL_GRACE + DUEL_TROOPS.a.until), later(() => finishWave(null, 0, DUEL_TIME), DUEL_GRACE + DUEL_TIME)];
+    }
+    var waveMs = () => Math.max(0, Math.min(DUEL_TIME, performance.now() - waveStart - DUEL_GRACE));
+    function autoLane() {
+      let a = hpFoe[0] > 0, b = hpFoe[1] > 0;
+      return a && b ? hpFoe[0] <= hpFoe[1] ? 0 : 1 : a ? 0 : b ? 1 : wave % 2;
+    }
+    function finishWave(word, lane, ms) {
+      if (waveLock || over) return;
+      waveLock = !0, tierTimers.forEach(clearTimeout), barAnim && barAnim.pause();
+      let c = cards[wave], ok = word !== null && word === c.a, type = ok ? duelTier(ms) : "x";
+      run.push([Math.round(ms), lane, type]);
+      let gap = sentence.querySelector(".ar-gap");
+      gap && (gap.textContent = c.a, gap.classList.add(ok ? "ok" : "no"));
+      hand.querySelectorAll(".ar-card").forEach((b) => {
+        b.disabled = !0, b.dataset.w === c.a ? b.classList.add(ok ? "used" : "right") : word !== null && b.dataset.w === word && b.classList.add("burn");
+      });
+      if (ok) sendTroop("me", lane, type), type === "d" ? (SFX.roar(), ticker(`${troopSvg("d", "me", 24)} Dragon!`, "good")) : SFX.power(), buzz(25);
+      else word === null ? ticker("Too slow!", "bad") : (ticker("Wrong card!", "bad"), SFX.hurt(), buzz([40, 40, 40]));
+      bar.style.opacity = ".35", later(nextWave, DUEL_PAUSE + (ok ? 0 : 500));
+    }
+    function wireCards() {
+      hand.querySelectorAll(".ar-card").forEach((card) => {
+        let sx = 0, sy = 0, drag = null, moved = !1, id = null, fr = null, hot = -1, dx0 = 0, dy0 = 0;
+        card.addEventListener("pointerdown", (e) => {
+          if (waveLock) return;
+          sx = e.clientX, sy = e.clientY, moved = !1, id = e.pointerId;
+          try {
+            card.setPointerCapture(id);
+          } catch {
+          }
+        }), card.addEventListener("pointermove", (e) => {
+          if (id === null || e.pointerId !== id || waveLock) return;
+          let dx = e.clientX - sx, dy = e.clientY - sy;
+          if (!moved && Math.hypot(dx, dy) < 10) return;
+          moved = !0, drag || (drag = card.cloneNode(!0), drag.classList.add("dragging"), drag.classList.remove("deal"), document.body.appendChild(drag), field.classList.add("dropping"), fr = field.getBoundingClientRect(), card.classList.add("lifted")), drag.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%) scale(.85) rotate(-5deg)`;
+          let h = e.clientY < fr.bottom && e.clientY > fr.top ? e.clientX < fr.left + fr.width / 2 ? 0 : 1 : -1;
+          h !== hot && (hot = h, $a("#drop0").classList.toggle("hot", h === 0), $a("#drop1").classList.toggle("hot", h === 1));
+        });
+        let end = (e, cancel) => {
+          if (id === null || e.pointerId !== id) return;
+          id = null;
+          let r = field.getBoundingClientRect(), inField = !cancel && e.clientY < r.bottom && e.clientY > r.top && e.clientX > r.left && e.clientX < r.right;
+          drag && drag.remove(), drag = null, hot = -1, card.classList.remove("lifted"), field.classList.remove("dropping"), $a("#drop0").classList.remove("hot"), $a("#drop1").classList.remove("hot");
+          if (waveLock || cancel) return;
+          let ms = waveMs();
+          if (!moved) finishWave(card.dataset.w, autoLane(), ms);
+          else if (inField) finishWave(card.dataset.w, e.clientX < r.left + r.width / 2 ? 0 : 1, ms);
+        };
+        card.addEventListener("pointerup", (e) => end(e, !1)), card.addEventListener("pointercancel", (e) => end(e, !0)), card.addEventListener("keydown", (e) => {
+          (e.key === "Enter" || e.key === " ") && (e.preventDefault(), finishWave(card.dataset.w, autoLane(), waveMs()));
+        });
+      });
+    }
+    // ---- the friend's recorded attack, replayed in real time
+    let gq = [], gTimer = 0, gFast = !1, gT0 = 0;
+    function startGhost() {
+      if (!ghost) return;
+      let t = 0;
+      gq = ghost.map((m) => {
+        let at = t + m[0];
+        return t = at + DUEL_PAUSE, { at, m };
+      }), gT0 = performance.now(), ghostNext();
+    }
+    function ghostNext() {
+      if (over) return;
+      if (!gq.length) {
+        ghostDone = !0, later(checkEnd, 100);
+        return;
+      }
+      let e = gq[0], wait = gFast ? 450 : Math.max(0, e.at - (performance.now() - gT0));
+      gTimer = later(() => {
+        gq.shift();
+        let m = e.m;
+        m[2] === "x" ? ticker(`${esc(firstName(foe.name))} missed`, "") : (sendTroop("foe", m[1], m[2]), ticker(`${troopSvg(m[2], "foe", 22)} ${esc(firstName(foe.name))} sent a ${DUEL_TROOPS[m[2]].name}`, "bad")), ghostNext();
+      }, wait);
+    }
+    function hurryGhost() {
+      !ghost || ghostDone || gFast || (gFast = !0, clearTimeout(gTimer), ghostNext());
+    }
+    function checkEnd() {
+      if (ended || over || !myDone || !ghostDone || flying > 0) return;
+      ended = !0, later(() => finish(), 900);
+    }
+    function finish() {
+      let mine = duelSim(run);
+      cleanupBattle(!1), opts.onDone(run, mine);
+    }
+    // ---- intro: VS, then 3-2-1
+    overEl.innerHTML = `<div class="ar-vs"><div class="vs-side me"><span class="ar-av big">${esc(initials(myName))}</span><b>${esc(firstName(myName))}</b></div><span class="vs-x">VS</span><div class="vs-side foe"><span class="ar-av big">${esc(initials(foe.name))}</span><b>${esc(firstName(foe.name))}</b></div></div>`, overEl.classList.add("show"), SFX.whoosh();
+    later(() => {
+      overEl.innerHTML = '<span class="ar-count">3</span>', SFX.tick();
+    }, 1100), later(() => {
+      overEl.innerHTML = '<span class="ar-count">2</span>', SFX.tick();
+    }, 1650), later(() => {
+      overEl.innerHTML = '<span class="ar-count">1</span>', SFX.tick();
+    }, 2200), later(() => {
+      overEl.innerHTML = '<span class="ar-count go">FIGHT!</span>', SFX.super(), buzz(50);
+    }, 2750), later(() => {
+      overEl.classList.remove("show"), overEl.innerHTML = "", nextWave(), startGhost();
+    }, 3300);
+    function cleanupBattle(left) {
+      over = !0, timers.forEach(clearTimeout), cancelAnimationFrame(raf), ro && ro.disconnect(), document.querySelectorAll(".ar-card.dragging").forEach((d) => d.remove());
+      left && opts.onQuit && opts.onQuit(run);
+    }
+    cleanup = () => cleanupBattle(!ended);
+    $a("#ar-quit").addEventListener("click", () => {
+      let m2 = openModal(`<h2 class="modal-title">Leave the battle?</h2><p>${opts.mode === "answer" ? "Your battle ends now and the rest of your waves count as misses." : opts.mode === "send" ? "Your attack will not be sent." : "This training battle will stop."}</p><div class="btn-row"><button class="btn" data-close type="button">Keep fighting</button><button class="btn btn-bad" id="ar-leave" type="button">Leave</button></div>`);
+      m2.el.querySelector("#ar-leave").addEventListener("click", () => {
+        m2.close(), go("duel");
+      });
+    });
+  }
+
+  // ---------- results screen
+  function duelResultScreen({ title, kind, me: mine, foeName, foeSim, pts, cards, run, note, actions }) {
+    document.body.classList.add("playing"), app.classList.add("wide"), window.scrollTo(0, 0);
+    let rows = cards.map((c, i) => {
+      let m = run[i], ok = m && m[2] !== "x";
+      return `<li class="${ok ? "ok" : "no"}"><span>${ok ? icon("check", 16) : icon("x", 16)}</span><p>${esc(c.p).replace(/_{3,}/, `<b>${esc(c.a)}</b>`)}</p>${ok ? `<em>${DUEL_TROOPS[m[2]].name}</em>` : ""}</li>`;
+    }).join("");
+    app.innerHTML = `
+    <section class="ar-res ${kind}">
+      <div class="res-rays" aria-hidden="true"></div>
+      <h1 class="res-title">${esc(title)}</h1>
+      <div class="res-vs">
+        <div class="res-side"><span class="ar-av big me">${esc(initials(me().name))}</span><b>You</b><span class="res-cr">${[0, 1, 2].map((i) => crownSvg(i < mine.crowns)).join("")}</span><small>${fmtNum(mine.score)} damage \xB7 ${mine.right}/${DUEL_WAVES} right</small></div>
+        <span class="res-x">VS</span>
+        <div class="res-side"><span class="ar-av big foe">${esc(initials(foeName))}</span><b>${esc(firstName(foeName))}</b>${foeSim ? `<span class="res-cr">${[0, 1, 2].map((i) => crownSvg(i < foeSim.crowns)).join("")}</span><small>${fmtNum(foeSim.score)} damage \xB7 ${foeSim.right}/${DUEL_WAVES} right</small>` : '<span class="res-wait">⏳</span><small>Fights back within 24 hours</small>'}</div>
+      </div>
+      ${pts ? `<p class="res-pts">${icon("star", 22)} +${pts} points</p>` : ""}
+      ${note ? `<p class="res-note">${note}</p>` : ""}
+      <div class="res-btns">${actions}</div>
+      <details class="res-words"><summary>Words in this battle (${mine.right}/${DUEL_WAVES})</summary><ol>${rows}</ol></details>
+    </section>`, app.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go))), kind === "win" && (confetti(90), SFX.super()), kind === "lose" && SFX.lose();
+  }
+
+  // ---------- flows: send a challenge, fight back, practice
+  function duelStartSend(foe) {
+    if (duelLeft() <= 0) return toast("No battles left today. Come back tomorrow!", "error");
+    let cards = duelCards();
+    if (cards.length < DUEL_WAVES) return toast("Not enough questions for a battle yet.", "error");
+    duelBattle({ mode: "send", foe: { name: foe.n, cls: foe.c }, cards, ghost: null, onDone: (run, mine) => duelSubmit({ kind: "send", foe, cards, run, mine }) });
+  }
+  function duelStartAnswer(d) {
+    if (duelLeft() <= 0) return toast("No battles left today. Come back tomorrow!", "error");
+    let cards = (d.qs || []).slice(0, DUEL_WAVES).map((c) => ({ p: String(c.p || ""), a: String(c.a || ""), b: String(c.b || "") }));
+    if (cards.length < DUEL_WAVES || cards.some((c) => !c.p || !c.a || !c.b)) return toast("This battle cannot be opened. Ask your friend to send a new one.", "error");
+    let s = duelData();
+    s.started = s.started || {}, s.started[d.id] = (/* @__PURE__ */ new Date()).toISOString(), save();
+    let foe = { name: d.a_name, cls: d.a_class };
+    duelBattle({ mode: "answer", foe, cards, ghost: d.a_run || [], onDone: (run, mine) => duelSubmit({ kind: "answer", d, foe, cards, run, mine }), onQuit: (run) => {
+      let full = run.concat(Array.from({ length: DUEL_WAVES - run.length }, () => [DUEL_TIME, 0, "x"]));
+      duelSubmit({ kind: "answer", d, foe, cards, run: full, mine: duelSim(full), silent: !0 });
+    } });
+  }
+  function duelStartPractice() {
+    let cards = duelCards();
+    if (cards.length < DUEL_WAVES) return toast("Not enough questions for a battle yet.", "error");
+    let ghost = botRun(), foe = { name: "Training Bot", cls: "" };
+    duelBattle({ mode: "practice", foe, cards, ghost, onDone: (run, mine) => {
+      let bot = duelSim(ghost), kind = mine.crowns > bot.crowns || mine.crowns === bot.crowns && mine.score > bot.score ? "win" : mine.crowns === bot.crowns && mine.score === bot.score ? "draw" : "lose";
+      duelResultScreen({ title: kind === "win" ? "Victory!" : kind === "lose" ? "Defeat" : "Draw", kind, me: mine, foeName: foe.name, foeSim: bot, pts: 0, cards, run, note: "Training battles give no points. Challenge a friend to win points!", actions: `<button class="btn btn-primary btn-big" id="res-again" type="button">${icon("refresh", 20)} Train again</button><button class="btn btn-big" type="button" data-go="duel">Back to the arena</button>` }), app.querySelector("#res-again").addEventListener("click", duelStartPractice);
+    } });
+  }
+  async function duelSubmit(p2) {
+    let { kind, run, mine, cards, foe } = p2, foeName = kind === "send" ? foe.n : foe.name;
+    if (!p2.silent) {
+      document.body.classList.add("playing"), app.innerHTML = `<section class="ar-res wait"><div class="ar-spin" aria-hidden="true"></div><h1 class="res-title">Saving your battle…</h1></section>`;
+    }
+    let r = null, err = "";
+    try {
+      r = kind === "send" ? await duelCall("duel_send", { p_to: foe.id, p_qs: cards, p_run: run, p_score: mine.score, p_crowns: mine.crowns, p_right: mine.right }) : await duelCall("duel_answer", { p_duel: p2.d.id, p_run: run, p_score: mine.score, p_crowns: mine.crowns, p_right: mine.right });
+      r && !r.ok && (err = r.error || "error");
+    } catch (e) {
+      err = /HTTP 404|PGRST202/.test(String(e && e.message)) ? "nosql" : "offline";
+    }
+    if (!err && r && r.duel) {
+      let s = duelData(), d = r.duel;
+      s.p[d.id] = { p: mine.right * DUEL_PER_RIGHT, at: (/* @__PURE__ */ new Date()).toISOString() }, duelNet.duels = [d, ...duelNet.duels.filter((x2) => x2.id !== d.id)], duelNet.used = r.used ?? duelNet.used + 1;
+      kind === "answer" && duelResult(d) === "win" && (s.w[d.id] = { p: DUEL_WIN, at: d.done_at || (/* @__PURE__ */ new Date()).toISOString() }), d.done_at && (s.seen[d.id] = 1), refreshBadges(), save(), LIVE && syncBoard();
+    }
+    if (p2.silent) {
+      err || toast("Battle ended early.", "info");
+      return;
+    }
+    let msg = { limit: "You already played 2 battles today. Come back tomorrow!", busy: `You already have a battle with ${firstName(foeName)}. Wait for it to finish.`, expired: "Too late: this challenge is more than 24 hours old.", done: "This battle is already finished.", grade: "You can only challenge students in your grade.", nouser: "This student cannot be challenged.", nosql: "Battles are not switched on yet. Ask your teacher.", offline: "No connection. Your battle was not saved." }[err];
+    if (err) {
+      let canRetry = err === "offline";
+      duelResultScreen({ title: "Not saved", kind: "lose", me: mine, foeName, foeSim: null, pts: 0, cards, run, note: esc(msg || "Something went wrong."), actions: `${canRetry ? `<button class="btn btn-primary btn-big" id="res-retry" type="button">${icon("refresh", 20)} Try again</button>` : ""}<button class="btn btn-big" type="button" data-go="duel">Back to the arena</button>` }), app.querySelector("#res-retry")?.addEventListener("click", () => duelSubmit(p2));
+      return;
+    }
+    let d = r.duel, pts = mine.right * DUEL_PER_RIGHT, left = duelLeft();
+    if (kind === "send") {
+      duelResultScreen({ title: "Attack sent!", kind: "sent", me: mine, foeName, foeSim: null, pts, cards, run, note: `${esc(firstName(foeName))} has 24 hours to fight back. If you win, you get <b>+${DUEL_WIN}</b> more.`, actions: `<button class="btn btn-primary btn-big" type="button" data-go="duel">${icon("duel", 20)} Back to the arena</button>` });
+      return;
+    }
+    let res = duelResult(d), foeSim = { score: d.a_score, crowns: d.a_crowns, right: d.a_right }, won = res === "win";
+    duelResultScreen({ title: won ? "Victory!" : res === "draw" ? "Draw!" : "Defeat", kind: res, me: mine, foeName, foeSim, pts: pts + (won ? DUEL_WIN : 0), cards, run, note: won ? `You beat ${esc(firstName(foeName))}! +${DUEL_WIN} winner bonus.` : res === "draw" ? "Same crowns and same damage. Well played!" : `${esc(firstName(foeName))} won this time.`, actions: `${left > 0 ? `<button class="btn btn-primary btn-big" id="res-rematch" type="button">${icon("duel", 20)} Rematch</button>` : '<p class="res-note small">No battles left today. Rematch tomorrow!</p>'}<button class="btn btn-big" type="button" data-go="duel">Back to the arena</button>` });
+    app.querySelector("#res-rematch")?.addEventListener("click", () => duelStartSend({ id: d.a_id, n: d.a_name, c: d.a_class }));
+  }
+
+  // ---------- the Challenge tab
+  function duelPick() {
+    let rows = boardRows().filter((r) => r.id && !r.me), busy = new Set(duelNet.duels.filter(duelOpen).map((d) => d.me === "a" ? d.b_id : d.a_id));
+    let list = (q) => {
+      let k = normName(q), shown = rows.filter((r) => !k || normName(r.n).includes(k)).slice(0, 80);
+      return shown.length ? shown.map((r) => `<li><span class="ar-av sm">${esc(initials(r.n))}</span><span class="pk-nm"><b>${esc(r.n)}</b><small>${r.c ? esc(r.c) + " \xB7 " : ""}${fmtNum(r.pts)} pts</small></span>${busy.has(r.id) ? '<span class="pk-busy">In a battle</span>' : `<button class="btn btn-sm btn-primary" type="button" data-pick="${esc(r.id)}">${icon("duel", 16)} Fight</button>`}</li>`).join("") : `<li class="pk-none">${rows.length ? "No student with that name." : boardState === "loading" ? "Loading students…" : "No other students yet."}</li>`;
+    };
+    let m2 = openModal(`
+      <h2 class="modal-title">${icon("duel", 22)} Challenge a friend</h2>
+      <p class="muted small">${me().grade === "guest" ? "Guests" : `Grade ${esc(me().grade || "9")}`} \xB7 ${duelLeft()} of ${DUEL_MAX} battles left today</p>
+      <input class="pk-search" id="pk-q" type="search" placeholder="Search a name" autocomplete="off">
+      <ul class="pk-list" id="pk-list">${list("")}</ul>`, { wide: !0 });
+    let ul = m2.el.querySelector("#pk-list");
+    m2.el.querySelector("#pk-q").addEventListener("input", (e) => ul.innerHTML = list(e.target.value)), ul.addEventListener("click", (e) => {
+      let b = e.target.closest("[data-pick]");
+      if (!b) return;
+      let r = rows.find((x2) => x2.id === b.dataset.pick);
+      if (!r) return;
+      m2.close();
+      let c = openModal(`<h2 class="modal-title">Battle ${esc(firstName(r.n))}?</h2>
+        <div class="pk-confirm"><span class="ar-av big me">${esc(initials(me().name))}</span><span class="vs-x small">VS</span><span class="ar-av big foe">${esc(initials(r.n))}</span></div>
+        <p>You attack first. ${esc(firstName(r.n))} fights back within 24 hours. This uses <b>1 of your ${duelLeft()}</b> battles left today.</p>
+        <div class="btn-row"><button class="btn" data-close type="button">Not now</button><button class="btn btn-primary" id="pk-go" type="button">${icon("duel", 18)} Start!</button></div>`);
+      c.el.querySelector("#pk-go").addEventListener("click", () => {
+        c.close(), duelStartSend(r);
+      });
+    });
+    boardState !== "ok" && syncBoard().then(() => {
+      rows = boardRows().filter((r) => r.id && !r.me), ul.isConnected && (ul.innerHTML = list(m2.el.querySelector("#pk-q").value));
+    });
+  }
+  function duelLeftLabel(ms) {
+    let h = Math.floor(ms / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+    return h ? `${h}h ${m}m left` : `${Math.max(1, m)}m left`;
+  }
+  function duelScreen(opts = {}) {
+    app.dataset.tab = "duel", opts.keepScroll || window.scrollTo(0, 0);
+    let s = duelData(), net = duelNet, left = duelLeft(), inc = duelIncoming(), mine = net.duels.filter((d) => d.me === "a" && duelOpen(d)), done = net.duels.filter((d) => d.done_at), wins = done.filter((d) => duelResult(d) === "win").length, losses = done.filter((d) => duelResult(d) === "lose").length;
+    let fresh = done.filter((d) => !s.seen[d.id]);
+    let state2 = !LIVE ? "offline" : net.error === "nosql" ? "nosql" : net.error === "offline" && !net.loaded ? "offline" : !net.loaded ? "loading" : "ok";
+    let card = (d) => {
+      let res = duelResult(d), other = d.me === "a" ? d.b_name : d.a_name, oc = d.me === "a" ? d.b_class : d.a_class, myC = d.me === "a" ? d.a_crowns : d.b_crowns, foC = d.me === "a" ? d.b_crowns : d.a_crowns, sub;
+      if (res) sub = `<span class="dl-cr">${[0, 1, 2].map((i) => crownSvg(i < myC)).join("")}</span><span class="dl-sep">vs</span><span class="dl-cr">${[0, 1, 2].map((i) => crownSvg(i < foC)).join("")}</span>`;
+      else if (duelOpen(d)) sub = d.me === "a" ? `Waiting for ${esc(firstName(other))} \xB7 ${duelLeftLabel(DUEL_LIFE - (duelNow() - Date.parse(d.created_at)))}` : "Started";
+      else sub = d.me === "a" ? `${esc(firstName(other))} did not fight back` : "You did not fight back";
+      return `<li class="dl ${res || (duelOpen(d) ? "wait" : "gone")} ${res && !s.seen[d.id] ? "new" : ""}"><span class="ar-av sm ${d.me === "a" ? "foe" : "foe"}">${esc(initials(other))}</span><span class="dl-nm"><b>${esc(other)}</b><small>${oc ? esc(oc) + " \xB7 " : ""}${d.me === "a" ? "You challenged" : "Challenged you"}</small><span class="dl-sub">${sub}</span></span><span class="dl-tag">${res === "win" ? `Won +${DUEL_WIN}` : res === "lose" ? "Lost" : res === "draw" ? "Draw" : duelOpen(d) ? "⏳" : "Expired"}</span></li>`;
+    };
+    app.innerHTML = `
+    <header class="top">
+      <div class="brand"><span class="logo-mark" aria-hidden="true">E</span><span>Battle Arena</span></div>
+      <a class="pts-chip" href="#dashboard" aria-label="${fmtNum(totalPoints())} points">${icon("star", 16)}<b>${fmtNum(totalPoints())}</b></a>
+    </header>
+    <section class="duel-hero">
+      <div class="dh-art" aria-hidden="true"><span class="dh-t me">${troopSvg("k", "me", 74)}</span><span class="dh-x">${icon("duel", 30)}</span><span class="dh-t foe">${troopSvg("d", "foe", 78)}</span></div>
+      <h1>Challenge a friend</h1>
+      <p>Pick the right word cards fast. Faster answers send stronger troops! Winner gets <b>+${DUEL_WIN}</b>.</p>
+      <div class="dh-left"><span class="dh-dots">${Array.from({ length: DUEL_MAX }, (_, i) => `<i class="${i < left ? "on" : ""}"></i>`).join("")}</span>${left ? `${left} of ${DUEL_MAX} battles left today` : "No battles left today \xB7 come back tomorrow"}</div>
+      ${state2 === "ok" ? `<button class="btn btn-big dh-go" id="dh-pick" type="button" ${left ? "" : "disabled"}>${icon("duel", 22)} Choose a friend</button>` : state2 === "loading" ? '<p class="dh-msg">Loading your battles…</p>' : state2 === "nosql" ? '<p class="dh-msg">Battles are not switched on yet. Ask your teacher.</p>' : `<p class="dh-msg">Connect to the internet to battle your friends.</p><button class="btn btn-sm" id="dh-retry" type="button">${icon("refresh", 16)} Try again</button>`}
+      <p class="dh-score"><span>${icon("trophy", 16)} ${wins} won</span><span>${losses} lost</span></p>
+    </section>
+    ${inc.length ? `<section class="block duel-inc"><div class="block-head"><h2>${icon("duel", 20)} Fight back!</h2></div><ul class="inc-list">${inc.map((d) => `<li><span class="ar-av foe">${esc(initials(d.a_name))}</span><span class="inc-txt"><b>${esc(d.a_name)}</b><small>${d.a_class ? esc(d.a_class) + " \xB7 " : ""}challenged you \xB7 ${duelLeftLabel(DUEL_LIFE - (duelNow() - Date.parse(d.created_at)))}</small></span><button class="btn btn-sm inc-go" type="button" data-fight="${d.id}" ${left ? "" : "disabled"}>Fight</button></li>`).join("")}</ul>${left ? "" : '<p class="muted small">No battles left today. You can fight back tomorrow if the 24 hours are not over.</p>'}</section>` : ""}
+    ${mine.length + done.length ? `<section class="block"><div class="block-head"><h2>My battles</h2></div><ul class="dl-list">${net.duels.filter((d) => !(d.me === "b" && duelOpen(d) && !s.started?.[d.id])).slice(0, 12).map(card).join("")}</ul></section>` : ""}
+    <section class="block duel-train"><div class="dt-txt"><b>Training battle</b><span>Learn the cards against a bot. No points, does not use your battles.</span></div><button class="btn btn-sm" id="dh-train" type="button">${icon("play", 16)} Train</button></section>
+    <details class="block duel-how"><summary>How to play</summary>
+      <ul>
+        <li>Each battle has ${DUEL_WAVES} waves. Read the sentence and play the card with the right word.</li>
+        <li>Be fast: under ${DUEL_TROOPS.d.until / 1e3} seconds = <b>Dragon</b> (350), under ${DUEL_TROOPS.a.until / 1e3} seconds = <b>Archer</b> (250), else <b>Knight</b> (150). You have ${DUEL_TIME / 1e3} seconds. A wrong card sends nothing.</li>
+        <li>Drag a card to the left or right lane, or just tap it.</li>
+        <li>Each tower down = 1 crown. The king tower = 3 crowns. Most crowns wins, then most damage.</li>
+        <li>${DUEL_MAX} battles a day (sending or fighting back). +${DUEL_PER_RIGHT} points for each right card, +${DUEL_WIN} for the winner.</li>
+      </ul>
+    </details>`;
+    app.querySelector("#dh-pick")?.addEventListener("click", duelPick), app.querySelector("#dh-train").addEventListener("click", duelStartPractice), app.querySelector("#dh-retry")?.addEventListener("click", () => duelLoad(!0).then(() => location.hash === "#duel" && duelScreen())), app.querySelectorAll("[data-fight]").forEach((b) => b.addEventListener("click", () => {
+      let d = duelNet.duels.find((x2) => String(x2.id) === b.dataset.fight);
+      d && duelStartAnswer(d);
+    }));
+    if (fresh.length) {
+      fresh.forEach((d) => s.seen[d.id] = 1), save();
+      let d = fresh[0], res = duelResult(d), other = d.me === "a" ? d.b_name : d.a_name;
+      d.me === "a" && setTimeout(() => {
+        if (location.hash !== "#duel") return;
+        let m2 = openModal(`<div class="res-pop ${res}"><h2 class="modal-title">${res === "win" ? "You won!" : res === "draw" ? "Draw!" : "You lost"}</h2><p>${esc(firstName(other))} fought back: ${d.b_crowns} crown${d.b_crowns === 1 ? "" : "s"} against your ${d.a_crowns}.</p>${res === "win" ? `<p class="res-pts">${icon("star", 20)} +${DUEL_WIN} points</p>` : ""}<div class="btn-row"><button class="btn btn-primary" data-close type="button">OK</button></div></div>`);
+        res === "win" && confetti(70);
+      }, 300);
+    }
+    opts.noLoad || duelLoad().then((changed) => {
+      changed && location.hash === "#duel" && !document.body.classList.contains("playing") && duelScreen({ noLoad: !0, keepScroll: !0 });
+    });
+  }
+  function duelHomeBanner() {
+    let inc = duelIncoming();
+    if (!inc.length) return "";
+    let d = inc[0];
+    return `<a class="duel-alert" href="#duel"><span class="da-ic">${icon("duel", 22)}</span><span class="da-txt"><b>${esc(firstName(d.a_name))} challenged you!</b><small>${inc.length > 1 ? `+${inc.length - 1} more \xB7 ` : ""}Fight back before time runs out</small></span><span class="da-go">Fight</span></a>`;
+  }
+
   function route2() {
     cleanup && (cleanup(), cleanup = null), stopSpeaking(), document.querySelectorAll(".confetti").forEach((c2) => c2.remove()), document.body.classList.remove("playing"), app.classList.remove("wide");
     let h = location.hash.replace(/^#/, "");
@@ -6093,6 +6908,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     }
     if (h === "luck") {
       luckScreen();
+      return;
+    }
+    if (h === "duel") {
+      duelScreen();
       return;
     }
     if (h === "words" || h === "word" || h.startsWith("word/")) {
@@ -6234,6 +7053,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     ${ownerBar()}
 
     <section class="hello">
+      <a class="hello-prog" href="#dashboard" aria-label="My progress">${icon("progress", 22)}<span>Progress</span></a>
       <button class="avatar" id="me-btn" aria-label="Change your name">${esc(initials(m2.name))}</button>
       <div class="hello-txt">
         <h1>Hi, ${esc(firstName(m2.name))}!</h1>
@@ -6257,6 +7077,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     </section>
 
 
+
+    ${duelHomeBanner()}
 
     ${luckCard()}
 
@@ -6318,6 +7140,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     })), wireBoard(app, rows), wireHome(app), app.querySelector("#send-btn")?.addEventListener("click", sendSheet), app.querySelector("#me-btn").addEventListener("click", meSheet), app.querySelector("#class-btn")?.addEventListener("click", () => go("setup")), app.querySelector("#owner-open")?.addEventListener("click", teacherCorner), app.querySelector("#owner-open-foot")?.addEventListener("click", teacherCorner), app.querySelector("#board-retry")?.addEventListener("click", () => {
       syncBoard().then(() => redrawIf("home"));
     }), LIVE2 && !opts.noSync && syncBoard().then((changed) => {
+      changed && redrawIf("home");
+    }), LIVE2 && duelLoad().then((changed) => {
       changed && redrawIf("home");
     });
   }
