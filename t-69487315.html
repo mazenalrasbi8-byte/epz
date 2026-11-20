@@ -75,6 +75,15 @@ input:focus{border-color:var(--green)}
 .sk-t tr:last-child td{border-bottom:0;font-weight:900}
 .sk-t.pct tr:last-child td{font-weight:inherit}
 .sk-t .ok{color:var(--green)}.sk-t .no{color:var(--bad)}
+.who .games{display:flex;flex-direction:row;flex-wrap:wrap;gap:5px;margin-top:6px}
+.who .gm{display:inline-flex;width:auto;align-items:center;gap:4px;font-size:.8rem;font-weight:800;padding:3px 8px;border-radius:99px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.who .gm.on{background:var(--ok-bg);color:var(--green);border-color:transparent}
+.who .gm.off{opacity:.55;font-weight:700}
+.gstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 12px}
+.gstats div{background:var(--surface);border-radius:14px;box-shadow:var(--shadow);padding:10px 8px;text-align:center}
+.gstats b{display:block;font-size:1.35rem;color:var(--green)}
+.gstats span{font-size:.78rem;color:var(--muted);font-weight:700;line-height:1.25;display:block}
+.gt td:nth-child(2){color:var(--green);font-weight:900}
 .chips{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 8px;margin:0 -2px 4px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{font:inherit;font-weight:900;font-size:.88rem;border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 12px;white-space:nowrap;cursor:pointer;flex-shrink:0}
@@ -115,6 +124,18 @@ input:focus{border-color:var(--green)}
     return rows.length ? rows : null;
   };
   var hasAnswers = function () { return (data.board || []).some(function (b) { return 'skills' in b; }); };
+  // epz-patch:games — skills._g sent by the student page: w Word of the Day, b Boss Battle, l Lucky Box
+  var gamesOf = function (sk) {
+    var g = sk && sk._g; if (!g || typeof g !== 'object') return null;
+    var num = function (v) { return Math.max(0, Number(v) || 0); }, str = function (v) { return typeof v === 'string' ? v : ''; };
+    var out = {};
+    if (Array.isArray(g.w)) out.w = { p: num(g.w[0]), n: num(g.w[1]), last: str(g.w[2]) };
+    if (Array.isArray(g.b)) out.b = { p: num(g.b[0]), n: num(g.b[1]), wins: num(g.b[2]), last: str(g.b[3]), best: num(g.b[4]) };
+    if (Array.isArray(g.l)) out.l = { p: num(g.l[0]), n: num(g.l[1]), last: str(g.l[2]), r: str(g.l[3]), st: num(g.l[4]) };
+    return out;
+  };
+  var GAMES = [['b', '\u{1F47E}', 'Boss'], ['l', '\u{1F381}', 'Box'], ['w', '\u{1F4C5}', 'Word']];
+  var TIER = { common: 'Common', good: 'Good', rare: 'Rare', legend: 'Legendary' };
   var classOf = function (s) { return s.grade === 'guest' ? 'Guest' : s.cls || 'No class yet'; };
 
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
@@ -199,7 +220,7 @@ input:focus{border-color:var(--green)}
     (data.visitors || []).forEach(function (v) { map[v.id] = { id: v.id, name: v.name || '', seen: v.last_seen, pts: null, played: null, league: '', rounds: 0, grade: v.grade || '', cls: v.class_name || '' }; });
     (data.board || []).forEach(function (b) {
       var m = map[b.id] || (map[b.id] = { id: b.id, seen: b.updated_at });
-      m.name = b.name || m.name || ''; m.pts = b.pts; m.league = b.league; m.rounds = b.rounds; m.played = b.updated_at; m.ans = answersOf(b.skills); m.pct = pctOf(b.skills);
+      m.name = b.name || m.name || ''; m.pts = b.pts; m.league = b.league; m.rounds = b.rounds; m.played = b.updated_at; m.ans = answersOf(b.skills); m.pct = pctOf(b.skills); m.games = gamesOf(b.skills);
       if (b.grade) { m.grade = b.grade; m.cls = b.class_name || ''; } else if (m.grade == null) { m.grade = ''; m.cls = ''; }
       if (!m.seen || new Date(b.updated_at) > new Date(m.seen)) m.seen = b.updated_at;
     });
@@ -244,8 +265,12 @@ input:focus{border-color:var(--green)}
         ? '<span class="ans"><span class="ok">✓ ' + s.ans.c + ' correct</span><span class="no">✗ ' + (s.ans.t - s.ans.c) + ' wrong</span><span class="pc">' + Math.round(100 * s.ans.c / s.ans.t) + '%</span></span>'
         : s.pct ? '<span class="ans">' + s.pct.map(function (r) { return '<span class="' + (r.p >= 50 ? 'ok' : 'no') + '">' + r.name + ' ' + r.p + '%</span>'; }).join('') + '</span>'
         : '<span class="ans wait">No answers yet</span>';
+      var gm = s.games ? '<span class="games">' + GAMES.map(function (k) {
+        var g = s.games[k[0]], on = g && g.last && dayOf(g.last) === today;
+        return g ? '<span class="gm' + (on ? ' on' : '') + '" title="' + k[2] + (on ? ' today' : '') + '">' + k[1] + ' ' + k[2] + ' ' + g.p + '</span>' : '<span class="gm off">' + k[1] + ' ' + k[2] + ' \u2014</span>';
+      }).join('') + '</span>' : '';
       return '<li class="row"><span class="dot ' + (isPlayed ? 'on' : '') + '" aria-hidden="true"></span>' +
-        '<div class="who" data-who="' + esc(s.id) + '"><b>' + esc(s.name) + '</b><span>' + esc(classOf(s) + ' · ' + sub) + '</span>' + ans + '</div>' +
+        '<div class="who" data-who="' + esc(s.id) + '"><b>' + esc(s.name) + '</b><span>' + esc(classOf(s) + ' · ' + sub) + '</span>' + ans + gm + '</div>' +
         '<button class="trash" data-id="' + esc(s.id) + '" data-name="' + esc(s.name) + '" aria-label="Remove ' + esc(s.name) + '">' +
         '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></button></li>';
     }).join('');
@@ -258,6 +283,10 @@ input:focus{border-color:var(--green)}
       '<div class="stat good"><b>' + playedToday.length + '</b><span>Played today</span></div>' +
       '<div class="stat warn"><b>' + notToday.length + '</b><span>Not played today</span></div>' +
       '<div class="stat"><b>' + openedToday + '</b><span>Opened today</span></div></div>' +
+      '<div class="gstats">' + GAMES.map(function (k) {
+        var n = named.filter(function (s) { var g = s.games && s.games[k[0]]; return g && g.last && dayOf(g.last) === today; }).length;
+        return '<div><b>' + n + '</b><span>' + k[1] + ' ' + (k[0] === 'b' ? 'Fought the boss' : k[0] === 'l' ? 'Opened the box' : 'Word of the Day') + ' today</span></div>';
+      }).join('') + '</div>' +
       (!sqlOk && (data.board || []).length ? '<p class="note">To see correct and wrong answers, run step4-answers.sql once in Supabase.</p>' : '') +
       (unnamed ? '<p class="note">' + unnamed + (unnamed === 1 ? ' phone has' : ' phones have') + ' opened the site but not typed a name yet.</p>' : '') +
       '<div class="tabs" role="tablist">' +
@@ -302,12 +331,24 @@ input:focus{border-color:var(--green)}
     }
     var bg = document.createElement('div'); bg.className = 'modal-bg';
     bg.innerHTML = '<div class="modal" role="dialog" aria-modal="true"><h2>' + esc(s.name) + '</h2>' +
-      '<p>' + esc(classOf(s)) + (s.played ? ' · ' + (s.pts || 0) + ' pts' + (s.league ? ' · ' + esc(s.league) : '') : '') + '</p>' + body +
+      '<p>' + esc(classOf(s)) + (s.played ? ' · ' + (s.pts || 0) + ' pts' + (s.league ? ' · ' + esc(s.league) : '') : '') + '</p>' + body + gamesTable(s) +
       '<div class="acts"><button class="btn btn-ghost" id="ans-close" type="button">Close</button></div></div>';
     document.body.appendChild(bg);
     var close = function () { bg.remove(); };
     bg.addEventListener('click', function (e) { if (e.target === bg) close(); });
     bg.querySelector('#ans-close').onclick = close;
+  }
+
+  function gamesTable(s) {
+    var g = s.games;
+    if (!g) return s.played ? '<h3 style="margin:14px 0 4px">Games</h3><p>Games show after this student opens the site again.</p>' : '';
+    var row = function (k) {
+      var x = g[k[0]];
+      if (!x) return '<tr><td>' + k[1] + ' ' + k[2] + '</td><td>0</td><td>—</td><td>Not yet</td></tr>';
+      var info = k[0] === 'b' ? x.n + ' ' + (x.n === 1 ? 'try' : 'tries') + ', ' + x.wins + ' ' + (x.wins === 1 ? 'win' : 'wins') : k[0] === 'l' ? x.n + ' ' + (x.n === 1 ? 'box' : 'boxes') + (x.r ? ', last ' + (TIER[x.r] || '') : '') + (x.st > 1 ? ', ' + x.st + ' days in a row' : '') : x.n + ' ' + (x.n === 1 ? 'word' : 'words');
+      return '<tr><td>' + k[1] + ' ' + k[2] + '</td><td>' + x.p + '</td><td>' + esc(info) + '</td><td>' + (x.last ? esc(ago(x.last)) : '—') + '</td></tr>';
+    };
+    return '<h3 style="margin:14px 0 4px">Games</h3><table class="sk-t gt"><tr><th>Game</th><th>Points</th><th>Played</th><th>Last</th></tr>' + GAMES.map(row).join('') + '</table>';
   }
 
   function confirmDelete(id, name) {
