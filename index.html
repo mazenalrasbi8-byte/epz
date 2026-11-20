@@ -1358,11 +1358,6 @@ body.playing .tabbar { display: none; }
 .hello-league:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
 /* ------------------------------------------------------------ epz-patch:duel — Challenge a friend */
 .hello { position: relative; }
-.hello h1 { padding-right: 62px; }
-.hello-prog { position: absolute; top: 14px; right: 14px; z-index: 2; display: grid; place-items: center; gap: 1px; width: 58px; height: 58px; border-radius: 16px; background: var(--sun); color: var(--sun-ink); text-decoration: none; font-weight: 800; font-size: .66rem; box-shadow: 0 4px 0 rgb(0 0 0 / .25); }
-.hello-prog .ic { margin-top: 4px; }
-.hello-prog:active { transform: translateY(2px); box-shadow: 0 2px 0 rgb(0 0 0 / .25); }
-.hello-prog:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 .tab-ic { position: relative; }
 .tab-dot { position: absolute; top: -4px; right: 4px; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 99px; background: #E5484D; color: #fff; font-style: normal; font-size: .7rem; font-weight: 900; line-height: 18px; text-align: center; box-shadow: 0 0 0 2px var(--surface); animation: dot-pulse 1.6s ease-in-out infinite; }
 @keyframes dot-pulse { 50% { transform: scale(1.15); } }
@@ -1590,6 +1585,19 @@ body.playing .tabbar { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .ar *, .ar-res *, .duel-hero *, .duel-alert, .tab-dot, .inc-go { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+/* epz-patch:tidy — calmer name card */
+.hello { gap: 12px 12px; padding: 16px 14px 14px; }
+.hello-txt { align-self: center; }
+.hello h1 { line-height: 1.05; }
+.hello .class-chip { margin-top: 6px; font-size: .84rem; }
+.hello-rank { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; gap: 8px; padding-top: 0; margin-top: 0; border-top: 0; }
+.hr-cell { flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; padding: 8px 10px; }
+.hr-num { display: flex; align-items: center; gap: 6px; }
+.hr-num b { font-size: 1.2rem; line-height: 1.1; }
+.hr-lbl { font-size: .74rem; color: var(--chalk-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.hr-go { width: 34px; }
+.hello-league { padding: 9px 12px; }
+@media (max-width: 360px) { .hr-cell { padding: 7px 8px; } .hr-num b { font-size: 1.05rem; } }
 </style>
 </head>
 <body>
@@ -6457,14 +6465,14 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   function duelLoad(force = !1) {
     if (!LIVE) return duelNet.error = "offline", Promise.resolve(!1);
     if (duelNet.busy) return duelNet.busy;
-    if (!force && duelNet.loaded && Date.now() - duelNet.at < 15e3) return Promise.resolve(!1);
+    if (!force && (duelNet.loaded || duelNet.error) && Date.now() - duelNet.at < 15e3) return Promise.resolve(!1);
     return duelNet.busy = duelCall("duel_list", {}).then((r) => {
       if (!r || !r.ok) throw new Error("bad");
       let sig = JSON.stringify([r.used, r.duels]), changed = sig !== duelNet.sig || !duelNet.loaded || duelNet.error;
       return Object.assign(duelNet, { loaded: !0, error: "", used: r.used || 0, duels: r.duels || [], at: Date.now(), now: Date.parse(r.now) || Date.now(), skew: (Date.parse(r.now) || Date.now()) - Date.now(), sig }), duelAwardWins(), !!changed;
     }).catch((e) => {
-      let m = String(e && e.message || "");
-      return duelNet.error = /HTTP 404|PGRST202|Could not find the function/.test(m) ? "nosql" : /removed/i.test(m) ? "removed" : "offline", duelNet.at = Date.now(), !0;
+      let m = String(e && e.message || ""), prev = duelNet.error;
+      return duelNet.error = /HTTP 404|PGRST202|Could not find the function/.test(m) ? "nosql" : /removed/i.test(m) ? "removed" : "offline", duelNet.at = Date.now(), duelNet.error !== prev;
     }).finally(() => {
       duelNet.busy = null, drawTabs(location.hash.replace(/^#/, ""));
     });
@@ -7146,12 +7154,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     ${ownerBar()}
 
     <section class="hello">
-      <a class="hello-prog" href="#dashboard" aria-label="My progress">${icon("progress", 22)}<span>Progress</span></a>
       <button class="avatar" id="me-btn" aria-label="Change your name">${esc(initials(m2.name))}</button>
       <div class="hello-txt">
         <h1>Hi, ${esc(firstName(m2.name))}!</h1>
         <button type="button" class="class-chip" id="class-btn" aria-label="Change your grade or class">${esc(classLabel())}<span>Change</span></button>
-        <p>${icon("flame", 16, "flame")}${st ? `${st} day${st === 1 ? "" : "s"} in a row` : "Start a streak today"}</p>
       </div>
       <a class="hello-league" href="#dashboard" style="--lg:${lg.color}" aria-label="You are in the ${lg.name} league. ${lg.next ? `${fmtNum(lg.toNext)} points to ${lg.next.name}` : "Top league"}"><!-- epz-patch:league -->
         <span class="hl-medal hl-emblem" aria-hidden="true">${leagueEmblem(lg, "shield")}</span>
@@ -7162,9 +7168,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
           <span class="hl-next">${lg.next ? `<b>${fmtNum(lg.toNext)}</b> points to <b style="color:${lg.next.color === "#7F8C9B" ? "#C9D2DC" : lg.next.color}">${esc(lg.next.name)}</b>` : "You are in the top league!"}</span>
         </span>
       </a>
-      <a class="hello-rank" href="#dashboard" aria-label="My progress: open my dashboard"><!-- epz-patch:layout -->
-        <span class="hr-cell">${icon("trophy", 20)}<span>${rank ? `<b>#${rank.rank}</b> in ${esc(rankScope())}` : `<b>\u2014</b> not ranked yet`}</span></span>
-        <span class="hr-cell">${icon("star", 20)}<span><b>${fmtNum(dailyPoints(7).reduce((a, d) => a + d.pts, 0))}</b> this week</span></span>
+      <a class="hello-rank" href="#dashboard" aria-label="My progress: open my dashboard"><!-- epz-patch:layout --><!-- epz-patch:tidy -->
+        <span class="hr-cell"><span class="hr-num">${icon("trophy", 17)}<b>${rank ? `#${rank.rank}` : "\u2014"}</b></span><span class="hr-lbl">${rank ? `in ${esc(rankScope())}` : "not ranked yet"}</span></span>
+        <span class="hr-cell"><span class="hr-num">${icon("star", 17)}<b>${fmtNum(dailyPoints(7).reduce((a, d) => a + d.pts, 0))}</b></span><span class="hr-lbl">this week</span></span>
+        <span class="hr-cell"><span class="hr-num">${icon("flame", 17, "flame")}<b>${st}</b></span><span class="hr-lbl">${st ? "day streak" : "streak"}</span></span>
         <span class="hr-go">${icon("next", 18)}</span>
       </a>
     </section>
