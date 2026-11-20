@@ -4287,6 +4287,30 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     }
     return !1;
   }
+  // epz-patch:games — summary of Word of the Day, Boss Battle and Lucky Box for the teacher panel
+  function gamesSummary() {
+    let mx = (a, b) => !a ? b || "" : !b ? a : a > b ? a : b, g = {}, wp = 0, words = 0, wl = "";
+    for (let r of Object.values(state.wotd || {})) {
+      let any = !1;
+      for (let a of Object.values(r.a || {})) wp += a.p || 0, wl = mx(wl, a.at), any = !0;
+      r.b && (wp += r.b.p || 0, wl = mx(wl, r.b.at)), any && words++;
+    }
+    words && (g.w = [wp, words, wl]);
+    let b = state.boss;
+    if (b && (b.plays || b.wins)) {
+      let last = b.last || "";
+      for (let [k, e] of Object.entries(b.d || {})) last = mx(mx(last, k), e && e.at);
+      for (let e of Object.values(b.w || {})) last = mx(last, e && e.win);
+      let w = typeof bossWindow == "function" ? bossWindow() : null;
+      g.b = [bossPts(), b.plays || 0, b.wins || 0, last, w && w.cur ? w.best : 0];
+    }
+    let l = state.luck;
+    if (l && l.o && l.o.length) {
+      let e = l.o[l.o.length - 1];
+      g.l = [luckPts(), l.o.length, e.at, e.r, l.streak || 0];
+    }
+    return Object.keys(g).length ? g : null;
+  }
   async function doSync() {
     if (!LIVE) return !1;
     let id = studentId(), secret = studentSecret();
@@ -4297,6 +4321,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         let nn = {}; /* epz-patch:answers: counts for the teacher panel only */
         for (let [k, v] of Object.entries(skillStats().skills)) v.t && (nn[k] = [v.c, v.t]);
         Object.keys(nn).length && (sk._n = nn);
+        let gg = gamesSummary();
+        gg && (sk._g = gg);
         let body = { p_id: id, p_secret: secret, p_name: state.name, p_pts: totalPoints(), p_wk: weekPoints(), p_rounds: state.results.length, p_streak: streak(), p_league: league().name, p_skills: sk }, body2 = { ...body, p_grade: state.grade || "", p_class: state.cls || "" }, sig2 = JSON.stringify(body2);
         if (sig2 !== lastPosted)
           try {
@@ -5319,7 +5345,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let s = bossData(), w = bossWindow();
     if (w.left <= 0) return null;
     let key = w.key || (/* @__PURE__ */ new Date()).toISOString(), e = s.d[key] || (s.d[key] = { s: [], p: 0 });
-    return e.s.push(0), s.plays = (s.plays || 0) + 1, save(), { key, i: e.s.length - 1 };
+    return e.s.push(0), s.plays = (s.plays || 0) + 1, s.last = (/* @__PURE__ */ new Date()).toISOString(), save(), { key, i: e.s.length - 1 };
   }
   function bossSetScore(t, score) {
     let e = bossData().d[t.key];
