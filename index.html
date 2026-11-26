@@ -7233,6 +7233,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       ${LIVE2 ? "" : `<button class="btn btn-send btn-big" id="send-btn">${icon("send", 20)} Send my score to my teacher</button>`}
     </section>
 
+    ${contentGrade() === "9" ? `<a class="btn btn-big path-link" href="path.html" data-epz-patch="pathlink" style="display:flex;align-items:center;justify-content:center;gap:10px;margin:18px auto 0;max-width:520px;background:#FF9F1C;color:#fff;border:0;font-weight:800;text-decoration:none;box-shadow:0 4px 0 #D9800A"><span aria-hidden="true" style="font-size:22px">🛤️</span> Lesson Path · Book 9A</a>` : ""}
     <footer class="foot"><b>English Practice Zone</b> by ${TEACHER_NAME}<br>Qutiba bin Muslim Boys School (9‑12)<br>Your progress is saved on this phone.${ownerState === "unknown" ? ' <button class="linklike" id="owner-open-foot">Teacher corner</button>' : ""}</footer>`, app.querySelectorAll("[data-level]").forEach((b2) => b2.addEventListener("click", () => {
       setLevel(b2.dataset.level);
       let y = window.scrollY;

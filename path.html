@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B7A63">
+<title>English Practice Zone - Lesson Path</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='28' fill='%230B7A63'/><path d='M20 40 L32 18 L44 40 Z' fill='%23F4A51C'/></svg>">
+<style>
+:root{
+  --bg:#EDF3F0; --surface:#fff; --ink:#13232F; --muted:#566672; --line:#D6E0DC;
+  --brand:#0B7A63; --brand-deep:#06604D; --sun:#F4A51C; --sun-deep:#C98207;
+  --good:#168A3F; --good-bg:#DCF5E3; --good-ink:#0E5528;
+  --bad:#D13A3A; --bad-bg:#FCE3E1; --bad-ink:#7A1C1C;
+  --heart:#E5484D; --locked:#C9D3CF; --locked-deep:#AEBAB5;
+  --font:'Nunito',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --display:'Baloo 2','Nunito',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.45;-webkit-tap-highlight-color:transparent;min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;margin:0}
+.ic{display:inline-block;vertical-align:middle;flex:none}
+.wrap{max-width:520px;margin:0 auto;padding:0 16px}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);border-bottom:2px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:8px;height:60px}
+.back{display:inline-flex;align-items:center;gap:2px;color:var(--brand-deep);font-weight:800;text-decoration:none;font-size:15px;padding:8px 6px;border-radius:10px;white-space:nowrap}
+.back:hover{background:var(--bg)}
+.stats{margin-left:auto;display:flex;gap:6px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:4px;font-weight:900;font-size:16px;padding:6px 10px;border-radius:999px;background:var(--bg)}
+.chip.streak{color:#C2410C}.chip.streak.off{color:var(--muted)}
+.chip.xp{color:var(--sun-deep)}
+.iconbtn{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--muted)}
+.iconbtn:hover{background:var(--bg)}
+
+/* ---------- hero ---------- */
+.hero{padding:18px 0 6px}
+.hero h1{font-size:26px;color:var(--brand-deep)}
+.hero .sub{color:var(--muted);font-weight:700;font-size:15px;margin-top:4px}
+.hero .teacher{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:var(--surface);border:2px solid var(--line);border-radius:999px;padding:5px 12px 5px 6px;font-weight:800;font-size:15px}
+.hero .teacher .av{width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:900}
+.daycard{margin-top:14px;display:flex;align-items:center;gap:12px;background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:12px 14px}
+.daycard .big{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:#FFEDE3;color:#C2410C;flex:none}
+.daycard.safe .big{background:var(--good-bg);color:var(--good)}
+.daycard b{display:block;font-size:16px}
+.daycard span{color:var(--muted);font-size:14px;font-weight:600}
+
+/* ---------- path ---------- */
+.unit{margin:26px 0 10px}
+.unit-head{border-radius:20px;color:#fff;padding:16px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 5px 0 rgba(0,0,0,.18)}
+.unit-head .lbl{font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
+.unit-head h2{font-size:24px;margin-top:2px}
+.unit-head .bar{height:8px;border-radius:99px;background:rgba(255,255,255,.3);margin-top:10px;overflow:hidden}
+.unit-head .bar i{display:block;height:100%;background:#fff;border-radius:99px}
+.unit-head .cnt{font-size:13px;font-weight:800;margin-top:5px;opacity:.95}
+.unit-head .badge{width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,.2);display:grid;place-items:center;flex:none}
+.unit-head .grow{flex:1;min-width:0}
+.unit.locked .unit-head{filter:saturate(.35);opacity:.85}
+
+.nodes{display:flex;flex-direction:column;align-items:center;gap:22px;padding:34px 0 8px}
+.node-wrap{position:relative;display:flex;flex-direction:column;align-items:center}
+.node-wrap.cur{margin-top:30px}
+.node{--c:var(--brand);--cd:var(--brand-deep);width:76px;height:72px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;box-shadow:0 7px 0 var(--cd);position:relative;transition:transform .08s}
+.node:active{transform:translateY(5px);box-shadow:0 2px 0 var(--cd)}
+.node.locked{--c:var(--locked);--cd:var(--locked-deep);color:#fff}
+.node.done{--c:var(--sun);--cd:var(--sun-deep)}
+.node.test{width:88px;height:84px;border-radius:26px}
+.node.current::after{content:"";position:absolute;inset:-10px;border-radius:50%;border:4px solid var(--c);opacity:.35;animation:pulse 1.6s ease-out infinite}
+.node.test.current::after{border-radius:32px}
+@keyframes pulse{0%{transform:scale(.92);opacity:.55}100%{transform:scale(1.12);opacity:0}}
+.node .tick{position:absolute;right:-4px;bottom:-4px;width:26px;height:26px;border-radius:50%;background:var(--good);border:3px solid var(--bg);display:grid;place-items:center}
+.node-name{margin-top:12px;font-weight:800;font-size:14px;color:var(--ink);text-align:center;max-width:150px;line-height:1.2}
+.node-name small{display:block;color:var(--muted);font-weight:700;font-size:12px}
+.node-wrap.locked .node-name{color:var(--muted)}
+.start-tip{position:absolute;top:-40px;background:var(--surface);color:var(--c,var(--brand));border:2px solid var(--line);border-radius:12px;padding:3px 12px;font-weight:900;font-size:14px;letter-spacing:.05em;white-space:nowrap;animation:bob 1.4s ease-in-out infinite;z-index:2}
+.start-tip::after{content:"";position:absolute;left:50%;bottom:-8px;margin-left:-7px;border:7px solid transparent;border-top-color:var(--line);border-bottom:0}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.finish{margin:30px 0 10px;text-align:center;background:var(--surface);border:2px solid var(--line);border-radius:20px;padding:20px}
+.finish h2{color:var(--brand-deep);font-size:22px;margin-top:6px}
+.footer{text-align:center;color:var(--muted);font-size:14px;padding:30px 0 50px}
+.footer button{color:var(--muted);text-decoration:underline;font-size:14px;margin-top:8px;padding:8px}
+
+/* ---------- sheet / modal ---------- */
+.shade{position:fixed;inset:0;background:rgba(10,25,30,.45);z-index:50;display:flex;align-items:flex-end;justify-content:center;animation:fade .15s}
+.shade.center{align-items:center;padding:20px}
+@keyframes fade{from{opacity:0}}
+.sheet{background:var(--surface);width:100%;max-width:520px;border-radius:24px 24px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom));animation:up .2s ease-out}
+.shade.center .sheet{border-radius:24px}
+@keyframes up{from{transform:translateY(40px);opacity:.4}}
+.sheet .kind{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;color:#fff}
+.sheet h3{font-size:24px;margin:10px 0 4px}
+.sheet p{margin:0 0 16px;color:var(--muted);font-weight:600}
+.btn{display:flex;width:100%;align-items:center;justify-content:center;gap:8px;min-height:56px;border-radius:16px;font-weight:900;font-size:18px;letter-spacing:.03em;background:var(--brand);color:#fff;box-shadow:0 5px 0 var(--brand-deep);text-transform:uppercase;transition:transform .06s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--brand-deep)}
+.btn[disabled]{background:var(--locked);box-shadow:0 5px 0 var(--locked-deep);color:#fff;cursor:not-allowed}
+.btn.ghost{background:var(--surface);color:var(--brand-deep);border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
+.btn.red{background:var(--bad);box-shadow:0 5px 0 #9E2323}
+.btn.green{background:var(--good);box-shadow:0 5px 0 #0E5E2B}
+.btn+.btn{margin-top:14px}
+
+/* ---------- lesson ---------- */
+.lesson{position:fixed;inset:0;z-index:30;background:var(--surface);display:flex;flex-direction:column;height:100vh;height:100dvh}
+.l-top{flex:none;display:flex;align-items:center;gap:12px;padding:10px 16px;max-width:620px;width:100%;margin:0 auto}
+.prog{flex:1;height:16px;background:#E5ECE9;border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--good);border-radius:99px;transition:width .35s ease;box-shadow:inset 0 -4px 0 rgba(0,0,0,.08)}
+.hearts{display:inline-flex;align-items:center;gap:4px;font-weight:900;color:var(--heart);font-size:18px}
+.hearts.hit{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+.l-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.l-body .inner{max-width:620px;margin:0 auto;padding:8px 18px 28px}
+.q-kind{font-size:13px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:6px 0 6px}
+.q-prompt{font-family:var(--display);font-size:23px;line-height:1.25;margin:0 0 18px;font-weight:700}
+.q-prompt.small{font-size:20px}
+.blank{display:inline-block;min-width:60px;border-bottom:3px solid var(--ink);margin:0 4px;transform:translateY(-4px)}
+.hint{color:var(--muted);font-weight:700;font-size:15px;margin:-8px 0 16px}
+.passage{border:2px solid var(--line);border-radius:16px;background:#F7FAF9;margin:0 0 18px}
+.passage summary{cursor:pointer;list-style:none;padding:12px 14px;font-weight:900;color:#1D5FD6;display:flex;align-items:center;gap:8px}
+.passage summary::-webkit-details-marker{display:none}
+.passage summary .tg{margin-left:auto;font-size:13px;color:var(--muted);white-space:nowrap;padding-left:6px}
+.passage:not([open]) summary .tg::before{content:"Show"}
+.passage[open] summary .tg::before{content:"Hide"}
+.passage .txt{padding:0 14px 14px;max-height:38vh;overflow-y:auto;white-space:pre-line;font-size:16px}
+.opts{display:grid;gap:12px}
+.opts.two{grid-template-columns:1fr 1fr}
+.opt{min-height:58px;border:2px solid var(--line);border-bottom-width:5px;border-radius:16px;padding:12px 14px;text-align:left;font-weight:800;font-size:18px;background:var(--surface);display:flex;align-items:center;gap:10px}
+.opt .k{width:28px;height:28px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;font-size:14px;color:var(--muted);flex:none}
+.opt.sel{border-color:#5AA7E8;background:#E8F3FD;color:#0E4C86}
+.opt.sel .k{border-color:#5AA7E8;color:#0E4C86}
+.opt.right{border-color:var(--good);background:var(--good-bg);color:var(--good-ink)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg);color:var(--bad-ink)}
+.opts.lock .opt{cursor:default}
+.tf .opt{justify-content:center;font-size:20px}
+.answer-in{width:100%;min-height:58px;border:2px solid var(--line);border-radius:16px;padding:14px;font:inherit;font-size:19px;font-weight:700;background:#F7FAF9;color:var(--ink);resize:none}
+.answer-in:focus{border-color:#5AA7E8;background:#fff;outline:none}
+textarea.answer-in{min-height:110px;line-height:1.4}
+.answer-in.right{border-color:var(--good);background:var(--good-bg)}
+.answer-in.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.lbl-s{font-weight:800;color:var(--muted);font-size:14px;margin:0 0 8px}
+.wrongline{background:var(--bad-bg);color:var(--bad-ink);border-radius:12px;padding:10px 12px;font-weight:800;margin:0 0 14px;font-size:18px}
+.tiles-target{min-height:66px;border-bottom:2px solid var(--line);padding:8px 0 12px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;margin-bottom:18px}
+.tiles-target.v,.tiles-pool.v{flex-direction:column;flex-wrap:nowrap}
+.tiles-target .ph{color:var(--muted);font-weight:700;align-self:center;font-size:15px}
+.tiles-pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tile{border:2px solid var(--line);border-bottom-width:4px;border-radius:12px;padding:9px 13px;font-weight:800;font-size:18px;background:var(--surface);min-height:48px;text-align:left}
+.tiles-pool.v .tile,.tiles-target.v .tile{width:100%;font-size:16px;font-weight:700;display:flex;gap:10px;align-items:flex-start}
+.tile .n{width:24px;height:24px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:900;flex:none;margin-top:1px}
+.tiles-target.right .tile{border-color:var(--good);background:var(--good-bg)}
+.tiles-target.wrong .tile{border-color:var(--bad);background:var(--bad-bg)}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:grid;gap:10px;align-content:start}
+.mt{min-height:56px;border:2px solid var(--line);border-bottom-width:5px;border-radius:14px;padding:8px 10px;font-weight:800;font-size:16px;background:var(--surface);text-align:center}
+.mt.sel{border-color:#5AA7E8;background:#E8F3FD}
+.mt[data-p]{color:#fff;border-color:rgba(0,0,0,.15)}
+.mt.bad{background:var(--bad-bg)!important;color:var(--bad-ink)!important;border-color:var(--bad)!important}
+.mt.ok{background:var(--good-bg)!important;color:var(--good-ink)!important;border-color:var(--good)!important}
+.l-foot{flex:none;border-top:2px solid var(--line);background:var(--surface);padding:14px 18px calc(16px + env(safe-area-inset-bottom))}
+.l-foot .inner{max-width:620px;margin:0 auto}
+.l-foot.ok{background:var(--good-bg);border-top-color:transparent}
+.l-foot.no{background:var(--bad-bg);border-top-color:transparent}
+.fb{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;max-height:34vh;overflow-y:auto}
+.fb .bi{width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none}
+.fb h3{font-size:22px}
+.l-foot.ok .fb{color:var(--good-ink)}
+.l-foot.no .fb{color:var(--bad-ink)}
+.fb .ans{font-weight:800;margin-top:2px;font-size:16px;white-space:pre-line}
+.fb .ex{font-weight:600;font-size:15px;margin-top:4px;opacity:.9}
+.fb-anim{animation:up .2s ease-out}
+
+/* ---------- result ---------- */
+.result{position:fixed;inset:0;z-index:40;background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px 22px calc(24px + env(safe-area-inset-bottom));overflow:hidden}
+.result .medal{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFE08A,var(--sun) 60%,var(--sun-deep));display:grid;place-items:center;box-shadow:0 8px 0 #B5760A;animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+.result.sad .medal{background:radial-gradient(circle at 35% 30%,#FFB3B5,var(--heart) 65%,#A8282C);box-shadow:0 8px 0 #7E1D20}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
+.result h2{font-size:30px;color:var(--brand-deep);margin-top:22px}
+.result.sad h2{color:var(--bad)}
+.result p.msg{color:var(--muted);font-weight:700;margin:6px 0 18px;max-width:360px}
+.boxes{display:flex;gap:10px;width:100%;max-width:400px;margin-bottom:26px}
+.box{flex:1;border:2px solid var(--c);border-radius:16px;overflow:hidden;animation:pop .5s .15s both}
+.box .t{background:var(--c);color:#fff;font-size:12px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding:4px}
+.box .v{font-weight:900;font-size:22px;padding:10px 4px;color:var(--c);display:flex;align-items:center;justify-content:center;gap:4px}
+.result .acts{width:100%;max-width:400px;position:relative;z-index:1}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.confetti i{position:absolute;top:-20px;width:10px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (min-width:600px){.hero h1{font-size:30px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <a class="back" href="index.html" aria-label="Back to the English Practice Zone main page"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Main page</a>
+    <div class="stats">
+      <span class="chip streak" id="st-streak" title="Daily streak"></span>
+      <span class="chip xp" id="st-xp" title="Total XP"></span>
+      <button class="iconbtn" id="snd" type="button" aria-label="Sound effects on or off"></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="pathview">
+  <section class="hero">
+    <h1>English Practice Zone - Lesson Path</h1>
+    <div class="sub">Grade 9 &middot; Gold Experience Oman 9A</div>
+    <div class="teacher"><span class="av">MA</span>Teacher: Mr. Mazen Al-Rasbi</div>
+    <div class="daycard" id="daycard"></div>
+  </section>
+  <div id="path"></div>
+  <div class="footer">
+    Your progress is saved on this phone only.<br>
+    <button type="button" id="reset">Start again from the beginning</button>
+  </div>
+</main>
+
+<div id="layer"></div>
+
+<script>
+"use strict";
+/* Questions copied from the Grade 9 "Book 9A" activities of the main page (index.html). */
+var DATA = {"units":[{"id":"starter","label":"Starter","name":"Fun times!","color":"#0B7A63","lessons":[{"id":"s-v1","kind":"vocab","title":"Fun times words","qs":[{"type":"mcq","prompt":"A show where people sing, dance or do tricks to win a prize is a\u2026","options":["talent show","documentary","soap opera","news report"],"answer":"talent show"},{"type":"mcq","prompt":"A TV series about the lives of a group of people, on several times a week, is a\u2026","options":["soap opera","documentary","news report","talent show"],"answer":"soap opera"},{"type":"mcq","prompt":"A person who writes to you from another country is your pen\u2026","options":["pal","friend","mate","partner"],"answer":"pal"},{"type":"mcq","prompt":"Which word means \"very bad\"?","options":["awful","crowded","calm","alive"],"answer":"awful"},{"type":"mcq","prompt":"Which word means \"very good or very clever\"?","options":["brilliant","delicious","disgusting","stressed"],"answer":"brilliant"},{"type":"mcq","prompt":"Which word means \"tasting very good\"?","options":["delicious","lifelike","ancient","active"],"answer":"delicious"},{"type":"mcq","prompt":"Which word means \"very unpleasant to taste or smell\"?","options":["disgusting","alive","confident","wonderful"],"answer":"disgusting"},{"type":"mcq","prompt":"Which word means \"extremely good\"?","options":["fantastic","relaxed","active","awful"],"answer":"fantastic"}]},{"id":"s-g1","kind":"grammar","title":"Articles","qs":[{"type":"mcq","prompt":"I've got ___ new video game at home.","options":["a","the","an","\u2013"],"answer":"a","explanation":"First time we mention it \u2192 a."},{"type":"mcq","prompt":"We saw a film. ___ film was about a family in a big city.","options":["The","A","An","\u2013"],"answer":"The","explanation":"We have talked about it before \u2192 the."},{"type":"mcq","prompt":"My grandfather had ___ amazing life.","options":["an","a","the","\u2013"],"answer":"an","explanation":"\"amazing\" starts with a vowel sound \u2192 an."},{"type":"mcq","prompt":"There's ___ university near my home.","options":["a","an","the","\u2013"],"answer":"a","explanation":"\"university\" starts with a \"you\" sound \u2192 a."},{"type":"mcq","prompt":"Do you want ___ milk in your coffee?","options":["\u2013","the","a","an"],"answer":"\u2013","explanation":"Uncountable noun in general \u2192 no article."},{"type":"mcq","prompt":"I can see ___ Moon tonight.","options":["the","a","an","\u2013"],"answer":"the","explanation":"There is only one Moon \u2192 the."},{"type":"mcq","prompt":"___ cats are wonderful pets.","options":["\u2013","The","A","An"],"answer":"\u2013","explanation":"Plural nouns in general \u2192 no article."},{"type":"fill","prompt":"While we were swimming, we saw ___ enormous crocodile.","answer":"an"}]},{"id":"s-g2","kind":"grammar","title":"Comparing","qs":[{"type":"mcq","prompt":"Reem is ___ her sister now. They are the same height.","options":["as tall as","taller as","as taller as","the tallest"],"answer":"as tall as","explanation":"Equal \u2192 as + adjective + as."},{"type":"mcq","prompt":"Tennis isn't ___ rugby.","options":["as dangerous as","as more dangerous as","dangerous than","the most dangerous"],"answer":"as dangerous as","explanation":"not as + adjective + as."},{"type":"mcq","prompt":"That was the ___ day of my life.","options":["happiest","happyest","most happy","happier"],"answer":"happiest"},{"type":"mcq","prompt":"My last holiday was much ___ than this one.","options":["nicer","more nice","nicest","nice"],"answer":"nicer"},{"type":"mcq","prompt":"Far \u2192 further \u2192 the ___","options":["furthest","farest","most far","further"],"answer":"furthest"},{"type":"fill","prompt":"My sister is so much ___ (short) than me.","answer":"shorter"},{"type":"fill","prompt":"The coffee is ___ (expensive) in that shop than near my home.","answer":"more expensive"},{"type":"mcq","prompt":"\"I've never seen a bigger cat.\" \u2192 It's ___ cat I've ever seen.","options":["the biggest","the bigger","bigger","the most big"],"answer":"the biggest"}]},{"id":"s-r1","kind":"reading","title":"Talent show and Wadi Shab","qs":[{"type":"mcq","prompt":"Where was the talent show?","options":["In the big hall","In the playground","In the library","In a classroom"],"answer":"In the big hall","passage":"reading-easy-135"},{"type":"mcq","prompt":"How many students took part?","options":["Twelve","Two","Twenty","Ten"],"answer":"Twelve","passage":"reading-easy-135"},{"type":"mcq","prompt":"What did Majid do?","options":["He told funny stories.","He read a poem.","He did a science show.","He sang a song."],"answer":"He told funny stories.","passage":"reading-easy-135"},{"type":"truefalse","prompt":"Yousef was relaxed before he went on stage.","answer":"False","explanation":"He was very nervous.","passage":"reading-easy-135"},{"type":"mcq","prompt":"What is Wadi Shab?","options":["A valley","A beach","A city","A desert"],"answer":"A valley","passage":"reading-easy-136"},{"type":"mcq","prompt":"How long did they walk?","options":["About an hour","All day","Ten minutes","Three hours"],"answer":"About an hour","passage":"reading-easy-136"},{"type":"mcq","prompt":"What was the water like?","options":["Cool and clear","Hot and dirty","Cold and dark","Deep and noisy"],"answer":"Cool and clear","passage":"reading-easy-136"},{"type":"truefalse","prompt":"The writer's sister was scared at first.","answer":"True","passage":"reading-easy-136"}]},{"id":"s-w1","kind":"writing","title":"Fix it and build it","qs":[{"type":"correct","prompt":"There's an university near my home.","answer":"There's a university near my home.|There is a university near my home.","explanation":"\"university\" \u2192 a."},{"type":"correct","prompt":"I can see a Moon.","answer":"I can see the Moon.","explanation":"Only one Moon \u2192 the."},{"type":"correct","prompt":"The cats are wonderful pets.","answer":"Cats are wonderful pets.","explanation":"Plural nouns in general \u2192 no article."},{"type":"correct","prompt":"Reem is as tall than her sister.","answer":"Reem is as tall as her sister.","explanation":"as \u2026 as."},{"type":"build","prompt":"Comparing","answer":"My brother is not as tall as my father."},{"type":"build","prompt":"Past simple","answer":"I made the salad and then helped my mum."},{"type":"order","prompt":"The talent show","items":["Before the show, Yousef felt really nervous.","When his name was called, he walked on stage.","As soon as he started his poem, he felt calm.","At the end, everyone clapped loudly."]},{"type":"order","prompt":"The school talent show","items":["Last Thursday, our school held its first talent show.","Twelve students performed in front of their families.","The performances included poems, science shows and comedy.","We recommend holding the show again next year."]}]},{"id":"s-t","kind":"test","title":"Starter Test","qs":[{"type":"correct","prompt":"My last holiday was much more nicer.","answer":"My last holiday was much nicer.","explanation":"Do not use \"more\" with -er."},{"type":"correct","prompt":"That was the most happy day of my life.","answer":"That was the happiest day of my life.","explanation":"happy \u2192 the happiest."},{"type":"correct","prompt":"She is more taller than me.","answer":"She is taller than me.","explanation":"Do not use \"more\" with -er."},{"type":"correct","prompt":"I bought book last week.","answer":"I bought a book last week.","explanation":"Single countable noun \u2192 a."},{"type":"mcq","prompt":"The food was ___ delicious!","options":["absolutely","very"],"answer":"absolutely","explanation":"Strong adjective \u2192 absolutely, not very."},{"type":"mcq","prompt":"The test was ___ difficult.","options":["very","absolutely"],"answer":"very","explanation":"Normal adjective \u2192 very."},{"type":"mcq","prompt":"The view from the top was ___ fantastic.","options":["absolutely","very"],"answer":"absolutely","explanation":"Strong adjective \u2192 absolutely."},{"type":"mcq","prompt":"Climbing that mountain is ___ dangerous.","options":["extremely","absolutely"],"answer":"extremely","explanation":"Normal adjective \u2192 extremely."},{"type":"fill","prompt":"I had an ___ headache, so I stayed at home.","answer":"awful","hint":"Starts with \"a\" (very bad)"},{"type":"fill","prompt":"Messi is a ___ football player.","answer":"brilliant","hint":"Starts with \"b\" (very good or very clever)"},{"type":"correct","prompt":"The film was very hilarious.","answer":"The film was absolutely hilarious.","explanation":"strong adjective \u2192 absolutely"},{"type":"correct","prompt":"The food was absolutely good.","answer":"The food was very good.","explanation":"normal adjective \u2192 very"}]}]},{"id":"u1","label":"Unit 1","name":"Identity","color":"#2B5FC4","lessons":[{"id":"u1-v1","kind":"vocab","title":"Personality","qs":[{"type":"mcq","prompt":"Someone who enjoys spending time with other people is\u2026","options":["sociable","shy","lazy","serious"],"answer":"sociable"},{"type":"mcq","prompt":"Someone who makes people laugh is\u2026","options":["funny","rude","calm","noisy"],"answer":"funny"},{"type":"mcq","prompt":"Someone who doesn't like working is\u2026","options":["lazy","sporty","clever","confident"],"answer":"lazy"},{"type":"mcq","prompt":"Someone who likes ball games and team games is\u2026","options":["sporty","shy","serious","unpleasant"],"answer":"sporty"},{"type":"mcq","prompt":"Someone who believes he can do things well is\u2026","options":["confident","shy","lazy","noisy"],"answer":"confident"},{"type":"mcq","prompt":"Someone who is relaxed and not angry is\u2026","options":["calm","rude","noisy","unpleasant"],"answer":"calm"},{"type":"mcq","prompt":"Someone who is often nervous with people they don't know is\u2026","options":["shy","sociable","funny","confident"],"answer":"shy"},{"type":"match","prompt":"Match the opposites.","pairs":[{"left":"polite","right":"rude"},{"left":"quiet","right":"noisy"},{"left":"hard-working","right":"lazy"},{"left":"shy","right":"sociable"}]}]},{"id":"u1-v2","kind":"vocab","title":"Identity words","qs":[{"type":"mcq","prompt":"If you work hard, you can ___ your goals.","options":["achieve","hang out with","appear","survive"],"answer":"achieve"},{"type":"mcq","prompt":"My grandmother is very ___. She walks five kilometres every day.","options":["active","crowded","matching","official"],"answer":"active"},{"type":"mcq","prompt":"Swimming is my favourite summer ___.","options":["activity","coast","identity","preference"],"answer":"activity"},{"type":"mcq","prompt":"He might ___ shy, but he's really funny when you know him.","options":["appear","hang out with","try","dream"],"answer":"appear"},{"type":"mcq","prompt":"In the photo, you can see mountains in the ___.","options":["background","stadium","coast","central heating"],"answer":"background"},{"type":"mcq","prompt":"I usually ___ my friends at the weekend.","options":["hang out with","appear","try","hear"],"answer":"hang out with"},{"type":"mcq","prompt":"Our language and culture are an important part of our ___.","options":["identity","cover","behaviour","smart watch"],"answer":"identity"},{"type":"mcq","prompt":"The twins were wearing ___ shirts.","options":["matching","active","crowded","interactive"],"answer":"matching"}]},{"id":"u1-g1","kind":"grammar","title":"Present simple and continuous","qs":[{"type":"mcq","prompt":"At the moment, I ___ in my bedroom.","options":["'m sitting","sit","sits","am sit"],"answer":"'m sitting"},{"type":"mcq","prompt":"I ___ here with my grandparents. It's my home.","options":["live","'m living","lives","am live"],"answer":"live","explanation":"A permanent state \u2192 present simple."},{"type":"mcq","prompt":"Look! She ___ really quickly.","options":["'s running","runs","run","is run"],"answer":"'s running"},{"type":"mcq","prompt":"My mother ___ using a laptop.","options":["doesn't like","isn't liking","don't like","not likes"],"answer":"doesn't like","explanation":"\"like\" is a stative verb."},{"type":"mcq","prompt":"We ___ dinner. Do you want to join us?","options":["'re having","have","has","are have"],"answer":"'re having","explanation":"\"have\" = eat \u2192 can be continuous."},{"type":"mcq","prompt":"___ you understand this lesson?","options":["Do","Are","Does","Is"],"answer":"Do","explanation":"\"understand\" is stative."},{"type":"fill","prompt":"Every Friday we ___ (go) out for a pizza.","answer":"go"},{"type":"fill","prompt":"Today it ___ (snow) outside, so I'm staying at home.","answer":"is snowing|'s snowing"}]},{"id":"u1-g2","kind":"grammar","title":"Adjective + preposition","qs":[{"type":"mcq","prompt":"She's very interested ___ languages.","options":["in","on","at","with"],"answer":"in"},{"type":"mcq","prompt":"Frank's brilliant ___ cooking.","options":["at","in","on","of"],"answer":"at"},{"type":"mcq","prompt":"I'm fed up ___ this song!","options":["with","of","at","in"],"answer":"with"},{"type":"mcq","prompt":"My little brother is afraid ___ the dark.","options":["of","with","at","on"],"answer":"of"},{"type":"mcq","prompt":"Are you excited ___ the school trip?","options":["about","at","with","of"],"answer":"about"},{"type":"mcq","prompt":"I'm not very keen ___ football.","options":["on","in","at","of"],"answer":"on"},{"type":"mcq","prompt":"He is terrible ___ maths, but he's good at science.","options":["at","in","with","on"],"answer":"at"},{"type":"fill","prompt":"We are bored ___ this game. Let's play something else.","answer":"with"}]},{"id":"u1-r1","kind":"reading","title":"Family and friends","qs":[{"type":"mcq","prompt":"Where does Hamed live?","options":["In Nizwa","In Sur","In Muscat","In Salalah"],"answer":"In Nizwa","passage":"reading-easy-131"},{"type":"truefalse","prompt":"Hamed has got only a few friends.","answer":"False","explanation":"He has got lots of friends.","passage":"reading-easy-131"},{"type":"mcq","prompt":"How often does Hamed play football?","options":["Three times a week","Every day","On Fridays only","Once a month"],"answer":"Three times a week","passage":"reading-easy-131"},{"type":"mcq","prompt":"Which word describes Aisha?","options":["Shy","Sporty","Noisy","Lazy"],"answer":"Shy","passage":"reading-easy-131"},{"type":"mcq","prompt":"Where is Saif now?","options":["At his grandparents' house in Muscat","At school","In Tom's house","In a hotel"],"answer":"At his grandparents' house in Muscat","passage":"reading-medium-135"},{"type":"mcq","prompt":"What is his grandmother doing right now?","options":["Making halwa","Walking on the beach","Catching fish","Writing an email"],"answer":"Making halwa","passage":"reading-medium-135"},{"type":"mcq","prompt":"What does Saif do every morning?","options":["He walks on the beach.","He visits the fort.","He cooks breakfast.","He goes fishing alone."],"answer":"He walks on the beach.","passage":"reading-medium-135"},{"type":"truefalse","prompt":"Saif's grandfather is teaching him the names of fish.","answer":"True","passage":"reading-medium-135"}]},{"id":"u1-r2","kind":"reading","title":"Shy or sociable?","qs":[{"type":"mcq","prompt":"When do many teenagers feel shy?","options":["When they meet new people","When they are at home","When they play sport","When they sleep"],"answer":"When they meet new people","passage":"reading-medium-131"},{"type":"truefalse","prompt":"Experts say shyness is the same as being unfriendly.","answer":"False","explanation":"They say it is not the same.","passage":"reading-medium-131"},{"type":"mcq","prompt":"What are many shy people good at?","options":["Listening","Shouting","Telling jokes","Speaking in public"],"answer":"Listening","passage":"reading-medium-131"},{"type":"mcq","prompt":"What is one small step the text suggests?","options":["Say hello to one new person each day.","Speak in front of the whole school.","Stay at home more.","Stop talking to classmates."],"answer":"Say hello to one new person each day.","passage":"reading-medium-131"},{"type":"mcq","prompt":"How do extroverts usually feel with other people?","options":["Energetic","Tired","Miserable","Shy"],"answer":"Energetic","passage":"reading-challenge-133"},{"type":"mcq","prompt":"What do introverts need after being with groups?","options":["Quiet time alone","A big party","More team sports","A loud place"],"answer":"Quiet time alone","passage":"reading-challenge-133"},{"type":"truefalse","prompt":"Introverts are always rude.","answer":"False","explanation":"The text says this doesn't mean introverts are rude.","passage":"reading-challenge-133"},{"type":"mcq","prompt":"Where are most people, according to the text?","options":["Somewhere in the middle","Completely introverts","Completely extroverts","Nobody knows"],"answer":"Somewhere in the middle","passage":"reading-challenge-133"}]},{"id":"u1-w1","kind":"writing","title":"Writing about me","qs":[{"type":"build","prompt":"Present simple","answer":"I live with my parents and two brothers."},{"type":"build","prompt":"Adverb of frequency","answer":"I hardly ever go swimming in the winter."},{"type":"build","prompt":"Present continuous","answer":"We are studying ancient Greece at school."},{"type":"build","prompt":"Personality","answer":"My best friend is funny and sociable."},{"type":"correct","prompt":"My sister are very friendly.","answer":"My sister is very friendly.","explanation":"my sister (she) \u2192 is"},{"type":"correct","prompt":"He is good in football.","answer":"He is good at football.","explanation":"good at"},{"type":"correct","prompt":"They is very sporty.","answer":"They are very sporty.","explanation":"they \u2192 are"},{"type":"order","prompt":"My friend Majid","items":["This is my best friend, Majid.","He is sociable and very funny.","He loves football and plays every day.","We often hang out together after school."]}]},{"id":"u1-t","kind":"test","title":"Unit 1 Test","qs":[{"type":"mcq","prompt":"Even when everyone was shouting, my father stayed ___.","options":["calm","rude","clever","similar"],"answer":"calm"},{"type":"mcq","prompt":"Hamad is very ___. He always finds the answer first.","options":["clever","noisy","excited","at risk"],"answer":"clever"},{"type":"mcq","prompt":"Ali isn't nervous on stage at all. He's very ___.","options":["confident","shy","calm","at risk"],"answer":"confident"},{"type":"mcq","prompt":"The people in the village were very ___ and said hello to us.","options":["friendly","rude","lazy","wonderful"],"answer":"friendly"},{"type":"mcq","prompt":"I'm really interested ___ science and robots.","options":["in","on","at","of"],"answer":"in","explanation":"interested in"},{"type":"mcq","prompt":"Hana is brilliant ___ cooking. Her cakes are amazing.","options":["at","in","of","about"],"answer":"at","explanation":"brilliant at"},{"type":"mcq","prompt":"My little brother is afraid ___ big dogs.","options":["of","in","at","about"],"answer":"of","explanation":"afraid of"},{"type":"correct","prompt":"I am usually walking to school.","answer":"I usually walk to school.","explanation":"Habits \u2192 present simple"},{"type":"correct","prompt":"Look! The robot clean the floor.","answer":"Look! The robot is cleaning the floor.","explanation":"Now \u2192 present continuous"},{"type":"correct","prompt":"I am knowing the answer.","answer":"I know the answer.","explanation":"know is a stative verb"},{"type":"correct","prompt":"Are you understanding this lesson?","answer":"Do you understand this lesson?","explanation":"\"understand\" is stative."},{"type":"correct","prompt":"I am needing some help.","answer":"I need some help.","explanation":"\"need\" is stative."},{"type":"build","prompt":"Present simple","answer":"Ali always makes us laugh."},{"type":"build","prompt":"Adjective + preposition","answer":"Sara is good at drawing."}]}]},{"id":"u2","label":"Unit 2","name":"Connections","color":"#B4236F","lessons":[{"id":"u2-v1","kind":"vocab","title":"Language and communication","qs":[{"type":"mcq","prompt":"If I don't know what a word ___, I look it up.","options":["means","says","tells","speaks"],"answer":"means"},{"type":"mcq","prompt":"I know how to ___ all the days and months in English.","options":["say","tell","talk","mean"],"answer":"say"},{"type":"mcq","prompt":"The AI on my phone doesn't always ___ words correctly into my language.","options":["translate","pronounce","repeat","explain"],"answer":"translate"},{"type":"mcq","prompt":"You don't always know how to ___ an English word from the way it's written.","options":["pronounce","translate","mean","tell"],"answer":"pronounce"},{"type":"mcq","prompt":"If I don't understand a grammar point, I ask the teacher to ___ it again.","options":["explain","speak","say","tell"],"answer":"explain"},{"type":"mcq","prompt":"You never listen ___ me!","options":["to","at","with","about"],"answer":"to"},{"type":"mcq","prompt":"They were talking ___ sport.","options":["about","to","at","on"],"answer":"about"},{"type":"mcq","prompt":"Which is correct?","options":["Tell me the answer.","Say me the answer.","Speak me the answer.","Talk me the answer."],"answer":"Tell me the answer.","explanation":"We tell someone something, but say something to someone."}]},{"id":"u2-v2","kind":"vocab","title":"Say, tell, speak, talk","qs":[{"type":"mcq","prompt":"___ us a story, please, Grandma.","options":["Tell","Say"],"answer":"Tell","explanation":"tell someone something"},{"type":"mcq","prompt":"She didn't ___ me the answer.","options":["tell","say"],"answer":"tell","explanation":"tell + person"},{"type":"mcq","prompt":"If I have a problem, I ___ to my friends.","options":["talk","tell"],"answer":"talk","explanation":"talk to someone"},{"type":"mcq","prompt":"We ___ two languages at home.","options":["speak","say"],"answer":"speak","explanation":"speak + a language"},{"type":"mcq","prompt":"___ the alphabet in English.","options":["Say","Speak"],"answer":"Say","explanation":"say + words"},{"type":"mcq","prompt":"Can you ___ me the way to the museum?","options":["tell","say"],"answer":"tell","explanation":"tell + person"},{"type":"mcq","prompt":"What did the teacher ___ about the test?","options":["say","tell"],"answer":"say","explanation":"say something (about)"},{"type":"mcq","prompt":"My sisters ___ in very quiet voices.","options":["speak","say"],"answer":"speak","explanation":"speak = use your voice"}]},{"id":"u2-v3","kind":"vocab","title":"Unit 2 words","qs":[{"type":"mcq","prompt":"My great-grandmother is still ___. She's 95!","options":["alive","local","funny","relaxed"],"answer":"alive"},{"type":"mcq","prompt":"My parents don't ___ me to stay up late.","options":["allow","develop","occur","download"],"answer":"allow"},{"type":"mcq","prompt":"We visited the ___ fort in Bahla.","options":["ancient","alive","at risk","wonderful"],"answer":"ancient"},{"type":"mcq","prompt":"Many animals are ___ because they are losing their homes.","options":["at risk","local","lazy","miserable"],"answer":"at risk"},{"type":"mcq","prompt":"Our local ___ cleaned the beach together.","options":["community","culture","preference","activity"],"answer":"community"},{"type":"mcq","prompt":"What do you want to be when you ___?","options":["grow up","discover","survive","repeat"],"answer":"grow up"},{"type":"mcq","prompt":"The number of tourists will ___ in the winter.","options":["increase","dream","allow","achieve"],"answer":"increase"},{"type":"mcq","prompt":"We buy fish from the ___ market.","options":["local","alive","at risk","huge"],"answer":"local"}]},{"id":"u2-g1","kind":"grammar","title":"Past simple and past continuous","qs":[{"type":"mcq","prompt":"Zahra ___ in Pisa when she met Halima.","options":["was studying","studied","were studying","studies"],"answer":"was studying"},{"type":"mcq","prompt":"I ___ the good news while I was having breakfast.","options":["heard","was hearing","hear","were hearing"],"answer":"heard","explanation":"Short action \u2192 past simple. \"hear\" is stative."},{"type":"mcq","prompt":"I didn't want to call him while he ___ the film.","options":["was watching","watched","watches","is watching"],"answer":"was watching"},{"type":"mcq","prompt":"I completely ___ what that man said.","options":["believed","was believing","believe","were believing"],"answer":"believed","explanation":"\"believe\" is stative."},{"type":"mcq","prompt":"He was hiding behind a tree, so I ___ him.","options":["didn't see","wasn't seeing","don't see","haven't see"],"answer":"didn't see"},{"type":"fill","prompt":"I ___ (tidy) my room when the phone rang.","answer":"was tidying"},{"type":"fill","prompt":"When I ___ (come) in, my friends were waiting for me.","answer":"came"},{"type":"mcq","prompt":"My uncle heard the news ___ he was reading his messages.","options":["while","during","for","so"],"answer":"while"}]},{"id":"u2-g2","kind":"grammar","title":"Past stories","qs":[{"type":"correct","prompt":"I was watch TV when Dad came home.","answer":"I was watching TV when Dad came home.","explanation":"was + -ing"},{"type":"correct","prompt":"We goed to the beach yesterday.","answer":"We went to the beach yesterday.","explanation":"go \u2192 went"},{"type":"correct","prompt":"They was playing football at five o'clock.","answer":"They were playing football at five o'clock.","explanation":"they \u2192 were"},{"type":"correct","prompt":"Did you saw the talent show?","answer":"Did you see the talent show?","explanation":"Did + base verb"},{"type":"correct","prompt":"While I was walking home, I meet my teacher.","answer":"While I was walking home, I met my teacher.","explanation":"past simple \u2192 met"},{"type":"correct","prompt":"She didn't went to school last Monday.","answer":"She didn't go to school last Monday.","explanation":"didn't + base verb"},{"type":"build","prompt":"Past continuous","answer":"I was reading when the phone rang."},{"type":"build","prompt":"Past continuous + past simple","answer":"She was cooking when the lights went off."}]},{"id":"u2-r1","kind":"reading","title":"Learning languages","qs":[{"type":"mcq","prompt":"What language is Salma learning?","options":["Spanish","French","English","Chinese"],"answer":"Spanish","passage":"reading-easy-133"},{"type":"mcq","prompt":"Why is she learning it?","options":["Her family is going to visit Spain.","She has to for school.","Her teacher is Spanish.","She wants to work in Spain."],"answer":"Her family is going to visit Spain.","passage":"reading-easy-133"},{"type":"mcq","prompt":"When does she have her online lesson?","options":["Every Tuesday","Every day","Every weekend","Every Thursday"],"answer":"Every Tuesday","passage":"reading-easy-133"},{"type":"truefalse","prompt":"Salma finds pronunciation the hardest part.","answer":"True","passage":"reading-easy-133"},{"type":"mcq","prompt":"What is the official language of Oman?","options":["Arabic","English","Swahili","Mehri"],"answer":"Arabic","passage":"reading-medium-132"},{"type":"mcq","prompt":"Where do some families speak Jibbali or Mehri?","options":["In the south","In the north","In Muscat only","In other countries"],"answer":"In the south","passage":"reading-medium-132"},{"type":"truefalse","prompt":"Most people write Jibbali and Mehri every day.","answer":"False","explanation":"They have no written form that most people use.","passage":"reading-medium-132"},{"type":"mcq","prompt":"Why can you hear Swahili and Balochi on the coast?","options":["Because of Oman's history of trade","Because of television","Because students learn them at school","Because of tourists"],"answer":"Because of Oman's history of trade","passage":"reading-medium-132"}]},{"id":"u2-r2","kind":"reading","title":"The night the power went off","qs":[{"type":"mcq","prompt":"What was the writer doing when the lights went off?","options":["Doing homework on a tablet","Watching football","Cooking dinner","Sleeping"],"answer":"Doing homework on a tablet","passage":"reading-medium-133"},{"type":"mcq","prompt":"Why was the brother annoyed?","options":["The match was exciting.","He was hungry.","He was scared of the dark.","He lost his phone."],"answer":"The match was exciting.","passage":"reading-medium-133"},{"type":"truefalse","prompt":"The family went to a hotel.","answer":"False","explanation":"They sat together in the living room with candles.","passage":"reading-medium-133"},{"type":"mcq","prompt":"What did Dad talk about?","options":["His childhood","The football match","The storm","His job"],"answer":"His childhood","passage":"reading-medium-133"},{"type":"mcq","prompt":"About how many languages are there in the world?","options":["Seven thousand","Seven hundred","Seventy thousand","Seven million"],"answer":"Seven thousand","passage":"reading-challenge-132"},{"type":"mcq","prompt":"What does 'at risk' mean in the text?","options":["In danger","Very popular","Easy to learn","Very old"],"answer":"In danger","passage":"reading-challenge-132"},{"type":"mcq","prompt":"What is lost when a language disappears?","options":["Knowledge about plants, animals, history and culture","Only some words","Nothing important","Only songs"],"answer":"Knowledge about plants, animals, history and culture","passage":"reading-challenge-132"},{"type":"truefalse","prompt":"Young people often stop using their grandparents' language.","answer":"True","passage":"reading-challenge-132"}]},{"id":"u2-w1","kind":"writing","title":"Stories and messages","qs":[{"type":"build","prompt":"Past continuous","answer":"The sun was shining when we left the house."},{"type":"build","prompt":"when","answer":"I was reading when my phone rang."},{"type":"build","prompt":"while","answer":"While I was walking home, I saw an accident."},{"type":"build","prompt":"Message","answer":"Thanks for your message. See you tomorrow!"},{"type":"correct","prompt":"He said me a funny story.","answer":"He told me a funny story.","explanation":"tell someone a story"},{"type":"correct","prompt":"Can you say me your name?","answer":"Can you tell me your name?","explanation":"tell + person"},{"type":"order","prompt":"The power cut","items":["I was doing my homework on my tablet.","Suddenly, all the lights went off.","While we were looking for candles, Dad laughed.","In the end, we told stories in the dark."]},{"type":"order","prompt":"An email to a friend","items":["Hi Tom,","Thanks for your email. It was great to hear from you!","I'm staying with my grandparents in Muscat this week.","Write back soon, Saif"]}]},{"id":"u2-t","kind":"test","title":"Unit 2 Test","qs":[{"type":"mcq","prompt":"Please listen ___ the teacher.","options":["to","about","with","for"],"answer":"to","explanation":"listen to"},{"type":"mcq","prompt":"Who were you talking ___ on the phone?","options":["to","about","with","for"],"answer":"to","explanation":"talk to someone"},{"type":"mcq","prompt":"They were talking ___ the football match.","options":["about","to","with","for"],"answer":"about","explanation":"talk about something"},{"type":"mcq","prompt":"Can you explain the rule ___ me again?","options":["to","about","with","for"],"answer":"to","explanation":"explain something to someone"},{"type":"build","prompt":"Tell","answer":"Please tell me the answer."},{"type":"build","prompt":"Say","answer":"He said hello to everyone."},{"type":"build","prompt":"Talk","answer":"We talked about the football match."},{"type":"correct","prompt":"She told that she was tired.","answer":"She said that she was tired.","explanation":"say that\u2026"},{"type":"correct","prompt":"He talked hello to us.","answer":"He said hello to us.","explanation":"say hello"},{"type":"correct","prompt":"My grandfather talks four languages.","answer":"My grandfather speaks four languages.","explanation":"speak a language"},{"type":"mcq","prompt":"Please ___ why you were late.","options":["explain","discover","predict","produce"],"answer":"explain"},{"type":"mcq","prompt":"I can ___ the birds outside my window.","options":["hear","increase","survive","transform"],"answer":"hear"},{"type":"mcq","prompt":"Please ___ to me. This is important.","options":["listen","consume","predict","receive"],"answer":"listen"}]}]},{"id":"u3","label":"Unit 3","name":"The future is now","color":"#C2410C","lessons":[{"id":"u3-v1","kind":"vocab","title":"Technology in the home","qs":[{"type":"mcq","prompt":"You use this to make water hot for tea.","options":["kettle","fridge-freezer","dishwasher","speaker"],"answer":"kettle"},{"type":"mcq","prompt":"This machine washes your clothes.","options":["washing machine","dishwasher","microwave","kettle"],"answer":"washing machine"},{"type":"mcq","prompt":"This machine washes plates and cups.","options":["dishwasher","washing machine","coffee maker","microwave"],"answer":"dishwasher"},{"type":"mcq","prompt":"You use this to heat food very quickly.","options":["microwave","fridge-freezer","speaker","kettle"],"answer":"microwave"},{"type":"mcq","prompt":"This keeps a room cool in summer.","options":["air conditioning","fridge-freezer","kettle","TV"],"answer":"air conditioning"},{"type":"mcq","prompt":"Fridges, freezers and washing machines are called \"___ goods\".","options":["white","house","cold","kitchen"],"answer":"white"},{"type":"mcq","prompt":"A ___ speaker can play music when you talk to it.","options":["smart","clever","kind","busy"],"answer":"smart"},{"type":"match","prompt":"Match each machine with its job.","pairs":[{"left":"fridge-freezer","right":"keeps food cold"},{"left":"coffee maker","right":"makes coffee"},{"left":"speaker","right":"plays music"},{"left":"TV","right":"shows programmes"}]}]},{"id":"u3-v2","kind":"vocab","title":"Phrasal verbs at home","qs":[{"type":"mcq","prompt":"I never remember to switch the lights ___ when I leave a room.","options":["off","up","in","down"],"answer":"off"},{"type":"mcq","prompt":"The electricity sometimes ___ off during bad weather. (stops working)","options":["goes","turns","puts","sets"],"answer":"goes"},{"type":"mcq","prompt":"My parents ask me to ___ the volume down when I'm playing games.","options":["turn","go","plug","come"],"answer":"turn"},{"type":"mcq","prompt":"My dad asked me to help him ___ up his new smart watch.","options":["set","turn","go","plug"],"answer":"set"},{"type":"mcq","prompt":"I ___ my phone in when my battery's low.","options":["plug","set","turn","come"],"answer":"plug"},{"type":"mcq","prompt":"A warning light ___ on. (starts working)","options":["comes","plugs","sets","goes up"],"answer":"comes"},{"type":"mcq","prompt":"Which sentence is correct?","options":["Turn it up now.","Turn up it now.","Turn now up it.","It turn up now."],"answer":"Turn it up now.","explanation":"With a pronoun, it goes between the verb and the particle."},{"type":"mcq","prompt":"\"Turn the volume up\" means\u2026","options":["make the sound louder","make the sound quieter","stop the machine","connect it to electricity"],"answer":"make the sound louder"}]},{"id":"u3-v3","kind":"vocab","title":"Smart homes","qs":[{"type":"mcq","prompt":"I asked the ___ on my phone about the weather.","options":["AI assistant","battery","smart speaker","air conditioning"],"answer":"AI assistant"},{"type":"mcq","prompt":"Download the ___ to control the lights from your phone.","options":["app","battery","central heating","TV"],"answer":"app"},{"type":"mcq","prompt":"My phone's ___ is low. I need to charge it.","options":["battery","central heating","device","hologram"],"answer":"battery"},{"type":"mcq","prompt":"It's freezing! Turn on the ___.","options":["central heating","device","coast","version"],"answer":"central heating"},{"type":"mcq","prompt":"___ on the icon to open the app.","options":["click","download","speak","survive"],"answer":"click"},{"type":"mcq","prompt":"Please switch off every electronic ___ before the exam.","options":["device","central heating","icon","challenge"],"answer":"device"},{"type":"mcq","prompt":"I ask the ___ to play my favourite nasheed.","options":["smart speaker","app","conversation","microwave"],"answer":"smart speaker"},{"type":"mcq","prompt":"The school has a new computer ___.","options":["system","central heating","smart speaker","fridge-freezer"],"answer":"system"}]},{"id":"u3-g1","kind":"grammar","title":"Talking about the future","qs":[{"type":"mcq","prompt":"I feel tired. I think I ___ go home now.","options":["'ll","'m","'m going","going"],"answer":"'ll","explanation":"Unplanned decision now \u2192 will."},{"type":"mcq","prompt":"Look at the big grey clouds! It ___ rain soon.","options":["'s going to","'ll","rains","'s raining to"],"answer":"'s going to","explanation":"Evidence now \u2192 going to."},{"type":"mcq","prompt":"I ___ in a football match on Saturday. Everything is arranged.","options":["'m playing","'ll play","play","played"],"answer":"'m playing","explanation":"Arrangement \u2192 present continuous."},{"type":"mcq","prompt":"The film ___ at 9.30 p.m.","options":["finishes","'s finishing to","'ll finishing","finish"],"answer":"finishes","explanation":"Timetable \u2192 present simple."},{"type":"mcq","prompt":"\"This bag is heavy.\" \u2014 \"I ___ help you with it.\"","options":["'ll","'m","am helping","helping"],"answer":"'ll","explanation":"An offer \u2192 will."},{"type":"mcq","prompt":"Perhaps we ___ use e-books for all our studies in the future.","options":["will","are going","are","do"],"answer":"will","explanation":"Personal opinion about the future \u2192 will."},{"type":"mcq","prompt":"I ___ visit my friend in T\u00fcrkiye sometime next year. I haven't booked anything yet.","options":["'m going to","'m visiting","visit","'ll visiting"],"answer":"'m going to","explanation":"Intention, not arranged \u2192 going to."},{"type":"mcq","prompt":"Our flight ___ at 10.40 tonight, so we need to leave home at 7.","options":["leaves","is leave","will leaving","leaving"],"answer":"leaves","explanation":"Timetable \u2192 present simple."}]},{"id":"u3-g2","kind":"grammar","title":"-ing form, advice and suggestions","qs":[{"type":"mcq","prompt":"___ vegetables is good for you.","options":["Eating","Eat","To eating","Eaten"],"answer":"Eating","explanation":"-ing form as the subject."},{"type":"mcq","prompt":"I went home after ___ my game.","options":["finishing","finish","to finish","finished"],"answer":"finishing","explanation":"After a preposition \u2192 -ing."},{"type":"mcq","prompt":"You ___ have a nap. You look tired.","options":["should","ought","how about","why don't"],"answer":"should","explanation":"Advice \u2192 should + verb."},{"type":"mcq","prompt":"You ought ___ look for it properly.","options":["to","\u2013","for","at"],"answer":"to"},{"type":"mcq","prompt":"How about ___ a toasted sandwich?","options":["making","make","to make","made"],"answer":"making","explanation":"How about + -ing."},{"type":"mcq","prompt":"Why don't you ___ a tablet?","options":["get","getting","to get","got"],"answer":"get","explanation":"Why don't you + base verb."},{"type":"fill","prompt":"You shouldn't leave without ___ (say) goodbye.","answer":"saying"},{"type":"fill","prompt":"My dad finished ___ (paint) my room yesterday.","answer":"painting"}]},{"id":"u3-r1","kind":"reading","title":"Machines at home","qs":[{"type":"mcq","prompt":"Who bought the smart speaker?","options":["Dad","Mum","Grandfather","The writer"],"answer":"Dad","passage":"reading-easy-132"},{"type":"mcq","prompt":"What colour is the light on the speaker?","options":["Blue","Black","Red","White"],"answer":"Blue","passage":"reading-easy-132"},{"type":"mcq","prompt":"What does the writer use the speaker for?","options":["To set an alarm","To check the weather","To play stories","To call friends"],"answer":"To set an alarm","passage":"reading-easy-132"},{"type":"truefalse","prompt":"The speaker always understands the grandfather.","answer":"False","explanation":"Sometimes it doesn't understand him.","passage":"reading-easy-132"},{"type":"mcq","prompt":"Which is the busiest room in the house?","options":["The kitchen","The living room","The bedroom","The garden"],"answer":"The kitchen","passage":"reading-easy-134"},{"type":"mcq","prompt":"What does Dad use the microwave for?","options":["To heat his breakfast","To make tea","To wash plates","To keep juice cold"],"answer":"To heat his breakfast","passage":"reading-easy-134"},{"type":"mcq","prompt":"Where do they put the plates after lunch?","options":["In the dishwasher","In the fridge-freezer","In the microwave","In the washing machine"],"answer":"In the dishwasher","passage":"reading-easy-134"},{"type":"truefalse","prompt":"The writer often uses the coffee maker.","answer":"False","explanation":"The writer is not allowed to use it yet.","passage":"reading-easy-134"}]},{"id":"u3-r2","kind":"reading","title":"Robots and smart homes","qs":[{"type":"mcq","prompt":"What can some robots already do?","options":["Clean floors and cut the grass","Cook big dinners","Drive children to school","Teach English"],"answer":"Clean floors and cut the grass","passage":"reading-medium-134"},{"type":"mcq","prompt":"What is the robot in Japan for?","options":["Helping older people stand up and walk","Washing cars","Playing football","Cleaning windows"],"answer":"Helping older people stand up and walk","passage":"reading-medium-134"},{"type":"truefalse","prompt":"Home robots are cheap today.","answer":"False","explanation":"They are still very expensive.","passage":"reading-medium-134"},{"type":"mcq","prompt":"Why don't some people want a robot at home?","options":["They don't feel comfortable with it.","Robots are too small.","Robots are too noisy.","Robots can't move."],"answer":"They don't feel comfortable with it.","passage":"reading-medium-134"},{"type":"mcq","prompt":"What can you do from your phone in a smart home?","options":["Switch off the lights","Cook dinner","Clean the floor","Wash clothes by hand"],"answer":"Switch off the lights","passage":"reading-challenge-134"},{"type":"mcq","prompt":"How can smart devices save energy?","options":["They switch things off when nobody is in the room.","They use solar panels.","They work only at night.","They are very small."],"answer":"They switch things off when nobody is in the room.","passage":"reading-challenge-134"},{"type":"mcq","prompt":"Why are some people worried about smart speakers?","options":["They are always listening.","They are too loud.","They are ugly.","They are too cheap."],"answer":"They are always listening.","passage":"reading-challenge-134"},{"type":"truefalse","prompt":"Smart homes always work well without the internet.","answer":"False","explanation":"Some become useless without the internet.","passage":"reading-challenge-134"}]},{"id":"u3-w1","kind":"writing","title":"Plans and advice","qs":[{"type":"build","prompt":"will (prediction)","answer":"I think robots will help us at home."},{"type":"build","prompt":"going to (plan)","answer":"I am going to learn French next year."},{"type":"build","prompt":"Advice","answer":"You should switch off the lights to save energy."},{"type":"build","prompt":"Suggestion","answer":"Why don't we make an omelette for lunch?"},{"type":"correct","prompt":"Look at the clouds! It will rain.","answer":"Look at the clouds! It is going to rain.|Look at the clouds! It's going to rain.","explanation":"Evidence now \u2192 going to."},{"type":"correct","prompt":"I play in a football match on Saturday.","answer":"I am playing in a football match on Saturday.|I'm playing in a football match on Saturday.","explanation":"Arrangement \u2192 present continuous."},{"type":"order","prompt":"Smart homes","items":["Smart homes are becoming more popular every year.","On the one hand, they save time and energy.","On the other hand, they can be expensive and need the internet.","In conclusion, I think they are useful, but not for everyone."]},{"type":"order","prompt":"An email with plans","items":["Hi Laila,","Are you free next Thursday?","We're going to visit the new science museum.","Let me know if you can come! Mariam"]}]},{"id":"u3-t","kind":"test","title":"Unit 3 Test","qs":[{"type":"mcq","prompt":"Learning a new language is a big ___.","options":["challenge","earphones","screen","air conditioning"],"answer":"challenge"},{"type":"mcq","prompt":"Big cars ___ a lot of fuel.","options":["consume","predict","tell","stay"],"answer":"consume"},{"type":"mcq","prompt":"Artists ___ beautiful things.","options":["create","predict","translate","realise"],"answer":"create"},{"type":"mcq","prompt":"YouTube is a popular video ___.","options":["platform","hologram","games controller","microwave"],"answer":"platform"},{"type":"mcq","prompt":"Can you ___ who will win the match?","options":["predict","create","stay","achieve"],"answer":"predict"},{"type":"mcq","prompt":"We can have pizza or a burger \u2013 what's your ___?","options":["preference","screen","smart watch","dishwasher"],"answer":"preference"},{"type":"correct","prompt":"I think robots will cleaning our homes.","answer":"I think robots will clean our homes.","explanation":"will + base verb"},{"type":"correct","prompt":"Look at those clouds! It will rain.","answer":"Look at those clouds! It's going to rain.","explanation":"Evidence now \u2192 going to"},{"type":"correct","prompt":"We going to visit Sur next week.","answer":"We are going to visit Sur next week.","explanation":"are going to"},{"type":"correct","prompt":"I enjoy to watch talent shows.","answer":"I enjoy watching talent shows.","explanation":"enjoy + -ing"},{"type":"correct","prompt":"You should to practise every day.","answer":"You should practise every day.","explanation":"should + base verb"},{"type":"correct","prompt":"Learn a language is fun.","answer":"Learning a language is fun.","explanation":"-ing as subject"},{"type":"build","prompt":"Will (prediction)","answer":"Robots will do most of the housework."},{"type":"build","prompt":"Will (prediction)","answer":"I think people will live on the moon."}]}]}],"passages":{"reading-easy-135":{"title":"The School Talent Show","text":"Last Thursday, our school had a talent show in the big hall. Twelve students took part. Majid told funny stories and everyone laughed. Two brothers did a science performance with water and colours. Yousef was very nervous before he went on stage, but he read his poem beautifully. At the end, the head teacher gave Yousef first prize. He was really pleased!"},"reading-easy-136":{"title":"A Day in Wadi Shab","text":"On Saturday, my family went to Wadi Shab. It is a beautiful valley near the coast, between Muscat and Sur. We walked for about an hour between the mountains. Then we swam in the green pools. The water was cool and clear. My little sister was scared at first, but then she loved it. We ate sandwiches under a tree and drove home in the evening."},"reading-easy-131":{"title":"My Cousin Hamed","text":"My cousin Hamed is fifteen and he lives in Nizwa. He is very sociable and he has got lots of friends. He is also funny, and he always makes everyone laugh at family dinners. Hamed is sporty too. He plays football three times a week and he swims on Fridays. His sister Aisha is different. She is quite shy, but she is very clever and she reads a book every week."},"reading-medium-135":{"title":"An Email from Muscat","text":"Hi Tom,\nThanks for your email! I'm writing to you from my grandparents' house in Muscat. We're staying here for the holidays. Right now, my grandmother is making halwa in the kitchen and the whole house smells delicious! Every morning, I go for a walk on the beach with my grandfather. He's teaching me the names of the fish that the fishermen catch. Tomorrow we're going to visit the old fort in Muttrah. What are you doing these days? Write back soon,\nSaif"},"reading-medium-131":{"title":"Why Are Some People Shy?","text":"Many teenagers feel shy, especially when they meet new people. A shy person often feels nervous about speaking in front of others and worries about what people think. Experts say that shyness is normal and that it is not the same as being unfriendly. In fact, many shy people are kind, good listeners and loyal friends. If you are shy, start with small steps. Say hello to one new person each day, or ask a classmate a simple question. Little by little, you will become more confident."},"reading-challenge-133":{"title":"Introverts and Extroverts","text":"Psychologists often describe people as introverts or extroverts. Extroverts usually feel energetic when they are with other people. They enjoy parties, team sports and talking to strangers. Introverts, on the other hand, need quiet time alone to recharge after being with groups. This doesn't mean introverts are rude or unfriendly; they simply prefer deep conversations with a few close friends. Most people are actually somewhere in the middle. Understanding your personality can help you choose activities, study methods and even jobs that suit you."},"reading-easy-133":{"title":"Learning a New Language","text":"Salma is learning Spanish. She started six months ago because her family is going to visit Spain next summer. She has a lesson online every Tuesday, and she practises with an app for ten minutes every day. The hardest part for her is pronunciation, because some sounds are very different from Arabic. Her teacher is very patient and she always explains things clearly."},"reading-medium-132":{"title":"One Country, Many Languages","text":"Arabic is the official language of Oman, but people speak several other languages there too. In the south, some families speak Jibbali or Mehri at home. These are very old languages, and they have no written form that most people use. On the coast, you can also hear Swahili and Balochi, because of Oman's long history of trade. For many Omanis, speaking two languages is part of their identity and culture. Today, most students also learn English at school."},"reading-medium-133":{"title":"The Night the Power Went Off","text":"Last winter, there was a big storm in our town. I was doing my homework on my tablet, my brother was watching a football match on TV, and my mum was cooking dinner. Suddenly, all the lights went off. The TV, the fridge and the air conditioning stopped. My brother was annoyed because the match was exciting. We found some candles and sat together in the living room. My dad told us stories about his childhood, when his village didn't have electricity. In the end, it was a really lovely evening."},"reading-challenge-132":{"title":"Languages at Risk","text":"There are about seven thousand languages in the world today, but experts believe that almost half of them are at risk. When the last speakers of a language die, the language disappears, and so does a lot of knowledge about plants, animals, history and culture. Young people often prefer the language they hear at school, on TV and on social media, so they stop using the language of their grandparents. Fortunately, communities are fighting back. They are recording older speakers, creating dictionaries and even developing apps so that children can learn their local language on a phone."},"reading-easy-132":{"title":"Our New Smart Speaker","text":"Last month my dad bought a smart speaker for our living room. It is small and black, and it has got a blue light on the top. We talk to it every day. In the morning, my mum asks it about the weather. My little brother asks it to play funny stories. I use it to set an alarm for school. Sometimes it doesn't understand my grandfather, so he says the question again, slowly and loudly!"},"reading-easy-134":{"title":"A Busy Kitchen","text":"Our kitchen is the busiest room in the house. In the morning, my mum switches on the kettle and makes tea. My dad heats his breakfast in the microwave because he is always in a hurry. After lunch, we put the plates in the dishwasher. We keep fruit, milk and juice in the big fridge-freezer. My favourite machine is the coffee maker, but I'm not allowed to use it yet!"},"reading-medium-134":{"title":"Robot Helpers at Home","text":"Engineers are building robots that will help people at home. Some robots can already clean floors and cut the grass. Soon, robots will probably fold clothes, wash dishes and even cook simple meals. A company in Japan is testing a robot that can help older people stand up and walk. However, home robots are still very expensive, and many people don't feel comfortable with a machine in their house. Experts think that in about twenty years, robots will be as common as washing machines."},"reading-challenge-134":{"title":"Smart Homes: Helpful or Harmful?","text":"In a smart home, you can switch off the lights, turn up the air conditioning or check who is at the door, all from your phone. Many families love the convenience. Smart devices can also save energy, because they switch things off when nobody is in the room. However, some people are worried. Smart speakers are always listening for commands, so what happens to all that information? And if the internet stops working, some 'smart' homes become surprisingly useless. Before buying a smart device, it is a good idea to read about how the company protects your data."}}};
+
+/* ================= helpers ================= */
+var STORE = "epz-path-v1";
+var $ = function (s, r) { return (r || document).querySelector(s); };
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+function shuffle(arr) { var a = arr.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function shuffleNotSame(arr) { if (arr.length < 2) return arr.slice(); var a, n = 0; do { a = shuffle(arr); n++; } while (n < 20 && a.every(function (x, i) { return x === arr[i]; })); return a; }
+function pickOne(a) { return a[Math.floor(Math.random() * a.length)]; }
+function pad2(n) { return (n < 10 ? "0" : "") + n; }
+function dayKey(d) { d = d || new Date(); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+function yesterdayKey() { var d = new Date(); d.setDate(d.getDate() - 1); return dayKey(d); }
+
+/* answer checking (same rules as the main page) */
+function normalize(s) { return String(s == null ? "" : s).replace(/[’‘]/g, "'").replace(/[“”]/g, '"').toLowerCase().replace(/[.,!?;:"]/g, "").replace(/\s+/g, " ").trim(); }
+function answerMatches(given, key) { var g = normalize(given); return String(key == null ? "" : key).split("|").some(function (k) { return normalize(k) !== "" && normalize(k) === g; }); }
+function firstAnswer(key) { return String(key == null ? "" : key).split("|")[0]; }
+function expandShort(s) {
+  return String(s == null ? "" : s).replace(/[’‘]/g, "'").toLowerCase()
+    .replace(/\bcan't\b/g, "cannot").replace(/\bcan not\b/g, "cannot").replace(/\bwon't\b/g, "will not").replace(/\bshan't\b/g, "shall not")
+    .replace(/\b([a-z]+)n't\b/g, "$1 not").replace(/\bi'm\b/g, "i am").replace(/\b([a-z]+)'re\b/g, "$1 are").replace(/\b([a-z]+)'ll\b/g, "$1 will").replace(/\b([a-z]+)'ve\b/g, "$1 have");
+}
+function answerForms(s) {
+  var forms = [expandShort(s)];
+  var RULES = [[/\b([a-z]+)'s\b/, ["is", "has"], "s"], [/\b([a-z]+)'d\b/, ["would", "had"], "d"]];
+  RULES.forEach(function (r) {
+    for (var round = 0; round < 4 && forms.some(function (v) { return r[0].test(v); }); round++) {
+      forms = [].concat.apply([], forms.map(function (v) {
+        return r[0].test(v) ? [v.replace(r[0], "$1" + r[2])].concat(r[1].map(function (w) { return v.replace(r[0], "$1 " + w); })) : [v];
+      }));
+    }
+  });
+  return forms.map(function (v) { return v.replace(//g, "'"); });
+}
+function typedMatches(given, key) {
+  var keys = [].concat.apply([], String(key == null ? "" : key).split("|").map(answerForms)).join("|");
+  return answerForms(given).some(function (g) { return answerMatches(g, keys); });
+}
+function formatPrompt(t) { return esc(t || "").replace(/_{2,}/g, '<span class="blank"></span>'); }
+
+/* ================= icons ================= */
+var P = {
+  flame: '<path d="M12 2c1 3.5 5 5.5 5 10.5A5 5 0 0 1 7 12.5c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-9z" fill="currentColor" stroke="none"/>',
+  star: '<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="currentColor" stroke="none"/>',
+  heart: '<path d="M12 21s-7.5-4.6-9.5-9.3C1.2 8.4 3.3 5 6.7 5c2 0 3.5 1.1 4.3 2.6C11.8 6.1 13.3 5 15.3 5c3.4 0 5.5 3.4 4.2 6.7C19.5 16.4 12 21 12 21z" fill="currentColor" stroke="none"/>',
+  heartbreak: '<path d="M12 21s-7.5-4.6-9.5-9.3C1.2 8.4 3.3 5 6.7 5c2 0 3.5 1.1 4.3 2.6l-1.5 3 3 2-1.5 3.5 2.5-3.5-3-2 1.6-3C12.9 6 14.2 5 15.3 5c3.4 0 5.5 3.4 4.2 6.7C19.5 16.4 12 21 12 21z" fill="currentColor" stroke="none"/>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2.5" fill="currentColor" stroke="none"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  trophy: '<path d="M7 4h10v5a5 5 0 0 1-10 0z" fill="currentColor"/><path d="M7 6H4v1.5A3.5 3.5 0 0 0 7.5 11M17 6h3v1.5a3.5 3.5 0 0 1-3.5 3.5M12 14v4M8 20h8"/>',
+  vocab: '<path d="M4 19.5V5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2zm0 0A2 2 0 0 0 6 21.5h13"/><path d="M9 13l2.5-6 2.5 6M9.8 11h3.4"/>',
+  grammar: '<path d="M4 7V5h10v2M9 5v14M7 19h4"/><path d="M14 13v-1.5h7V13M17.5 11.5V19M16 19h3"/>',
+  reading: '<path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2zM22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z"/>',
+  writing: '<path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"/><path d="M14 6l3 3"/>',
+  volon: '<path d="M11 5L6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>',
+  voloff: '<path d="M11 5L6 9H3v6h3l5 4z" fill="currentColor"/><path d="M22 9l-6 6M16 9l6 6"/>',
+  book: '<path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H20v16H5.5A1.5 1.5 0 0 0 4 20.5zM4 20.5A1.5 1.5 0 0 0 5.5 22H20"/>',
+  sun: '<circle cx="12" cy="12" r="4" fill="currentColor"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/>',
+  bolt: '<path d="M13 2L4 14h7l-1 8 9-12h-7z" fill="currentColor" stroke="none"/>'
+};
+function icon(n, size, extra) { return '<svg class="ic" width="' + (size || 24) + '" height="' + (size || 24) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"' + (extra || "") + ">" + (P[n] || P.star) + "</svg>"; }
+
+var KINDS = {
+  vocab: { name: "Vocabulary", icon: "vocab", color: "#0B8F63" },
+  grammar: { name: "Grammar", icon: "grammar", color: "#6C4CE0" },
+  reading: { name: "Reading", icon: "reading", color: "#1D5FD6" },
+  writing: { name: "Writing practice", icon: "writing", color: "#B45309" },
+  test: { name: "Unit Test", icon: "trophy", color: "#C98207" }
+};
+var UNIT_ICONS = { starter: "sun", u1: "target", u2: "book", u3: "bolt" };
+var PAIR_COLORS = ["#1D5FD6", "#B4236F", "#0B8F63", "#C2410C", "#6C4CE0", "#0E7490"];
+
+/* ================= progress (saved on this phone only) ================= */
+function blank() { return { v: 1, xp: 0, streak: 0, lastDay: "", done: {}, sound: true }; }
+function load() {
+  try {
+    var s = JSON.parse(localStorage.getItem(STORE) || "null");
+    if (s && s.v === 1) { var b = blank(); for (var k in b) if (!(k in s)) s[k] = b[k]; return s; }
+  } catch (e) {}
+  return blank();
+}
+var S = load();
+function save() { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {} }
+function liveStreak() { return (S.lastDay === dayKey() || S.lastDay === yesterdayKey()) ? S.streak : 0; }
+
+var ORDER = [];
+DATA.units.forEach(function (u) { u.lessons.forEach(function (l) { l.unit = u; ORDER.push(l); }); });
+function isDone(l) { return !!S.done[l.id]; }
+function isOpen(l) { var i = ORDER.indexOf(l); return i === 0 || isDone(ORDER[i - 1]); }
+function currentLesson() { for (var i = 0; i < ORDER.length; i++) if (!isDone(ORDER[i])) return ORDER[i]; return null; }
+
+/* ================= short sound effects (no music) ================= */
+var AC = null;
+function tone(freq, start, dur, type, vol) {
+  try {
+    if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+    if (AC.state === "suspended") AC.resume();
+    var t = AC.currentTime + start, o = AC.createOscillator(), g = AC.createGain();
+    o.type = type || "sine"; o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.18, t + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + dur + 0.02);
+  } catch (e) {}
+}
+var SFX = {
+  good: function () { tone(784, 0, 0.13); tone(1175, 0.09, 0.2); },
+  bad: function () { tone(220, 0, 0.16, "triangle", 0.22); tone(165, 0.12, 0.25, "triangle", 0.22); },
+  win: function () { [523, 659, 784, 1047].forEach(function (f, i) { tone(f, i * 0.11, 0.22, "sine", 0.17); }); },
+  lose: function () { [392, 330, 262].forEach(function (f, i) { tone(f, i * 0.15, 0.25, "triangle", 0.18); }); },
+  tap: function () { tone(660, 0, 0.05, "sine", 0.06); }
+};
+function sfx(n) { if (S.sound && SFX[n]) SFX[n](); }
+
+/* ================= path screen ================= */
+function renderStats() {
+  var st = liveStreak(), safe = S.lastDay === dayKey();
+  var es = $("#st-streak"); es.innerHTML = icon("flame", 20) + st; es.classList.toggle("off", !safe);
+  es.setAttribute("aria-label", st + " day streak");
+  $("#st-xp").innerHTML = icon("star", 20) + S.xp; $("#st-xp").setAttribute("aria-label", S.xp + " XP");
+  $("#snd").innerHTML = icon(S.sound ? "volon" : "voloff", 22);
+  var dc = $("#daycard");
+  dc.className = "daycard" + (safe ? " safe" : "");
+  dc.innerHTML = '<div class="big">' + icon(safe ? "check" : "flame", 28) + "</div><div>" +
+    (safe ? "<b>Great! Your streak is safe today.</b><span>" + st + " day streak. Come back tomorrow!</span>"
+      : (st > 0 ? "<b>Keep your " + st + " day streak!</b><span>Finish one lesson today.</span>" : "<b>Start a daily streak!</b><span>Finish one lesson every day.</span>")) + "</div>";
+}
+var OFFS = [0, 46, 68, 46, 0, -46, -68, -46];
+function shade(hex) { var n = parseInt(hex.slice(1), 16), r = (n >> 16) * 0.72, g = ((n >> 8) & 255) * 0.72, b = (n & 255) * 0.72; return "rgb(" + (r | 0) + "," + (g | 0) + "," + (b | 0) + ")"; }
+function renderPath() {
+  renderStats();
+  var cur = currentLesson(), html = "";
+  DATA.units.forEach(function (u) {
+    var done = u.lessons.filter(isDone).length, open = isOpen(u.lessons[0]);
+    html += '<section class="unit' + (open ? "" : " locked") + '" id="unit-' + u.id + '">' +
+      '<div class="unit-head" style="background:' + u.color + '"><div class="grow"><div class="lbl">' + esc(u.label) + "</div><h2>" + esc(u.name) + "</h2>" +
+      '<div class="bar"><i style="width:' + Math.round(done / u.lessons.length * 100) + '%"></i></div><div class="cnt">' + done + " of " + u.lessons.length + " lessons done</div></div>" +
+      '<div class="badge">' + icon(UNIT_ICONS[u.id] || "star", 30) + "</div></div>" +
+      '<div class="nodes">';
+    u.lessons.forEach(function (l, i) {
+      var k = KINDS[l.kind], st = isDone(l) ? "done" : (isOpen(l) ? "open" : "locked"), isCur = l === cur, isTest = l.kind === "test";
+      var cls = "node" + (isTest ? " test" : "") + (st === "done" ? " done" : st === "locked" ? " locked" : "") + (isCur ? " current" : "");
+      var style = st === "open" ? ' style="--c:' + u.color + ";--cd:" + shade(u.color) + '"' : "";
+      var ic = st === "locked" ? icon(isTest ? "trophy" : "lock", isTest ? 38 : 30) : icon(k.icon, isTest ? 40 : 32);
+      html += '<div class="node-wrap ' + st + (isCur ? " cur" : "") + '" style="transform:translateX(' + (isTest ? 0 : OFFS[i % OFFS.length]) + 'px)">' +
+        (isCur ? '<div class="start-tip" style="--c:' + u.color + '">START</div>' : "") +
+        '<button type="button" class="' + cls + '"' + style + ' data-l="' + l.id + '" aria-label="' + esc(k.name + ": " + l.title + (st === "locked" ? " (locked)" : st === "done" ? " (done)" : "")) + '">' + ic +
+        (st === "done" ? '<span class="tick">' + icon("check", 15, ' stroke-width="3.5" style="color:#fff"') + "</span>" : "") + "</button>" +
+        '<div class="node-name">' + esc(l.title) + "<small>" + esc(k.name) + "</small></div></div>";
+    });
+    html += "</div></section>";
+  });
+  if (!cur) html += '<div class="finish"><span style="color:var(--sun-deep)">' + icon("trophy", 56) + '</span><h2>You finished the whole path!</h2><p style="color:var(--muted);font-weight:700;margin:6px 0 0">Well done! You can practise any lesson again for more XP.</p></div>';
+  $("#path").innerHTML = html;
+}
+function scrollToCurrent(smooth) {
+  var cur = currentLesson(); if (!cur || ORDER.indexOf(cur) === 0) return;
+  var el = document.querySelector('[data-l="' + cur.id + '"]'); if (!el) return;
+  var y = el.getBoundingClientRect().top + window.pageYOffset - window.innerHeight * 0.45;
+  window.scrollTo({ top: Math.max(0, y), behavior: smooth ? "smooth" : "auto" });
+}
+
+/* ================= sheets ================= */
+function closeLayer() { $("#layer").innerHTML = ""; }
+function openSheet(inner, center) {
+  $("#layer").innerHTML = '<div class="shade' + (center ? " center" : "") + '"><div class="sheet" role="dialog" aria-modal="true">' + inner + "</div></div>";
+  var sh = $("#layer .shade");
+  sh.addEventListener("click", function (e) { if (e.target === sh) closeLayer(); });
+  return sh;
+}
+function xpFor(l, replay) { var base = l.kind === "test" ? 20 : 10; return replay ? Math.round(base / 2) : base; }
+function lessonSheet(l) {
+  var k = KINDS[l.kind], st = isDone(l) ? "done" : (isOpen(l) ? "open" : "locked");
+  var n = l.kind === "test" ? Math.min(10, l.qs.length) : l.qs.length;
+  var prev = ORDER[ORDER.indexOf(l) - 1];
+  var body = '<span class="kind" style="background:' + (st === "locked" ? "#8A9893" : k.color) + '">' + icon(k.icon, 16) + esc(k.name) + "</span>" +
+    "<h3>" + esc(l.title) + "</h3>";
+  if (st === "locked") {
+    body += "<p>" + icon("lock", 18) + " Locked. First finish: <b>" + esc(prev.title) + "</b> (" + esc(prev.unit.label) + ").</p>" +
+      '<button class="btn ghost" data-act="close">OK</button>';
+  } else {
+    body += "<p>" + esc(l.unit.label + ": " + l.unit.name) + " &middot; " + n + " questions &middot; +" + xpFor(l, st === "done") + " XP" + (st === "done" ? " (practice)" : "") + "</p>" +
+      '<button class="btn" data-act="go" style="background:' + l.unit.color + ";box-shadow:0 5px 0 " + shade(l.unit.color) + '">' + (st === "done" ? "Practise again" : (l.kind === "test" ? "Start the test" : "Start")) + "</button>";
+  }
+  var sh = openSheet(body);
+  sh.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-act]"); if (!b) return;
+    closeLayer();
+    if (b.dataset.act === "go") startLesson(l);
+  });
+  var f = sh.querySelector(".btn"); if (f) f.focus({ preventScroll: true });
+}
+
+/* ================= lesson engine ================= */
+var L = null; // the lesson that is running
+function startLesson(l) {
+  var qs = l.qs.map(function (q, i) { return { q: q, id: i }; });
+  if (l.kind === "test") qs = shuffle(qs).slice(0, 10);
+  L = { lesson: l, total: qs.length, queue: qs, right: 0, mistakes: 0, hearts: 5, cur: null, ctrl: null, phase: "answer" };
+  var el = document.createElement("div");
+  el.className = "lesson"; el.id = "lesson"; el.setAttribute("role", "dialog"); el.setAttribute("aria-label", l.title);
+  el.innerHTML = '<div class="l-top"><button class="iconbtn" id="quit" type="button" aria-label="Quit lesson">' + icon("x", 26) + "</button>" +
+    '<div class="prog" role="progressbar" aria-label="Lesson progress"><i></i></div><span class="hearts" id="hearts"></span></div>' +
+    '<div class="l-body"><div class="inner" id="qarea"></div></div>' +
+    '<div class="l-foot" id="foot"><div class="inner" id="footin"></div></div>';
+  document.body.appendChild(el);
+  document.body.style.overflow = "hidden";
+  $("#quit").addEventListener("click", askQuit);
+  nextQuestion();
+}
+function updateTop() {
+  $("#lesson .prog i").style.width = Math.round(L.right / L.total * 100) + "%";
+  var h = $("#hearts"); h.innerHTML = icon("heart", 24) + L.hearts; h.setAttribute("aria-label", L.hearts + " hearts left");
+}
+function setFoot(html, cls) { $("#foot").className = "l-foot" + (cls ? " " + cls : ""); $("#footin").innerHTML = html; }
+function nextQuestion() {
+  updateTop();
+  if (!L.queue.length) return finishLesson();
+  L.cur = L.queue.shift(); L.phase = "answer";
+  var area = $("#qarea"); area.innerHTML = "";
+  $("#lesson .l-body").scrollTop = 0;
+  setFoot('<button class="btn" id="check" type="button" disabled>Check</button>');
+  $("#check").addEventListener("click", doCheck);
+  L.ctrl = mountQuestion(L.cur.q, area, function (ready) { var b = $("#check"); if (b) b.disabled = !ready; });
+}
+function doCheck() {
+  if (!L || L.phase !== "answer") return;
+  var b = $("#check"); if (!b || b.disabled) return;
+  L.phase = "feedback";
+  var r = L.ctrl.evaluate();
+  if (r.ok) { L.right++; sfx("good"); }
+  else {
+    L.mistakes++; L.hearts--; sfx("bad");
+    L.queue.push(L.cur); // the question comes back later
+    var h = $("#hearts"); h.classList.remove("hit"); void h.offsetWidth; h.classList.add("hit");
+  }
+  updateTop();
+  var q = L.cur.q;
+  var ex = q.explanation ? '<div class="ex">' + esc(q.explanation) + "</div>" : "";
+  var html = r.ok
+    ? '<div class="fb fb-anim"><span class="bi" style="color:var(--good)">' + icon("check", 28, ' stroke-width="3.2"') + "</span><div><h3>" + pickOne(["Great job!", "Correct!", "Well done!", "Excellent!", "Nice work!"]) + "</h3>" + ex + "</div></div>" +
+      '<button class="btn green" id="cont" type="button">Continue</button>'
+    : '<div class="fb fb-anim"><span class="bi" style="color:var(--bad)">' + icon("x", 28, ' stroke-width="3.2"') + "</span><div><h3>Not quite.</h3><div>Correct answer:</div><div class=\"ans\">" + esc(r.correctText) + "</div>" + ex + "</div></div>" +
+      '<button class="btn red" id="cont" type="button">Got it</button>';
+  setFoot(html, r.ok ? "ok" : "no");
+  var c = $("#cont"); c.addEventListener("click", afterFeedback); c.focus({ preventScroll: true });
+}
+function afterFeedback() {
+  if (!L || L.phase !== "feedback") return;
+  if (L.hearts <= 0) return outOfHearts();
+  nextQuestion();
+}
+function closeLesson() { var el = $("#lesson"); if (el) el.remove(); var r = $("#result"); if (r) r.remove(); document.body.style.overflow = ""; L = null; }
+function askQuit() {
+  var sh = openSheet('<h3 style="margin-top:0">Quit this lesson?</h3><p>Your answers in this lesson will not be saved.</p>' +
+    '<button class="btn" data-a="stay">Keep going</button><button class="btn ghost" data-a="quit">Quit</button>', true);
+  sh.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-a]"); if (!b) return;
+    closeLayer(); if (b.dataset.a === "quit") { closeLesson(); renderPath(); }
+  });
+}
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" && $("#layer").innerHTML) { closeLayer(); return; }
+  if (e.key !== "Enter" || !L || $("#layer").innerHTML) return;
+  var t = e.target, tag = t && t.tagName;
+  if (tag === "BUTTON" && t.id !== "check" && t.id !== "cont") return;
+  if (L.phase === "answer") { var b = $("#check"); if (tag === "TEXTAREA" || (b && !b.disabled)) e.preventDefault(); if (b && !b.disabled) doCheck(); }
+  else if (L.phase === "feedback") { e.preventDefault(); afterFeedback(); }
+});
+
+/* ---------- end screens ---------- */
+function showResult(sad, inner) {
+  var el = document.createElement("div"); el.className = "result" + (sad ? " sad" : ""); el.id = "result"; el.innerHTML = inner;
+  document.body.appendChild(el);
+  var les = $("#lesson"); if (les) les.style.display = "none";
+}
+function outOfHearts() {
+  L.phase = "end"; sfx("lose");
+  var l = L.lesson;
+  showResult(true, '<div class="medal">' + icon("heartbreak", 64, ' style="color:#fff"') + "</div><h2>Out of hearts</h2>" +
+    '<p class="msg">That\'s OK! Mistakes help you learn. Try again with 5 full hearts.</p>' +
+    '<div class="acts"><button class="btn" id="r-again">Try again</button><button class="btn ghost" id="r-path">Back to the path</button></div>');
+  $("#r-again").addEventListener("click", function () { closeLesson(); startLesson(l); });
+  $("#r-path").addEventListener("click", function () { closeLesson(); renderPath(); });
+  $("#r-again").focus({ preventScroll: true });
+}
+function finishLesson() {
+  L.phase = "end";
+  var l = L.lesson, firstTime = !isDone(l), perfect = L.mistakes === 0;
+  var xp = xpFor(l, !firstTime) + (perfect ? 5 : 0);
+  var acc = Math.round(L.total / (L.total + L.mistakes) * 100);
+  var today = dayKey(), streakUp = S.lastDay !== today;
+  if (streakUp) { S.streak = (S.lastDay === yesterdayKey()) ? S.streak + 1 : 1; S.lastDay = today; }
+  S.xp += xp;
+  var rec = S.done[l.id] || { best: 0, times: 0 };
+  rec.best = Math.max(rec.best, acc); rec.times++; S.done[l.id] = rec;
+  save();
+  sfx("win");
+  var isTest = l.kind === "test", last = ORDER.indexOf(l) === ORDER.length - 1;
+  var title = isTest ? l.unit.label + " complete!" : "Lesson complete!";
+  var msg = isTest ? "Amazing! You passed the " + esc(l.unit.label) + " test." + (last ? " You finished the whole path!" : (firstTime ? " The next unit is open now." : ""))
+    : (perfect ? "Perfect! No mistakes. +5 bonus XP." : "Well done! Keep practising every day.");
+  var boxes = '<div class="boxes">' +
+    '<div class="box" style="--c:#C98207"><div class="t">XP</div><div class="v">' + icon("star", 20) + "+" + xp + "</div></div>" +
+    '<div class="box" style="--c:#168A3F"><div class="t">' + (perfect ? "Perfect" : "Accuracy") + '</div><div class="v">' + icon("target", 20) + acc + "%</div></div>" +
+    '<div class="box" style="--c:#C2410C"><div class="t">Streak</div><div class="v">' + icon("flame", 20) + S.streak + "</div></div></div>";
+  showResult(false, '<div class="confetti" id="conf"></div><div class="medal">' + icon(isTest ? "trophy" : "star", 66, ' style="color:#fff"') + "</div>" +
+    "<h2>" + esc(title) + '</h2><p class="msg">' + msg + (streakUp ? "<br>" + S.streak + " day streak!" : "") + "</p>" + boxes +
+    '<div class="acts"><button class="btn" id="r-cont">Continue</button></div>');
+  confetti($("#conf"));
+  $("#r-cont").addEventListener("click", function () { closeLesson(); renderPath(); scrollToCurrent(true); });
+  $("#r-cont").focus({ preventScroll: true });
+}
+function confetti(box) {
+  var cols = ["#F4A51C", "#0B7A63", "#E5484D", "#1D5FD6", "#B4236F", "#6C4CE0"], h = "";
+  for (var i = 0; i < 46; i++) h += '<i style="left:' + (Math.random() * 100).toFixed(1) + "%;background:" + cols[i % cols.length] + ";animation-duration:" + (1.6 + Math.random() * 1.6).toFixed(2) + "s;animation-delay:" + (Math.random() * 0.5).toFixed(2) + 's"></i>';
+  box.innerHTML = h;
+}
+
+/* ================= question types ================= */
+function mountQuestion(q, area, setReady) {
+  var head = "";
+  if (q.passage && DATA.passages[q.passage]) {
+    var p = DATA.passages[q.passage];
+    head = '<details class="passage" open><summary>' + icon("reading", 20) + "Read: " + esc(p.title) + '<span class="tg"></span></summary><div class="txt">' + esc(p.text) + "</div></details>";
+  }
+  var t = q.type;
+  if (t === "mcq" || t === "truefalse") return mcq(q, area, setReady, head);
+  if (t === "fill") return typed(q, area, setReady, head, false);
+  if (t === "correct") return typed(q, area, setReady, head, true);
+  if (t === "build") return tiles(q, area, setReady, false);
+  if (t === "order") return tiles(q, area, setReady, true);
+  if (t === "match") return matcher(q, area, setReady);
+  area.innerHTML = "<p>Unknown question.</p>"; setReady(true);
+  return { evaluate: function () { return { ok: true, correctText: "" }; } };
+}
+function mcq(q, area, setReady, head) {
+  var tf = q.type === "truefalse";
+  var shown = tf ? ["True", "False"] : shuffle(q.options || []); // the first option is the right one, so mix them
+  var two = !tf && shown.every(function (o) { return String(o).length < 16; });
+  var sel = -1;
+  area.innerHTML = head + '<div class="q-kind">' + (tf ? "True or false?" : "Choose the correct answer") + "</div>" +
+    '<h2 class="q-prompt' + (q.prompt.length > 90 ? " small" : "") + '">' + formatPrompt(q.prompt) + "</h2>" + (q.hint ? '<p class="hint">Hint: ' + esc(q.hint) + "</p>" : "") +
+    '<div class="opts' + (two || tf ? " two" : "") + (tf ? " tf" : "") + '">' +
+    shown.map(function (o, i) { return '<button type="button" class="opt" data-i="' + i + '">' + (tf ? "" : '<span class="k">' + (i + 1) + "</span>") + "<span>" + esc(o) + "</span></button>"; }).join("") + "</div>";
+  var box = area.querySelector(".opts");
+  box.addEventListener("click", function (e) {
+    var b = e.target.closest(".opt"); if (!b || box.classList.contains("lock")) return;
+    sel = Number(b.dataset.i); sfx("tap");
+    box.querySelectorAll(".opt").forEach(function (x) { x.classList.toggle("sel", x === b); });
+    setReady(true);
+  });
+  return {
+    evaluate: function () {
+      var ok = String(shown[sel]) === String(q.answer);
+      box.classList.add("lock");
+      box.querySelectorAll(".opt").forEach(function (x, i) {
+        x.classList.remove("sel");
+        if (String(shown[i]) === String(q.answer)) x.classList.add("right");
+        else if (i === sel) x.classList.add("wrong");
+      });
+      return { ok: ok, correctText: q.answer };
+    }
+  };
+}
+function typed(q, area, setReady, head, isFix) {
+  area.innerHTML = head + '<div class="q-kind">' + (isFix ? "Fix the mistake" : "Type the answer") + "</div>" +
+    (isFix ? '<p class="lbl-s">This sentence has one mistake:</p><div class="wrongline">' + esc(q.prompt) + '</div><p class="lbl-s">Write the correct sentence:</p>'
+      : '<h2 class="q-prompt' + (q.prompt.length > 90 ? " small" : "") + '">' + formatPrompt(q.prompt) + "</h2>" + (q.hint ? '<p class="hint">Hint: ' + esc(q.hint) + "</p>" : "")) +
+    (isFix ? '<textarea class="answer-in" id="ans" rows="3" autocomplete="off" autocapitalize="sentences" spellcheck="false" aria-label="Your corrected sentence"></textarea>'
+      : '<input class="answer-in" id="ans" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type here" aria-label="Your answer">');
+  var inp = area.querySelector("#ans"); inp.value = isFix ? q.prompt : "";
+  var chk = function () { var v = inp.value.trim(); setReady(v !== "" && (!isFix || normalize(v) !== normalize(q.prompt))); };
+  inp.addEventListener("input", chk); chk();
+  setTimeout(function () { try { inp.focus({ preventScroll: true }); if (isFix) inp.setSelectionRange(inp.value.length, inp.value.length); } catch (e) {} }, 60);
+  return {
+    evaluate: function () {
+      var ok = typedMatches(inp.value, q.answer);
+      inp.readOnly = true; inp.classList.add(ok ? "right" : "wrong"); inp.blur();
+      return { ok: ok, correctText: firstAnswer(q.answer) };
+    }
+  };
+}
+function tiles(q, area, setReady, isOrder) {
+  var parts = isOrder ? (q.items || []) : firstAnswer(q.answer).trim().split(/\s+/);
+  var items = parts.map(function (text, i) { return { id: i, text: text }; });
+  var pool = shuffleNotSame(items), placed = [], locked = false;
+  area.innerHTML = '<div class="q-kind">' + (isOrder ? "Put the sentences in order" : "Build the sentence") + "</div>" +
+    '<h2 class="q-prompt small">' + (isOrder ? esc(q.prompt) : "Tap the words to make a sentence." + (q.prompt ? '<br><span style="color:var(--muted);font-size:17px">Focus: ' + esc(q.prompt) + "</span>" : "")) + "</h2>" +
+    '<div class="tiles-target' + (isOrder ? " v" : "") + '" id="tt"></div><div class="tiles-pool' + (isOrder ? " v" : "") + '" id="tp"></div>';
+  var tt = area.querySelector("#tt"), tp = area.querySelector("#tp");
+  function tileHtml(t, where, num) { return '<button type="button" class="tile" data-id="' + t.id + '" data-w="' + where + '">' + (num ? '<span class="n">' + num + "</span>" : "") + "<span>" + esc(t.text) + "</span></button>"; }
+  function draw() {
+    tt.innerHTML = placed.length ? placed.map(function (t, i) { return tileHtml(t, "placed", isOrder ? i + 1 : 0); }).join("")
+      : '<span class="ph">' + (isOrder ? "Tap the sentences below in the right order." : "Your sentence will appear here.") + "</span>";
+    tp.innerHTML = pool.map(function (t) { return tileHtml(t, "pool", 0); }).join("");
+    setReady(isOrder ? pool.length === 0 : placed.length > 0);
+  }
+  area.addEventListener("click", function (e) {
+    if (locked) return;
+    var b = e.target.closest(".tile"); if (!b) return;
+    var id = Number(b.dataset.id), t;
+    sfx("tap");
+    if (b.dataset.w === "placed") { t = placed.filter(function (x) { return x.id === id; })[0]; placed = placed.filter(function (x) { return x.id !== id; }); pool.push(t); }
+    else { t = pool.filter(function (x) { return x.id === id; })[0]; pool = pool.filter(function (x) { return x.id !== id; }); placed.push(t); }
+    draw();
+  });
+  draw();
+  return {
+    evaluate: function () {
+      locked = true;
+      var ok = isOrder ? placed.length === items.length && placed.every(function (t, i) { return t.text === parts[i]; })
+        : typedMatches(placed.map(function (t) { return t.text; }).join(" "), q.answer);
+      tt.classList.add(ok ? "right" : "wrong");
+      return { ok: ok, correctText: isOrder ? parts.map(function (p, i) { return (i + 1) + ". " + p; }).join("\n") : firstAnswer(q.answer) };
+    }
+  };
+}
+function matcher(q, area, setReady) {
+  var pairs = q.pairs || [], idx = pairs.map(function (p, i) { return i; });
+  var L1 = shuffle(idx), R1 = shuffleNotSame(idx);
+  var link = {}; // left index -> right index
+  var sel = null, locked = false;
+  area.innerHTML = '<div class="q-kind">Match the pairs</div><h2 class="q-prompt small">' + esc(q.prompt || "Match the words.") + "</h2>" +
+    '<p class="hint" style="margin-top:-6px">Tap a word on the left, then its partner on the right.</p><div class="match"><div class="col" id="ml"></div><div class="col" id="mr"></div></div>';
+  var ml = area.querySelector("#ml"), mr = area.querySelector("#mr");
+  function rightOwner(r) { for (var k in link) if (link[k] === r) return Number(k); return -1; }
+  function colorOf(l) { return PAIR_COLORS[L1.indexOf(l) % PAIR_COLORS.length]; }
+  function draw() {
+    ml.innerHTML = L1.map(function (i) {
+      var p = link[i] != null, s = sel && sel.side === "l" && sel.i === i;
+      return '<button type="button" class="mt' + (s ? " sel" : "") + '" data-side="l" data-i="' + i + '"' + (p ? ' data-p="1" style="background:' + colorOf(i) + '"' : "") + ">" + esc(pairs[i].left) + "</button>";
+    }).join("");
+    mr.innerHTML = R1.map(function (j) {
+      var o = rightOwner(j), s = sel && sel.side === "r" && sel.i === j;
+      return '<button type="button" class="mt' + (s ? " sel" : "") + '" data-side="r" data-i="' + j + '"' + (o >= 0 ? ' data-p="1" style="background:' + colorOf(o) + '"' : "") + ">" + esc(pairs[j].right) + "</button>";
+    }).join("");
+    setReady(Object.keys(link).length === pairs.length);
+  }
+  area.querySelector(".match").addEventListener("click", function (e) {
+    if (locked) return;
+    var b = e.target.closest(".mt"); if (!b) return;
+    var side = b.dataset.side, i = Number(b.dataset.i);
+    sfx("tap");
+    if (side === "l" && link[i] != null) { delete link[i]; sel = null; return draw(); }        // tap a pair again to undo it
+    if (side === "r" && rightOwner(i) >= 0) { delete link[rightOwner(i)]; sel = null; return draw(); }
+    if (!sel || sel.side === side) { sel = (sel && sel.side === side && sel.i === i) ? null : { side: side, i: i }; return draw(); }
+    var l = side === "l" ? i : sel.i, r = side === "r" ? i : sel.i;
+    link[l] = r; sel = null; draw();
+  });
+  draw();
+  return {
+    evaluate: function () {
+      locked = true;
+      var ok = pairs.every(function (p, i) { return link[i] === i; });
+      ml.querySelectorAll(".mt").forEach(function (b) { var i = Number(b.dataset.i); b.classList.add(link[i] === i ? "ok" : "bad"); });
+      mr.querySelectorAll(".mt").forEach(function (b) { var j = Number(b.dataset.i); b.classList.add(rightOwner(j) === j ? "ok" : "bad"); });
+      return { ok: ok, correctText: pairs.map(function (p) { return p.left + " → " + p.right; }).join("\n") };
+    }
+  };
+}
+
+/* ================= start ================= */
+$("#path").addEventListener("click", function (e) {
+  var b = e.target.closest("[data-l]"); if (!b) return;
+  var l = ORDER.filter(function (x) { return x.id === b.dataset.l; })[0];
+  if (l) { sfx("tap"); lessonSheet(l); }
+});
+$("#snd").addEventListener("click", function () { S.sound = !S.sound; save(); renderStats(); if (S.sound) sfx("good"); });
+$("#reset").addEventListener("click", function () {
+  var sh = openSheet('<h3 style="margin-top:0">Start again?</h3><p>This deletes your lessons, XP and streak on this phone.</p>' +
+    '<button class="btn red" data-a="yes">Yes, start again</button><button class="btn ghost" data-a="no">Cancel</button>', true);
+  sh.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-a]"); if (!b) return;
+    closeLayer();
+    if (b.dataset.a === "yes") { var snd = S.sound; S = blank(); S.sound = snd; save(); renderPath(); window.scrollTo(0, 0); }
+  });
+});
+renderPath();
+requestAnimationFrame(function () { scrollToCurrent(false); });
+</script>
+</body>
+</html>
