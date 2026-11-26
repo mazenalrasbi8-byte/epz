@@ -1667,6 +1667,97 @@ body.playing .tabbar { display: none; }
 @keyframes bk-bob { 50% { transform: translateY(-4px); } }
 @keyframes bk-shake { 20% { transform: translateX(-4px); } 40% { transform: translateX(4px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
 @media (prefers-reduced-motion: reduce) { .bk-node.now::after, .bk-start, .bk-hearts.hit, .bk-medal { animation: none !important; } }
+
+/* ============================================================ epz-patch:duo — hearts, praise, daily streak, avatar maker */
+.duo-chips { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.duo-chip { display: inline-flex; align-items: center; gap: 4px; background: var(--surface); border: 0; border-radius: 999px; padding: 6px 9px; font: inherit; font-weight: 900; color: var(--ink); text-decoration: none; box-shadow: var(--shadow); font-variant-numeric: tabular-nums; cursor: pointer; }
+.duo-chip svg { flex-shrink: 0; }
+.duo-fire svg { color: #FF8A1F; fill: #FFB020; }
+.duo-fire.off svg { color: #9AA8A4; fill: #D6E0DC; }
+.duo-heart svg { color: var(--bad); fill: var(--bad); }
+.duo-heart.empty svg { fill: none; }
+.top:has(.duo-chips) .brand > span:not(.logo-mark) { font-size: .92rem; }
+@media (max-width: 400px) { .top:has(.duo-chips) .brand > span:not(.logo-mark) { display: none; } }
+.duo-hp { display: inline-flex; align-items: center; gap: 4px; font-weight: 900; font-size: 1.05rem; color: var(--bad); font-variant-numeric: tabular-nums; }
+.duo-hp svg { fill: currentColor; }
+.duo-hp.hit { animation: duo-shake .45s ease; }
+@keyframes duo-shake { 0%, 100% { transform: none; } 25% { transform: translateX(-4px) scale(1.15); } 50% { transform: translateX(4px); } 75% { transform: translateX(-2px); } }
+.fb-txt .duo-kind { margin-top: 4px; font-weight: 700; }
+/* out of hearts */
+.duo-broken { color: var(--bad); animation: duo-beat 1.6s ease-in-out infinite; }
+.duo-broken svg { fill: var(--bad-bg); }
+@keyframes duo-beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+.duo-row { display: flex; gap: 6px; justify-content: center; }
+.duo-row i { color: #C9D3CF; }
+.duo-row i svg { fill: #E4EAE7; }
+.duo-row i.on { color: var(--bad); }
+.duo-row i.on svg { fill: var(--bad); }
+.duo-wait { display: flex; flex-direction: column; align-items: center; gap: 2px; background: var(--surface-2); border-radius: var(--r-s); padding: 10px 18px; min-width: 200px; }
+.duo-wait b { font-family: var(--display); font-size: 1.8rem; font-variant-numeric: tabular-nums; }
+.duo-wait span { color: var(--muted); font-weight: 700; font-size: .9rem; }
+/* praise */
+.duo-praise { display: flex; align-items: flex-end; gap: 10px; justify-content: center; width: 100%; }
+.duo-praise-av { flex-shrink: 0; animation: duo-hop .9s ease .2s 2; }
+.duo-bubble { position: relative; margin: 0; background: var(--good-bg); color: var(--good-ink); border-radius: 18px 18px 18px 4px; padding: 10px 14px; font-weight: 900; font-size: 1.05rem; text-align: left; max-width: 280px; animation: pop .35s ease; }
+@keyframes duo-hop { 0%, 100% { transform: none; } 40% { transform: translateY(-10px) rotate(-4deg); } }
+.duo-streak-up { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; background: #FFF1DC; color: #5A3300; border: 1.5px solid #FFC97A; border-radius: var(--r-s); padding: 12px 14px; animation: pop .35s ease; }
+.duo-streak-up b { display: block; font-family: var(--display); font-size: 1.15rem; }
+.duo-streak-up span:not(.duo-fl) { font-size: .9rem; font-weight: 700; }
+.duo-fl { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: #FFE0B0; flex-shrink: 0; }
+.duo-fl svg, .duo-big-fire svg { color: #FF7A00; fill: #FFB020; }
+.duo-fl svg { animation: duo-flick 1.2s ease-in-out infinite; }
+@keyframes duo-flick { 0%, 100% { transform: scale(1) rotate(0); } 50% { transform: scale(1.12) rotate(-4deg); } }
+/* streak screen */
+.duo-streak-hero { display: flex; flex-direction: column; align-items: center; gap: 0; padding: 22px 12px 18px; background: linear-gradient(180deg, #FF9F1C, #FF7A00); color: #fff; border-radius: var(--r); margin-top: 8px; }
+.duo-streak-hero.off { background: linear-gradient(180deg, #8FA19C, #6F807B); }
+.duo-big-fire svg { color: #FFF3D6; fill: #FFD36B; animation: duo-flick 1.6s ease-in-out infinite; }
+.duo-streak-hero.off .duo-big-fire svg { color: #E4EAE7; fill: #C9D3CF; animation: none; }
+.duo-big-n { font-family: var(--display); font-size: 3.4rem; line-height: 1; }
+.duo-big-l { font-weight: 900; font-size: 1.1rem; opacity: .95; }
+.duo-week { background: var(--surface); border-radius: var(--r); padding: 16px 14px; margin-top: 14px; color: var(--ink); }
+.duo-week ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+.duo-week li { display: flex; flex-direction: column; align-items: center; gap: 4px; font-weight: 800; font-size: .82rem; color: var(--muted); }
+.duo-week li i { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--surface-2); color: #B7C3BF; }
+.duo-week li i svg { fill: none; }
+.duo-week li.on i { background: #FFE6C2; color: #FF7A00; }
+.duo-week li.on i svg { fill: #FFB020; }
+.duo-week li.today span { color: var(--ink); }
+.duo-week li.today i { box-shadow: 0 0 0 2.5px var(--brand); }
+.duo-week p { margin: 0; font-weight: 700; text-align: center; }
+.duo-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+.duo-stats div { background: var(--surface); border-radius: var(--r-s); padding: 12px 6px; display: flex; flex-direction: column; align-items: center; color: var(--ink); }
+.duo-stats b { font-family: var(--display); font-size: 1.6rem; line-height: 1.1; }
+.duo-stats span { font-size: .8rem; font-weight: 700; color: var(--muted); text-align: center; }
+.duo-note { text-align: center; margin-top: 10px; }
+/* avatar */
+.avatar.duo-av { padding: 0; overflow: visible; background: transparent; box-shadow: 0 0 0 3px rgb(255 255 255 / .22); position: relative; }
+.avatar.duo-av .duo-av-svg { display: block; width: 100%; height: 100%; border-radius: 50%; }
+.avatar { position: relative; }
+.duo-av-edit { position: absolute; right: -4px; bottom: -4px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--sun); color: var(--sun-ink); box-shadow: 0 0 0 2px var(--board, #1F4A3D); }
+.duo-nudge { display: flex; align-items: center; gap: 12px; background: var(--surface); border-radius: var(--r); padding: 10px 14px; text-decoration: none; color: var(--ink); box-shadow: 0 3px 0 var(--line); border: 1.5px solid var(--line); }
+.duo-nudge-av { flex-shrink: 0; }
+.duo-av-mini { display: inline-block; vertical-align: middle; margin-right: 6px; }
+.duo-av-mini .duo-av-svg { display: block; }
+.duo-done { min-height: 40px; }
+.duo-av-stage { display: flex; flex-direction: column; align-items: center; gap: 10px; background: var(--surface); border-radius: var(--r); padding: 18px 12px 14px; margin-top: 6px; }
+.duo-av-stage .duo-av-svg { filter: drop-shadow(0 6px 10px rgb(19 35 47 / .15)); }
+.duo-av-tabs { display: flex; gap: 6px; overflow-x: auto; padding: 12px 2px 6px; scrollbar-width: none; }
+.duo-av-tabs::-webkit-scrollbar { display: none; }
+.duo-av-tabs button { flex-shrink: 0; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 8px 14px; font: inherit; font-weight: 800; cursor: pointer; }
+.duo-av-tabs button[aria-selected="true"] { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
+.duo-av-opts { background: var(--surface); border-radius: var(--r); padding: 14px 12px; margin-bottom: 18px; }
+.duo-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)); gap: 10px; }
+.duo-sw { aspect-ratio: 1; border-radius: 14px; border: 2px solid var(--line); background: var(--surface); cursor: pointer; position: relative; box-shadow: 0 3px 0 var(--line); }
+.duo-sw::after { content: ""; position: absolute; inset: 7px; border-radius: 9px; background: var(--sw); border: 1px solid rgb(0 0 0 / .08); }
+.duo-sw.on { border-color: var(--brand); box-shadow: 0 0 0 3px rgb(11 122 99 / .25); }
+.duo-parts { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 10px; }
+.duo-part { display: flex; flex-direction: column; align-items: center; gap: 4px; border: 2px solid var(--line); background: var(--surface); border-radius: 16px; padding: 8px 4px 6px; font: inherit; font-weight: 800; font-size: .85rem; color: var(--ink); cursor: pointer; box-shadow: 0 3px 0 var(--line); }
+.duo-part.on { border-color: var(--brand); background: #E2F6EE; box-shadow: 0 3px 0 var(--brand); }
+.hello-rank a.hr-cell { text-decoration: none; }
+.hello-rank a.hr-cell:active { transform: translateY(1px); }
+.hello-rank.duo-rank { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.hr-cell .hr-tap { color: var(--sun); font-size: .75rem; font-weight: 900; }
+@media (prefers-reduced-motion: reduce) { .duo-broken, .duo-fl svg, .duo-big-fire svg, .duo-praise-av, .duo-hp.hit { animation: none !important; } }
 </style>
 </head>
 <body>
@@ -7084,6 +7175,14 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       duelScreen();
       return;
     }
+    if (h === "avatar") { /* epz-patch:duo */
+      duoAvatarScreen();
+      return;
+    }
+    if (h === "streak") { /* epz-patch:duo */
+      duoStreakScreen();
+      return;
+    }
     if (h === "book") { /* epz-patch:book */
       bookRoute();
       return;
@@ -7222,12 +7321,12 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     app.innerHTML = `
     <header class="top">
       <div class="brand"><span class="logo-mark" aria-hidden="true">E</span><span>English Practice Zone</span></div>
-      <a class="pts-chip" href="#dashboard" aria-label="${fmtNum(pts)} points. Open my dashboard">${icon("star", 16)}<b>${fmtNum(pts)}</b></a>
+      <span class="duo-chips">${duoChips() /* epz-patch:duo */}<a class="pts-chip" href="#dashboard" aria-label="${fmtNum(pts)} points. Open my dashboard">${icon("star", 16)}<b>${fmtNum(pts)}</b></a></span>
     </header>
     ${ownerBar()}
 
     <section class="hello">
-      <button class="avatar" id="me-btn" aria-label="Change your name">${esc(initials(m2.name))}</button>
+      <button class="avatar${state.avatar ? " duo-av" : ""}" id="me-btn" aria-label="Me: my name and avatar">${state.avatar ? duoAvatarSvg(state.avatar, 54) : esc(initials(m2.name))}<span class="duo-av-edit">${icon("edit", 12)}</span></button>
       <div class="hello-txt">
         <h1>Hi, ${esc(firstName(m2.name))}!</h1>
         <button type="button" class="class-chip" id="class-btn" aria-label="Change your grade or class">${esc(classLabel())}<span>Change</span></button>
@@ -7241,13 +7340,13 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
           <span class="hl-next">${lg.next ? `<b>${fmtNum(lg.toNext)}</b> points to <b style="color:${lg.next.color === "#7F8C9B" ? "#C9D2DC" : lg.next.color}">${esc(lg.next.name)}</b>` : "You are in the top league!"}</span>
         </span>
       </a>
-      <a class="hello-rank" href="#dashboard" aria-label="My progress: open my dashboard"><!-- epz-patch:layout --><!-- epz-patch:tidy -->
-        <span class="hr-cell"><span class="hr-num">${icon("trophy", 17)}<b>${rank ? `#${rank.rank}` : "\u2014"}</b></span><span class="hr-lbl">${rank ? `in ${esc(rankScope())}` : "not ranked yet"}</span></span>
-        <span class="hr-cell"><span class="hr-num">${icon("star", 17)}<b>${fmtNum(dailyPoints(7).reduce((a, d) => a + d.pts, 0))}</b></span><span class="hr-lbl">this week</span></span>
-        <span class="hr-cell"><span class="hr-num">${icon("flame", 17, "flame")}<b>${st}</b></span><span class="hr-lbl">${st ? "day streak" : "streak"}</span></span>
-        <span class="hr-go">${icon("next", 18)}</span>
-      </a>
+      <div class="hello-rank duo-rank"><!-- epz-patch:layout --><!-- epz-patch:tidy --><!-- epz-patch:duo -->
+        <a class="hr-cell" href="#ranking" aria-label="My rank. See the class ranking"><span class="hr-num">${icon("trophy", 17)}<b>${rank ? `#${rank.rank}` : "\u2014"}</b></span><span class="hr-lbl">${rank ? `in ${esc(rankScope())}` : "not ranked yet"}</span><span class="hr-tap">See ranking</span></a>
+        <a class="hr-cell" href="#dashboard" aria-label="Points this week. Open my dashboard"><span class="hr-num">${icon("star", 17)}<b>${fmtNum(dailyPoints(7).reduce((a, d) => a + d.pts, 0))}</b></span><span class="hr-lbl">this week</span></a>
+        <a class="hr-cell" href="#streak" aria-label="My daily streak"><span class="hr-num">${icon("flame", 17, "flame")}<b>${st}</b></span><span class="hr-lbl">${st ? "day streak" : "streak"}</span></a>
+      </div>
     </section>
+    ${duoAvatarNudge() /* epz-patch:duo */}
     ${bookRankLink() /* epz-patch:book */}
 
 
@@ -7339,7 +7438,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   function boardHtml(rows, all = !1) {
     let top = all ? rows : rows.slice(0, 10), mine = rows.find((r) => r.me), row = (r) => {
       let lg = league(r.pts);
-      return `<li class="${r.me ? "me" : ""}"><button type="button" class="peer" data-peer="${esc(r.n)}" aria-label="See ${esc(r.n)}'s progress"><span class="rk rk-${r.rank <= 3 ? r.rank : "n"}">${r.rank}</span><span class="nm">${esc(r.n)}${r.me ? " <em>(you)</em>" : ""}<small>${r.c ? `<span class="cls-tag">${esc(r.c)}</span>` : ""}<span class="lg-dot" style="--lg:${lg.color}"></span>${lg.name}${r.wk ? ` \xB7 +${fmtNum(r.wk)} this week` : ""}</small></span><span class="pt">${fmtNum(r.pts)}</span></button></li>`;
+      return `<li class="${r.me ? "me" : ""}"><button type="button" class="peer" data-peer="${esc(r.n)}" aria-label="See ${esc(r.n)}'s progress"><span class="rk rk-${r.rank <= 3 ? r.rank : "n"}">${r.rank}</span><span class="nm">${r.me && state.avatar ? `<span class="duo-av-mini">${duoAvatarSvg(state.avatar, 26)}</span>` : ""}${esc(r.n)}${r.me ? " <em>(you)</em>" : ""}<small>${r.c ? `<span class="cls-tag">${esc(r.c)}</span>` : ""}<span class="lg-dot" style="--lg:${lg.color}"></span>${lg.name}${r.wk ? ` \xB7 +${fmtNum(r.wk)} this week` : ""}</small></span><span class="pt">${fmtNum(r.pts)}</span></button></li>`;
     }, upd = boardUpdated(), st = boardState, tag = LIVE2 ? st === "ok" ? '<span class="live-pill"><i></i>Live</span>' : "" : upd ? `<span class="muted small">Updated ${esc(fmtDay(upd))}</span>` : "";
     return LIVE2 && !rows.length ? `
     <section class="block board">
@@ -7498,7 +7597,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let m2 = openModal(`
     <h2 class="modal-title">${icon("user", 22)} Me</h2>
     <div class="me-info"><b>${esc(me().name)}</b><span>${esc(classLabel())}</span></div>
-    <button class="btn btn-primary btn-big" id="me-change" type="button">${icon("edit", 20)} Change my class or name</button>
+    <button class="btn btn-primary btn-big" id="me-avatar" type="button" data-close onclick="location.hash='avatar'">${icon("user", 20)} Design my avatar</button>
+    <button class="btn btn-ghost btn-big" id="me-change" type="button">${icon("edit", 20)} Change my class or name</button>
     <details class="danger">
       <summary>Start over on this phone</summary>
       <p class="muted small">This deletes all your points and badges on this phone. It cannot be undone.</p>
@@ -7516,12 +7616,18 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       toast("No questions here yet.", "error"), go("home");
       return;
     }
+    if (duoHearts() <= 0) { /* epz-patch:duo */
+      duoNoHearts(quick ? "quick" : `play-${act2.id}`);
+      return;
+    }
+    duoRun = 0;
     let mult = LEVELS2[level]?.mult || 1, perQ = Math.round(10 * mult), skillOf = (q) => SKILLS2[quick ? q._skill : act2.skill] || SKILLS2.grammar;
     document.body.classList.add("playing"), window.scrollTo(0, 0), app.innerHTML = `
     <div class="play">
       <div class="play-bar">
         <button class="icon-btn" id="quit" aria-label="Stop and go home">${icon("x", 24)}</button>
         <div class="pbar" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="${questions.length}" aria-valuenow="0"><span id="pfill"></span></div>
+        <span class="duo-hp" id="duo-hp" aria-label="Hearts">${duoHpHtml()}</span>
         <span class="pts-chip" id="score">${icon("star", 16)}<b>0</b></span>
       </div>
       <div class="play-meta"><span class="skill-pill" id="skill-pill"></span><span id="qcount"></span></div>
@@ -7570,17 +7676,19 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       answered = !0;
       let q = questions[idx], res = current.evaluate();
       res.ok && correct++;
+      let duoMsg = duoAfter(res.ok, app); /* epz-patch:duo */
       let k = quick ? q._skill : act2.skill;
       sk[k] = sk[k] || [0, 0], sk[k][1]++, res.ok && sk[k][0]++, app.querySelector("#score b").textContent = fmtNum(correct * perQ), foot.className = `play-foot ${res.ok ? "good" : "bad"}`, feedback.innerHTML = `
       <span class="fb-ic">${icon(res.ok ? "check" : "x", 22)}</span>
       <div class="fb-txt">
-        <strong>${res.ok ? `${PRAISE2[Math.floor(Math.random() * PRAISE2.length)]} +${perQ}` : "Not quite"}</strong>
+        <strong>${res.ok ? `${esc(duoMsg)} +${perQ}` : "Not quite"}</strong>
         ${!res.ok && res.correctText ? `<p>Answer: <b>${esc(res.correctText)}</b></p>` : ""}
         ${q.explanation ? `<p class="small">${esc(q.explanation)}</p>` : ""}
-      </div>`, feedback.hidden = !1, checkBtn.hidden = !0, nextBtn.hidden = !1, nextBtn.innerHTML = idx === questions.length - 1 ? `See my score ${icon("flag", 20)}` : `Continue ${icon("next", 20)}`, nextBtn.focus({ preventScroll: !0 });
+        ${res.ok ? "" : `<p class="small duo-kind">${esc(duoMsg)}</p>`}
+      </div>`, feedback.hidden = !1, checkBtn.hidden = !0, nextBtn.hidden = !1, nextBtn.innerHTML = duoHearts() <= 0 ? `Continue ${icon("next", 20)}` : idx === questions.length - 1 ? `See my score ${icon("flag", 20)}` : `Continue ${icon("next", 20)}`, nextBtn.focus({ preventScroll: !0 });
     }
     checkBtn.addEventListener("click", check), nextBtn.addEventListener("click", () => {
-      !answered || finished || (stopSpeaking(), idx++, idx < questions.length ? show() : finish());
+      !answered || finished || (stopSpeaking(), duoHearts() <= 0 ? (finished = !0, duoNoHearts(quick ? "quick" : `play-${act2.id}`, !0)) : (idx++, idx < questions.length ? show() : finish()));
     });
     let onKey = (e) => {
       if (finished) return;
@@ -7592,6 +7700,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     };
     function finish() {
       finished = !0;
+      let duoSt0 = streak(); /* epz-patch:duo */
       let t = questions.length, acc = Math.round(100 * correct / t), r = recordRound({ aid: quick ? "quick" : act2.id, skill: quick ? "mix" : act2.skill, level, c: correct, i: t - correct, sk });
       LIVE2 && syncBoard(), document.body.classList.remove("playing"), window.scrollTo(0, 0);
       let title = acc === 100 ? "Perfect score!" : acc >= 80 ? "Excellent work!" : acc >= 50 ? "Good effort!" : "Keep practising!", sugg = levelSuggestion(), again = quick ? null : nextActivity(act2.skill, me().level), againIsSame = again && again.id === act2.id, againLabel = quick ? "Play again" : againIsSame && acc < 70 ? "Try again" : againIsSame ? "Quick Play" : "Next round", st = streak(), today2 = todayRounds();
@@ -7599,6 +7708,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       <section class="results" style="--c:${quick ? "var(--brand)" : SKILLS2[act2.skill].color}">
         <div class="ring" style="--p:${acc}"><span><b>${correct}/${t}</b><small>${acc}%</small></span></div>
         <h1>${title}</h1>
+        ${duoPraiseHtml(acc, duoSt0)}
         <p class="muted">${quick ? "Quick Play" : esc(act2.title)} \xB7 ${LEVELS2[level].name}</p>
         <div class="earned-pts">${icon("star", 22)} +${fmtNum(r.points)} points</div>
         ${r.bonus ? `<p class="small good-text">Includes a bonus of +${r.bonus} for a perfect round.</p>` : ""}
@@ -7834,7 +7944,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     app.innerHTML = `
     <header class="top">
       <div class="brand"><span class="logo-mark" aria-hidden="true">E</span><span>English Practice Zone</span></div>
-      <a class="pts-chip" href="#dashboard" aria-label="${fmtNum(pts)} points. Open my dashboard">${icon("star", 16)}<b>${fmtNum(pts)}</b></a>
+      <span class="duo-chips">${duoChips() /* epz-patch:duo */}<a class="pts-chip" href="#dashboard" aria-label="${fmtNum(pts)} points. Open my dashboard">${icon("star", 16)}<b>${fmtNum(pts)}</b></a></span>
     </header>
     <section class="bk-hero">
       <span class="bk-eyebrow">${icon("bookpath", 16)} Gold Experience Oman 9A</span>
@@ -7876,7 +7986,11 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let k = BOOK_KINDS[l.kind], test = l.kind === "test", lk = BOOK_LOOK[l.unit.id] || BOOK_LOOK.u1, level = test ? "medium" : "easy";
     let qs = l.qs.map((q, i) => ({ q, i }));
     test && (qs = shuffle(qs).slice(0, BOOK_TEST_SIZE));
-    let total = qs.length, queue = qs.slice(), hearts = BOOK_HEARTS, first = new Map(), sk = {}, combo = 0, bestCombo = 0, mistakes = 0, solved = 0, cur = null, ctrl = null, answered = !1, over = !1, shownPassage = null;
+    let total = qs.length, queue = qs.slice(), hearts = duoHearts() /* epz-patch:duo */, first = new Map(), sk = {}, combo = 0, bestCombo = 0, mistakes = 0, solved = 0, cur = null, ctrl = null, answered = !1, over = !1, shownPassage = null;
+    if (hearts <= 0) { /* epz-patch:duo */
+      duoNoHearts("book");
+      return;
+    }
     document.body.classList.add("playing"), window.scrollTo(0, 0), app.innerHTML = `
     <div class="play bk-play" style="--c:${lk.c}">
       <div class="play-bar">
@@ -7929,7 +8043,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         let s = SKILLS2[q.sk] ? q.sk : k.skill;
         sk[s] = sk[s] || [0, 0], sk[s][1]++, res.ok && sk[s][0]++;
       }
-      res.ok ? (solved++, combo++, bestCombo = Math.max(bestCombo, combo), msg = combo === 3 ? BK_OK3 : combo === 5 ? BK_OK5 : combo >= 8 && combo % 4 === 0 ? `${combo} in a row! Amazing!` : PRAISE2[Math.floor(Math.random() * PRAISE2.length)], (combo === 3 || combo === 5 || combo >= 8 && combo % 4 === 0) && (sound = "combo")) : (mistakes++, hearts--, combo = 0, queue.push(cur), sound = "bad", msg = hearts <= 0 ? "Out of hearts!" : BK_KIND[Math.floor(Math.random() * BK_KIND.length)]);
+      res.ok ? (solved++, combo++, bestCombo = Math.max(bestCombo, combo), msg = combo === 3 ? BK_OK3 : combo === 5 ? BK_OK5 : combo >= 8 && combo % 4 === 0 ? `${combo} in a row! Amazing!` : PRAISE2[Math.floor(Math.random() * PRAISE2.length)], (combo === 3 || combo === 5 || combo >= 8 && combo % 4 === 0) && (sound = "combo")) : (mistakes++, hearts = duoLose(), combo = 0, queue.push(cur), sound = "bad", msg = hearts <= 0 ? "Out of hearts!" : BK_KIND[Math.floor(Math.random() * BK_KIND.length)]);
       BK_SFX[sound](), res.ok || buzz(60), drawTop(!res.ok), foot.className = `play-foot ${res.ok ? "good" : "bad"}`, feedback.innerHTML = `
       <span class="fb-ic">${icon(res.ok ? "check" : "x", 22)}</span>
       <div class="fb-txt">
@@ -7962,7 +8076,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       }
       drawMute(), bossMuted || BK_SFX.good();
     }), drawMute(), checkBtn.addEventListener("click", check), nextBtn.addEventListener("click", () => {
-      !answered || over || (stopSpeaking(), hearts <= 0 ? noHearts() : queue.length ? show() : finish());
+      !answered || over || (stopSpeaking(), hearts <= 0 ? (over = !0, duoNoHearts("book", !0)) : queue.length ? show() : finish());
     });
     let onKey = (e) => {
       if (over || document.querySelector(".modal-backdrop")) return;
@@ -7989,7 +8103,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       </section>`), app.querySelector("#bk-again").addEventListener("click", () => bookPlay(l)), app.querySelector("#bk-map").addEventListener("click", () => go("book"));
     }
     function finish() {
-      let c = Array.from(first.values()).filter(Boolean).length, t = total, wasDone = bookDone(l), goalBefore = todayRounds() >= DAILY_GOAL, skillCount = {};
+      let duoSt0 = streak() /* epz-patch:duo */, c = Array.from(first.values()).filter(Boolean).length, t = total, wasDone = bookDone(l), goalBefore = todayRounds() >= DAILY_GOAL, skillCount = {};
       for (let x2 of qs) skillCount[x2.q.sk] = (skillCount[x2.q.sk] || 0) + 1;
       let main = Object.keys(skillCount).filter((s) => SKILLS2[s]).sort((a, b2) => skillCount[b2] - skillCount[a])[0] || k.skill;
       let r = recordRound({ aid: bookAid(l), skill: main, level, c, i: t - c, sk }), acc = t ? Math.round(100 * c / t) : 0, b = bookData(), old = b.done[l.id] || {};
@@ -7999,6 +8113,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       <section class="results" style="--c:${lk.c}">
         <div class="bk-medal">${icon(test ? "trophy" : "star", 56)}</div>
         <h1>${test ? `${esc(l.unit.label)} complete!` : "Lesson complete!"}</h1>
+        ${duoPraiseHtml(acc, duoSt0)}
         <p class="muted">${esc(l.unit.label)}: ${esc(l.unit.name)} \xB7 ${esc(l.title)}</p>
         <div class="earned-pts">${icon("star", 22)} +${fmtNum(r.points)} points</div>
         ${perfect ? `<p class="bk-perfect">Perfect lesson, no mistakes!${r.bonus ? ` +${r.bonus} bonus` : ""}</p>` : `<p class="small muted">${c} of ${t} right the first time.</p>`}
@@ -8023,6 +8138,187 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     show();
   }
   // ============================================================ end epz-patch:book
+  // ============================================================ epz-patch:duo — hearts for every practice round, praise, daily streak, avatar maker
+  // Hearts: 5, shared by Quick Play, skill rounds and Book lessons. One mistake = one heart. They come back by themselves
+  // (1 heart every 15 minutes). Saved on the phone in state.hearts; nothing is sent to Supabase.
+  var DUO_MAX = 5, DUO_REFILL = 15 * 6e4, duoRun = 0;
+  function duoHearts() {
+    let h = state.hearts;
+    (!h || typeof h != "object" || typeof h.n != "number" || !isFinite(h.n)) && (h = state.hearts = { n: DUO_MAX, at: Date.now() });
+    if (h.n < DUO_MAX) {
+      let k = Math.floor((Date.now() - (h.at || 0)) / DUO_REFILL);
+      k > 0 && (h.n = Math.min(DUO_MAX, h.n + k), h.at = (h.at || 0) + k * DUO_REFILL, save());
+    }
+    return Math.max(0, Math.min(DUO_MAX, h.n));
+  }
+  function duoLose() {
+    let n = duoHearts(), h = state.hearts;
+    return n >= DUO_MAX && (h.at = Date.now()), h.n = Math.max(0, n - 1), save(), h.n;
+  }
+  var duoNext = () => duoHearts() >= DUO_MAX ? 0 : Math.max(0, state.hearts.at + DUO_REFILL - Date.now());
+  function duoFmt(ms) {
+    let s = Math.ceil(ms / 1e3), m = Math.floor(s / 60);
+    return `${m}:${String(s % 60).padStart(2, "0")}`;
+  }
+  var duoHpHtml = () => `${icon("heart", 20)}<b>${duoHearts()}</b>`;
+  var duoPlayedToday = () => state.results.some((r) => dayKey(r.at) === todayKey());
+  function duoChips() {
+    let st = streak(), on = duoPlayedToday(), n = duoHearts();
+    return `<a class="duo-chip duo-fire${on ? "" : " off"}" href="#streak" aria-label="${st} day streak. Open my streak">${icon("flame", 16, "flame")}<b>${st}</b></a><button type="button" class="duo-chip duo-heart${n ? "" : " empty"}" data-duo-hp aria-label="${n} heart${n === 1 ? "" : "s"}">${icon("heart", 16)}<b>${n}</b></button>`;
+  }
+  // after each answer in a practice round: hearts and the message to show
+  var DUO_KIND = ["Nearly! Look at the answer and try the next one.", "Good try! Read the answer, then keep going.", "No problem. Mistakes help you learn.", "Almost! You will get it next time."];
+  function duoCheer(run) {
+    return run === 3 ? "3 in a row!" : run === 5 ? "5 in a row, you are on fire!" : run === 8 ? "8 in a row! Unstoppable!" : run >= 10 && run % 5 === 0 ? `${run} in a row! Amazing!` : PRAISE2[Math.floor(Math.random() * PRAISE2.length)];
+  }
+  function duoAfter(ok, root) {
+    if (ok) return duoRun++, duoCheer(duoRun);
+    duoRun = 0;
+    let n = duoLose(), hp = root && root.querySelector("#duo-hp");
+    return hp && (hp.innerHTML = duoHpHtml(), hp.classList.remove("hit"), hp.offsetWidth, hp.classList.add("hit")), typeof buzz == "function" && buzz(60), n <= 0 ? "That was your last heart." : DUO_KIND[Math.floor(Math.random() * DUO_KIND.length)];
+  }
+  // full screen when there are no hearts left (before a round, or in the middle of one)
+  function duoNoHearts(back, mid = !1) {
+    cleanup && (cleanup(), cleanup = null), document.body.classList.remove("playing"), window.scrollTo(0, 0);
+    let timer = 0, draw = () => {
+      let n = duoHearts(), box = app.querySelector("#duo-wait");
+      if (!box) return clearInterval(timer);
+      app.querySelector("#duo-row").innerHTML = Array.from({ length: DUO_MAX }, (_, i) => `<i class="${i < n ? "on" : ""}">${icon("heart", 26)}</i>`).join("");
+      n > 0 ? (box.innerHTML = `<b>You have ${n} heart${n === 1 ? "" : "s"} again!</b>`, app.querySelector("#duo-play").hidden = !1) : box.innerHTML = `<b>${duoFmt(duoNext())}</b><span>until your next heart</span>`;
+    };
+    app.innerHTML = `
+    <section class="results duo-nohearts">
+      <div class="duo-broken" aria-hidden="true">${icon("heart", 64)}</div>
+      <h1>Out of hearts</h1>
+      <p>${mid ? "That round is over, so it does not count. " : ""}Take a short break. Your hearts come back by themselves: <b>1 heart every 15 minutes</b>.</p>
+      <div class="duo-row" id="duo-row" aria-hidden="true"></div>
+      <div class="duo-wait" id="duo-wait" aria-live="polite"></div>
+      <div class="res-actions">
+        <button class="btn btn-primary btn-big" id="duo-play" hidden>${icon("play", 20)} Play now</button>
+        <a class="btn btn-primary btn-big" href="#word">${icon("calendar", 20)} While you wait: Word of the Day</a>
+        <a class="btn btn-ghost btn-big" href="#home">${icon("home", 20)} Home</a>
+      </div>
+      <p class="small muted">Tip: read each question slowly. Every mistake costs 1 heart.</p>
+    </section>`, app.querySelector("#duo-play").addEventListener("click", () => go(back || "home")), draw(), timer = setInterval(draw, 1e3), cleanup = () => clearInterval(timer);
+  }
+  // praise at the end of every round
+  function duoPraiseHtml(acc, st0) {
+    let nm = esc(firstName(state.name)), pick = (a) => a[Math.floor(Math.random() * a.length)];
+    let msg = acc >= 100 ? pick(["Flawless! Not one mistake!", `Perfect, ${nm}! You are a star!`, "100%! Amazing work!"]) : acc >= 80 ? pick([`Brilliant work, ${nm}!`, "Excellent! Keep it up!", "Great job, you really know this!"]) : acc >= 50 ? pick(["Good effort! You are getting better.", `Nice work, ${nm}! Practice makes perfect.`]) : pick(["Well done for finishing! Every round makes you stronger.", `Keep going, ${nm}! You learn from every mistake.`]);
+    let st = streak(), up = st > st0;
+    return `<div class="duo-praise">${state.avatar ? `<span class="duo-praise-av">${duoAvatarSvg(state.avatar, 64)}</span>` : ""}<p class="duo-bubble">${msg}</p></div>
+    ${up ? `<div class="duo-streak-up"><span class="duo-fl">${icon("flame", 30, "flame")}</span><div><b>${st} day streak!</b><span>${st === 1 ? "You started a new streak. Come back tomorrow!" : "You practised again today. Keep the fire going!"}</span></div></div>` : ""}`;
+  }
+  // ---------------------------------------------------------------- daily streak screen (#streak)
+  function duoStreakScreen() {
+    let st = streak(), on = duoPlayedToday(), days = new Set(state.results.map((r) => dayKey(r.at))), best = 0, run = 0;
+    [...days].sort().forEach((d, i, a) => {
+      run = i && Date.parse(d) - Date.parse(a[i - 1]) <= 9e7 ? run + 1 : 1, best = Math.max(best, run);
+    });
+    let week = Array.from({ length: 7 }, (_, i) => {
+      let d = new Date();
+      return d.setDate(d.getDate() - 6 + i), d;
+    }).map((d) => `<li class="${days.has(dayKey(d)) ? "on" : ""}${dayKey(d) === todayKey() ? " today" : ""}"><span>${d.toLocaleDateString("en-GB", { weekday: "short" }).slice(0, 2)}</span><i>${days.has(dayKey(d)) ? icon("flame", 18, "flame") : ""}</i></li>`).join("");
+    app.innerHTML = `
+    <header class="top">
+      <a class="back-btn" href="#home">${icon("back", 20)} Home</a>
+      <span class="duo-chips">${duoChips()}</span>
+    </header>
+    <section class="duo-streak-hero${on ? "" : " off"}">
+      <span class="duo-big-fire">${icon("flame", 84, "flame")}</span>
+      <b class="duo-big-n">${st}</b>
+      <span class="duo-big-l">day streak</span>
+    </section>
+    <section class="block duo-week">
+      <ol>${week}</ol>
+      <p>${on ? `You practised today. Come back tomorrow to make it <b>${st + 1}</b>!` : st ? `Play one round today to keep your <b>${st}-day</b> streak!` : "Play one round today to start a streak!"}</p>
+      ${on ? "" : `<a class="btn btn-primary btn-big" href="#quick">${icon("play", 20)} Play a round now</a>`}
+    </section>
+    <section class="block duo-stats">
+      <div><b>${st}</b><span>current streak</span></div>
+      <div><b>${best}</b><span>longest streak</span></div>
+      <div><b>${days.size}</b><span>days practised</span></div>
+    </section>
+    <p class="small muted duo-note">Any round counts: Quick Play, a skill round or a Book lesson.</p>`;
+  }
+  // ---------------------------------------------------------------- avatar maker (#avatar), saved on this phone only
+  var DUO_SKIN = ["#FFE3D1", "#FDD3B5", "#F2BE97", "#E5A87F", "#D69468", "#C68258", "#B0704A", "#98603E", "#7F4F33", "#6A4129", "#563421", "#43281A"];
+  var DUO_HAIRC = ["#1F1A17", "#3B2A20", "#5A3A22", "#8A5A2B", "#C68B3E", "#E3C07A", "#9AA4AE", "#B3402A"];
+  var DUO_CLOTHC = ["#FFFFFF", "#0B7A63", "#2F6FDE", "#6C4CE0", "#E8590C", "#D13A3A", "#F4A51C", "#13232F"];
+  var DUO_BG = ["#DCF5E3", "#E3ECFF", "#FFF1D6", "#FCE3E1", "#EFEBFF", "#DFF3F7", "#F4F8F6", "#FFE8C2"];
+  var DUO_PARTS = {
+    hair: [["none", "None"], ["short", "Short"], ["side", "Side part"], ["curly", "Curly"], ["spiky", "Spiky"], ["kumma", "Kumma"], ["massar", "Massar"]],
+    eyes: [["dots", "Dots"], ["big", "Big"], ["happy", "Happy"], ["wink", "Wink"], ["cool", "Sleepy"]],
+    mouth: [["smile", "Smile"], ["grin", "Big smile"], ["o", "Wow"], ["flat", "Calm"], ["tongue", "Silly"]],
+    gl: [["none", "None"], ["round", "Round"], ["square", "Square"], ["sun", "Sunglasses"]],
+    cl: [["dish", "Dishdasha"], ["tee", "T-shirt"], ["hoodie", "Hoodie"], ["shirt", "Shirt"], ["jersey", "Sports"]]
+  };
+  var DUO_DEF = { skin: 4, hair: "short", hc: 0, eyes: "big", mouth: "smile", gl: "none", cl: "dish", cc: 0, bg: 0 };
+  function duoCfg(c) {
+    let o = Object.assign({}, DUO_DEF, c && typeof c == "object" ? c : {}), ok = (k, list) => list.some((p) => p[0] === o[k]) || (o[k] = DUO_DEF[k]);
+    ok("hair", DUO_PARTS.hair), ok("eyes", DUO_PARTS.eyes), ok("mouth", DUO_PARTS.mouth), ok("gl", DUO_PARTS.gl), ok("cl", DUO_PARTS.cl);
+    let n = (k, len) => (o[k] = Number.isInteger(o[k]) && o[k] >= 0 && o[k] < len ? o[k] : DUO_DEF[k]);
+    return n("skin", DUO_SKIN.length), n("hc", DUO_HAIRC.length), n("cc", DUO_CLOTHC.length), n("bg", DUO_BG.length), o;
+  }
+  var duoUid = 0;
+  function duoAvatarSvg(cfg, size = 56) {
+    let c = duoCfg(cfg), sk = DUO_SKIN[c.skin], hc = DUO_HAIRC[c.hc], cc = DUO_CLOTHC[c.cc], dark = "#2A1E1A", id = "duoav" + ++duoUid, cl = "", hair = "", eyes = "", mouth = "", gl = "";
+    let light = c.cc === 0 || c.cc === 6;
+    // clothes
+    cl = c.cl === "dish" ? `<path d="M16 122 C18 98 36 90 60 90 C84 90 102 98 104 122Z" fill="${cc}" stroke="#D6E0DC" stroke-width="1.5"/><path d="M53 90 L60 99 L67 90" fill="none" stroke="${light ? "#C9D3CF" : "rgb(0 0 0 / .25)"}" stroke-width="2"/><path d="M60 99 V111" stroke="${light ? "#B9C4C0" : "rgb(0 0 0 / .3)"}" stroke-width="2"/><circle cx="60" cy="113" r="2.6" fill="${light ? "#B9C4C0" : "rgb(0 0 0 / .3)"}"/>` : c.cl === "tee" ? `<path d="M16 122 C18 98 36 90 60 90 C84 90 102 98 104 122Z" fill="${cc}"/><path d="M50 90 Q60 100 70 90" fill="none" stroke="rgb(0 0 0 / .18)" stroke-width="3"/>` : c.cl === "hoodie" ? `<path d="M14 122 C16 96 34 87 60 87 C86 87 104 96 106 122Z" fill="${cc}"/><path d="M42 89 Q60 104 78 89" fill="none" stroke="rgb(0 0 0 / .2)" stroke-width="5"/><path d="M54 98 V110 M66 98 V110" stroke="rgb(255 255 255 / .75)" stroke-width="2.4" stroke-linecap="round"/>` : c.cl === "shirt" ? `<path d="M16 122 C18 98 36 90 60 90 C84 90 102 98 104 122Z" fill="${cc}"/><path d="M60 92 L49 88 L46 99 Z M60 92 L71 88 L74 99 Z" fill="${light ? "#E9EEEC" : "rgb(255 255 255 / .85)"}"/><path d="M60 94 V122" stroke="rgb(0 0 0 / .16)" stroke-width="2"/><circle cx="60" cy="104" r="1.6" fill="rgb(0 0 0 / .3)"/><circle cx="60" cy="114" r="1.6" fill="rgb(0 0 0 / .3)"/>` : `<path d="M16 122 C18 98 36 90 60 90 C84 90 102 98 104 122Z" fill="${cc}"/><path d="M22 106 L98 106" stroke="${light ? "#0B7A63" : "#FFFFFF"}" stroke-width="5" opacity=".85"/><text x="60" y="121" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="13" fill="${light ? "#13232F" : "#FFFFFF"}">9</text>`;
+    // hair / headwear (drawn after the head)
+    let topCap = "M32 52 C30 28 44 17 60 17 C76 17 90 28 88 52 C82 40 72 34 60 34 C48 34 38 40 32 52Z";
+    hair = c.hair === "short" ? `<path d="${topCap}" fill="${hc}"/>` : c.hair === "side" ? `<path d="${topCap}" fill="${hc}"/><path d="M40 34 C52 26 72 26 84 40 C74 36 58 38 46 46 Z" fill="${hc}"/>` : c.hair === "curly" ? `<g fill="${hc}">${[[36, 40, 9], [44, 29, 10], [56, 23, 11], [68, 24, 10], [79, 30, 10], [85, 41, 8], [49, 34, 8], [64, 33, 8], [74, 37, 7]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}"/>`).join("")}</g>` : c.hair === "spiky" ? `<path d="M32 50 L33 30 L41 36 L44 18 L52 30 L60 14 L67 30 L76 18 L79 36 L87 30 L88 50 C80 40 70 35 60 35 C50 35 40 40 32 50Z" fill="${hc}"/>` : c.hair === "kumma" ? `<path d="M31 46 C31 20 89 20 89 46 Z" fill="#FFFFFF" stroke="#D6E0DC" stroke-width="1.2"/><path d="M33 43 C45 39 75 39 87 43" stroke="#0B7A63" stroke-width="2.4" fill="none"/>${[40, 48, 56, 64, 72, 80].map((x, i) => `<circle cx="${x}" cy="${i % 2 ? 33 : 37}" r="1.9" fill="${["#D13A3A", "#0B7A63", "#2F6FDE"][i % 3]}"/>`).join("")}<path d="M45 26 Q60 20 75 26" stroke="#E8590C" stroke-width="1.6" fill="none" stroke-dasharray="2 3"/>` : c.hair === "massar" ? `<path d="M29 48 C27 18 93 18 91 48 C80 42 70 40 60 40 C50 40 40 42 29 48Z" fill="#8E3B46"/><path d="M31 40 C45 33 75 33 89 40 M33 31 C46 25 74 25 87 31 M40 23 C52 19 68 19 80 23" stroke="#F4A51C" stroke-width="2.2" fill="none"/><path d="M36 36 C48 30 72 30 84 36" stroke="#2F6FDE" stroke-width="1.4" fill="none"/>` : "";
+    // eyes
+    let EL = 49, ER = 71, EY = 56;
+    eyes = c.eyes === "dots" ? `<circle cx="${EL}" cy="${EY}" r="3.8" fill="${dark}"/><circle cx="${ER}" cy="${EY}" r="3.8" fill="${dark}"/>` : c.eyes === "big" ? `<ellipse cx="${EL}" cy="${EY}" rx="7" ry="8" fill="#fff"/><ellipse cx="${ER}" cy="${EY}" rx="7" ry="8" fill="#fff"/><circle cx="${EL + 1.5}" cy="${EY + 1}" r="3.8" fill="${dark}"/><circle cx="${ER + 1.5}" cy="${EY + 1}" r="3.8" fill="${dark}"/><circle cx="${EL + 2.6}" cy="${EY - .4}" r="1.2" fill="#fff"/><circle cx="${ER + 2.6}" cy="${EY - .4}" r="1.2" fill="#fff"/>` : c.eyes === "happy" ? `<path d="M${EL - 6} ${EY + 2} Q${EL} ${EY - 6} ${EL + 6} ${EY + 2}" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M${ER - 6} ${EY + 2} Q${ER} ${EY - 6} ${ER + 6} ${EY + 2}" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/>` : c.eyes === "wink" ? `<ellipse cx="${EL}" cy="${EY}" rx="6.5" ry="7.5" fill="#fff"/><circle cx="${EL + 1.4}" cy="${EY + 1}" r="3.6" fill="${dark}"/><path d="M${ER - 6} ${EY + 1} Q${ER} ${EY + 5} ${ER + 6} ${EY + 1}" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/>` : `<path d="M${EL - 6} ${EY} H${EL + 6} M${ER - 6} ${EY} H${ER + 6}" stroke="${dark}" stroke-width="3" stroke-linecap="round"/><path d="M${EL - 6} ${EY} Q${EL} ${EY + 5} ${EL + 6} ${EY} M${ER - 6} ${EY} Q${ER} ${EY + 5} ${ER + 6} ${EY}" stroke="${dark}" stroke-width="2" fill="none"/>`;
+    let brows = c.hair === "none" || c.hair === "kumma" || c.hair === "massar" ? DUO_HAIRC[c.hc] : hc;
+    eyes += `<path d="M${EL - 6} ${EY - 11} Q${EL} ${EY - 14} ${EL + 6} ${EY - 11} M${ER - 6} ${EY - 11} Q${ER} ${EY - 14} ${ER + 6} ${EY - 11}" stroke="${brows}" stroke-width="2.6" fill="none" stroke-linecap="round"/>`;
+    // mouth
+    mouth = c.mouth === "smile" ? `<path d="M51 72 Q60 80 69 72" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/>` : c.mouth === "grin" ? `<path d="M48 70 Q60 84 72 70 Z" fill="#7A2A2A"/><path d="M50 71 H70 L68 74 H52 Z" fill="#fff"/>` : c.mouth === "o" ? `<ellipse cx="60" cy="74" rx="4.5" ry="5.5" fill="#7A2A2A"/>` : c.mouth === "flat" ? `<path d="M52 74 H68" stroke="${dark}" stroke-width="3" stroke-linecap="round"/>` : `<path d="M50 71 Q60 80 70 71" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M57 75 Q60 84 65 75 Z" fill="#E86A7A"/>`;
+    // glasses
+    gl = c.gl === "round" ? `<g fill="none" stroke="#2A2F36" stroke-width="2.4"><circle cx="${EL}" cy="${EY}" r="9.5"/><circle cx="${ER}" cy="${EY}" r="9.5"/><path d="M${EL + 9.5} ${EY} H${ER - 9.5} M${EL - 9.5} ${EY - 2} L33 ${EY - 5} M${ER + 9.5} ${EY - 2} L87 ${EY - 5}"/></g>` : c.gl === "square" ? `<g fill="rgb(255 255 255 / .12)" stroke="#2A2F36" stroke-width="2.4"><rect x="${EL - 10}" y="${EY - 8}" width="20" height="16" rx="4"/><rect x="${ER - 10}" y="${EY - 8}" width="20" height="16" rx="4"/><path d="M${EL + 10} ${EY - 1} H${ER - 10} M${EL - 10} ${EY - 3} L33 ${EY - 5} M${ER + 10} ${EY - 3} L87 ${EY - 5}" fill="none"/></g>` : c.gl === "sun" ? `<g><path d="M${EL - 11} ${EY - 7} H${EL + 10} Q${EL + 10} ${EY + 9} ${EL} ${EY + 9} Q${EL - 11} ${EY + 9} ${EL - 11} ${EY - 7}Z M${ER - 10} ${EY - 7} H${ER + 11} Q${ER + 11} ${EY + 9} ${ER} ${EY + 9} Q${ER - 10} ${EY + 9} ${ER - 10} ${EY - 7}Z" fill="#1E2328"/><path d="M${EL + 10} ${EY - 5} H${ER - 10} M${EL - 11} ${EY - 6} L33 ${EY - 7} M${ER + 11} ${EY - 6} L87 ${EY - 7}" stroke="#1E2328" stroke-width="2.4"/><path d="M${EL - 7} ${EY - 4} l4 0 M${ER - 6} ${EY - 4} l4 0" stroke="rgb(255 255 255 / .6)" stroke-width="2" stroke-linecap="round"/></g>` : "";
+    return `<svg class="duo-av-svg" width="${size}" height="${size}" viewBox="0 0 120 120" role="img" aria-label="My avatar"><defs><clipPath id="${id}"><circle cx="60" cy="60" r="60"/></clipPath></defs><g clip-path="url(#${id})"><rect width="120" height="120" fill="${DUO_BG[c.bg]}"/>${cl}<rect x="50" y="76" width="20" height="17" rx="6" fill="${sk}"/><rect x="50" y="80" width="20" height="5" fill="rgb(0 0 0 / .08)"/><circle cx="32" cy="58" r="7.5" fill="${sk}"/><circle cx="88" cy="58" r="7.5" fill="${sk}"/><rect x="32" y="24" width="56" height="60" rx="24" fill="${sk}"/>${hair}<ellipse cx="42" cy="68" rx="5" ry="3" fill="#F08A7E" opacity=".28"/><ellipse cx="78" cy="68" rx="5" ry="3" fill="#F08A7E" opacity=".28"/>${eyes}<path d="M60 60 Q57 66 60 67" stroke="rgb(0 0 0 / .22)" stroke-width="2.4" fill="none" stroke-linecap="round"/>${mouth}${gl}</g></svg>`;
+  }
+  function duoAvatarNudge() {
+    return state.avatar ? "" : `<a class="duo-nudge" href="#avatar"><span class="duo-nudge-av">${duoAvatarSvg(DUO_DEF, 52)}</span><span class="prog-txt"><b>Make your avatar!</b><span>Choose your face, hair and clothes.</span></span><span class="prog-go">Start</span></a>`;
+  }
+  function duoAvatarScreen() {
+    let cfg = duoCfg(state.avatar), tab = "skin";
+    let TABS2 = [["skin", "Skin"], ["hair", "Hair"], ["hc", "Hair colour"], ["eyes", "Eyes"], ["mouth", "Mouth"], ["gl", "Glasses"], ["cl", "Clothes"], ["cc", "Colour"], ["bg", "Background"]];
+    let colors = { skin: DUO_SKIN, hc: DUO_HAIRC, cc: DUO_CLOTHC, bg: DUO_BG };
+    app.innerHTML = `
+    <header class="top">
+      <a class="back-btn" href="#home">${icon("back", 20)} Home</a>
+      <button class="btn btn-primary duo-done" id="duo-save" type="button">${icon("check", 18)} Done</button>
+    </header>
+    <section class="duo-av-stage"><div id="duo-prev"></div><button type="button" class="btn btn-ghost btn-sm duo-dice" id="duo-dice">\u{1F3B2} Surprise me</button></section>
+    <nav class="duo-av-tabs" id="duo-tabs" role="tablist"></nav>
+    <section class="duo-av-opts" id="duo-opts"></section>`;
+    let draw = () => {
+      app.querySelector("#duo-prev").innerHTML = duoAvatarSvg(cfg, 180), app.querySelector("#duo-tabs").innerHTML = TABS2.map(([k, l]) => `<button type="button" role="tab" data-t="${k}" aria-selected="${k === tab}">${l}</button>`).join("");
+      let o = app.querySelector("#duo-opts");
+      o.innerHTML = colors[tab] ? `<div class="duo-swatches">${colors[tab].map((col, i) => `<button type="button" class="duo-sw${cfg[tab] === i ? " on" : ""}" data-v="${i}" style="--sw:${col}" aria-label="Colour ${i + 1}"></button>`).join("")}</div>` : `<div class="duo-parts">${DUO_PARTS[tab].map(([v, l]) => `<button type="button" class="duo-part${cfg[tab] === v ? " on" : ""}" data-v="${v}">${duoAvatarSvg({ ...cfg, [tab]: v }, 72)}<span>${l}</span></button>`).join("")}</div>`;
+    };
+    let onClick = (e) => {
+      if (!app.querySelector("#duo-opts")) return;
+      let t = e.target.closest("[data-t]"), v = e.target.closest("[data-v]");
+      t ? (tab = t.dataset.t, draw()) : v && (cfg[tab] = colors[tab] ? Number(v.dataset.v) : v.dataset.v, draw());
+    };
+    app.addEventListener("click", onClick), cleanup = () => app.removeEventListener("click", onClick), app.querySelector("#duo-dice").addEventListener("click", () => {
+      let r = (n) => Math.floor(Math.random() * n), p = (k) => DUO_PARTS[k][r(DUO_PARTS[k].length)][0];
+      cfg = duoCfg({ skin: r(DUO_SKIN.length), hair: p("hair"), hc: r(DUO_HAIRC.length), eyes: p("eyes"), mouth: p("mouth"), gl: Math.random() < 0.65 ? "none" : p("gl"), cl: p("cl"), cc: r(DUO_CLOTHC.length), bg: r(DUO_BG.length) }), draw();
+    }), app.querySelector("#duo-save").addEventListener("click", () => {
+      state.avatar = duoCfg(cfg), save(), toast("Your avatar is saved!", "success", 2e3), go("home");
+    }), draw();
+  }
+  // tap the hearts chip: how hearts work
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest || !e.target.closest("[data-duo-hp]")) return;
+    let n = duoHearts();
+    toast(n >= DUO_MAX ? "Your 5 hearts are full. Each mistake costs 1 heart." : `${n} heart${n === 1 ? "" : "s"}. Next heart in ${duoFmt(duoNext())} (1 every 15 minutes).`, "info", 3200);
+  });
+  // ============================================================ end epz-patch:duo
   function start() {
     storageOk ||(document.getElementById("storage-warning").hidden = !1), window.addEventListener("hashchange", route2), onRemoved(() => {
       location.hash && history.replaceState(null, "", location.pathname + location.search), route2(), toast("Your teacher removed this name. Please type your name again.", "error", 4500);
