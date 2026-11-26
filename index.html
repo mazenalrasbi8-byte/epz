@@ -1758,6 +1758,18 @@ body.playing .tabbar { display: none; }
 .hello-rank.duo-rank { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .hr-cell .hr-tap { color: var(--sun); font-size: .75rem; font-weight: 900; }
 @media (prefers-reduced-motion: reduce) { .duo-broken, .duo-fl svg, .duo-big-fire svg, .duo-praise-av, .duo-hp.hit { animation: none !important; } }
+.hello .avatar.duo-av { width: 72px; height: 72px; }
+.hello .duo-av-edit { width: 26px; height: 26px; }
+/* compact league card (epz-patch:duo) */
+.hello-league.duo-lg { padding: 8px 10px; gap: 10px; }
+.duo-lg .hl-medal.hl-emblem { width: 46px; height: 52px; }
+.duo-lg .hl-emblem > svg:first-child { width: 46px; height: 52px; }
+.duo-lg .hl-name { font-size: 1.15rem; }
+.duo-lg .hl-main { gap: 2px; }
+.duo-lg .hl-next { font-size: .8rem; }
+.duo-lg-next { opacity: .55; filter: grayscale(.35); }
+.duo-lg-next > svg:first-child { animation: none !important; }
+.duo-lg-next .hl-spark { display: none; }
 </style>
 </head>
 <body>
@@ -7326,19 +7338,19 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     ${ownerBar()}
 
     <section class="hello">
-      <button class="avatar${state.avatar ? " duo-av" : ""}" id="me-btn" aria-label="Me: my name and avatar">${state.avatar ? duoAvatarSvg(state.avatar, 54) : esc(initials(m2.name))}<span class="duo-av-edit">${icon("edit", 12)}</span></button>
+      <button class="avatar${state.avatar ? " duo-av" : ""}" id="me-btn" aria-label="Me: my name and avatar">${state.avatar ? duoAvatarSvg(state.avatar, 72) : esc(initials(m2.name))}<span class="duo-av-edit">${icon("edit", 12)}</span></button>
       <div class="hello-txt">
         <h1>Hi, ${esc(firstName(m2.name))}!</h1>
         <button type="button" class="class-chip" id="class-btn" aria-label="Change your grade or class">${esc(classLabel())}<span>Change</span></button>
       </div>
-      <a class="hello-league" href="#dashboard" style="--lg:${lg.color}" aria-label="You are in the ${lg.name} league. ${lg.next ? `${fmtNum(lg.toNext)} points to ${lg.next.name}` : "Top league"}"><!-- epz-patch:league -->
+      <a class="hello-league duo-lg" href="#dashboard" style="--lg:${lg.color}" aria-label="You are in the ${lg.name} league. ${lg.next ? `${fmtNum(lg.toNext)} points to ${lg.next.name}` : "Top league"}"><!-- epz-patch:league -->
         <span class="hl-medal hl-emblem" aria-hidden="true">${leagueEmblem(lg, "shield")}</span>
         <span class="hl-main">
-          <span class="hl-top"><span class="hl-eyebrow">My league</span><span class="hl-pips" aria-hidden="true">${LEAGUES.map((l, k) => `<i class="${k <= lg.index ? "on" : ""}" style="--pc:${l.color}"></i>`).join("")}</span></span>
           <b class="hl-name">${esc(lg.name)} <small>League</small></b>
           <span class="hl-bar"><i style="width:${Math.max(4, lg.progress)}%"></i></span>
           <span class="hl-next">${lg.next ? `<b>${fmtNum(lg.toNext)}</b> points to <b style="color:${lg.next.color === "#7F8C9B" ? "#C9D2DC" : lg.next.color}">${esc(lg.next.name)}</b>` : "You are in the top league!"}</span>
         </span>
+        ${lg.next ? `<span class="hl-medal hl-emblem duo-lg-next" aria-hidden="true">${leagueEmblem({ ...lg.next, index: lg.index + 1 }, "shield")}</span>` : ""}
       </a>
       <div class="hello-rank duo-rank"><!-- epz-patch:layout --><!-- epz-patch:tidy --><!-- epz-patch:duo -->
         <a class="hr-cell" href="#ranking" aria-label="My rank. See the class ranking"><span class="hr-num">${icon("trophy", 17)}<b>${rank ? `#${rank.rank}` : "\u2014"}</b></span><span class="hr-lbl">${rank ? `in ${esc(rankScope())}` : "not ranked yet"}</span><span class="hr-tap">See ranking</span></a>
@@ -8247,35 +8259,60 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   var DUO_CLOTHC = ["#FFFFFF", "#0B7A63", "#2F6FDE", "#6C4CE0", "#E8590C", "#D13A3A", "#F4A51C", "#13232F"];
   var DUO_BG = ["#DCF5E3", "#E3ECFF", "#FFF1D6", "#FCE3E1", "#EFEBFF", "#DFF3F7", "#F4F8F6", "#FFE8C2"];
   var DUO_PARTS = {
-    hair: [["none", "None"], ["short", "Short"], ["side", "Side part"], ["curly", "Curly"], ["spiky", "Spiky"], ["kumma", "Kumma"], ["massar", "Massar"]],
+    hair: [["none", "Bald"], ["buzz", "Buzz cut"], ["short", "Short"], ["side", "Side part"], ["fringe", "Fringe"], ["wavy", "Wavy"], ["curly", "Curly"], ["spiky", "Spiky"], ["afro", "Big hair"]],
+    hat: [["none", "None"], ["kumma1", "Kumma white"], ["kumma2", "Kumma blue"], ["kumma3", "Kumma navy"], ["massar1", "Massar blue"], ["massar2", "Massar red"], ["massar3", "Massar cream"], ["cap", "Cap"], ["beanie", "Beanie"]],
     eyes: [["dots", "Dots"], ["big", "Big"], ["happy", "Happy"], ["wink", "Wink"], ["cool", "Sleepy"]],
-    mouth: [["smile", "Smile"], ["grin", "Big smile"], ["o", "Wow"], ["flat", "Calm"], ["tongue", "Silly"]],
+    mouth: [["smile", "Smile"], ["grin", "Big smile"], ["teeth", "Teeth"], ["o", "Wow"], ["flat", "Calm"], ["tongue", "Silly"]],
     gl: [["none", "None"], ["round", "Round"], ["square", "Square"], ["sun", "Sunglasses"]],
-    cl: [["dish", "Dishdasha"], ["tee", "T-shirt"], ["hoodie", "Hoodie"], ["shirt", "Shirt"], ["jersey", "Sports"]]
+    cl: [["dish", "Dishdasha"], ["bisht", "Bisht"], ["tee", "T-shirt"], ["hoodie", "Hoodie"], ["shirt", "Shirt"], ["sweater", "Sweater"], ["jersey", "Sports"]]
   };
-  var DUO_DEF = { skin: 4, hair: "short", hc: 0, eyes: "big", mouth: "smile", gl: "none", cl: "dish", cc: 0, bg: 0 };
+  var DUO_DEF = { skin: 4, hair: "short", hat: "none", hc: 0, eyes: "big", mouth: "smile", gl: "none", cl: "dish", cc: 0, bg: 0 };
   function duoCfg(c) {
     let o = Object.assign({}, DUO_DEF, c && typeof c == "object" ? c : {}), ok = (k, list) => list.some((p) => p[0] === o[k]) || (o[k] = DUO_DEF[k]);
-    ok("hair", DUO_PARTS.hair), ok("eyes", DUO_PARTS.eyes), ok("mouth", DUO_PARTS.mouth), ok("gl", DUO_PARTS.gl), ok("cl", DUO_PARTS.cl);
+    o.hair === "kumma" && (o.hair = "short", o.hat = "kumma1"), o.hair === "massar" && (o.hair = "short", o.hat = "massar1");
+    ok("hair", DUO_PARTS.hair), ok("hat", DUO_PARTS.hat), ok("eyes", DUO_PARTS.eyes), ok("mouth", DUO_PARTS.mouth), ok("gl", DUO_PARTS.gl), ok("cl", DUO_PARTS.cl);
     let n = (k, len) => (o[k] = Number.isInteger(o[k]) && o[k] >= 0 && o[k] < len ? o[k] : DUO_DEF[k]);
     return n("skin", DUO_SKIN.length), n("hc", DUO_HAIRC.length), n("cc", DUO_CLOTHC.length), n("bg", DUO_BG.length), o;
   }
   var duoUid = 0;
+  function duoHat(h, id, cc) {
+    if (/^kumma/.test(h)) {
+      let [base, cols, edge] = { kumma1: ["#FFFFFF", ["#C8323A", "#0B7A63", "#2F6FDE", "#E89A12"], "#D6DDDA"], kumma2: ["#FFFFFF", ["#1F5FA8", "#139C99", "#5AA6E0", "#0E3F7A"], "#D6DDDA"], kumma3: ["#1E2A4A", ["#F2C230", "#FFFFFF", "#E0601C", "#7FC3E8"], "#33456F"] }[h] || [];
+      let shape = "M31 41 L32.5 24 Q34 13 60 12.5 Q86 13 87.5 24 L89 41 Q60 44.5 31 41 Z", m = "", i = 0;
+      for (let r = 0; r < 3; r++) for (let x = 36 + r % 2 * 4; x <= 84; x += 8, i++) {
+        let y = 19 + r * 5.5;
+        m += `<path d="M${x} ${y - 2.2} L${x + 2.2} ${y} L${x} ${y + 2.2} L${x - 2.2} ${y}Z" fill="${cols[(i + r) % cols.length]}"/><circle cx="${x + 4}" cy="${y}" r=".8" fill="${edge}"/>`;
+      }
+      let tri = "";
+      for (let x = 29, k = 0; x < 90; x += 5, k++) tri += `<path d="M${x} 41.5 L${x + 2.5} 37.5 L${x + 5} 41.5Z" fill="${cols[k % cols.length]}"/>`;
+      return `<clipPath id="${id}k"><path d="${shape}"/></clipPath><path d="${shape}" fill="${base}" stroke="${edge}" stroke-width="1.3"/><g clip-path="url(#${id}k)">${m}<rect x="28" y="33.5" width="64" height="1.8" fill="${cols[1]}"/><rect x="28" y="35.6" width="64" height="1" fill="${cols[0]}"/>${tri}<ellipse cx="60" cy="14" rx="15" ry="3" fill="none" stroke="${cols[0]}" stroke-width="1.3"/></g>`;
+    }
+    if (/^massar/.test(h)) {
+      let [base, acc, acc2, pat] = { massar1: ["#BFDDF0", "#C8323A", "#E89A12", "#1F5FA8"], massar2: ["#8E2F3E", "#F2C230", "#FFFFFF", "#F2C230"], massar3: ["#F2E8D2", "#2F6FDE", "#C8323A", "#8A6A35"] }[h] || [];
+      let shape = "M21 46 Q15 24 30 13 Q45 3 62 4 Q82 5 93 15 Q105 26 99 46 Q80 39 60 40 Q40 39 21 46 Z", dots = "";
+      for (let y = 9, r = 0; y < 42; y += 6, r++) for (let x = 22 + r % 2 * 5; x < 100; x += 10) dots += `<path d="M${x} ${y} q2 -3 3 0 q-1 3 -3 0z" fill="${pat}" opacity=".7"/>`;
+      let L1 = "M18 44 Q24 22 52 12 Q72 6 90 12 Q70 15 54 24 Q36 34 28 47Z", L2 = "M36 45 Q56 27 100 28 L101 47 Q76 38 36 45Z", L3 = "M30 20 Q52 6 80 7 Q64 11 50 18 Z";
+      return `<clipPath id="${id}m"><path d="${shape}"/></clipPath><path d="${shape}" fill="${base}"/><g clip-path="url(#${id}m)">${dots}<path d="${L1}" fill="rgb(0 0 0 / .1)"/><path d="${L3}" fill="rgb(255 255 255 / .22)"/><path d="${L2}" fill="rgb(0 0 0 / .14)"/><path d="M18 44 Q24 22 52 12 Q72 6 90 12 M36 45 Q56 27 100 28 M30 20 Q52 6 80 7" stroke="rgb(0 0 0 / .28)" stroke-width="1.8" fill="none"/><path d="M21 46 Q40 39 60 40 Q80 39 99 46" stroke="${acc}" stroke-width="7" fill="none"/><path d="M21 41.5 Q40 34.5 60 35.5 Q80 34.5 99 41.5" stroke="${acc2}" stroke-width="2" fill="none"/></g><path d="M84 9 Q101 8 101 24 Q93 15 84 15Z" fill="${acc}"/><path d="M84 9 Q101 8 101 24" stroke="${acc2}" stroke-width="1.5" fill="none"/><path d="${shape}" fill="none" stroke="rgb(0 0 0 / .2)" stroke-width="1.2"/>`;
+    }
+    let col = cc === "#FFFFFF" ? "#2F6FDE" : cc;
+    return h === "cap" ? `<path d="M31 42 Q31 15 60 15 Q89 15 89 42 Z" fill="${col}"/><path d="M60 15 V42 M44 18 Q40 30 41 42 M76 18 Q80 30 79 42" stroke="rgb(0 0 0 / .15)" stroke-width="1.5" fill="none"/><path d="M56 39 Q84 34 103 41 Q88 48 56 45 Z" fill="${col}" stroke="rgb(0 0 0 / .25)" stroke-width="1.5"/><circle cx="60" cy="15.5" r="2.6" fill="rgb(0 0 0 / .25)"/>` : h === "beanie" ? `<path d="M30 44 Q30 13 60 13 Q90 13 90 44 Z" fill="${col}"/><path d="M40 20 V40 M50 15 V40 M60 13 V40 M70 15 V40 M80 20 V40" stroke="rgb(0 0 0 / .12)" stroke-width="2"/><rect x="28" y="37" width="64" height="10" rx="5" fill="${col}" stroke="rgb(0 0 0 / .2)" stroke-width="1.5"/><circle cx="60" cy="11" r="6.5" fill="#FFFFFF" stroke="rgb(0 0 0 / .15)"/>` : "";
+  }
   function duoAvatarSvg(cfg, size = 56) {
     let c = duoCfg(cfg), sk = DUO_SKIN[c.skin], hc = DUO_HAIRC[c.hc], cc = DUO_CLOTHC[c.cc], dark = "#2A1E1A", id = "duoav" + ++duoUid, cl = "", hair = "", eyes = "", mouth = "", gl = "";
     let light = c.cc === 0 || c.cc === 6;
     // clothes
-    cl = c.cl === "dish" ? `<path d="M16 122 C18 98 36 90 60 90 C84 90 102 98 104 122Z" fill="${cc}" stroke="#D6E0DC" stroke-width="1.5"/><path d="M53 90 L60 99 L67 90" fill="none" stroke="${light ? "#C9D3CF" : "rgb(0 0 0 / .25)"}" stroke-width="2"/><path d="M60 99 V111" stroke="${light ? "#B9C4C0" : "rgb(0 0 0 / .3)"}" stroke-width="2"/><circle cx="60" cy="113" r="2.6" fill="${light ? "#B9C4C0" : "rgb(0 0 0 / .3)"}"/>` : c.cl === "tee" ? `<path d="M16 122 C18 98 36 90 60 90 C84 90 102 98 104 122Z" fill="${cc}"/><path d="M50 90 Q60 100 70 90" fill="none" stroke="rgb(0 0 0 / .18)" stroke-width="3"/>` : c.cl === "hoodie" ? `<path d="M14 122 C16 96 34 87 60 87 C86 87 104 96 106 122Z" fill="${cc}"/><path d="M42 89 Q60 104 78 89" fill="none" stroke="rgb(0 0 0 / .2)" stroke-width="5"/><path d="M54 98 V110 M66 98 V110" stroke="rgb(255 255 255 / .75)" stroke-width="2.4" stroke-linecap="round"/>` : c.cl === "shirt" ? `<path d="M16 122 C18 98 36 90 60 90 C84 90 102 98 104 122Z" fill="${cc}"/><path d="M60 92 L49 88 L46 99 Z M60 92 L71 88 L74 99 Z" fill="${light ? "#E9EEEC" : "rgb(255 255 255 / .85)"}"/><path d="M60 94 V122" stroke="rgb(0 0 0 / .16)" stroke-width="2"/><circle cx="60" cy="104" r="1.6" fill="rgb(0 0 0 / .3)"/><circle cx="60" cy="114" r="1.6" fill="rgb(0 0 0 / .3)"/>` : `<path d="M16 122 C18 98 36 90 60 90 C84 90 102 98 104 122Z" fill="${cc}"/><path d="M22 106 L98 106" stroke="${light ? "#0B7A63" : "#FFFFFF"}" stroke-width="5" opacity=".85"/><text x="60" y="121" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="13" fill="${light ? "#13232F" : "#FFFFFF"}">9</text>`;
+    cl = c.cl === "dish" ? `<path d="M16 122 C18 98 36 90 60 90 C84 90 102 98 104 122Z" fill="${cc}" stroke="#D6E0DC" stroke-width="1.5"/><path d="M53 90 L60 99 L67 90" fill="none" stroke="${light ? "#C9D3CF" : "rgb(0 0 0 / .25)"}" stroke-width="2"/><path d="M60 99 V111" stroke="${light ? "#B9C4C0" : "rgb(0 0 0 / .3)"}" stroke-width="2"/><circle cx="60" cy="113" r="2.6" fill="${light ? "#B9C4C0" : "rgb(0 0 0 / .3)"}"/>` : c.cl === "tee" ? `<path d="M16 122 C18 98 36 90 60 90 C84 90 102 98 104 122Z" fill="${cc}"/><path d="M50 90 Q60 100 70 90" fill="none" stroke="rgb(0 0 0 / .18)" stroke-width="3"/>` : c.cl === "hoodie" ? `<path d="M14 122 C16 96 34 87 60 87 C86 87 104 96 106 122Z" fill="${cc}"/><path d="M42 89 Q60 104 78 89" fill="none" stroke="rgb(0 0 0 / .2)" stroke-width="5"/><path d="M54 98 V110 M66 98 V110" stroke="rgb(255 255 255 / .75)" stroke-width="2.4" stroke-linecap="round"/>` : c.cl === "shirt" ? `<path d="M16 122 C18 98 36 90 60 90 C84 90 102 98 104 122Z" fill="${cc}"/><path d="M60 92 L49 88 L46 99 Z M60 92 L71 88 L74 99 Z" fill="${light ? "#E9EEEC" : "rgb(255 255 255 / .85)"}"/><path d="M60 94 V122" stroke="rgb(0 0 0 / .16)" stroke-width="2"/><circle cx="60" cy="104" r="1.6" fill="rgb(0 0 0 / .3)"/><circle cx="60" cy="114" r="1.6" fill="rgb(0 0 0 / .3)"/>` : c.cl === "bisht" ? `<path d="M16 122 C18 98 36 90 60 90 C84 90 102 98 104 122Z" fill="#FFFFFF" stroke="#D6E0DC" stroke-width="1.5"/><path d="M60 99 V111" stroke="#B9C4C0" stroke-width="2"/><circle cx="60" cy="113" r="2.6" fill="#B9C4C0"/><path d="M14 122 C16 100 30 92 46 90 L52 122Z M106 122 C104 100 90 92 74 90 L68 122Z" fill="${c.cc === 0 ? "#2B2420" : cc}"/><path d="M46 90 L52 122 M74 90 L68 122" stroke="#E2B13C" stroke-width="2.6"/>` : c.cl === "sweater" ? `<path d="M16 122 C18 98 36 90 60 90 C84 90 102 98 104 122Z" fill="${cc}"/><path d="M50 90 Q60 98 70 90" fill="none" stroke="rgb(0 0 0 / .2)" stroke-width="4"/><path d="M19 108 H101 M18 115 H102" stroke="${light ? "#D13A3A" : "rgb(255 255 255 / .55)"}" stroke-width="3" stroke-dasharray="5 4"/>` : `<path d="M16 122 C18 98 36 90 60 90 C84 90 102 98 104 122Z" fill="${cc}"/><path d="M22 106 L98 106" stroke="${light ? "#0B7A63" : "#FFFFFF"}" stroke-width="5" opacity=".85"/><text x="60" y="121" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="13" fill="${light ? "#13232F" : "#FFFFFF"}">9</text>`;
     // hair / headwear (drawn after the head)
     let topCap = "M32 52 C30 28 44 17 60 17 C76 17 90 28 88 52 C82 40 72 34 60 34 C48 34 38 40 32 52Z";
-    hair = c.hair === "short" ? `<path d="${topCap}" fill="${hc}"/>` : c.hair === "side" ? `<path d="${topCap}" fill="${hc}"/><path d="M40 34 C52 26 72 26 84 40 C74 36 58 38 46 46 Z" fill="${hc}"/>` : c.hair === "curly" ? `<g fill="${hc}">${[[36, 40, 9], [44, 29, 10], [56, 23, 11], [68, 24, 10], [79, 30, 10], [85, 41, 8], [49, 34, 8], [64, 33, 8], [74, 37, 7]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}"/>`).join("")}</g>` : c.hair === "spiky" ? `<path d="M32 50 L33 30 L41 36 L44 18 L52 30 L60 14 L67 30 L76 18 L79 36 L87 30 L88 50 C80 40 70 35 60 35 C50 35 40 40 32 50Z" fill="${hc}"/>` : c.hair === "kumma" ? `<path d="M31 46 C31 20 89 20 89 46 Z" fill="#FFFFFF" stroke="#D6E0DC" stroke-width="1.2"/><path d="M33 43 C45 39 75 39 87 43" stroke="#0B7A63" stroke-width="2.4" fill="none"/>${[40, 48, 56, 64, 72, 80].map((x, i) => `<circle cx="${x}" cy="${i % 2 ? 33 : 37}" r="1.9" fill="${["#D13A3A", "#0B7A63", "#2F6FDE"][i % 3]}"/>`).join("")}<path d="M45 26 Q60 20 75 26" stroke="#E8590C" stroke-width="1.6" fill="none" stroke-dasharray="2 3"/>` : c.hair === "massar" ? `<path d="M29 48 C27 18 93 18 91 48 C80 42 70 40 60 40 C50 40 40 42 29 48Z" fill="#8E3B46"/><path d="M31 40 C45 33 75 33 89 40 M33 31 C46 25 74 25 87 31 M40 23 C52 19 68 19 80 23" stroke="#F4A51C" stroke-width="2.2" fill="none"/><path d="M36 36 C48 30 72 30 84 36" stroke="#2F6FDE" stroke-width="1.4" fill="none"/>` : "";
+    hair = c.hair === "short" ? `<path d="${topCap}" fill="${hc}"/>` : c.hair === "buzz" ? `<path d="M33 46 C32 28 44 21 60 21 C76 21 88 28 87 46 C80 37 70 33 60 33 C50 33 40 37 33 46Z" fill="${hc}" opacity=".72"/>` : c.hair === "side" ? `<path d="${topCap}" fill="${hc}"/><path d="M40 34 C52 26 72 26 84 40 C74 36 58 38 46 46 Z" fill="${hc}"/>` : c.hair === "fringe" ? `<path d="${topCap}" fill="${hc}"/><path d="M34 46 Q36 30 60 28 Q84 30 86 46 Q80 40 74 44 Q70 38 64 43 Q58 37 52 43 Q46 38 42 44 Q38 40 34 46Z" fill="${hc}"/>` : c.hair === "wavy" ? `<path d="M32 50 C36 42 40 46 44 40 C48 46 52 38 56 42 C60 36 64 42 68 38 C72 44 76 38 80 42 C84 40 86 46 88 50 C90 28 76 17 60 17 C44 17 30 28 32 50Z" fill="${hc}"/>` : c.hair === "curly" ? `<g fill="${hc}">${[[36, 40, 9], [44, 29, 10], [56, 23, 11], [68, 24, 10], [79, 30, 10], [85, 41, 8], [49, 34, 8], [64, 33, 8], [74, 37, 7]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}"/>`).join("")}</g>` : c.hair === "spiky" ? `<path d="M32 50 L33 30 L41 36 L44 18 L52 30 L60 14 L67 30 L76 18 L79 36 L87 30 L88 50 C80 40 70 35 60 35 C50 35 40 40 32 50Z" fill="${hc}"/>` : c.hair === "afro" ? `<path d="M26 56 Q16 30 33 17 Q46 6 60 8 Q74 6 87 17 Q104 30 94 56 Q91 41 84 36 Q72 31 60 32 Q48 31 36 36 Q29 41 26 56Z" fill="${hc}"/>` : "";
+    hair += duoHat(c.hat, id, cc);
     // eyes
     let EL = 49, ER = 71, EY = 56;
     eyes = c.eyes === "dots" ? `<circle cx="${EL}" cy="${EY}" r="3.8" fill="${dark}"/><circle cx="${ER}" cy="${EY}" r="3.8" fill="${dark}"/>` : c.eyes === "big" ? `<ellipse cx="${EL}" cy="${EY}" rx="7" ry="8" fill="#fff"/><ellipse cx="${ER}" cy="${EY}" rx="7" ry="8" fill="#fff"/><circle cx="${EL + 1.5}" cy="${EY + 1}" r="3.8" fill="${dark}"/><circle cx="${ER + 1.5}" cy="${EY + 1}" r="3.8" fill="${dark}"/><circle cx="${EL + 2.6}" cy="${EY - .4}" r="1.2" fill="#fff"/><circle cx="${ER + 2.6}" cy="${EY - .4}" r="1.2" fill="#fff"/>` : c.eyes === "happy" ? `<path d="M${EL - 6} ${EY + 2} Q${EL} ${EY - 6} ${EL + 6} ${EY + 2}" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M${ER - 6} ${EY + 2} Q${ER} ${EY - 6} ${ER + 6} ${EY + 2}" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/>` : c.eyes === "wink" ? `<ellipse cx="${EL}" cy="${EY}" rx="6.5" ry="7.5" fill="#fff"/><circle cx="${EL + 1.4}" cy="${EY + 1}" r="3.6" fill="${dark}"/><path d="M${ER - 6} ${EY + 1} Q${ER} ${EY + 5} ${ER + 6} ${EY + 1}" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/>` : `<path d="M${EL - 6} ${EY} H${EL + 6} M${ER - 6} ${EY} H${ER + 6}" stroke="${dark}" stroke-width="3" stroke-linecap="round"/><path d="M${EL - 6} ${EY} Q${EL} ${EY + 5} ${EL + 6} ${EY} M${ER - 6} ${EY} Q${ER} ${EY + 5} ${ER + 6} ${EY}" stroke="${dark}" stroke-width="2" fill="none"/>`;
-    let brows = c.hair === "none" || c.hair === "kumma" || c.hair === "massar" ? DUO_HAIRC[c.hc] : hc;
+    let brows = hc;
     eyes += `<path d="M${EL - 6} ${EY - 11} Q${EL} ${EY - 14} ${EL + 6} ${EY - 11} M${ER - 6} ${EY - 11} Q${ER} ${EY - 14} ${ER + 6} ${EY - 11}" stroke="${brows}" stroke-width="2.6" fill="none" stroke-linecap="round"/>`;
     // mouth
-    mouth = c.mouth === "smile" ? `<path d="M51 72 Q60 80 69 72" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/>` : c.mouth === "grin" ? `<path d="M48 70 Q60 84 72 70 Z" fill="#7A2A2A"/><path d="M50 71 H70 L68 74 H52 Z" fill="#fff"/>` : c.mouth === "o" ? `<ellipse cx="60" cy="74" rx="4.5" ry="5.5" fill="#7A2A2A"/>` : c.mouth === "flat" ? `<path d="M52 74 H68" stroke="${dark}" stroke-width="3" stroke-linecap="round"/>` : `<path d="M50 71 Q60 80 70 71" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M57 75 Q60 84 65 75 Z" fill="#E86A7A"/>`;
+    mouth = c.mouth === "smile" ? `<path d="M51 72 Q60 80 69 72" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/>` : c.mouth === "grin" ? `<path d="M48 70 Q60 84 72 70 Z" fill="#7A2A2A"/><path d="M50 71 H70 L68 74 H52 Z" fill="#fff"/>` : c.mouth === "teeth" ? `<path d="M49 70 Q60 80 71 70 Z" fill="#fff" stroke="${dark}" stroke-width="2.4" stroke-linejoin="round"/><path d="M60 70.5 V75" stroke="#D6DDE0" stroke-width="1.2"/>` : c.mouth === "o" ? `<ellipse cx="60" cy="74" rx="4.5" ry="5.5" fill="#7A2A2A"/>` : c.mouth === "flat" ? `<path d="M52 74 H68" stroke="${dark}" stroke-width="3" stroke-linecap="round"/>` : `<path d="M50 71 Q60 80 70 71" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M57 75 Q60 84 65 75 Z" fill="#E86A7A"/>`;
     // glasses
     gl = c.gl === "round" ? `<g fill="none" stroke="#2A2F36" stroke-width="2.4"><circle cx="${EL}" cy="${EY}" r="9.5"/><circle cx="${ER}" cy="${EY}" r="9.5"/><path d="M${EL + 9.5} ${EY} H${ER - 9.5} M${EL - 9.5} ${EY - 2} L33 ${EY - 5} M${ER + 9.5} ${EY - 2} L87 ${EY - 5}"/></g>` : c.gl === "square" ? `<g fill="rgb(255 255 255 / .12)" stroke="#2A2F36" stroke-width="2.4"><rect x="${EL - 10}" y="${EY - 8}" width="20" height="16" rx="4"/><rect x="${ER - 10}" y="${EY - 8}" width="20" height="16" rx="4"/><path d="M${EL + 10} ${EY - 1} H${ER - 10} M${EL - 10} ${EY - 3} L33 ${EY - 5} M${ER + 10} ${EY - 3} L87 ${EY - 5}" fill="none"/></g>` : c.gl === "sun" ? `<g><path d="M${EL - 11} ${EY - 7} H${EL + 10} Q${EL + 10} ${EY + 9} ${EL} ${EY + 9} Q${EL - 11} ${EY + 9} ${EL - 11} ${EY - 7}Z M${ER - 10} ${EY - 7} H${ER + 11} Q${ER + 11} ${EY + 9} ${ER} ${EY + 9} Q${ER - 10} ${EY + 9} ${ER - 10} ${EY - 7}Z" fill="#1E2328"/><path d="M${EL + 10} ${EY - 5} H${ER - 10} M${EL - 11} ${EY - 6} L33 ${EY - 7} M${ER + 11} ${EY - 6} L87 ${EY - 7}" stroke="#1E2328" stroke-width="2.4"/><path d="M${EL - 7} ${EY - 4} l4 0 M${ER - 6} ${EY - 4} l4 0" stroke="rgb(255 255 255 / .6)" stroke-width="2" stroke-linecap="round"/></g>` : "";
     return `<svg class="duo-av-svg" width="${size}" height="${size}" viewBox="0 0 120 120" role="img" aria-label="My avatar"><defs><clipPath id="${id}"><circle cx="60" cy="60" r="60"/></clipPath></defs><g clip-path="url(#${id})"><rect width="120" height="120" fill="${DUO_BG[c.bg]}"/>${cl}<rect x="50" y="76" width="20" height="17" rx="6" fill="${sk}"/><rect x="50" y="80" width="20" height="5" fill="rgb(0 0 0 / .08)"/><circle cx="32" cy="58" r="7.5" fill="${sk}"/><circle cx="88" cy="58" r="7.5" fill="${sk}"/><rect x="32" y="24" width="56" height="60" rx="24" fill="${sk}"/>${hair}<ellipse cx="42" cy="68" rx="5" ry="3" fill="#F08A7E" opacity=".28"/><ellipse cx="78" cy="68" rx="5" ry="3" fill="#F08A7E" opacity=".28"/>${eyes}<path d="M60 60 Q57 66 60 67" stroke="rgb(0 0 0 / .22)" stroke-width="2.4" fill="none" stroke-linecap="round"/>${mouth}${gl}</g></svg>`;
@@ -8285,7 +8322,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   }
   function duoAvatarScreen() {
     let cfg = duoCfg(state.avatar), tab = "skin";
-    let TABS2 = [["skin", "Skin"], ["hair", "Hair"], ["hc", "Hair colour"], ["eyes", "Eyes"], ["mouth", "Mouth"], ["gl", "Glasses"], ["cl", "Clothes"], ["cc", "Colour"], ["bg", "Background"]];
+    let TABS2 = [["skin", "Skin"], ["hair", "Hair"], ["hat", "Hat"], ["hc", "Hair colour"], ["eyes", "Eyes"], ["mouth", "Mouth"], ["gl", "Glasses"], ["cl", "Clothes"], ["cc", "Colour"], ["bg", "Background"]];
     let colors = { skin: DUO_SKIN, hc: DUO_HAIRC, cc: DUO_CLOTHC, bg: DUO_BG };
     app.innerHTML = `
     <header class="top">
@@ -8307,7 +8344,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     };
     app.addEventListener("click", onClick), cleanup = () => app.removeEventListener("click", onClick), app.querySelector("#duo-dice").addEventListener("click", () => {
       let r = (n) => Math.floor(Math.random() * n), p = (k) => DUO_PARTS[k][r(DUO_PARTS[k].length)][0];
-      cfg = duoCfg({ skin: r(DUO_SKIN.length), hair: p("hair"), hc: r(DUO_HAIRC.length), eyes: p("eyes"), mouth: p("mouth"), gl: Math.random() < 0.65 ? "none" : p("gl"), cl: p("cl"), cc: r(DUO_CLOTHC.length), bg: r(DUO_BG.length) }), draw();
+      cfg = duoCfg({ skin: r(DUO_SKIN.length), hair: p("hair"), hat: Math.random() < 0.5 ? "none" : p("hat"), hc: r(DUO_HAIRC.length), eyes: p("eyes"), mouth: p("mouth"), gl: Math.random() < 0.65 ? "none" : p("gl"), cl: p("cl"), cc: r(DUO_CLOTHC.length), bg: r(DUO_BG.length) }), draw();
     }), app.querySelector("#duo-save").addEventListener("click", () => {
       state.avatar = duoCfg(cfg), save(), toast("Your avatar is saved!", "success", 2e3), go("home");
     }), draw();
