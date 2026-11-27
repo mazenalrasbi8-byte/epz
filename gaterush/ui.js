@@ -160,7 +160,7 @@ body.grx-playing{overflow:hidden;overscroll-behavior:none}body.grx-playing .tabb
     var bt = info ? info.best_time : loc.bestTime;
     var cfg = n.cfg, left_t = n.fmtLeft((info ? info.ends : n.weekEndsMs()) - Date.now());
     return '<div class="gr-card"><div class="gr-map"><div class="gr-mini"><i></i><i></i><i></i></div><div><h3>' + esc(map.name) + '</h3><p>The fort course. Parkour, boulders and ' + map.gates + ' English doors.</p></div></div>' +
-      '<div class="gr-chips"><span class="gr-chip">' + map.gates + ' question gates</span><span class="gr-chip">About 3 min</span><span class="gr-chip">Week ends in ' + esc(left_t) + '</span></div></div>' +
+      '<div class="gr-chips"><span class="gr-chip">' + map.gates + ' question gates</span><span class="gr-chip">About 2 min</span><span class="gr-chip">Week ends in ' + esc(left_t) + '</span></div></div>' +
       '<div class="gr-card"><h2>My week</h2><div class="gr-stats"><div><b>' + (best || 0) + '</b><span>Best score</span></div><div><b>' + (bt ? n.fmtTime(bt).slice(0, -3) : "–") + '</b><span>Best time</span></div><div><b>' + (info && info.rank ? ord(info.rank) : "–") + '</b><span>Position</span></div><div><b>' + (can ? left : "∞") + '</b><span>' + (can ? "Scored races left" : "Practice") + '</span></div></div>' +
       (can && left === 0 ? '<div class="gr-note">You used all ' + max + ' scored races this week. You can still race for practice!</div>' : "") + '</div>' +
       '<button id="gr-go" class="gr-go" type="button">' + h.icon("play", 24) + ' START RACE</button>' +

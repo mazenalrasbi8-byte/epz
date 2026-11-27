@@ -114,7 +114,7 @@
     var list = shuffled(all, mulberry(hashStr(key))).slice(0, 90);
     cache = { key: key, list: list }; return list;
   };
-  // eight gates for one attempt: random questions from the weekly pool, three answers each, random door for the right one
+  // one question per gate for one attempt (6 on the fort map): random questions from the weekly pool, three answers each, random door for the right one
   net.pick = function (n) {
     var pool = net.pool(), rng = Math.random, src = shuffled(pool, rng), out = [];
     for (var i = 0; i < src.length && out.length < n; i++) {
