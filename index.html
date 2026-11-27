@@ -2042,7 +2042,7 @@ body.playing.cz-docked{padding-bottom:300px}
 .cz-ar-me{animation:cz-in-l .55s cubic-bezier(.2,1.2,.4,1) both}
 .cz-ar-foe{animation:cz-in-r .55s .1s cubic-bezier(.2,1.2,.4,1) both}
 .cz-ar-me b,.cz-ar-foe b{font-size:1.05rem;background:rgb(0 0 0 / .35);padding:4px 12px;border-radius:999px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cz-ar-me .epzc{width:auto;height:min(190px,32vh)}
+.cz-ar-me .epzc{width:auto;height:min(250px,36vh)}
 .cz-ar-boss{width:min(170px,40vw);height:auto;filter:drop-shadow(0 6px 0 rgb(0 0 0 / .3))}
 .cz-ar-init{display:grid;place-items:center;width:120px;height:120px;border-radius:50%;background:#D8343F;font-size:2.6rem;font-weight:800;border:5px solid #FFD83D}
 .cz-ar-x{align-self:center;font-family:var(--hand);font-size:3rem;color:#FFD83D;text-shadow:0 4px 0 #8A5300;animation:cz-vs .6s .25s cubic-bezier(.3,1.8,.5,1) both}
@@ -2069,10 +2069,43 @@ body.cz-arena-on{overflow:hidden}
 .duo-praise-av .epzc,.duo-nudge-av .epzc{width:100%;height:100%}
 .duo-praise.cz-full{align-items:flex-end}
 .duo-praise.cz-full .duo-praise-av{width:auto;height:auto;border-radius:0;background:none;box-shadow:none;overflow:visible;flex:none}
+/* free-design maker (v2) */
+.cz-make{position:sticky;top:0;z-index:6;background:var(--bg);padding:2px 0 0;margin:0 -2px}
+.cz-stage-wrap{height:250px}
+.cz-stage{bottom:4px}
+.cz-stage-t{position:absolute;left:14px;top:10px;margin:0;font-family:var(--hand);font-size:1.25rem;color:var(--chalk);max-width:55%;line-height:1.15;text-align:left}
+.cz-tools{position:absolute;left:10px;top:72px;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.cz-tools button{border:2px solid rgb(255 255 255 / .2);background:rgb(0 0 0 / .25);color:#fff;border-radius:10px;padding:6px 10px;font:inherit;font-size:.8rem;font-weight:700;cursor:pointer;transition:transform .12s,background .15s}
+.cz-tools button:active{transform:scale(.94)}.cz-tools button[disabled]{opacity:.35;cursor:default}
+.cz-style{margin:2px 0 4px}
+.cz-tabs{position:static;padding:10px 2px 8px}
+.cz-tabs button{min-width:58px;padding:6px 8px;font-size:.72rem}.cz-tabs button span{font-size:1.1rem}
+.cz-opt.tall .cz-thumb{height:126px}
+.cz-grid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr))}
+.cz-sw{position:relative}
+.cz-pick{display:grid;place-items:center;cursor:pointer;overflow:hidden;background:conic-gradient(#ff4b4b,#ffd83d,#45c97f,#1cb0f6,#7e5bef,#ff4b4b)}
+.cz-pick:after{content:"";position:absolute;inset:6px;border-radius:7px;background:var(--sw);border:2px solid #fff}
+.cz-pick span{position:relative;z-index:1;font-size:.9rem;filter:drop-shadow(0 1px 1px rgb(0 0 0 / .5))}
+.cz-pick input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.cz-sl{display:grid;grid-template-columns:110px 1fr 34px;align-items:center;gap:10px;margin:12px 0;font-weight:700;font-size:.9rem}
+.cz-sl input{width:100%;accent-color:var(--brand);height:28px}
+.cz-sl-r{width:34px;height:34px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;font-size:1rem;color:var(--muted)}
+.cz-note{margin:10px 0;padding:10px 12px;border-radius:12px;background:var(--surface-2);border:1.5px dashed var(--line);color:var(--muted);font-size:.88rem}
+@media (max-height:700px){.cz-stage-wrap{height:240px}}
+/* 3D avatars (epz-patch:char3d) */
+.cz3-hid{display:none!important}
+canvas.cz3{display:block;border-radius:50%;flex:none;animation:cz3-in .35s ease}
+canvas.cz3-full{margin:0 auto;filter:drop-shadow(0 4px 0 rgb(0 0 0 / .18))}
+@keyframes cz3-in{from{opacity:0;transform:scale(.92)}}
+.hello .avatar.cz-standing canvas.cz3{width:108px!important;height:108px!important}
+.cz-stage canvas.cz3{filter:drop-shadow(0 6px 0 rgb(0 0 0 / .25))}
+.cz3-on .lz-hero,.cz3-on .lz-locker{align-items:center;padding-bottom:12px}
+.cz3-on .lz-hero-me,.cz3-on .lz-locker-me{margin:0}
+.cz3-on .lz-hero .lz-say,.cz3-on .lz-locker>div:last-child{padding-bottom:0}
 .cz-dash-me{flex:none;display:block;margin:-16px -2px -22px -8px}
 .hello .avatar.cz-standing{width:auto;height:auto;border-radius:0;background:none;box-shadow:none;overflow:visible;padding:0;margin:-10px 0 -22px -6px;align-self:flex-end}
-.hello .avatar.cz-standing .epzc{width:auto;height:112px;filter:drop-shadow(0 3px 0 rgb(0 0 0 / .25))}
-.dh-art .dh-t.me .epzc{height:104px;width:auto}
+.hello .avatar.cz-standing .epzc{width:auto;height:172px;filter:drop-shadow(0 3px 0 rgb(0 0 0 / .25))}
+.dh-art .dh-t.me .epzc{height:136px;width:auto}
 @media (prefers-reduced-motion:reduce){#app.cz-enter>*,.cz-dock,.cz-arena,.cz-ar-me,.cz-ar-foe,.cz-ar-x,.board li.me.cz-climb{animation:none!important}}
 </style>
 </head>
@@ -9041,7 +9074,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     }), draw();
   }
   // ============================================================ epz-patch:char — every student's own living character (the site's mascot)
-  // One drawing (head, body, two jointed arms) used everywhere: avatar circles, path, lessons, Boss Rush, battles, ranking.
+  // One full-body drawing (head, body, jointed arms and legs, shoes) used everywhere: avatar circles, path, lessons, battles, ranking.
+  // Students design it freely: any colour (skin, hair, eyes, clothes, shoes), sliders for body and face, separate top / bottom / shoes.
   // Saved avatars (state.avatar) keep working: old keys are read as before, new keys have defaults.
   // A single animation loop moves every character on screen with soft springs: blinking, looking around, poses, reactions.
   DUO_PARTS.hair.push(["long", "Long"], ["bun", "Top knot"]);
@@ -9052,83 +9086,122 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     face: [["round", "Round"], ["oval", "Oval"], ["square", "Square"]],
     brows: [["soft", "Soft"], ["thick", "Thick"], ["straight", "Straight"]],
     beard: [["none", "None"], ["stubble", "Stubble"], ["moustache", "Moustache"], ["beard", "Short beard"], ["goatee", "Goatee"]],
+    bottom: [["trousers", "Trousers"], ["jeans", "Jeans"], ["joggers", "Joggers"], ["shorts", "Shorts"]],
+    shoes: [["sandals", "Omani sandals"], ["sneakers", "Sneakers"], ["school", "School shoes"], ["boots", "Boots"]],
     extra: [["none", "None"], ["backpack", "Backpack"], ["pen", "Pen pocket"], ["watch", "Watch"], ["headphones", "Headphones"], ["medal", "Gold medal"], ["cape", "Hero cape"]],
     pose: [["relaxed", "Relaxed"], ["hips", "Hands on hips"], ["crossed", "Arms crossed"], ["think", "Thinking"], ["wave", "Waving"], ["ready", "Ready!"]],
     style: [["omani", "Omani"], ["everyday", "Everyday"]]
   };
-  var CZ_DEF = { face: "round", brows: "soft", beard: "none", extra: "none", pose: "relaxed", style: "omani" };
+  var CZ_DEF = { face: "round", brows: "soft", beard: "none", bottom: "trousers", shoes: "sandals", extra: "none", pose: "relaxed", style: "omani" };
+  // free sliders: [min, max, default]
+  var CZ_SZ = { h: [.86, 1.14, 1], b: [.84, 1.2, 1], hd: [.88, 1.14, 1], es: [.75, 1.3, 1], ed: [-3.5, 3.5, 0], by: [-3, 4, 0], ns: [.6, 1.5, 1], mw: [.75, 1.35, 1] };
+  var CZ_COLS = ["skin", "hair", "eyes", "top", "bottom", "shoes", "hat", "bg"];
+  var CZ_EYEC = ["#3B2416", "#5A3A22", "#1F1A17", "#2E6B3A", "#2F6FDE", "#6B8E9E", "#8A5A2B", "#7E5BEF"];
+  var CZ_BOTC = { trousers: "#2E3440", jeans: "#3D5A8A", joggers: "#3B3F4A", shorts: "#5A6B7A" };
+  var CZ_SHOEC = { sandals: "#7A4B2A", sneakers: "#FFFFFF", school: "#1B1B1F", boots: "#6B4A2B" };
   // things won from Boss Rush chests (key -> value)
   var CZ_LOCKED = { "hat:kummag": 1, "hat:crown": 1, "cl:bishtg": 1, "extra:headphones": 1, "extra:medal": 1, "extra:cape": 1 };
-  var CZ_OMANI = { "cl:dish": 1, "cl:bisht": 1, "cl:bishtg": 1, "hat:kumma1": 1, "hat:kumma2": 1, "hat:kumma3": 1, "hat:kummag": 1, "hat:massar1": 1, "hat:massar2": 1, "hat:massar3": 1, "beard:beard": 1, "beard:moustache": 1, "beard:goatee": 1 };
+  var CZ_OMANI = { "cl:dish": 1, "cl:bisht": 1, "cl:bishtg": 1, "hat:kumma1": 1, "hat:kumma2": 1, "hat:kumma3": 1, "hat:kummag": 1, "hat:massar1": 1, "hat:massar2": 1, "hat:massar3": 1, "beard:beard": 1, "beard:moustache": 1, "beard:goatee": 1, "shoes:sandals": 1 };
   function czOwned() {
     try { return (JSON.parse(localStorage.getItem("epz-learn-v1") || "{}").owned) || []; } catch (e) { return []; }
   }
   var czHas = (k, v) => !CZ_LOCKED[k + ":" + v] || czOwned().indexOf(k + ":" + v) > -1;
+  var czRobe = (cl) => cl === "dish" || cl === "bisht" || cl === "bishtg";
   function czCfg(c) {
     let o = duoCfg(c);
     for (let k in CZ_NEW) CZ_NEW[k].some((p) => p[0] === o[k]) || (o[k] = CZ_DEF[k]);
-    // a locked item the student no longer has falls back to a free one
     czHas("hat", o.hat) || (o.hat = "none"), czHas("cl", o.cl) || (o.cl = "dish"), czHas("extra", o.extra) || (o.extra = "none");
-    return o;
+    let col = {}, sz = {}, src = c && typeof c == "object" ? c : {};
+    CZ_COLS.forEach((k) => { let v = src.col && src.col[k]; /^#[0-9a-f]{6}$/i.test(v || "") && (col[k] = v); });
+    for (let k in CZ_SZ) { let v = Number(src.sz && src.sz[k]); sz[k] = isFinite(v) && src.sz && src.sz[k] != null ? Math.max(CZ_SZ[k][0], Math.min(CZ_SZ[k][1], v)) : CZ_SZ[k][2]; }
+    return o.col = col, o.sz = sz, o;
+  }
+  // the colours actually used for a config (free colour first, then the old palette index)
+  function czColors(c) {
+    let top = c.col.top || DUO_CLOTHC[c.cc];
+    return {
+      skin: c.col.skin || DUO_SKIN[c.skin], hair: c.col.hair || DUO_HAIRC[c.hc], eyes: c.col.eyes || CZ_EYEC[0], top,
+      bottom: c.col.bottom || CZ_BOTC[c.bottom], shoes: c.col.shoes || CZ_SHOEC[c.shoes], hat: c.col.hat || top, bg: c.col.bg || DUO_BG[c.bg]
+    };
   }
   function czShade(hex, amt) {
     let n = parseInt(String(hex).slice(1), 16), r = n >> 16 & 255, g = n >> 8 & 255, b = n & 255, f = (x) => Math.max(0, Math.min(255, Math.round(amt < 0 ? x * (1 + amt) : x + (255 - x) * amt)));
     return "#" + ((1 << 24) + (f(r) << 16) + (f(g) << 8) + f(b)).toString(16).slice(1);
   }
-  // [left upper, left forearm, right upper, right forearm] in degrees; + is clockwise
+  var czLight = (hex) => { let n = parseInt(String(hex).slice(1), 16); return ((n >> 16 & 255) * .3 + (n >> 8 & 255) * .59 + (n & 255) * .11) > 200; };
+  // [L upper arm, L forearm, R upper arm, R forearm, L thigh, L shin, R thigh, R shin] in degrees; + is clockwise
   var CZ_POSES = {
-    relaxed: [9, -6, -9, 6], hips: [38, -95, -38, 95], crossed: [-20, -80, 20, 80], think: [9, -6, 20, 146], wave: [9, -6, -150, -22],
-    ready: [20, -150, -20, 150], cheer: [150, 14, -150, -14], yes: [9, -6, -25, -150], down: [3, -2, -3, 2], shrug: [22, 62, -22, -62]
+    relaxed: [9, -6, -9, 6, 3, -2, -3, 2], hips: [38, -95, -38, 95, 8, -6, -8, 6], crossed: [-20, -80, 20, 80, 2, -1, -2, 1], think: [9, -6, 20, 146, 2, 0, -7, 6],
+    wave: [9, -6, -150, -22, 3, -2, -3, 2], ready: [20, -150, -20, 150, 13, -16, -13, 16], cheer: [150, 14, -150, -14, 9, -4, -9, 4],
+    yes: [9, -6, -25, -150, 5, -4, -5, 4], down: [3, -2, -3, 2, 1, 0, -1, 0], shrug: [22, 62, -22, -62, 4, -3, -4, 3]
   };
   var czUid = 0;
   function czLongSleeve(cl) { return !/^(tee|jersey)$/.test(cl); }
   function czSvg(cfg, opt = {}) {
     let c = czCfg(cfg), id = "cz" + ++czUid, size = opt.size || 120, frame = opt.frame || "full", mood = opt.mood || "idle";
-    let sk = DUO_SKIN[c.skin], skD = czShade(sk, -.16), hc = DUO_HAIRC[c.hc], cc = DUO_CLOTHC[c.cc], ink = CZ_INK;
+    let C = czColors(c), sz = c.sz, sk = C.skin, skD = czShade(sk, -.16), hc = C.hair, cc = C.top, ink = CZ_INK;
     let pose = CZ_POSES[opt.pose || c.pose] || CZ_POSES.relaxed;
-    let white = c.cc === 0;
-    // ---- clothes
-    let sleeve = cc, cloak = null, torso = "M50 152 C50 134 62 126 80 123 L120 123 C138 126 150 134 150 152 L154 240 L46 240 Z", T = "", behind = "", hood = "";
-    let base = (f) => `<path d="${torso}" fill="${f}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M130 128 C144 134 150 146 150 160 L153 240 L138 240 C140 200 138 160 130 128Z" fill="#000" opacity=".07"/>`;
-    if (c.cl === "dish" || c.cl === "bisht" || c.cl === "bishtg") {
-      let dc = c.cl === "dish" ? cc : "#FFFFFF", trim = czShade(dc, white || c.cl !== "dish" ? -.2 : -.28);
-      T = base(dc) + `<path d="M86 123 Q100 136 114 123" fill="none" stroke="${trim}" stroke-width="2.2"/><path d="M100 133 V170" stroke="${trim}" stroke-width="2.4"/><path d="M96.5 170 Q100 166 103.5 170 L102.5 182 Q100 186 97.5 182Z" fill="${trim}"/><g fill="${trim}">${[90, 94, 106, 110].map((x) => `<circle cx="${x}" cy="${127 + (x < 100 ? (x - 86) * .45 : (114 - x) * .45)}" r="1"/>`).join("")}</g>`;
+    let white = czLight(cc), B = sz.b, H = sz.h, X = (f) => (100 + f * B).toFixed(1);
+    // body measurements
+    let hipY = 194, thighL = 50 * H, shinL = 48 * H, groundY = hipY + 4 + thighL + shinL + 8, kneeY = hipY + 4 + thighL, ankleY = groundY - 14;
+    let shL = [Number(X(-31)) + 7, 123], shR = [Number(X(31)) - 7, 123], hpL = [Number(X(-13)), hipY + 4], hpR = [Number(X(13)), hipY + 4];
+    let robe = czRobe(c.cl);
+    // ---- top
+    let tp = `M${X(-14)} 112 C${X(-26)} 113 ${X(-31)} 118 ${X(-31)} 130 L${X(-27)} 168 L${X(-28)} ${hipY + 4} L${X(28)} ${hipY + 4} L${X(27)} 168 L${X(31)} 130 C${X(31)} 118 ${X(26)} 113 ${X(14)} 112 Z`;
+    let shade = (x1, x2, y2) => `<path d="M${x1} 118 C${x2} 124 ${x2} 150 ${x2} ${y2} L${x1} ${y2}Z" fill="#000" opacity=".07"/>`;
+    let base = (f, path = tp, y2 = hipY + 4) => `<path d="${path}" fill="${f}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/>` + shade(X(18), X(29), y2);
+    let sleeve = cc, T = "", hood = "", pelvis = "";
+    if (robe) {
+      let dc = c.cl === "dish" ? cc : "#FFFFFF";
+      let trim = czShade(dc, czLight(dc) ? -.2 : -.3);
+      let rp = `M${X(-14)} 112 C${X(-26)} 113 ${X(-31)} 118 ${X(-31)} 130 L${X(-36)} ${ankleY} Q100 ${ankleY + 6} ${X(36)} ${ankleY} L${X(31)} 130 C${X(31)} 118 ${X(26)} 113 ${X(14)} 112 Z`;
+      T = base(dc, rp, ankleY) + `<path d="M${X(-6)} ${ankleY - 30} Q${X(-4)} ${ankleY - 10} ${X(-8)} ${ankleY + 2}" stroke="#000" opacity=".08" stroke-width="3" fill="none"/><path d="M88 113 Q100 124 112 113" fill="none" stroke="${trim}" stroke-width="2.2"/><path d="M100 122 V158" stroke="${trim}" stroke-width="2.4"/><path d="M96.8 158 Q100 154 103.2 158 L102.4 169 Q100 173 97.6 169Z" fill="${trim}"/><g fill="${trim}"><circle cx="91" cy="117" r="1"/><circle cx="95" cy="120" r="1"/><circle cx="105" cy="120" r="1"/><circle cx="109" cy="117" r="1"/></g>`;
       sleeve = dc;
       if (c.cl !== "dish") {
-        cloak = c.cl === "bishtg" ? "#1A1714" : white ? "#3B2A20" : cc;
-        let g = "#D9A93A", w = c.cl === "bishtg" ? 4 : 2.6;
-        T += `<path d="M48 154 C48 134 62 126 80 123 L86 124 Q84 180 80 240 L42 240 Z" fill="${cloak}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M152 154 C152 134 138 126 120 123 L114 124 Q116 180 120 240 L158 240 Z" fill="${cloak}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M84 124 Q82 180 78 240 M116 124 Q118 180 122 240" stroke="${g}" stroke-width="${w}" fill="none"/>${c.cl === "bishtg" ? `<path d="M83 140 l-4 4 4 4 M81 170 l-4 4 4 4 M117 140 l4 4 -4 4 M119 170 l4 4 -4 4" stroke="${g}" stroke-width="1.6" fill="none"/>` : ""}`;
-        sleeve = cloak;
+        let ck = c.cl === "bishtg" ? "#1A1714" : c.col.top || (white ? "#3B2A20" : cc), g = "#D9A93A", w = c.cl === "bishtg" ? 4 : 2.6, bot = kneeY + 26;
+        T += `<path d="M${X(-14)} 113 C${X(-28)} 114 ${X(-34)} 120 ${X(-34)} 134 L${X(-42)} ${bot} L${X(-13)} ${bot} Q${X(-11)} 160 ${X(-12)} 116 Z" fill="${ck}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M${X(14)} 113 C${X(28)} 114 ${X(34)} 120 ${X(34)} 134 L${X(42)} ${bot} L${X(13)} ${bot} Q${X(11)} 160 ${X(12)} 116 Z" fill="${ck}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M${X(-12.5)} 116 Q${X(-11.5)} 160 ${X(-13.5)} ${bot} M${X(12.5)} 116 Q${X(11.5)} 160 ${X(13.5)} ${bot}" stroke="${g}" stroke-width="${w}" fill="none"/>${c.cl === "bishtg" ? `<path d="M${X(-15)} 132 l-4 4 4 4 M${X(-15)} 156 l-4 4 4 4 M${X(15)} 132 l4 4 -4 4 M${X(15)} 156 l4 4 -4 4" stroke="${g}" stroke-width="1.6" fill="none"/>` : ""}`;
+        sleeve = ck;
       }
-    } else if (c.cl === "tee") {
-      T = base(cc) + `<path d="M84 123 Q100 138 116 123" fill="none" stroke="${czShade(cc, -.25)}" stroke-width="3"/>`;
-    } else if (c.cl === "hoodie") {
-      hood = `<path d="M66 128 Q100 150 134 128 Q132 108 100 108 Q68 108 66 128Z" fill="${czShade(cc, -.12)}" stroke="${ink}" stroke-width="2.4"/>`;
-      T = base(cc) + `<path d="M76 124 Q100 146 124 124" fill="${czShade(cc, -.18)}" stroke="${ink}" stroke-width="2"/><path d="M93 134 V158 M107 134 V158" stroke="#F4F7EF" stroke-width="2.2" stroke-linecap="round"/><path d="M72 198 Q100 188 128 198 L132 228 L68 228Z" fill="${czShade(cc, -.1)}" stroke="${ink}" stroke-width="2"/>`;
-    } else if (c.cl === "shirt" || c.cl === "uniform") {
-      let sc = c.cl === "uniform" ? "#F4F7FB" : cc, tie = c.cl === "uniform" ? (white ? "#2B41C4" : cc) : null;
-      T = base(sc) + `<path d="M82 122 L100 134 L92 142 Z M118 122 L100 134 L108 142 Z" fill="${czShade(sc, -.08)}" stroke="${ink}" stroke-width="2" stroke-linejoin="round"/>` + (tie ? `<path d="M96 134 L104 134 L106 178 L100 186 L94 178 Z" fill="${tie}" stroke="${ink}" stroke-width="2" stroke-linejoin="round"/><path d="M96 134 L104 134 L102 141 L98 141Z" fill="${czShade(tie, -.25)}"/>` : `<g fill="${czShade(sc, -.3)}"><circle cx="100" cy="150" r="1.8"/><circle cx="100" cy="168" r="1.8"/><circle cx="100" cy="186" r="1.8"/></g>`) + `<path d="M114 156 h16 v12 h-16z" fill="none" stroke="${czShade(sc, -.22)}" stroke-width="1.6"/>`;
-      sleeve = sc;
-    } else if (c.cl === "sweater") {
-      T = base(cc) + `<path d="M82 123 Q100 140 118 123" fill="none" stroke="${czShade(cc, -.3)}" stroke-width="5"/><path d="M50 176 H150" stroke="${czShade(cc, .35)}" stroke-width="8"/><path d="M50 176 H150" stroke="${czShade(cc, -.25)}" stroke-width="2" stroke-dasharray="4 4"/>`;
-    } else if (c.cl === "jersey") {
-      let st = white ? "#2B41C4" : "#FFFFFF";
-      T = base(cc) + `<path d="M86 123 L100 140 L114 123" fill="none" stroke="${st}" stroke-width="4"/><text x="100" y="188" text-anchor="middle" font-family="Lexend,Arial,sans-serif" font-weight="800" font-size="34" fill="${st}" stroke="${ink}" stroke-width="1.2">9</text>`;
-    } else if (c.cl === "jacket") {
-      T = base("#F4F7FB") + `<path d="M84 123 Q100 136 116 123" fill="none" stroke="#C9D3E2" stroke-width="2.4"/><path d="M48 154 C48 134 62 126 80 123 L90 132 L84 150 L88 240 L44 240 Z" fill="${cc}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M152 154 C152 134 138 126 120 123 L110 132 L116 150 L112 240 L156 240 Z" fill="${cc}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/>`;
+    } else {
+      pelvis = `<path d="M${X(-28)} ${hipY - 8} L${X(28)} ${hipY - 8} L${X(27)} ${hipY + 16} Q100 ${hipY + 22} ${X(-27)} ${hipY + 16}Z" fill="${C.bottom}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/>` + (c.bottom === "jeans" ? `<path d="M100 ${hipY - 6} V${hipY + 18}" stroke="${czShade(C.bottom, -.3)}" stroke-width="1.6"/>` : "");
+      if (c.cl === "tee") T = base(cc) + `<path d="M88 112 Q100 124 112 112" fill="none" stroke="${czShade(cc, -.25)}" stroke-width="3"/>`;
+      else if (c.cl === "hoodie") {
+        hood = `<path d="M${X(-22)} 118 Q100 136 ${X(22)} 118 Q${X(20)} 100 100 100 Q${X(-20)} 100 ${X(-22)} 118Z" fill="${czShade(cc, -.12)}" stroke="${ink}" stroke-width="2.4"/>`;
+        T = base(cc) + `<path d="M86 113 Q100 130 114 113" fill="${czShade(cc, -.18)}" stroke="${ink}" stroke-width="2"/><path d="M95 122 V142 M105 122 V142" stroke="#F4F7EF" stroke-width="2" stroke-linecap="round"/><path d="M${X(-17)} 172 Q100 164 ${X(17)} 172 L${X(19)} ${hipY - 2} L${X(-19)} ${hipY - 2}Z" fill="${czShade(cc, -.1)}" stroke="${ink}" stroke-width="2"/>`;
+      } else if (c.cl === "shirt" || c.cl === "uniform") {
+        let sc = c.cl === "uniform" ? "#F4F7FB" : cc, tie = c.cl === "uniform" ? (c.col.top || (white ? "#2B41C4" : cc)) : null;
+        T = base(sc) + `<path d="M88 111 L100 122 L94 129 Z M112 111 L100 122 L106 129 Z" fill="${czShade(sc, -.08)}" stroke="${ink}" stroke-width="2" stroke-linejoin="round"/>` + (tie ? `<path d="M97 122 L103 122 L105 160 L100 167 L95 160 Z" fill="${tie}" stroke="${ink}" stroke-width="2" stroke-linejoin="round"/>` : `<g fill="${czShade(sc, -.3)}"><circle cx="100" cy="138" r="1.6"/><circle cx="100" cy="154" r="1.6"/><circle cx="100" cy="170" r="1.6"/></g>`) + `<path d="M${X(9)} 140 h13 v10 h-13z" fill="none" stroke="${czShade(sc, -.22)}" stroke-width="1.5"/>`;
+        sleeve = sc;
+      } else if (c.cl === "sweater") T = base(cc) + `<path d="M88 112 Q100 126 112 112" fill="none" stroke="${czShade(cc, -.3)}" stroke-width="4.5"/><path d="M${X(-29)} 156 H${X(29)}" stroke="${czShade(cc, .35)}" stroke-width="7"/><path d="M${X(-29)} 156 H${X(29)}" stroke="${czShade(cc, -.25)}" stroke-width="2" stroke-dasharray="4 4"/>`;
+      else if (c.cl === "jersey") { let st = white ? "#2B41C4" : "#FFFFFF"; T = base(cc) + `<path d="M90 112 L100 126 L110 112" fill="none" stroke="${st}" stroke-width="3.5"/><text x="100" y="168" text-anchor="middle" font-family="Lexend,Arial,sans-serif" font-weight="800" font-size="30" fill="${st}" stroke="${ink}" stroke-width="1.1">9</text>`; }
+      else if (c.cl === "jacket") T = base("#F4F7FB") + `<path d="M88 112 Q100 124 112 112" fill="none" stroke="#C9D3E2" stroke-width="2.4"/><path d="M${X(-14)} 112 C${X(-26)} 113 ${X(-31)} 118 ${X(-31)} 130 L${X(-27)} 168 L${X(-28)} ${hipY + 4} L${X(-6)} ${hipY + 4} L${X(-8)} 138 L${X(-4)} 122 Z" fill="${cc}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M${X(14)} 112 C${X(26)} 113 ${X(31)} 118 ${X(31)} 130 L${X(27)} 168 L${X(28)} ${hipY + 4} L${X(6)} ${hipY + 4} L${X(8)} 138 L${X(4)} 122 Z" fill="${cc}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/>`;
+      else T = base(cc);
     }
     // ---- extras on the body
     let ex = c.extra, exBack = "", exFront = "", exWrist = "";
-    ex === "cape" && (exBack = `<path d="M54 130 Q100 116 146 130 L172 238 Q100 226 28 238 Z" fill="#D8343F" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M100 124 L104 236" stroke="#000" opacity=".12" stroke-width="10"/>`);
-    ex === "backpack" && (exFront = `<path d="M70 128 Q64 160 68 200" stroke="#2B41C4" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M130 128 Q136 160 132 200" stroke="#2B41C4" stroke-width="7" fill="none" stroke-linecap="round"/>`);
-    ex === "medal" && (exFront = `<path d="M90 124 L100 160 L110 124" fill="none" stroke="#2B41C4" stroke-width="5"/><path d="M95 124 L100 150" stroke="#D8343F" stroke-width="3"/><circle cx="100" cy="168" r="10" fill="#FFD83D" stroke="${ink}" stroke-width="2.2"/><path d="M100 162 l1.9 3.8 4.2.6 -3 3 .7 4.2 -3.8-2 -3.8 2 .7-4.2 -3-3 4.2-.6z" fill="#E0A800"/>`);
-    ex === "pen" && (exFront = `<path d="M114 150 h18 v16 h-18z" fill="#000" opacity=".1"/><rect x="118" y="140" width="4" height="14" rx="1.5" fill="#2B41C4" stroke="${ink}" stroke-width="1.2"/><rect x="124" y="142" width="4" height="12" rx="1.5" fill="#D8343F" stroke="${ink}" stroke-width="1.2"/>`);
+    ex === "cape" && (exBack = `<path d="M${X(-24)} 118 Q100 106 ${X(24)} 118 L${X(46)} ${groundY - 18} Q100 ${groundY - 30} ${X(-46)} ${groundY - 18} Z" fill="#D8343F" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M100 114 L104 ${groundY - 26}" stroke="#000" opacity=".12" stroke-width="10"/>`);
+    ex === "backpack" && (exBack += `<rect x="${X(-30)}" y="122" width="${(60 * B).toFixed(1)}" height="62" rx="12" fill="#2B41C4" stroke="${ink}" stroke-width="2.4"/>`, exFront = `<path d="M${X(-17)} 114 Q${X(-22)} 140 ${X(-20)} 176" stroke="#2B41C4" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M${X(17)} 114 Q${X(22)} 140 ${X(20)} 176" stroke="#2B41C4" stroke-width="6" fill="none" stroke-linecap="round"/>`);
+    ex === "medal" && (exFront = `<path d="M92 113 L100 146 L108 113" fill="none" stroke="#2B41C4" stroke-width="4.5"/><path d="M96 113 L100 138" stroke="#D8343F" stroke-width="2.6"/><circle cx="100" cy="153" r="9" fill="#FFD83D" stroke="${ink}" stroke-width="2.2"/><path d="M100 147.6 l1.7 3.4 3.8.5 -2.7 2.7 .6 3.8 -3.4-1.8 -3.4 1.8 .6-3.8 -2.7-2.7 3.8-.5z" fill="#E0A800"/>`);
+    ex === "pen" && (exFront = `<rect x="${X(10)}" y="132" width="3.5" height="12" rx="1.4" fill="#2B41C4" stroke="${ink}" stroke-width="1.1"/><rect x="${Number(X(10)) + 5}" y="134" width="3.5" height="10" rx="1.4" fill="#D8343F" stroke="${ink}" stroke-width="1.1"/><path d="M${X(9)} 140 h14 v11 h-14z" fill="#000" opacity=".1"/>`);
     ex === "watch" && (exWrist = `<rect x="-10" y="24" width="20" height="7" rx="2" fill="#17224D"/><rect x="-4" y="23" width="8" height="9" rx="2" fill="#FFD83D" stroke="${ink}" stroke-width="1.2"/>`);
     // ---- arms (drawn pointing down from the shoulder; the loop rotates them)
     let long = czLongSleeve(c.cl);
     let upper = (fill) => `<rect x="-10.5" y="-8" width="21" height="50" rx="10.5" fill="${long ? fill : sk}" stroke="${ink}" stroke-width="2.4"/>${long ? "" : `<path d="M-10.5 2 Q-10.5 -8 0 -8 Q10.5 -8 10.5 2 V18 H-10.5Z" fill="${fill}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/>`}`;
     let fore = (fill, wrist) => `<rect x="-9.5" y="-6" width="19" height="40" rx="9.5" fill="${long ? fill : sk}" stroke="${ink}" stroke-width="2.4"/>${wrist || ""}<circle cx="0" cy="38" r="10.5" fill="${sk}" stroke="${ink}" stroke-width="2.4"/><path d="M-4 33 q-5 3 -3 8" stroke="${skD}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
-    let arm = (side, a, b) => `<g class="cz-arm${side}" transform="translate(${side === "L" ? 61 : 139} 135) rotate(${a})"><g class="cz-fore${side}" transform="translate(0 40) rotate(${b})">${fore(sleeve, side === "L" ? exWrist : "")}</g>${upper(sleeve)}</g>`;
+    let arm = (side, a, b) => { let p = side === "L" ? shL : shR; return `<g class="cz-arm${side}" transform="translate(${p[0]} ${p[1]}) rotate(${a}) scale(.84)"><g class="cz-fore${side}" transform="translate(0 40) rotate(${b})">${fore(sleeve, side === "L" ? exWrist : "")}</g>${upper(sleeve)}</g>`; };
+    // ---- legs and shoes (thigh from the hip, shin from the knee; the foot points outwards)
+    let shoe = (side) => {
+      let s = side === "L" ? 1 : -1, y = shinL, sc2 = C.shoes, d = czShade(sc2, czLight(sc2) ? -.25 : .25);
+      let foot = `M${7 * s} ${y - 6} Q${9 * s} ${y + 7} ${-1 * s} ${y + 8} L${-15 * s} ${y + 8} Q${-22 * s} ${y + 8} ${-20 * s} ${y + 1} Q${-17 * s} ${y - 5} ${-7 * s} ${y - 6} Z`;
+      if (c.shoes === "sandals") return `<path d="${foot}" fill="${sk}" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round"/><path d="M${9 * s} ${y + 6} L${-21 * s} ${y + 6} Q${-23 * s} ${y + 10} ${-18 * s} ${y + 10} L${6 * s} ${y + 10} Q${10 * s} ${y + 10} ${9 * s} ${y + 6}Z" fill="${sc2}" stroke="${ink}" stroke-width="1.8"/><path d="M${-14 * s} ${y - 1} Q${-6 * s} ${y - 6} ${3 * s} ${y}" stroke="${sc2}" stroke-width="4.5" fill="none" stroke-linecap="round"/>`;
+      if (c.shoes === "boots") return `<path d="M${-9 * s} ${y - 16} L${9 * s} ${y - 16} L${8 * s} ${y + 8} L${-17 * s} ${y + 8} Q${-23 * s} ${y + 8} ${-20 * s} ${y + 1} Q${-17 * s} ${y - 4} ${-9 * s} ${y - 5} Z" fill="${sc2}" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round"/><path d="M${-9 * s} ${y - 12} H${9 * s}" stroke="${d}" stroke-width="2"/><path d="M${8 * s} ${y + 6} L${-20 * s} ${y + 6}" stroke="${d}" stroke-width="3"/>`;
+      return `<path d="${foot}" fill="${sc2}" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round"/><path d="M${8 * s} ${y + 5} L${-20 * s} ${y + 5}" stroke="${c.shoes === "school" ? "#000" : d}" stroke-width="${c.shoes === "school" ? 2.5 : 3.5}" opacity=".7"/>` + (c.shoes === "sneakers" ? `<path d="M${-12 * s} ${y - 3} l${4 * s} 4 M${-7 * s} ${y - 5} l${4 * s} 4" stroke="${d}" stroke-width="1.8"/>` : `<path d="M${-14 * s} ${y - 2} q${4 * s} -2 ${7 * s} 0" stroke="#fff" stroke-width="1.6" opacity=".5" fill="none"/>`);
+    };
+    let thighC = robe ? "#F4F7FB" : C.bottom, shinC = robe || c.bottom === "shorts" ? sk : C.bottom;
+    let leg = (side, a, b) => {
+      let p = side === "L" ? hpL : hpR, sh = c.bottom === "shorts" && !robe;
+      return `<g class="cz-leg${side}" transform="translate(${p[0]} ${p[1]}) rotate(${a})"><g class="cz-shin${side}" transform="translate(0 ${thighL.toFixed(1)}) rotate(${b})"><rect x="-8.5" y="-6" width="17" height="${(shinL + 2).toFixed(1)}" rx="8.5" fill="${shinC}" stroke="${ink}" stroke-width="2.4"/>${shoe(side)}</g><rect x="-10" y="-8" width="20" height="${(thighL + 12).toFixed(1)}" rx="10" fill="${sh ? sk : thighC}" stroke="${ink}" stroke-width="2.4"/>${sh ? `<path d="M-10 2 Q-10 -8 0 -8 Q10 -8 10 2 V${(thighL * .55).toFixed(1)} H-10Z" fill="${C.bottom}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/>` : ""}</g>`;
+    };
     // ---- head
     let faceP = c.face === "oval" ? "M100 42 C123 42 135 60 135 82 C135 106 119 122 100 122 C81 122 65 106 65 82 C65 60 77 42 100 42Z"
       : c.face === "square" ? "M66 70 C66 50 80 43 100 43 C120 43 134 50 134 70 L134 94 C134 112 120 121 100 121 C80 121 66 112 66 94Z"
@@ -9156,19 +9229,19 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     // hats from the old avatar maker, scaled onto this head (old eyes 49/71 at y 56 -> new 86/114 at y 84)
     let hat = "";
     if (c.hat === "crown") hat = `<path d="M70 52 L74 22 L88 38 L100 16 L112 38 L126 22 L130 52 Z" fill="#FFD83D" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><circle cx="100" cy="40" r="4" fill="#D8343F" stroke="${ink}" stroke-width="1.4"/><path d="M72 46 H128" stroke="#E0A800" stroke-width="3"/>`;
-    else if (hatOn) hat = `<g transform="translate(23.6 12.7) scale(1.273)">${duoHat(c.hat, id, cc)}</g>`;
+    else if (hatOn) hat = `<g transform="translate(23.6 12.7) scale(1.273)">${duoHat(c.hat, id, C.hat)}</g>`;
     let phones = ex === "headphones" ? `<path d="M64 82 Q62 30 100 30 Q138 30 136 82" fill="none" stroke="${ink}" stroke-width="6.5" stroke-linecap="round"/><path d="M64 82 Q62 30 100 30 Q138 30 136 82" fill="none" stroke="#7E5BEF" stroke-width="3.5" stroke-linecap="round"/><rect x="55" y="74" width="16" height="24" rx="7" fill="#7E5BEF" stroke="${ink}" stroke-width="2.2"/><rect x="129" y="74" width="16" height="24" rx="7" fill="#7E5BEF" stroke="${ink}" stroke-width="2.2"/>` : "";
     // ---- face
-    let EL = 86, ER = 114, EY = 84;
-    let eyeR = c.eyes === "big" || c.eyes === "happy" || c.eyes === "wink" || c.eyes === "cool" ? [7.2, 8.4] : [0, 0];
-    let pup = c.eyes === "dots" ? 3.9 : 4.4;
-    let eye = (x) => (eyeR[0] ? `<ellipse class="cz-white" cx="${x}" cy="${EY}" rx="${eyeR[0]}" ry="${eyeR[1]}" fill="#fff" stroke="${ink}" stroke-width="1.8"/>` : "") + `<g class="cz-pup"><circle cx="${x}" cy="${EY + .5}" r="${pup}" fill="${ink}"/><circle cx="${x - 1.4}" cy="${EY - 1.3}" r="1.4" fill="#fff"/></g>`;
-    let lid = (x) => `<rect class="cz-lid" x="${x - 9}" y="${EY - 10}" width="18" height="0" fill="${sk}"/>`;
-    let arc = (x) => `<path d="M${x - 6.5} ${EY + 1} Q${x} ${EY - 7} ${x + 6.5} ${EY + 1}" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+    let es = sz.es, EL = 86 - sz.ed, ER = 114 + sz.ed, EY = 84, BY = sz.by;
+    let eyeR = c.eyes === "big" || c.eyes === "happy" || c.eyes === "wink" || c.eyes === "cool" ? [7.2 * es, 8.4 * es] : [0, 0];
+    let pup = (c.eyes === "dots" ? 3.9 : 4.6) * es, irisC = C.eyes;
+    let eye = (x) => (eyeR[0] ? `<ellipse class="cz-white" cx="${x}" cy="${EY}" rx="${eyeR[0]}" ry="${eyeR[1]}" fill="#fff" stroke="${ink}" stroke-width="1.8"/>` : "") + `<g class="cz-pup"><circle cx="${x}" cy="${EY + .5}" r="${pup}" fill="${c.eyes === "dots" ? ink : irisC}"/>${c.eyes === "dots" ? "" : `<circle cx="${x}" cy="${EY + .5}" r="${(pup * .5).toFixed(2)}" fill="${ink}"/>`}<circle cx="${x - 1.4 * es}" cy="${EY - 1.3 * es}" r="${(1.4 * es).toFixed(2)}" fill="#fff"/></g>`;
+    let lid = (x) => `<rect class="cz-lid" x="${x - 9 * es}" y="${EY - 10 * es}" width="${18 * es}" height="0" data-h="${(20 * es).toFixed(1)}" fill="${sk}"/>`;
+    let arc = (x) => `<path d="M${x - 6.5 * es} ${EY + 1} Q${x} ${EY - 7 * es} ${x + 6.5 * es} ${EY + 1}" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>`;
     let eyesOpen = `<g class="cz-eo">${c.eyes === "wink" ? `<g class="cz-eyeL">${eye(EL)}${lid(EL)}</g>` + `<g class="cz-wink">${arc(ER)}</g><g class="cz-eyeR cz-wk">${eye(ER)}${lid(ER)}</g>` : `<g class="cz-eyeL">${eye(EL)}${lid(EL)}</g><g class="cz-eyeR">${eye(ER)}${lid(ER)}</g>`}${c.eyes === "happy" ? `<path d="M${EL - 7} ${EY + 9} Q${EL} ${EY + 6} ${EL + 7} ${EY + 9} M${ER - 7} ${EY + 9} Q${ER} ${EY + 6} ${ER + 7} ${EY + 9}" stroke="${skD}" stroke-width="2" fill="none" stroke-linecap="round"/>` : ""}</g>`;
     let eyesShut = `<g class="cz-ec">${arc(EL)}${arc(ER)}</g>`;
     let bw = c.brows === "thick" ? 4.4 : c.brows === "straight" ? 3.2 : 2.8;
-    let brow = (x, side) => c.brows === "straight" ? `<path class="cz-br${side}" d="M${x - 7} ${EY - 14} H${x + 7}" stroke="${hc}" stroke-width="${bw}" stroke-linecap="round"/>` : `<path class="cz-br${side}" d="M${x - 7} ${EY - 13} Q${x} ${EY - 17} ${x + 7} ${EY - 13}" stroke="${hc}" stroke-width="${bw}" fill="none" stroke-linecap="round"/>`;
+    let brow = (x, side) => c.brows === "straight" ? `<path class="cz-br${side}" d="M${x - 7} ${EY - 14 - BY} H${x + 7}" stroke="${hc}" stroke-width="${bw}" stroke-linecap="round"/>` : `<path class="cz-br${side}" d="M${x - 7} ${EY - 13 - BY} Q${x} ${EY - 17 - BY} ${x + 7} ${EY - 13 - BY}" stroke="${hc}" stroke-width="${bw}" fill="none" stroke-linecap="round"/>`;
     let beard = c.beard === "stubble" ? `<path d="M68 92 Q70 118 100 121 Q130 118 132 92 Q128 108 114 110 Q100 113 86 110 Q72 108 68 92Z" fill="${hc}" opacity=".22"/>`
       : c.beard === "moustache" ? `<path d="M88 99 Q94 94 100 97 Q106 94 112 99 Q106 99 100 100 Q94 99 88 99Z" fill="${hc}" stroke="${ink}" stroke-width="1"/>`
       : c.beard === "beard" ? `<path d="M66 86 Q66 120 100 123 Q134 120 134 86 Q130 104 118 108 Q110 110 106 108 Q100 112 94 108 Q90 110 82 108 Q70 104 66 86Z" fill="${hc}" stroke="${ink}" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="100" cy="103.5" rx="11.5" ry="6.8" fill="${sk}"/><path d="M88 99 Q94 94 100 97 Q106 94 112 99 Q106 100 100 100 Q94 100 88 99Z" fill="${hc}"/>`
@@ -9191,18 +9264,24 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       : c.gl === "sun" ? `<g stroke="${ink}" stroke-width="2.6"><path d="M73 ${EY - 8} H98 V${EY + 1} Q98 ${EY + 10} 86 ${EY + 10} Q73 ${EY + 10} 73 ${EY + 1}Z M102 ${EY - 8} H127 V${EY + 1} Q127 ${EY + 10} 114 ${EY + 10} Q102 ${EY + 10} 102 ${EY + 1}Z" fill="#1E2550"/><path d="M98 ${EY - 5} H102 M73 ${EY - 6} L66 ${EY - 8} M127 ${EY - 6} L134 ${EY - 8}" fill="none"/></g><path d="M77 ${EY - 5} l6 0 M106 ${EY - 5} l6 0" stroke="#fff" stroke-width="2" opacity=".5" stroke-linecap="round"/>` : "";
     let ears = `<g class="cz-ears"><ellipse cx="64.5" cy="86" rx="7.5" ry="9.5" fill="${sk}" stroke="${ink}" stroke-width="2.2"/><ellipse cx="135.5" cy="86" rx="7.5" ry="9.5" fill="${sk}" stroke="${ink}" stroke-width="2.2"/><path d="M64 82 q3 4 0 8 M136 82 q-3 4 0 8" stroke="${skD}" stroke-width="2" fill="none"/></g>`;
     let head = `<g class="cz-head">${hairBack}${ears}<path d="${faceP}" fill="${sk}" stroke="${ink}" stroke-width="2.4"/><ellipse cx="80" cy="99" rx="6.5" ry="4" fill="#FF7A6B" opacity=".22"/><ellipse cx="120" cy="99" rx="6.5" ry="4" fill="#FF7A6B" opacity=".22"/>`
-      + `<g class="cz-face">${beard}<path d="M99 88 Q104 94 99 96" stroke="${skD}" stroke-width="2.4" fill="none" stroke-linecap="round"/>${eyesOpen}${eyesShut}${brow(EL, "L")}${brow(ER, "R")}<g class="cz-mouth">${mouthG}</g>${glasses}</g>`
+      + `<g class="cz-face">${beard}<path d="M99 88 Q104 94 99 96" transform="translate(100 92) scale(${sz.ns}) translate(-100 -92)" stroke="${skD}" stroke-width="2.4" fill="none" stroke-linecap="round"/>${eyesOpen}${eyesShut}${brow(EL, "L")}${brow(ER, "R")}<g class="cz-mouth" transform="translate(100 102) scale(${sz.mw} 1) translate(-100 -102)">${mouthG}</g>${glasses}</g>`
       + `<g class="cz-top">${hairFront}${hat}${phones}</g></g>`;
-    let neck = `<path d="M90 106 H110 V128 Q100 134 90 128Z" fill="${sk}" stroke="${ink}" stroke-width="2.4"/><path d="M90 112 Q100 120 110 112 V118 Q100 124 90 118Z" fill="${skD}" opacity=".55"/>`;
-    let body = `<g class="cz-body">${exBack}${hood}${T}${exFront}${neck}${head}${arm("L", pose[0], pose[1])}${arm("R", pose[2], pose[3])}</g>`;
+    // the head is drawn at its old size and placed on the neck (head-size slider scales it around the neck)
+    let k = .9 * sz.hd, headG = `<g transform="translate(${(100 - 100 * k).toFixed(2)} ${(104 - 120 * k).toFixed(2)}) scale(${k.toFixed(4)})">${head}</g>`;
+    let neck = `<path d="M91 94 H109 V117 Q100 123 91 117Z" fill="${sk}" stroke="${ink}" stroke-width="2.4"/><path d="M91 101 Q100 108 109 101 V107 Q100 113 91 107Z" fill="${skD}" opacity=".55"/>`;
+    let legs = `${leg("L", pose[4], pose[5])}${leg("R", pose[6], pose[7])}`;
+    let body = `<g class="cz-body">${exBack}${legs}${pelvis}${hood}${T}${exFront}${neck}${headG}${arm("L", pose[0], pose[1])}${arm("R", pose[2], pose[3])}</g>`;
     let mm = { idle: c.mouth, happy: "grin", celebrate: "cele", sad: "sad", excited: "det", surprised: "o", think: "think", proud: "teeth" }[mood] || c.mouth;
-    let attrs = `class="epzc ${opt.cls || ""}" data-mood="${mood}" data-m="${mm}" data-base-m="${c.mouth}" data-pose="${opt.pose || c.pose}" data-eyes="${c.eyes}"${opt.still ? ' data-still="1"' : ""}`;
+    let rig = ` data-sl="${shL.join(",")}" data-sr="${shR.join(",")}" data-hl="${hpL.join(",")}" data-hr="${hpR.join(",")}" data-th="${thighL.toFixed(1)}" data-gy="${groundY.toFixed(1)}"`;
+    let attrs = `class="epzc ${opt.cls || ""}" data-frame="${frame}" data-cfg="${esc(JSON.stringify(c))}"${opt.bg === !1 ? ' data-nobg="1"' : ""} data-mood="${mood}" data-m="${mm}" data-base-m="${c.mouth}" data-pose="${opt.pose || c.pose}" data-eyes="${c.eyes}"${rig}${opt.still ? ' data-still="1"' : ""}`;
     if (frame === "bust") {
-      let bg = opt.bg === !1 ? "" : `<circle cx="100" cy="84" r="72" fill="${DUO_BG[c.bg]}"/>`;
-      return `<svg ${attrs} width="${size}" height="${size}" viewBox="28 12 144 144" role="img" aria-label="${esc(opt.label || "My character")}"><defs><clipPath id="${id}c"><circle cx="100" cy="84" r="72"/></clipPath></defs><g clip-path="url(#${id}c)">${bg}${body}</g></svg>`;
+      let bg = opt.bg === !1 ? "" : `<circle cx="100" cy="84" r="58" fill="${C.bg}"/>`;
+      return `<svg ${attrs} width="${size}" height="${size}" viewBox="42 26 116 116" role="img" aria-label="${esc(opt.label || "My character")}"><defs><clipPath id="${id}c"><circle cx="100" cy="84" r="58"/></clipPath></defs><g clip-path="url(#${id}c)">${bg}${body}</g></svg>`;
     }
-    let shadow = `<ellipse class="cz-shadow" cx="100" cy="236" rx="56" ry="5" fill="#000" opacity=".12"/>`;
-    return `<svg ${attrs} width="${Math.round(size * 200 / 240)}" height="${size}" viewBox="0 0 200 240" role="img" aria-label="${esc(opt.label || "My character")}" style="overflow:visible">${shadow}${body}</svg>`;
+    // full figure: always stands on the same floor line, whatever the height slider says
+    let dy = (314 - groundY).toFixed(1), h2 = Math.round(size * 1.32);
+    let shadow = `<ellipse class="cz-shadow" cx="100" cy="${(groundY + 1).toFixed(1)}" rx="${(40 * B).toFixed(1)}" ry="5" fill="#000" opacity=".14"/>`;
+    return `<svg ${attrs} width="${Math.round(h2 * 200 / 324)}" height="${h2}" viewBox="0 0 200 324" role="img" aria-label="${esc(opt.label || "My character")}" style="overflow:visible"><g transform="translate(0 ${dy})">${shadow}${body}</g></svg>`;
   }
   // the student's character (state.avatar, or a friendly default until they make one)
   var czMe = (opt = {}) => czSvg(state.avatar || DUO_DEF, Object.assign({ cls: "cz-me" }, opt));
@@ -9218,16 +9297,17 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       let pose = CZ_POSES[svg.dataset.pose] || CZ_POSES.relaxed;
       let it = {
         svg, body: q(".cz-body"), head: q(".cz-head"), face: q(".cz-face"), top: q(".cz-top"), ears: q(".cz-ears"), pups: qa(".cz-pup"), lids: qa(".cz-lid"),
-        armL: q(".cz-armL"), armR: q(".cz-armR"), foreL: q(".cz-foreL"), foreR: q(".cz-foreR"),
+        armL: q(".cz-armL"), armR: q(".cz-armR"), foreL: q(".cz-foreL"), foreR: q(".cz-foreR"), legL: q(".cz-legL"), legR: q(".cz-legR"), shinL: q(".cz-shinL"), shinR: q(".cz-shinR"),
+        sl: (svg.dataset.sl || "61,135").split(","), sr: (svg.dataset.sr || "139,135").split(","), hl: (svg.dataset.hl || "87,198").split(","), hr: (svg.dataset.hr || "113,198").split(","), th: svg.dataset.th || 50, gy: svg.dataset.gy || 300,
         basePose: svg.dataset.pose, baseMood: svg.dataset.mood, sleepy: svg.dataset.eyes === "cool",
-        x: { aL: pose[0], fL: pose[1], aR: pose[2], fR: pose[3], tilt: 0, turn: 0, lx: 0, ly: 0, y: 0 }, v: {}, t: {},
+        x: { aL: pose[0], fL: pose[1], aR: pose[2], fR: pose[3], tL: pose[4] || 0, sL: pose[5] || 0, tR: pose[6] || 0, sR: pose[7] || 0, tilt: 0, turn: 0, lx: 0, ly: 0, y: 0 }, v: {}, t: {},
         nextBlink: 0, blink: 0, blinkT: -1, nextLook: 0, hop: null, until: 0, phase: Math.random() * 6
       };
       for (let k in it.x) it.t[k] = it.x[k], it.v[k] = 0;
       applyPose(it, svg.dataset.pose);
       return it;
     }
-    function applyPose(it, name) { let p = CZ_POSES[name] || CZ_POSES.relaxed; it.t.aL = p[0], it.t.fL = p[1], it.t.aR = p[2], it.t.fR = p[3], it.pose = name; }
+    function applyPose(it, name) { let p = CZ_POSES[name] || CZ_POSES.relaxed; it.t.aL = p[0], it.t.fL = p[1], it.t.aR = p[2], it.t.fR = p[3], it.t.tL = p[4] || 0, it.t.sL = p[5] || 0, it.t.tR = p[6] || 0, it.t.sR = p[7] || 0, it.pose = name; }
     function setMood(it, mood) { it.mood = mood; it.svg.dataset.mood = mood; it.svg.dataset.m = MOUTH[mood] || it.svg.dataset.baseM; }
     function scan() {
       document.querySelectorAll("svg.epzc:not([data-still])").forEach((s) => { items.has(s) || items.set(s, setup(s)); });
@@ -9247,7 +9327,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         // look around now and then (or follow the pointer)
         if (!reduce && now > it.nextLook && !it.until) {
           if (pointer && now - pointer.at < 2500) {
-            let r = it.svg.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * .35;
+            let r = (it.svg._cz3 || it.svg).getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * .35;
             it.t.lx = Math.max(-1, Math.min(1, (pointer.x - cx) / 260)), it.t.ly = Math.max(-1, Math.min(1, (pointer.y - cy) / 260));
             it.nextLook = now + 120;
           } else {
@@ -9267,19 +9347,26 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         // springs
         for (let k in it.x) { let a = (it.t[k] - it.x[k]) * K - it.v[k] * D; it.v[k] += a * dt; it.x[k] += it.v[k] * dt; }
         let x = it.x, breathe = reduce ? 0 : Math.sin(t * 1.7 + it.phase), wave = it.pose === "wave" ? Math.sin(t * 9) * 20 : 0, hopY = 0;
-        if (it.hop) { let p = (now - it.hop.s) / it.hop.d; p >= 1 ? it.hop = null : hopY = -it.hop.h * Math.abs(Math.sin(p * Math.PI * it.hop.n)); }
+        let squash = 0, tuck = 0;
+        if (it.hop) { let p = (now - it.hop.s) / it.hop.d; if (p >= 1) it.hop = null; else { let ph = (p * it.hop.n) % 1, s = Math.sin(ph * Math.PI); hopY = -it.hop.h * s; tuck = s * 14; squash = ph < .12 || ph > .88 ? -.05 : s * .03; } }
         let pump = it.pose === "yes" ? Math.sin(t * 10) * 7 : 0, bob = it.mood === "excited" ? Math.abs(Math.sin(t * 7)) * -3 : 0;
-        it.body && it.body.setAttribute("transform", `translate(0 ${(x.y + hopY + bob).toFixed(2)}) rotate(${(breathe * .5).toFixed(2)} 100 236) translate(100 236) scale(1 ${(1 + breathe * .008).toFixed(4)}) translate(-100 -236)`);
-        it.armL && it.armL.setAttribute("transform", `translate(61 135) rotate(${(x.aL + breathe * 1.2).toFixed(2)})`);
-        it.armR && it.armR.setAttribute("transform", `translate(139 135) rotate(${(x.aR - breathe * 1.2 + pump).toFixed(2)})`);
+        it.body && it.body.setAttribute("transform", `translate(0 ${(x.y + hopY + bob).toFixed(2)}) rotate(${(breathe * .4).toFixed(2)} 100 ${it.gy}) translate(100 ${it.gy}) scale(1 ${(1 + breathe * .006 + (it.hop ? squash : 0)).toFixed(4)}) translate(-100 -${it.gy})`);
+        it.armL && it.armL.setAttribute("transform", `translate(${it.sl[0]} ${it.sl[1]}) rotate(${(x.aL + breathe * 1.2).toFixed(2)}) scale(.84)`);
+        it.armR && it.armR.setAttribute("transform", `translate(${it.sr[0]} ${it.sr[1]}) rotate(${(x.aR - breathe * 1.2 + pump).toFixed(2)}) scale(.84)`);
         it.foreL && it.foreL.setAttribute("transform", `translate(0 40) rotate(${x.fL.toFixed(2)})`);
         it.foreR && it.foreR.setAttribute("transform", `translate(0 40) rotate(${(x.fR + wave).toFixed(2)})`);
+        // legs: weight shifts slowly from one foot to the other; knees tuck during a jump
+        let sway = reduce ? 0 : Math.sin(t * .9 + it.phase) * 1.6;
+        it.legL && it.legL.setAttribute("transform", `translate(${it.hl[0]} ${it.hl[1]}) rotate(${(x.tL + sway + tuck).toFixed(2)})`);
+        it.legR && it.legR.setAttribute("transform", `translate(${it.hr[0]} ${it.hr[1]}) rotate(${(x.tR + sway - tuck).toFixed(2)})`);
+        it.shinL && it.shinL.setAttribute("transform", `translate(0 ${it.th}) rotate(${(x.sL - sway * .6 - tuck * 1.6).toFixed(2)})`);
+        it.shinR && it.shinR.setAttribute("transform", `translate(0 ${it.th}) rotate(${(x.sR - sway * .6 + tuck * 1.6).toFixed(2)})`);
         it.head && it.head.setAttribute("transform", `rotate(${x.tilt.toFixed(2)} 100 120)`);
         it.face && it.face.setAttribute("transform", `translate(${(x.turn * 4.5).toFixed(2)} ${(x.ly * 1.6).toFixed(2)})`);
         it.top && it.top.setAttribute("transform", `translate(${(x.turn * 1.6).toFixed(2)} 0)`);
         it.ears && it.ears.setAttribute("transform", `translate(${(-x.turn * 2).toFixed(2)} 0)`);
         it.pups.forEach((p) => p.setAttribute("transform", `translate(${(x.lx * 2.6).toFixed(2)} ${(x.ly * 2.2).toFixed(2)})`));
-        it.lids.forEach((l) => l.setAttribute("height", (20 * lidAmt).toFixed(2)));
+        it.lids.forEach((l) => l.setAttribute("height", ((Number(l.dataset.h) || 20) * lidAmt).toFixed(2))); it.lid = lidAmt, it.hopY = hopY + bob, it.time = t;
       });
       raf = requestAnimationFrame(tick);
     }
@@ -9321,7 +9408,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     mo.observe(document.documentElement, { childList: true, subtree: true });
     document.addEventListener("visibilitychange", () => { prev = 0; });
     setTimeout(scan, 0);
-    return { react, release, scan, lookAt };
+    return { react, release, scan, lookAt, get: (s) => items.get(s) };
   })();
   // stars and confetti made of highlighter and pen colours, around a character
   function czSparks(el) {
@@ -9333,42 +9420,387 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       document.body.appendChild(s), setTimeout(() => s.remove(), 1100);
     }
   }
-  // ---------------------------------------------------------------- the character maker (#avatar)
+  // ============================================================ epz-patch:char3d — the student's character as a real 3D avatar (Three.js)
+  // Every character on screen (svg.epzc) gets a live 3D head-and-shoulders portrait in a circle.
+  // The 2D drawing stays in the page, hidden: the animation loop (CZ) keeps moving it, and the 3D model copies its state
+  // every frame (mood, where it looks, head tilt, blinking, jumps). If WebGL or the library is missing, the 2D drawing shows.
+  // One shared WebGL renderer draws every avatar into its own small canvas (browsers allow only a few WebGL contexts).
+  var CZ3 = (function () {
+    var T = null, R = null, scene, cam, models = new Map(), views = [], raf = 0, last = 0, on = false, failed = false;
+    var BUF = 512, mobile = false, io = null;
+    try { mobile = matchMedia("(pointer: coarse)").matches || innerWidth < 700; } catch (e) {}
+    var MAXDPR = mobile ? 1.5 : 2, FPS = mobile ? 30 : 60;
+    // ---------------------------------------------------------------- textures drawn on a canvas
+    function canvasTex(w, h, draw, rep) {
+      var c = document.createElement("canvas"); c.width = w, c.height = h; draw(c.getContext("2d"), w, h);
+      var t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; t.anisotropy = 4;
+      rep && (t.wrapS = t.wrapT = T.RepeatWrapping, t.repeat.set(rep[0], rep[1]));
+      return t;
+    }
+    var strandTex = null;
+    function strands() {
+      return strandTex || (strandTex = canvasTex(256, 256, function (g, w, h) {
+        g.fillStyle = "#808080"; g.fillRect(0, 0, w, h);
+        for (var i = 0; i < 900; i++) { var x = Math.random() * w, l = 20 + Math.random() * 60, a = .15 + Math.random() * .5; g.strokeStyle = Math.random() < .5 ? "rgba(255,255,255," + a + ")" : "rgba(0,0,0," + a + ")"; g.lineWidth = 1 + Math.random() * 1.5; g.beginPath(); var y = Math.random() * h; g.moveTo(x, y); g.quadraticCurveTo(x + 4, y + l / 2, x + (Math.random() * 6 - 3), y + l); g.stroke(); }
+      }, [3, 3]), strandTex.colorSpace = T.NoColorSpace, strandTex);
+    }
+    var KUMMA = { kumma1: ["#FFFFFF", ["#C8323A", "#0B7A63", "#2F6FDE", "#E89A12"], "#D6DDDA"], kumma2: ["#FFFFFF", ["#1F5FA8", "#139C99", "#5AA6E0", "#0E3F7A"], "#D6DDDA"], kumma3: ["#1E2A4A", ["#F2C230", "#FFFFFF", "#E0601C", "#7FC3E8"], "#33456F"], kummag: ["#F7D774", ["#8A5A00", "#FFFFFF", "#C8323A", "#0B7A63"], "#C99A2E"] };
+    var MASSAR = { massar1: ["#BFDDF0", "#C8323A", "#E89A12", "#1F5FA8"], massar2: ["#8E2F3E", "#F2C230", "#FFFFFF", "#F2C230"], massar3: ["#F2E8D2", "#2F6FDE", "#C8323A", "#8A6A35"] };
+    function kummaSide(p) {
+      return canvasTex(1024, 256, function (g, w, h) {
+        g.fillStyle = p[0]; g.fillRect(0, 0, w, h);
+        for (var r = 0; r < 4; r++) for (var x = (r % 2) * 16, i = 0; x < w + 32; x += 32, i++) {
+          var y = 30 + r * 38, col = p[1][(i + r) % 4]; g.fillStyle = col; g.beginPath(); g.moveTo(x, y - 11); g.lineTo(x + 11, y); g.lineTo(x, y + 11); g.lineTo(x - 11, y); g.fill();
+          g.fillStyle = p[2]; g.beginPath(); g.arc(x + 16, y, 2.5, 0, 7); g.fill();
+        }
+        g.fillStyle = p[1][1]; g.fillRect(0, 186, w, 8); g.fillStyle = p[1][0]; g.fillRect(0, 196, w, 5);
+        for (var k = 0, x2 = 0; x2 < w; x2 += 24, k++) { g.fillStyle = p[1][k % 4]; g.beginPath(); g.moveTo(x2, h); g.lineTo(x2 + 12, 212); g.lineTo(x2 + 24, h); g.fill(); }
+      });
+    }
+    function kummaTop(p) {
+      return canvasTex(512, 512, function (g, w, h) {
+        g.fillStyle = p[0]; g.fillRect(0, 0, w, h);
+        for (var ring = 0; ring < 5; ring++) { g.strokeStyle = p[1][ring % 4]; g.lineWidth = 9; g.setLineDash([16, 10]); g.beginPath(); g.arc(256, 256, 40 + ring * 44, 0, 7); g.stroke(); }
+        for (var a = 0; a < 16; a++) { g.fillStyle = p[1][a % 4]; var ang = a / 16 * Math.PI * 2; g.beginPath(); g.arc(256 + Math.cos(ang) * 120, 256 + Math.sin(ang) * 120, 9, 0, 7); g.fill(); }
+      });
+    }
+    function massarTex(p) {
+      return canvasTex(512, 256, function (g, w, h) {
+        g.fillStyle = p[0]; g.fillRect(0, 0, w, h);
+        for (var y = 10; y < h; y += 28) for (var x = (y / 28 % 2) * 14; x < w; x += 28) { g.fillStyle = p[3]; g.globalAlpha = .55; g.beginPath(); g.ellipse(x, y, 6, 3.5, .6, 0, 7); g.fill(); g.globalAlpha = 1; }
+        g.fillStyle = p[1]; g.fillRect(0, 0, w, 12); g.fillRect(0, h - 22, w, 9); g.fillStyle = p[2]; g.fillRect(0, 14, w, 5); g.fillRect(0, h - 11, w, 5);
+      }, [3, 1]);
+    }
+    function jerseyTex(base, ink) {
+      return canvasTex(1024, 512, function (g, w, h) { g.fillStyle = base; g.fillRect(0, 0, w, h); g.fillStyle = ink; g.font = "800 150px Lexend, Arial, sans-serif"; g.textAlign = "center"; g.fillText("9", w * .25, h * .42); g.fillRect(0, h * .12, w, 10); });
+    }
+    function stripeTex(base, a, b) {
+      return canvasTex(512, 512, function (g, w, h) { g.fillStyle = base; g.fillRect(0, 0, w, h); g.fillStyle = a; g.fillRect(0, h * .26, w, 34); g.fillStyle = b; for (var x = 0; x < w; x += 18) g.fillRect(x, h * .26 + 12, 9, 10); });
+    }
+    function irisTex(col) {
+      return canvasTex(64, 256, function (g, w, h) {
+        var gr = g.createLinearGradient(0, 0, 0, h);
+        gr.addColorStop(0, "#050608"); gr.addColorStop(.36, "#07080b"); gr.addColorStop(.42, czShade(col, -.35)); gr.addColorStop(.7, col); gr.addColorStop(.9, czShade(col, -.25)); gr.addColorStop(1, "#111");
+        g.fillStyle = gr; g.fillRect(0, 0, w, h);
+        for (var i = 0; i < 40; i++) { g.strokeStyle = "rgba(255,255,255,.12)"; g.beginPath(); var x = Math.random() * w; g.moveTo(x, h * .42); g.lineTo(x, h * .9); g.stroke(); }
+      });
+    }
+    // ---------------------------------------------------------------- materials
+    function skinMat(col) { return new T.MeshPhysicalMaterial({ color: col, roughness: .52, metalness: 0, sheen: .35, sheenColor: new T.Color(czShade(col, .35)), sheenRoughness: .6, clearcoat: .08, clearcoatRoughness: .5 }); }
+    function clothMat(col, map) { return new T.MeshPhysicalMaterial({ color: map ? "#ffffff" : col, map: map || null, roughness: .82, sheen: .6, sheenColor: new T.Color(czShade(col, .4)), sheenRoughness: .7 }); }
+    function hairMat(col) { var s = strands(); return new T.MeshPhysicalMaterial({ color: col, roughness: .5, bumpMap: s, bumpScale: 1.4, sheen: 1, sheenColor: new T.Color(czShade(col, .45)), sheenRoughness: .35, clearcoat: .15 }); }
+    var gold = function () { return new T.MeshStandardMaterial({ color: "#E5B53A", metalness: 1, roughness: .28 }); };
+    // ---------------------------------------------------------------- the model (one per look; views share it)
+    function mesh(geo, mat, pos, rot, sc, parent, shadow) {
+      var m = new T.Mesh(geo, mat); pos && m.position.set(pos[0], pos[1], pos[2]); rot && m.rotation.set(rot[0], rot[1], rot[2]); sc && m.scale.set(sc[0], sc[1], sc[2]);
+      m.castShadow = shadow !== false; m.receiveShadow = true; parent && parent.add(m); return m;
+    }
+    var SPH = function (r, ws, hs, ps, pl, ts, tl) { return new T.SphereGeometry(r, ws || 48, hs || 32, ps || 0, pl == null ? Math.PI * 2 : pl, ts || 0, tl == null ? Math.PI : tl); };
+    function build(cfg) {
+      var c = czCfg(cfg), C = czColors(c), sz = c.sz, root = new T.Group(), parts = {};
+      var skin = skinMat(C.skin), hair = hairMat(C.hair), B = sz.b;
+      var hs = sz.hd, face = c.face === "oval" ? [.93, 1.16, 1] : c.face === "square" ? [1.05, 1.04, 1] : [1, 1.1, 1];
+      // ---- body: shoulders, neck, clothes
+      var body = new T.Group(); root.add(body); parts.body = body;
+      var robe = czRobe(c.cl), top = robe ? (c.cl === "dish" ? C.top : "#FFFFFF") : c.cl === "uniform" ? "#F4F7FB" : c.cl === "jacket" ? "#F4F7FB" : C.top;
+      var torsoMap = c.cl === "jersey" ? jerseyTex(C.top, czLight(C.top) ? "#2B41C4" : "#FFFFFF") : c.cl === "sweater" ? stripeTex(C.top, czShade(C.top, .35), czShade(C.top, -.3)) : null;
+      var torso = mesh(SPH(1, 64, 32), clothMat(top, torsoMap), [0, -2.25, 0], [0, 0, 0], [1.55 * B, .95, .85], body);
+      mesh(new T.CylinderGeometry(.38, .44, .5, 32), skin, [0, -1.22, -.04], null, null, body);
+      var trim = czShade(top, czLight(top) ? -.22 : .25);
+      if (robe) {
+        mesh(new T.TorusGeometry(.43, .045, 12, 48), clothMat(trim), [0, -1.36, .02], [Math.PI / 2 - .25, 0, 0], null, body);
+        mesh(new T.CylinderGeometry(.018, .018, .6, 8), clothMat(trim), [0, -1.76, .75], [-.34, 0, 0], null, body);
+        mesh(new T.CapsuleGeometry(.05, .12, 6, 12), clothMat(trim), [0, -2.02, .86], [-.3, 0, 0], null, body);
+        if (c.cl !== "dish") {
+          var ck = c.cl === "bishtg" ? "#16130F" : c.col.top || (czLight(C.top) ? "#3B2A20" : C.top);
+          var cloak = mesh(SPH(1.035, 64, 32, Math.PI / 2 + .42, Math.PI * 2 - .84, 0, Math.PI), clothMat(ck), [0, -2.25, 0], [0, 0, 0], [1.58 * B, .97, .88], body);
+          cloak.material.side = T.DoubleSide;
+          var edge = function (sgn) { var pts = []; for (var th = .45; th <= 1.55; th += .1) { var ph = Math.PI / 2 + sgn * .42; pts.push(new T.Vector3(-1.04 * Math.cos(ph) * Math.sin(th) * 1.58 * B, 1.04 * Math.cos(th) * .97 - 2.25, 1.04 * Math.sin(ph) * Math.sin(th) * .88)); } return new T.TubeGeometry(new T.CatmullRomCurve3(pts), 24, c.cl === "bishtg" ? .045 : .03, 8); };
+          mesh(edge(1), gold(), null, null, null, body); mesh(edge(-1), gold(), null, null, null, body);
+        }
+      } else if (c.cl === "hoodie") {
+        mesh(new T.TorusGeometry(.62, .2, 16, 48), clothMat(czShade(C.top, -.1)), [0, -1.35, -.25], [Math.PI / 2 - .5, 0, 0], [1, 1, .8], body);
+        mesh(new T.CylinderGeometry(.02, .02, .45, 8), clothMat("#F4F7EF"), [-.13, -1.68, .74], [-.2, 0, 0], null, body);
+        mesh(new T.CylinderGeometry(.02, .02, .45, 8), clothMat("#F4F7EF"), [.13, -1.68, .74], [-.2, 0, 0], null, body);
+      } else if (c.cl === "shirt" || c.cl === "uniform") {
+        var collar = clothMat(czShade(top, -.06));
+        mesh(new T.BoxGeometry(.32, .05, .26), collar, [-.2, -1.42, .42], [.9, .55, .3], null, body);
+        mesh(new T.BoxGeometry(.32, .05, .26), collar, [.2, -1.42, .42], [.9, -.55, -.3], null, body);
+        if (c.cl === "uniform") mesh(new T.BoxGeometry(.16, .7, .04), clothMat(c.col.top || "#2B41C4"), [0, -1.8, .77], [-.36, 0, 0], null, body);
+      } else if (c.cl === "jacket") {
+        var jk = clothMat(C.top), jc = mesh(SPH(1.03, 64, 32, Math.PI / 2 + .3, Math.PI * 2 - .6, 0, Math.PI), jk, [0, -2.25, 0], null, [1.58 * B, .97, .87], body); jc.material.side = T.DoubleSide;
+      } else mesh(new T.TorusGeometry(.42, .05, 12, 48), clothMat(czShade(C.top, -.2)), [0, -1.36, .02], [Math.PI / 2 - .25, 0, 0], null, body);
+      // extras on the body
+      if (c.extra === "medal") { mesh(new T.BoxGeometry(.1, .6, .02), clothMat("#2B41C4"), [-.11, -1.72, .73], [-.2, 0, .3], null, body); mesh(new T.BoxGeometry(.1, .6, .02), clothMat("#D8343F"), [.11, -1.72, .73], [-.2, 0, -.3], null, body); mesh(new T.CylinderGeometry(.17, .17, .05, 32), gold(), [0, -2.0, .86], [Math.PI / 2 - .2, 0, 0], null, body); }
+      if (c.extra === "backpack") { var st = clothMat("#2B41C4"); mesh(new T.TorusGeometry(.5, .07, 10, 32, Math.PI), st, [-.76 * B, -1.8, .05], [0, Math.PI / 2, 0], [1, 1.2, 1], body); mesh(new T.TorusGeometry(.5, .07, 10, 32, Math.PI), st, [.76 * B, -1.8, .05], [0, Math.PI / 2, 0], [1, 1.2, 1], body); }
+      if (c.extra === "cape") { var cp = mesh(SPH(1.08, 48, 24, -Math.PI / 2 - 1.2, 2.4, .2, 1.4), clothMat("#D8343F"), [0, -2.25, -.05], null, [1.62 * B, .99, .9], body); cp.material.side = T.DoubleSide; }
+      if (c.extra === "pen") { mesh(new T.CylinderGeometry(.03, .03, .3, 8), new T.MeshStandardMaterial({ color: "#2B41C4", roughness: .3 }), [.46 * B, -1.82, .72], [-.3, 0, 0], null, body); mesh(new T.CylinderGeometry(.03, .03, .26, 8), new T.MeshStandardMaterial({ color: "#D8343F", roughness: .3 }), [.53 * B, -1.84, .7], [-.3, 0, 0], null, body); }
+      // ---- head
+      var headPivot = new T.Group(); headPivot.position.set(0, -.95, 0); body.add(headPivot); parts.pivot = headPivot;
+      var head = new T.Group(); head.position.set(0, .86, 0); head.scale.setScalar(hs); headPivot.add(head); parts.head = head;
+      var skull = mesh(SPH(1, 64, 48), skin, [0, 0, 0], null, face, head);
+      [-1, 1].forEach(function (s) { mesh(SPH(.25, 24, 16), skin, [s * 1.0 * face[0], .02, -.04], [0, s * .35, 0], [.5, 1, .72], head); });
+      mesh(SPH(.12, 24, 16), skin, [0, -.1, .99], null, [.85 * sz.ns, 1.05 * sz.ns, 1 * sz.ns], head);
+      [-1, 1].forEach(function (s) { var b = mesh(SPH(.16, 16, 12), new T.MeshStandardMaterial({ color: "#FF7A6B", transparent: true, opacity: .16, roughness: 1, depthWrite: false }), [s * .5, -.28, .8], null, [1.2, .7, .4], head, false); b.receiveShadow = false; });
+      // eyes: eyeball (glossy), iris cap with a pupil, upper and lower lids that close over the ball
+      var es = sz.es, er = .19 * es, ex = .36 + sz.ed * .012, ey = .1, ez = .82;
+      parts.eyes = []; parts.lidsU = []; parts.lidsL = [];
+      var white = new T.MeshPhysicalMaterial({ color: "#FBFBF8", roughness: .08, clearcoat: 1, clearcoatRoughness: .04 }), iris = new T.MeshPhysicalMaterial({ map: irisTex(C.eyes), roughness: .15, clearcoat: 1, clearcoatRoughness: .02 });
+      [-1, 1].forEach(function (s) {
+        var eg = new T.Group(); eg.position.set(s * ex, ey, ez); head.add(eg);
+        var ball = new T.Group(); eg.add(ball); parts.eyes.push(ball);
+        mesh(SPH(er, 32, 24), white, null, null, null, ball, false);
+        mesh(SPH(er * 1.004, 32, 12, 0, Math.PI * 2, 0, .62), iris, null, [Math.PI / 2, 0, 0], null, ball, false);
+        mesh(SPH(er * .1, 12, 8), new T.MeshBasicMaterial({ color: "#ffffff" }), [-er * .32, er * .34, er * .96], null, null, ball, false);
+        var lu = new T.Group(); eg.add(lu); mesh(SPH(er * 1.12, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2), skin, null, null, null, lu, false); mesh(new T.TorusGeometry(er * 1.1, er * .09, 8, 32, Math.PI), new T.MeshStandardMaterial({ color: "#1B1414", roughness: .6 }), null, [Math.PI / 2, 0, 0], null, lu, false);
+        parts.lidsU.push(lu);
+        var ll = new T.Group(); eg.add(ll); mesh(SPH(er * 1.1, 32, 16, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), skin, null, null, null, ll, false); parts.lidsL.push(ll);
+      });
+      // brows
+      var bw = c.brows === "thick" ? .055 : c.brows === "straight" ? .042 : .036; parts.brows = [];
+      [-1, 1].forEach(function (s) { var g = new T.Group(); g.position.set(s * ex, .36 + sz.by * .018, .9); g.rotation.y = s * .32; head.add(g); var b = mesh(new T.CapsuleGeometry(bw, .2, 6, 12), hair, null, [0, 0, Math.PI / 2 + (c.brows === "straight" ? 0 : -s * .12)], null, g); parts.brows.push(g); });
+      // mouth: rebuilt from a few numbers (width, corner lift, opening) whenever the expression moves
+      var mouthG = new T.Group(); mouthG.position.set(0, -.42, .94); mouthG.scale.set(sz.mw * 1.3, 1.3, 1); head.add(mouthG); parts.mouth = mouthG;
+      parts.mouthMats = { in: new T.MeshStandardMaterial({ color: "#4A1717", roughness: .7 }), lip: new T.MeshPhysicalMaterial({ color: czShade(C.skin, -.32), roughness: .35, clearcoat: .4 }), teeth: new T.MeshPhysicalMaterial({ color: "#F6F3EA", roughness: .22, clearcoat: .5, clearcoatRoughness: .2 }), tongue: new T.MeshStandardMaterial({ color: "#D9606E", roughness: .55 }) };
+      // facial hair
+      var bmat = hairMat(C.hair); parts.beardZ = 0;
+      if (c.beard === "beard" || c.beard === "stubble") { mesh(SPH(1.035, 64, 32, .35, 2.44, 1.92, .9), bmat, null, null, face, head); if (c.beard === "stubble") bmat.transparent = true, bmat.opacity = .35, bmat.depthWrite = false; else parts.beardZ = .06; }
+      mouthG.position.z = .94 + parts.beardZ;
+      if (c.beard === "moustache" || c.beard === "beard" || c.beard === "goatee") mesh(new T.CapsuleGeometry(.045, .26, 6, 12), bmat, [0, -.27, .97 + parts.beardZ * .5], [0, 0, Math.PI / 2], null, head);
+      if (c.beard === "goatee") mesh(SPH(.14, 24, 16), bmat, [0, -.72, .78], null, [1, 1.1, .7], head);
+      // hair
+      var hatOn = c.hat !== "none", hh = new T.Group(); head.add(hh); parts.hair = hh;
+      var cap = function (r, th, tilt) { return mesh(SPH(r, 64, 32, 0, Math.PI * 2, 0, th), hair, [0, 0, 0], [tilt, 0, 0], face, hh); };
+      var hstyle = c.hair;
+      if (hstyle !== "none") {
+        if (hatOn && hstyle !== "long") cap(1.012, 1.45, -.55);
+        else if (hstyle === "buzz") { var bz = cap(1.02, 1.3, -.4); bz.material = hairMat(czShade(C.hair, .08)); bz.material.roughness = .9; }
+        else if (hstyle === "afro") { cap(1.06, 1.35, -.4); mesh(SPH(1.5, 48, 32), hair, [0, .45, -.25], null, [1, .95, 1], hh); }
+        else {
+          cap(1.06, 1.28, -.42);
+          if (hstyle === "side") mesh(SPH(.75, 32, 16), hair, [.28, .8, .42], [0, 0, -.35], [1, .38, .78], hh);
+          if (hstyle === "fringe") mesh(SPH(.8, 32, 16), hair, [0, .62, .62], [.3, 0, 0], [1.05, .3, .5], hh);
+          if (hstyle === "wavy") for (var i = 0; i < 7; i++) { var a = -1.1 + i * .37; mesh(SPH(.3, 20, 14), hair, [Math.sin(a) * .85, .78 + Math.cos(a * 2) * .06, Math.cos(a) * .55], null, [1, .75, 1], hh); }
+          if (hstyle === "curly") { var n = 46, inst = new T.InstancedMesh(SPH(.2, 14, 10), hair, n), d = new T.Object3D(); for (var k = 0; k < n; k++) { var yy = 1 - (k / (n - 1)) * 1.1, rr = Math.sqrt(1 - yy * yy), th2 = k * 2.4; d.position.set(Math.cos(th2) * rr * 1.06 * face[0], yy * 1.06 * face[1] + .05, Math.sin(th2) * rr * 1.06 - .05); if (d.position.z > .55 && d.position.y < .55) d.position.y = .6; d.updateMatrix(); inst.setMatrixAt(k, d.matrix); } inst.castShadow = true; hh.add(inst); }
+          if (hstyle === "spiky") for (var j = 0; j < 13; j++) { var a2 = j / 13 * Math.PI * 2, dir = new T.Vector3(Math.cos(a2) * .6, 1, Math.sin(a2) * .6 - .25).normalize(), cn = mesh(new T.ConeGeometry(.16, .55, 12), hair, [dir.x * 1.05, dir.y * 1.12, dir.z * 1.05], null, null, hh); cn.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), dir); }
+          if (hstyle === "bun") mesh(SPH(.36, 32, 24), hair, [0, 1.15, -.35], null, null, hh);
+        }
+        if (hstyle === "long") { if (!hatOn) cap(1.06, 1.3, -.4); mesh(SPH(1, 48, 32), hair, [0, -.55, -.5], null, [1.08, 1.35, .62], hh); }
+      }
+      // headwear
+      var hg = new T.Group(); head.add(hg); parts.hat = hg;
+      if (/^kumma/.test(c.hat)) { var kp = KUMMA[c.hat] || KUMMA.kumma1, side = new T.MeshPhysicalMaterial({ map: kummaSide(kp), roughness: .75, sheen: .5, sheenColor: new T.Color("#fff") }), topm = new T.MeshPhysicalMaterial({ map: kummaTop(kp), roughness: .75 }); var km = mesh(new T.CylinderGeometry(1.06 * face[0], 1.09 * face[0], .78, 64, 1, false), [side, topm, topm], [0, .78, -.04], [-.14, 0, 0], null, hg); }
+      if (/^massar/.test(c.hat)) {
+        var mp = MASSAR[c.hat] || MASSAR.massar1, mt = new T.MeshPhysicalMaterial({ map: massarTex(mp), roughness: .8, sheen: .6, sheenColor: new T.Color("#ffffff") });
+        mesh(SPH(1.02, 48, 24, 0, Math.PI * 2, 0, 1.2), mt, [0, .28, -.05], [-.2, 0, 0], [1.08 * face[0], 1.05, 1.08], hg);
+        for (var t2 = 0; t2 < 4; t2++) mesh(new T.TorusGeometry(.92 - t2 * .1, .2 - t2 * .02, 18, 64), mt, [0, .48 + t2 * .17, -.08 - t2 * .04], [Math.PI / 2 - .2 + (t2 % 2 ? .1 : -.1), (t2 % 2 ? .08 : -.08), 0], [face[0] * 1.05, 1.02, 1], hg);
+        mesh(SPH(.32, 24, 16), mt, [.78, .95, -.1], [0, 0, -.6], [.6, 1.2, .5], hg);
+      }
+      if (c.hat === "cap") { var cm = clothMat(C.hat); mesh(SPH(1.06, 48, 24, 0, Math.PI * 2, 0, 1.35), cm, [0, .05, -.02], [-.35, 0, 0], face, hg); mesh(new T.CylinderGeometry(.75, .75, .05, 32, 1, false, -1.1, 2.2), cm, [0, .5, .34], [.22, 0, 0], [1.05, 1, 1.15], hg); }
+      if (c.hat === "beanie") { var bm = clothMat(C.hat); mesh(SPH(1.07, 48, 24, 0, Math.PI * 2, 0, 1.4), bm, [0, .08, -.04], [-.3, 0, 0], face, hg); mesh(new T.TorusGeometry(1.0, .12, 12, 48), clothMat(czShade(C.hat, -.15)), [0, .48, .06], [Math.PI / 2 - .3, 0, 0], [face[0], 1, 1], hg); mesh(SPH(.2, 16, 12), bm, [0, 1.22, -.3], null, null, hg); }
+      if (c.hat === "crown") { var gm = gold(); mesh(new T.CylinderGeometry(.78, .82, .32, 40, 1, true), gm, [0, 1.02, -.05], [-.1, 0, 0], null, hg).material.side = T.DoubleSide; for (var q = 0; q < 6; q++) { var aq = q / 6 * Math.PI * 2; mesh(new T.ConeGeometry(.12, .3, 12), gm, [Math.cos(aq) * .78, 1.3, Math.sin(aq) * .78 - .05], null, null, hg); } mesh(SPH(.09, 16, 12), new T.MeshPhysicalMaterial({ color: "#D8343F", roughness: .05, clearcoat: 1 }), [0, 1.02, .76], null, null, hg); }
+      if (c.extra === "headphones") { var pm = new T.MeshStandardMaterial({ color: "#7E5BEF", roughness: .35 }); mesh(new T.TorusGeometry(1.08, .07, 12, 48, Math.PI), pm, [0, .05, 0], null, [face[0], 1.05, 1], hg); [-1, 1].forEach(function (s) { mesh(new T.CylinderGeometry(.26, .26, .18, 24), pm, [s * 1.05 * face[0], .02, 0], [0, 0, Math.PI / 2], null, hg); }); }
+      // glasses
+      if (c.gl !== "none") {
+        var fr = new T.MeshStandardMaterial({ color: "#1E2550", roughness: .3, metalness: .3 }), gz = ez + er * .9;
+        [-1, 1].forEach(function (s) {
+          var rim = mesh(new T.TorusGeometry(er * 1.5, .022, 8, c.gl === "square" ? 4 : 32), fr, [s * ex, ey, gz], [0, 0, c.gl === "square" ? Math.PI / 4 : 0], c.gl === "square" ? [1.25, .95, 1] : null, head, false);
+          if (c.gl === "sun") mesh(new T.CircleGeometry(er * 1.5, 32), new T.MeshPhysicalMaterial({ color: "#10131c", roughness: .05, clearcoat: 1, transparent: true, opacity: .92 }), [s * ex, ey, gz], null, null, head, false);
+          mesh(new T.CylinderGeometry(.018, .018, .9, 6), fr, [s * .9 * face[0], ey + .02, .45], [Math.PI / 2, 0, 0], null, head, false);
+        });
+        mesh(new T.CylinderGeometry(.018, .018, ex * 2 - er * 3, 6), fr, [0, ey + .02, gz], [0, 0, Math.PI / 2], null, head, false);
+      }
+      root.userData = { parts: parts, cfg: c, mouthKey: "" };
+      root.traverse(function (o) { o.isMesh && o.material && o.material.map && (o.material.map.needsUpdate = true); });
+      return root;
+    }
+    // mouth shape: w = half width, cy = corner lift (+ smile), o = opening (0..1), t = teeth showing
+    function setMouth(model, w, cy, o, teeth) {
+      var ud = model.userData, P = ud.parts, key = [w, cy, o, teeth ? 1 : 0].map(function (v) { return Number(v).toFixed(3); }).join();
+      if (key === ud.mouthKey) return; ud.mouthKey = key;
+      var g = P.mouth; while (g.children.length) { var ch = g.children.pop(); ch.geometry.dispose(); }
+      var up = function (x) { var f = 1 - (x / w) * (x / w); return cy * (1 - f) + (o * .05 + cy * .15) * f; };
+      var lo = function (x) { var f = 1 - (x / w) * (x / w); return cy * (1 - f) + (cy * -.55 - o * .32) * f - .005; };
+      var N = 24, ptsU = [], ptsL = [];
+      for (var i = 0; i <= N; i++) { var x = -w + 2 * w * i / N; ptsU.push(new T.Vector3(x, up(x), -x * x * .9)); ptsL.push(new T.Vector3(x, lo(x), -x * x * .9)); }
+      if (o > .02) {
+        var sh = new T.Shape(); sh.moveTo(ptsU[0].x, ptsU[0].y); ptsU.forEach(function (p) { sh.lineTo(p.x, p.y); }); for (var j = N; j >= 0; j--) sh.lineTo(ptsL[j].x, ptsL[j].y);
+        var ins = new T.Mesh(new T.ShapeGeometry(sh, 2), P.mouthMats.in); ins.position.z = -.012; bend(ins.geometry); g.add(ins);
+        // tongue resting at the bottom of the open mouth
+        var band = function (edge, h, lim, mat, z) {
+          var s = new T.Shape(), M2 = 16, xs = [];
+          for (var q = 0; q <= M2; q++) xs.push(-lim + 2 * lim * q / M2);
+          xs.forEach(function (x, q) { var y = edge(x); q ? s.lineTo(x, y) : s.moveTo(x, y); });
+          for (var q2 = M2; q2 >= 0; q2--) { var x2 = xs[q2]; s.lineTo(x2, edge(x2) + h(x2)); }
+          var m2 = new T.Mesh(new T.ShapeGeometry(s, 3), mat); m2.position.z = z; bend(m2.geometry); g.add(m2);
+        };
+        var depth = function (x) { return Math.max(0, up(x) - lo(x)); };
+        o > .25 && band(function (x) { return lo(x) + .004; }, function (x) { return depth(x) * .38; }, w * .62, P.mouthMats.tongue, -.009);
+        // one clean row of upper teeth that always stays inside the lips
+        teeth && o > .1 && band(function (x) { return up(x) - .004; }, function (x) { return -Math.min(.048, depth(x) * .42); }, w * .86, P.mouthMats.teeth, -.006);
+        g.add(new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(ptsL), 32, .022, 8), P.mouthMats.lip));
+      }
+      g.add(new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(ptsU), 32, o > .02 ? .022 : .026, 8), P.mouthMats.lip));
+      function bend(geo) { var p = geo.attributes.position; for (var i2 = 0; i2 < p.count; i2++) p.setZ(i2, p.getZ(i2) - p.getX(i2) * p.getX(i2) * .9); p.needsUpdate = true; }
+    }
+    var MOUTH = { smile: [.17, .06, 0, 0], grin: [.2, .07, .45, 1], teeth: [.19, .06, .3, 1], o: [.07, 0, .7, 0], flat: [.14, 0, 0, 0], tongue: [.18, .06, .35, 0], sad: [.14, -.05, 0, 0], det: [.17, .03, .12, 1], cele: [.23, .09, .8, 1], think: [.12, .015, 0, 0] };
+    // expression targets per mood: [brow raise, brow inner angle, upper lid (0 open..1 shut), lower lid raise, head pitch]
+    var FACE = { idle: [0, 0, .08, 0, 0], happy: [.05, .05, .12, .35, -.04], celebrate: [.07, .06, .78, .55, -.1], sad: [.01, .3, .3, 0, .16], excited: [-.03, -.28, .14, .15, 0], surprised: [.12, .05, -.1, 0, -.05], think: [.04, -.1, .18, .1, -.08], proud: [.03, 0, .2, .25, -.06] };
+    // ---------------------------------------------------------------- renderer and lighting
+    function init() {
+      R = new T.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true, powerPreference: "high-performance" });
+      R.setPixelRatio(1); R.setSize(BUF, BUF, false); R.setClearColor(0, 0);
+      R.outputColorSpace = T.SRGBColorSpace; R.toneMapping = T.ACESFilmicToneMapping; R.toneMappingExposure = 1.05;
+      R.shadowMap.enabled = !mobile; R.shadowMap.type = T.PCFSoftShadowMap;
+      scene = new T.Scene();
+      // a small studio for reflections in the eyes and soft light on the skin
+      var env = new T.Scene(), room = new T.Mesh(new T.BoxGeometry(20, 20, 20), new T.MeshBasicMaterial({ color: "#5a6070", side: T.BackSide })); env.add(room);
+      [[0, 9, 2, 8, 2.2], [-8, 3, 6, 4, 1.4], [8, 2, 4, 3, .8], [0, -2, 9, 6, .5]].forEach(function (p) { var m = new T.Mesh(new T.PlaneGeometry(p[3], p[3] * .6), new T.MeshBasicMaterial({ color: new T.Color(1, 1, 1).multiplyScalar(p[4] * 6) })); m.position.set(p[0], p[1], p[2]); m.lookAt(0, 0, 0); env.add(m); });
+      var pm = new T.PMREMGenerator(R); scene.environment = pm.fromScene(env, .04).texture; scene.environmentIntensity = .9;
+      var key = new T.DirectionalLight("#fff4e6", 2.4); key.position.set(-3, 4, 6); key.castShadow = true; key.shadow.mapSize.set(1024, 1024); key.shadow.radius = 6; key.shadow.bias = -.0004; key.shadow.normalBias = .02;
+      var sc = key.shadow.camera; sc.left = -3, sc.right = 3, sc.top = 3, sc.bottom = -4, sc.near = 1, sc.far = 20; scene.add(key);
+      var rim = new T.DirectionalLight("#bcd4ff", 1.6); rim.position.set(4, 2, -4); scene.add(rim);
+      var fill = new T.DirectionalLight("#ffe2c8", .5); fill.position.set(3, -1, 5); scene.add(fill);
+      cam = new T.PerspectiveCamera(20, 1, .1, 50); cam.position.set(0, -.25, 13.2); cam.lookAt(0, -.62, 0);
+      io = "IntersectionObserver" in window ? new IntersectionObserver(function (es) { es.forEach(function (e) { e.target._cz3vis = e.isIntersecting; }); }) : null;
+    }
+    function modelFor(key, cfg) {
+      var m = models.get(key);
+      if (!m) { m = build(cfg); models.set(key, m); if (models.size > 60) { var k0 = models.keys().next().value; var old = models.get(k0); models.delete(k0); old.traverse(function (o) { o.geometry && o.geometry.dispose(); }); } }
+      return m;
+    }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    // copy the 2D rig state into the 3D model
+    function pose(m, st, svg, dt) {
+      var P = m.userData.parts, c = m.userData.cfg, mood = (svg && svg.dataset.mood) || "idle", f = FACE[mood] || FACE.idle, x = st ? st.x : null;
+      var s = m.userData.s || (m.userData.s = { br: 0, ba: 0, lu: .08, ll: 0, pitch: 0, mw: MOUTH[c.mouth] || MOUTH.smile });
+      var k = 1 - Math.pow(.0009, dt);
+      s.br = lerp(s.br, f[0], k), s.ba = lerp(s.ba, f[1], k), s.ll = lerp(s.ll, f[3], k), s.pitch = lerp(s.pitch, f[4], k);
+      var lidT = f[2] + (c.eyes === "cool" ? .32 : 0), blink = st ? st.lid || 0 : 0; s.lu = lerp(s.lu, lidT, k);
+      var lu = Math.max(s.lu, blink);
+      var mk = (svg && svg.dataset.m) || c.mouth, mt = MOUTH[mk] || MOUTH.smile;
+      for (var i = 0; i < 4; i++) s.mw[i] = lerp(s.mw[i], mt[i], k * 1.2);
+      setMouth(m, s.mw[0], s.mw[1], s.mw[2], s.mw[3] > .5);
+      var turn = x ? x.turn : 0, ly = x ? x.ly : 0, lx = x ? x.lx : 0, tilt = x ? x.tilt : 0, hop = st ? (st.hopY || 0) : 0, t = st ? st.time || 0 : performance.now() / 1e3;
+      P.pivot.rotation.set(ly * .16 + s.pitch, turn * .42, -tilt * Math.PI / 180 * 1.2);
+      P.body.position.y = -hop * .012; P.body.rotation.y = turn * .1;
+      P.body.scale.y = 1 + Math.sin(t * 1.7) * .006;
+      P.eyes.forEach(function (e) { e.rotation.set(ly * .28, lx * .42, 0); });
+      P.lidsU.forEach(function (l) { l.rotation.x = lerp(-1.05, 1.62, lu); });
+      P.lidsL.forEach(function (l) { l.rotation.x = lerp(.62, -.3, Math.min(1, s.ll + (mood === "celebrate" ? .2 : 0))); });
+      P.brows.forEach(function (b, i) { var sgn = i ? -1 : 1; b.position.y = (.36 + c.sz.by * .018) + s.br; b.rotation.z = sgn * -s.ba * .5; });
+    }
+    // ---------------------------------------------------------------- views: one canvas per character on screen
+    function attach(svg) {
+      if (svg._cz3 || !svg.isConnected) return;
+      var frame = svg.dataset.frame, still = svg.hasAttribute("data-still"), r = svg.getBoundingClientRect(), D;
+      if (frame === "bust") D = Math.min(r.width, r.height) || Number(svg.getAttribute("width")) || 60;
+      else { var w = r.width || Number(svg.getAttribute("width")), h = r.height || Number(svg.getAttribute("height")); D = Math.round(Math.min(w * 1.12, h * .62)) || 100; }
+      var cv = document.createElement("canvas"); cv.className = "cz3" + (frame === "bust" ? " cz3-bust" : " cz3-full");
+      var fill = frame === "bust" && /^(100%|auto)?$/.test(svg.style.width || "") && svg.closest(".avatar,.duo-praise-av,.duo-nudge-av,.cz-rank-av");
+      cv.style.width = cv.style.height = Math.round(D) + "px";
+      svg.after(cv); svg.classList.add("cz3-hid"); svg._cz3 = cv;
+      var v = { svg: svg, cv: cv, ctx: cv.getContext("2d"), key: svg.dataset.cfg || "{}", still: still, bg: !svg.hasAttribute("data-nobg"), done: false };
+      try { v.cfg = JSON.parse(v.key); } catch (e) { v.cfg = DUO_DEF; }
+      views.push(v); io && io.observe(cv); cv._cz3vis = true;
+    }
+    function draw(v, dt) {
+      var cv = v.cv, rect = cv.getBoundingClientRect(), D = Math.max(rect.width, rect.height); if (!D) return;
+      var px = Math.min(BUF, Math.round(D * Math.min(MAXDPR, devicePixelRatio || 1)));
+      if (cv.width !== px) cv.width = cv.height = px;
+      var m = modelFor(v.key, v.cfg), st = CZ.get(v.svg);
+      pose(m, st, v.svg, dt);
+      scene.add(m); R.setViewport(0, 0, px, px); R.setScissor(0, 0, px, px); R.setScissorTest(true); R.clear(); cam.aspect = 1; cam.updateProjectionMatrix(); R.render(scene, cam); scene.remove(m);
+      var g = v.ctx, c = m.userData.cfg, bg = czColors(c).bg;
+      g.clearRect(0, 0, px, px); g.save(); g.beginPath(); g.arc(px / 2, px / 2, px / 2 - px * .015, 0, Math.PI * 2); g.clip();
+      if (v.bg) { var gr = g.createRadialGradient(px * .5, px * .38, px * .05, px * .5, px * .5, px * .55); gr.addColorStop(0, czShade(bg, .35)); gr.addColorStop(1, czShade(bg, -.12)); g.fillStyle = gr; g.fillRect(0, 0, px, px); }
+      g.drawImage(R.domElement, 0, BUF - px, px, px, 0, 0, px, px);
+      g.restore();
+      if (v.bg) { g.lineWidth = px * .03; g.strokeStyle = "rgba(30,37,80,.85)"; g.beginPath(); g.arc(px / 2, px / 2, px / 2 - px * .015, 0, Math.PI * 2); g.stroke(); g.lineWidth = px * .012; g.strokeStyle = "rgba(255,255,255,.35)"; g.beginPath(); g.arc(px / 2, px / 2, px / 2 - px * .045, Math.PI * 1.1, Math.PI * 1.6); g.stroke(); }
+    }
+    function tick(now) {
+      raf = requestAnimationFrame(tick);
+      if (document.hidden || now - last < 1000 / FPS - 2) return;
+      var dt = Math.min(.1, (now - last) / 1000 || .016); last = now;
+      views = views.filter(function (v) { if (v.cv.isConnected && v.svg.isConnected) return true; io && io.unobserve(v.cv); v.cv.remove(); return false; });
+      var overlay = document.querySelector(".lz-play,.cz-arena"), budget = mobile ? 6 : 12, n = 0;
+      for (var i = 0; i < views.length && n < budget; i++) {
+        var v = views[i];
+        if (v.still && v.done) continue;
+        if (v.cv._cz3vis === false) continue;
+        if (overlay && !overlay.contains(v.cv)) continue;
+        draw(v, dt), n++, v.done = true;
+      }
+    }
+    function scan() { if (!on) return; document.querySelectorAll("svg.epzc:not(.cz3-hid)").forEach(attach); }
+    function start() {
+      if (on || failed) return;
+      try { var t = document.createElement("canvas"); if (!(t.getContext("webgl2") || t.getContext("webgl"))) throw 0; } catch (e) { failed = true; return; }
+      import("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js").then(function (mod) {
+        T = mod; init(); on = true; document.documentElement.classList.add("cz3-on"); window.dispatchEvent(new Event("cz3ready"));
+        scan(); new MutationObserver(function () { clearTimeout(scan.t); scan.t = setTimeout(scan, 20); }).observe(document.documentElement, { childList: true, subtree: true });
+        raf = requestAnimationFrame(tick);
+      }).catch(function () { failed = true; });
+    }
+    return { start: start, get on() { return on; } };
+  })();
+  CZ3.start();
+
+  // ---------------------------------------------------------------- the character maker (#avatar): free design
   function czMaker() {
-    let cfg = czCfg(state.avatar || DUO_DEF), tab = "outfit", isNew = !state.avatar;
-    let TABS3 = [["outfit", "Outfit", "👕"], ["head", "Headwear", "🧢"], ["hair", "Hair", "💇"], ["face", "Face", "🙂"], ["beard", "Beard", "🧔"], ["skin", "Skin", "✋"], ["extra", "Extras", "🎒"], ["pose", "Pose", "🕺"], ["bg", "Circle", "⭕"]];
-    // each tab: groups of [key, values or colour list]
+    let cfg = czCfg(state.avatar || DUO_DEF), tab = "body", isNew = !state.avatar, hist = [];
+    let snap = () => { hist.push(JSON.stringify(cfg)); hist.length > 40 && hist.shift(); };
+    let TABS3 = [["body", "Body", "🧍"], ["face", "Face", "🙂"], ["hair", "Hair", "💇"], ["beard", "Beard", "🧔"], ["head", "Headwear", "🧢"], ["top", "Top", "👕"], ["bottom", "Bottom", "👖"], ["shoes", "Shoes", "👟"], ["extra", "Extras", "🎒"], ["pose", "Pose", "🕺"], ["bg", "Circle", "⭕"]];
     let opts = (k) => (DUO_PARTS[k] || CZ_NEW[k]).map((p) => p[0]);
     let om = (k, v) => !!CZ_OMANI[k + ":" + v];
     let split = (k) => { let all = opts(k), a = all.filter((v) => om(k, v)), b = all.filter((v) => !om(k, v)); return cfg.style === "omani" ? [["Omani", a], ["More", b]] : [["Everyday", b], ["Omani", a]]; };
     let label = (k, v) => ((DUO_PARTS[k] || CZ_NEW[k]).find((p) => p[0] === v) || [, v])[1];
+    let PRE = { skin: DUO_SKIN, hair: DUO_HAIRC, eyes: CZ_EYEC, top: DUO_CLOTHC.concat(["#8B5E3C", "#3B2A20", "#7A1F3D", "#A7C7E7"]), bottom: ["#2E3440", "#3D5A8A", "#1B1B1F", "#5A6B7A", "#8A7A5A", "#F4F7FB", "#6B4A2B", "#2B41C4"], shoes: ["#7A4B2A", "#FFFFFF", "#1B1B1F", "#6B4A2B", "#D8343F", "#2B41C4", "#FFD83D", "#178A4C"], hat: DUO_CLOTHC, bg: DUO_BG.concat(["#1F4A3D", "#2B41C4", "#FFD83D", "#17224D"]) };
+    let SL = { h: "Height", b: "Build", hd: "Head size", es: "Eye size", ed: "Eye spacing", by: "Eyebrow height", ns: "Nose size", mw: "Mouth width" };
+    let C = () => czColors(cfg);
+    // a section is: ["opts", title, key, groups] | ["col", title, colourKey] | ["sl", key] | ["note", text]
     function sections() {
-      return tab === "outfit" ? [["Clothes", "cl", split("cl")], ["Colour", "cc", DUO_CLOTHC]]
-        : tab === "head" ? [["Headwear", "hat", split("hat")]]
-        : tab === "hair" ? [["Hair style", "hair", [["", opts("hair")]]], ["Hair colour", "hc", DUO_HAIRC]]
-        : tab === "face" ? [["Face shape", "face", [["", opts("face")]]], ["Eyes", "eyes", [["", opts("eyes")]]], ["Eyebrows", "brows", [["", opts("brows")]]], ["Smile", "mouth", [["", opts("mouth")]]], ["Glasses", "gl", [["", opts("gl")]]]]
-        : tab === "beard" ? [["Beard", "beard", split("beard")]]
-        : tab === "skin" ? [["Skin", "skin", DUO_SKIN]]
-        : tab === "extra" ? [["Extras", "extra", [["", opts("extra")]]]]
-        : tab === "pose" ? [["Favourite pose", "pose", [["", opts("pose")]]]]
-        : [["Circle colour", "bg", DUO_BG]];
+      let robe = czRobe(cfg.cl);
+      return tab === "body" ? [["col", "Skin colour", "skin"]].concat(CZ3.on ? [] : [["sl", "h"]], [["sl", "b"], ["sl", "hd"]])
+        : tab === "face" ? [["opts", "Face shape", "face", [["", opts("face")]]], ["opts", "Eyes", "eyes", [["", opts("eyes")]]], ["col", "Eye colour", "eyes"], ["sl", "es"], ["sl", "ed"], ["opts", "Eyebrows", "brows", [["", opts("brows")]]], ["sl", "by"], ["sl", "ns"], ["opts", "Smile", "mouth", [["", opts("mouth")]]], ["sl", "mw"], ["opts", "Glasses", "gl", [["", opts("gl")]]]]
+        : tab === "hair" ? [["opts", "Hair style", "hair", [["", opts("hair")]]], ["col", "Hair colour", "hair"]]
+        : tab === "beard" ? [["opts", "Beard", "beard", split("beard")], ["note", "The beard uses your hair colour."]]
+        : tab === "head" ? [["opts", "Headwear", "hat", split("hat")], ["col", "Cap and beanie colour", "hat"]]
+        : tab === "top" ? [["opts", "Top", "cl", split("cl")], ["col", robe && cfg.cl !== "dish" ? "Bisht colour" : "Colour", "top"]]
+        : tab === "bottom" ? (robe ? [["note", "Your dishdasha covers the trousers. Choose a T-shirt, hoodie or shirt in Top to see them."], ["opts", "Bottom", "bottom", [["", opts("bottom")]]], ["col", "Colour", "bottom"]] : [["opts", "Bottom", "bottom", [["", opts("bottom")]]], ["col", "Colour", "bottom"]])
+        : tab === "shoes" ? [["opts", "Shoes", "shoes", split("shoes")], ["col", "Colour", "shoes"]]
+        : tab === "extra" ? [["opts", "Extras", "extra", [["", opts("extra")]]]]
+        : tab === "pose" ? [["opts", "Favourite pose", "pose", [["", opts("pose")]]]]
+        : [["col", "Circle colour (in small pictures)", "bg"]];
     }
     let thumb = (k, v) => {
-      let c2 = Object.assign({}, cfg, { [k]: v });
+      let c2 = JSON.parse(JSON.stringify(cfg)); c2[k] = v;
       k === "hair" && c2.hat !== "crown" && (c2.hat = "none");
       let lockKey = k === "cl" || k === "hat" || k === "extra" ? k + ":" + v : "", locked = CZ_LOCKED[lockKey] && czOwned().indexOf(lockKey) < 0;
-      let full = k === "cl" || k === "pose" || k === "extra";
-      return `<button type="button" class="cz-opt${cfg[k] === v ? " on" : ""}${locked ? " locked" : ""}" data-k="${k}" data-v="${v}" aria-pressed="${cfg[k] === v}"><span class="cz-thumb">${czSvg(c2, { size: full ? 92 : 74, frame: full ? "full" : "bust", still: !0, pose: k === "pose" ? v : "relaxed", bg: !1 })}</span><span class="cz-opt-l">${locked ? "🔒 " : ""}${esc(label(k, v))}</span></button>`;
+      let full = /^(cl|pose|extra|bottom|shoes)$/.test(k);
+      return `<button type="button" class="cz-opt${cfg[k] === v ? " on" : ""}${locked ? " locked" : ""}${full ? " tall" : ""}" data-k="${k}" data-v="${v}" aria-pressed="${cfg[k] === v}"><span class="cz-thumb">${czSvg(c2, { size: full ? 92 : 74, frame: full ? "full" : "bust", still: !0, pose: k === "pose" ? v : "relaxed", bg: !1 })}</span><span class="cz-opt-l">${locked ? "🔒 " : ""}${esc(label(k, v))}</span></button>`;
     };
+    let colRow = (title, k) => {
+      let cur = C()[k].toLowerCase(), list = PRE[k] || [];
+      return `<h3 class="cz-h">${title}</h3><div class="cz-swatches">${list.map((col) => `<button type="button" class="cz-sw${col.toLowerCase() === cur ? " on" : ""}" data-col="${k}" data-hex="${col}" style="--sw:${col}" aria-label="${title} ${col}"></button>`).join("")}<label class="cz-sw cz-pick${list.some((x) => x.toLowerCase() === cur) ? "" : " on"}" style="--sw:${cur}" title="Any colour"><input type="color" value="${cur}" data-pick="${k}" aria-label="${title}: any colour"><span>🎨</span></label></div>`;
+    };
+    let slider = (k) => {
+      let [a, b] = CZ_SZ[k], v = cfg.sz[k];
+      return `<label class="cz-sl"><span>${SL[k]}</span><input type="range" min="${a}" max="${b}" step="0.01" value="${v}" data-sz="${k}"><button type="button" class="cz-sl-r" data-szr="${k}" aria-label="Reset ${SL[k]}">↺</button></label>`;
+    };
+    let stageT = 0;
     function drawStage(reaction) {
       let st = app.querySelector("#cz-stage");
-      st.innerHTML = czSvg(cfg, { size: 250, cls: "cz-me cz-hero" });
+      st.innerHTML = CZ3.on ? czSvg(cfg, { size: 206, frame: "bust", cls: "cz-me cz-hero" }) : czSvg(cfg, { size: 178, cls: "cz-me cz-hero" });
       reaction && setTimeout(() => CZ.react(st, reaction), 30);
     }
+    let liveStage = () => { cancelAnimationFrame(stageT); stageT = requestAnimationFrame(() => drawStage()); };
     function drawOpts() {
-      app.querySelector("#cz-tabs").innerHTML = TABS3.map(([k, l, ic]) => `<button type="button" role="tab" data-t="${k}" aria-selected="${k === tab}"><span>${ic}</span>${l}</button>`).join("");
-      app.querySelector("#cz-style").innerHTML = CZ_NEW.style.map(([v, l]) => `<button type="button" data-style="${v}" class="${cfg.style === v ? "on" : ""}">${v === "omani" ? "Omani style" : "Everyday style"}</button>`).join("");
-      app.querySelector("#cz-opts").innerHTML = sections().map(([title, k, list]) => `<h3 class="cz-h">${title}</h3>` + (Array.isArray(list[0]) ? list.map(([g, vals]) => vals.length ? `${g ? `<p class="cz-g">${g}</p>` : ""}<div class="cz-grid">${vals.map((v) => thumb(k, v)).join("")}</div>` : "").join("") : `<div class="cz-swatches">${list.map((col, i) => `<button type="button" class="cz-sw${cfg[k] === i ? " on" : ""}" data-k="${k}" data-v="${i}" style="--sw:${col}" aria-label="${title} ${i + 1}"></button>`).join("")}</div>`)).join("");
+      app.querySelector("#cz-tabs").innerHTML = TABS3.filter(([k]) => !(CZ3.on && /^(pose|bottom|shoes)$/.test(k))).map(([k, l, ic]) => `<button type="button" role="tab" data-t="${k}" aria-selected="${k === tab}"><span>${ic}</span>${l}</button>`).join("");
+      let styleSw = /^(top|head|beard|shoes)$/.test(tab) ? `<div class="cz-style">${CZ_NEW.style.map(([v, l]) => `<button type="button" data-style="${v}" class="${cfg.style === v ? "on" : ""}">${l} first</button>`).join("")}</div>` : "";
+      app.querySelector("#cz-undo").disabled = !hist.length;
+      app.querySelector("#cz-opts").innerHTML = styleSw + sections().map((s) => s[0] === "col" ? colRow(s[1], s[2]) : s[0] === "sl" ? slider(s[1]) : s[0] === "note" ? `<p class="cz-note">${esc(s[1])}</p>`
+        : `<h3 class="cz-h">${s[1]}</h3>` + s[3].map(([g, vals]) => vals.length ? `${g ? `<p class="cz-g">${g}</p>` : ""}<div class="cz-grid">${vals.map((v) => thumb(s[2], v)).join("")}</div>` : "").join("")).join("");
     }
     app.dataset.tab = "home";
     app.innerHTML = `
@@ -9378,36 +9810,49 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     </header>
     <section class="cz-make">
       <div class="cz-stage-wrap"><div class="cz-floor"></div><div id="cz-stage" class="cz-stage"></div>
+        <p class="cz-stage-t">${isNew ? "Create your character" : "Your character"}</p>
         <div class="cz-try" aria-label="Try a reaction">${[["happy", "😄"], ["celebrate", "🎉"], ["sad", "😕"], ["excited", "🔥"], ["think", "🤔"], ["wave", "👋"]].map(([r, e]) => `<button type="button" data-try="${r}" aria-label="${r}">${e}</button>`).join("")}</div>
+        <div class="cz-tools"><button type="button" id="cz-undo" aria-label="Undo">↶ Undo</button><button type="button" id="cz-dice">🎲 Surprise</button></div>
       </div>
-      <h1 class="cz-title">${isNew ? "Create your character" : "Your character"}</h1>
-      <p class="cz-sub">This is you on EPZ. It learns, battles and celebrates with you.</p>
-      <div class="cz-style" id="cz-style"></div>
-      <button type="button" class="btn btn-ghost btn-sm cz-dice" id="cz-dice">🎲 Surprise me</button>
+      <nav class="cz-tabs" id="cz-tabs" role="tablist"></nav>
     </section>
-    <nav class="cz-tabs" id="cz-tabs" role="tablist"></nav>
     <section class="cz-opts" id="cz-opts"></section>`;
     let onClick = (e) => {
       if (!app.querySelector("#cz-opts")) return;
-      let t = e.target.closest("[data-t]"), o = e.target.closest("[data-k]"), s = e.target.closest("[data-style]"), tr = e.target.closest("[data-try]");
+      let t = e.target.closest("[data-t]"), o = e.target.closest("[data-k]"), s = e.target.closest("[data-style]"), tr = e.target.closest("[data-try]"), sw = e.target.closest("[data-col]"), rs = e.target.closest("[data-szr]");
       if (tr) return CZ.react(app.querySelector("#cz-stage"), tr.dataset.try);
-      if (s) return cfg.style = s.dataset.style, drawOpts(), CZ.react(app.querySelector("#cz-stage"), "proud");
-      if (t) return tab = t.dataset.t, drawOpts(), app.querySelector("#cz-opts").scrollTo?.(0, 0);
+      if (s) return snap(), cfg.style = s.dataset.style, drawOpts(), CZ.react(app.querySelector("#cz-stage"), "proud");
+      if (t) return tab = t.dataset.t, drawOpts(), t.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+      if (sw) return snap(), cfg.col[sw.dataset.col] = sw.dataset.hex, drawStage(), drawOpts();
+      if (rs) return snap(), cfg.sz[rs.dataset.szr] = CZ_SZ[rs.dataset.szr][2], drawStage("happy"), drawOpts();
       if (o) {
-        let k = o.dataset.k, v = /^(skin|hc|cc|bg)$/.test(k) ? Number(o.dataset.v) : o.dataset.v;
+        let k = o.dataset.k, v = o.dataset.v;
         if (o.classList.contains("locked")) return toast("Win this in a Boss Rush chest (Book → Boss Rush).", "info", 2600), CZ.react(app.querySelector("#cz-stage"), "surprised");
-        cfg[k] = v, k === "hair" && cfg.hat !== "crown" && (cfg.hat = "none");
-        let rx = k === "pose" ? null : k === "cl" || k === "hat" ? "proud" : k === "extra" ? "happy" : k === "mouth" || k === "eyes" ? "happy" : null;
-        drawStage(rx), k === "pose" && CZ.react(app.querySelector("#cz-stage"), v === "wave" ? "wave" : "proud", { pose: v, ms: 900 });
-        app.querySelector("#cz-stage").classList.remove("cz-swap"), void app.querySelector("#cz-stage").offsetWidth, app.querySelector("#cz-stage").classList.add("cz-swap");
+        snap(), cfg[k] = v, k === "hair" && cfg.hat !== "crown" && (cfg.hat = "none");
+        let st = app.querySelector("#cz-stage");
+        st.classList.remove("cz-swap"), void st.offsetWidth, st.classList.add("cz-swap");
+        drawStage(k === "pose" ? null : /^(cl|hat|bottom|shoes)$/.test(k) ? "proud" : "happy"), k === "pose" && CZ.react(st, v === "wave" ? "wave" : "proud", { pose: v, ms: 900 });
         drawOpts();
       }
     };
-    app.addEventListener("click", onClick), cleanup = () => app.removeEventListener("click", onClick);
+    // colour picker and sliders update the character live while dragging
+    let onInput = (e) => {
+      let p = e.target.closest("[data-pick]"), r = e.target.closest("[data-sz]");
+      if (p) { dragging || (snap(), dragging = 1), cfg.col[p.dataset.pick] = p.value, p.parentNode.style.setProperty("--sw", p.value), liveStage(); }
+      if (r) { dragging || (snap(), dragging = 1), cfg.sz[r.dataset.sz] = Number(r.value), liveStage(); }
+    };
+    let dragging = 0, onChange = (e) => { (e.target.closest("[data-pick]") || e.target.closest("[data-sz]")) && (dragging = 0, drawOpts()); };
+    let onReady3 = () => { app.querySelector("#cz-stage") && (drawStage("wave"), drawOpts()); };
+    window.addEventListener("cz3ready", onReady3), app.addEventListener("click", onClick), app.addEventListener("input", onInput), app.addEventListener("change", onChange);
+    cleanup = () => (window.removeEventListener("cz3ready", onReady3), app.removeEventListener("click", onClick), app.removeEventListener("input", onInput), app.removeEventListener("change", onChange));
+    app.querySelector("#cz-undo").addEventListener("click", () => { if (!hist.length) return; cfg = czCfg(JSON.parse(hist.pop())); drawStage("surprised"), drawOpts(); });
     app.querySelector("#cz-dice").addEventListener("click", () => {
-      let r = (n) => Math.floor(Math.random() * n), p = (k) => { let l = opts(k).filter((v) => czHas(k, v)); return l[r(l.length)]; };
+      snap();
+      let r = (n) => Math.floor(Math.random() * n), p = (k) => { let l = opts(k).filter((v) => czHas(k, v)); return l[r(l.length)]; }, any = (k) => PRE[k][r(PRE[k].length)], rnd = (k) => { let [a, b] = CZ_SZ[k]; return +(a + Math.random() * (b - a) * .8 + (b - a) * .1).toFixed(2); };
       let omani = cfg.style === "omani";
-      cfg = czCfg(Object.assign({}, cfg, { skin: r(DUO_SKIN.length), hair: p("hair"), hat: omani ? ["kumma1", "kumma2", "kumma3", "massar1", "massar2", "massar3", "none"][r(7)] : Math.random() < .6 ? "none" : p("hat"), hc: r(DUO_HAIRC.length), eyes: p("eyes"), mouth: p("mouth"), gl: Math.random() < .7 ? "none" : p("gl"), cl: omani ? ["dish", "dish", "bisht"][r(3)] : ["tee", "hoodie", "shirt", "sweater", "jersey", "uniform", "jacket"][r(7)], cc: omani ? (Math.random() < .7 ? 0 : r(DUO_CLOTHC.length)) : r(DUO_CLOTHC.length), bg: r(DUO_BG.length), face: p("face"), brows: p("brows"), beard: Math.random() < .6 ? "none" : p("beard") }));
+      cfg = czCfg(Object.assign({}, cfg, { hair: p("hair"), hat: omani ? ["kumma1", "kumma2", "kumma3", "massar1", "massar2", "massar3", "none"][r(7)] : Math.random() < .6 ? "none" : p("hat"), eyes: p("eyes"), mouth: p("mouth"), gl: Math.random() < .7 ? "none" : p("gl"), cl: omani ? ["dish", "dish", "bisht"][r(3)] : ["tee", "hoodie", "shirt", "sweater", "jersey", "uniform", "jacket"][r(7)], face: p("face"), brows: p("brows"), beard: Math.random() < .6 ? "none" : p("beard"), bottom: p("bottom"), shoes: omani ? "sandals" : p("shoes"),
+        col: { skin: any("skin"), hair: any("hair"), eyes: any("eyes"), top: omani && Math.random() < .7 ? "#FFFFFF" : any("top"), bottom: any("bottom"), shoes: any("shoes"), bg: any("bg") },
+        sz: { h: rnd("h"), b: rnd("b"), hd: rnd("hd"), es: rnd("es"), ed: rnd("ed"), by: rnd("by"), ns: rnd("ns"), mw: rnd("mw") } }));
       drawStage("surprised"), drawOpts();
     });
     app.querySelector("#cz-save").addEventListener("click", () => {
