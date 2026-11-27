@@ -2061,6 +2061,41 @@ canvas.cz3.cz3-party{animation:cz3-party 1.3s cubic-bezier(.3,1.5,.5,1)}
 .hello .avatar.cz-standing .epzc{width:auto;height:172px;filter:drop-shadow(0 3px 0 rgb(0 0 0 / .25))}
 .dh-art .dh-t.me .epzc{height:136px;width:auto}
 @media (prefers-reduced-motion:reduce){#app.cz-enter>*,.cz-dock,.cz-arena,.cz-ar-me,.cz-ar-foe,.cz-ar-x,.board li.me.cz-climb{animation:none!important}}
+/* ============================================================ epz-patch:colors — "School notebook" colours back (27 Nov 2026).
+   Colours only: shapes, fonts, outlines and layout of the Gate Rush look stay. Ink blue, highlighter yellow, chalkboard green, squared paper. */
+html:root, html:root:not([data-theme="light"]), html:root[data-theme="dark"] {
+  --gr-navy:#17224D; --gr-teal:#2B41C4; --gr-tealD:#1C2C8F; --gr-gold:#FFD83D; --gr-red:#D8343F;
+  --gr-sand:#EEF2FA; --gr-sandD:#CDD7EA; --gr-cream:#FFFFFF; --gr-sky:#E3EAF6; --gr-sky2:#F7F9FD;
+  --bg: #F7F9FD; --grid: #E3EAF6; --surface: #FFFFFF; --surface-2: #EEF2FA; --ink: #17224D; --muted: #56618A; --line: #17224D;
+  --brand: #2B41C4; --brand-deep: #1C2C8F; --on-brand: #FFFFFF; --sun: #FFD83D; --sun-ink: #2B2300;
+  --good: #178A4C; --good-bg: #DDF5E6; --good-ink: #0D5530; --bad: #D8343F; --bad-bg: #FDE4E5; --bad-ink: #7C1820; --on-state: #FFFFFF;
+  --board: #1F4A3D; --chalk: #F4F7EF; --chalk-dim: #BDD2C6; --wood: #C4975F; --pen: #D8343F;
+  --cover: #2B41C4; --cover-deep: #1C2C8F; --on-cover: #FFFFFF;
+  --shadow: 0 4px 0 #17224D;
+}
+body {
+  background-color: #F7F9FD !important;
+  background-image: linear-gradient(#E3EAF6 1px, transparent 1px), linear-gradient(90deg, #E3EAF6 1px, transparent 1px) !important;
+  background-size: 22px 22px !important; background-position: center top !important; background-attachment: scroll !important;
+}
+.lz-play {
+  background-color: #F7F9FD !important;
+  background-image: linear-gradient(#E3EAF6 1px, transparent 1px), linear-gradient(90deg, #E3EAF6 1px, transparent 1px) !important;
+  background-size: 22px 22px !important;
+}
+.lz-island { background: #FFFFFF; }
+.lz-island:after { background: repeating-linear-gradient(90deg, #CDD7EA 0 22px, #E3EAF6 22px 44px); }
+.lz-peb { background: #EEF2FA; border-color: #56618A; box-shadow: 0 3px 0 #56618A; }
+.lz-node.locked { background: #E3E7EF !important; border-color: #8A93B3; box-shadow: 0 6px 0 #8A93B3, inset 0 -8px 0 rgb(0 0 0 / .08); }
+.lz-hero .lz-pbar { background: rgb(23 34 77 / .15); }
+.cz-floor { background: rgb(23 34 77 / .18); }
+.cz-opt.on, .lz-item.on { background: #E6EAFB; }
+.cz-opt.locked, .lz-item.lock { background: #EEF0F5; }
+.cz-opt .cz-thumb { background: linear-gradient(#EEF2FA, #fff); }
+.tabbar { background: #FFFFFF !important; border-top: 3px solid #17224D !important; box-shadow: 0 -4px 0 rgb(23 34 77 / .08) !important; }
+.tab { color: #56618A !important; }
+.tab[aria-current="page"] { color: #17224D !important; }
+.tab[aria-current="page"] .tab-ic { background: #FFD83D !important; color: #2B2300 !important; box-shadow: 0 3px 0 #B89A1A !important; }
 </style>
 </head>
 <body>
