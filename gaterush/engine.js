@@ -256,14 +256,14 @@
     /* ---------- build the map ---------- */
     function buildWorld() {
       map.build(B, { gates: questions.length });
+      // question gates (their stone frames go into the static batch, so build them before the batch mesh is made)
+      gates.forEach(function (g, i) { buildGate(g, questions[i] || null); });
       scene.add(batch.mesh(matFor("#FFFFFF"))); scene.add(decoBatch.mesh(matFor("#FFFFFF")));
       // sea far below (falling = splash), sky clouds
       var sea = new T.Mesh(new T.PlaneGeometry(900, 1400), new T.MeshLambertMaterial({ color: "#2AA7B8" })); geos.push(sea.geometry); mats.sea = sea.material; sea.rotation.x = -Math.PI / 2; sea.position.set(0, -14.5, -finishF / 2); sea.receiveShadow = false; scene.add(sea);
       var cb = new Batch(); for (var i = 0; i < 34; i++) { var cx = (Math.random() < 0.5 ? -1 : 1) * (22 + Math.random() * 70), cz = -Math.random() * (finishF + 60), cy = 26 + Math.random() * 22; for (var k = 0; k < 4; k++) cb.box(cx + k * 3 - 4, cy + Math.random(), cz + (Math.random() - 0.5) * 3, 3 + Math.random() * 3, 1.6, 3 + Math.random() * 2, "#FFFFFF", 0); }
       var cm = cb.mesh(new T.MeshLambertMaterial({ color: "#FFFFFF", vertexColors: true, map: null })); cm.castShadow = false; cm.receiveShadow = false; mats.cloud = cm.material; scene.add(cm);
       solids.forEach(function (s) { /* already gridded */ });
-      // question gates
-      gates.forEach(function (g, i) { buildGate(g, questions[i] || null); });
       // coins
       coinMesh = new T.InstancedMesh(coinGeo(), new T.MeshLambertMaterial({ color: "#FFC52E", emissive: "#6B4A00" }), Math.max(1, coins.length)); mats.coin = coinMesh.material; coinMesh.castShadow = false; coinMesh.frustumCulled = false; scene.add(coinMesh);
       checkpoints.sort(function (a, b) { return a.f - b.f; });
@@ -298,11 +298,11 @@
       lines.forEach(function (ln, i) { g.fillText(ln, 36, 100 + fs * 0.9 + i * fs * 1.15 - (lines.length > 1 ? 14 : 0)); });
       var t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; t.anisotropy = 4; texs.push(t); return t;
     }
-    var woodSide = null;
+    var woodSide = null, doorGeo = new T.BoxGeometry(1, 1, 1); geos.push(doorGeo);   // a stock box: it has one group per face, which the 6-material door needs
     function buildGate(g, q) {
       var z = -g.f, top = g.top, stone = "#D9C7A3", dark = "#8F7A55";
       // frame: side towers, pillars between doors, lintel
-      [-1, 1].forEach(function (k) { B.block(k * 4.5, k * 9, g.f - 0.7, g.f + 0.7, top, top + 8.6, stone); B.block(k * 4.5 - (k > 0 ? 0 : -0), k * 9, g.f - 0.9, g.f + 0.9, top + 8.6, top + 9.4, dark, true); });
+      [-1, 1].forEach(function (k) { var x0 = Math.min(k * 4.5, k * 9), x1 = Math.max(k * 4.5, k * 9); B.block(x0, x1, g.f - 0.7, g.f + 0.7, top, top + 8.6, stone); B.block(x0, x1, g.f - 0.9, g.f + 0.9, top + 8.6, top + 9.4, dark, true); });
       [-1.55, 1.55].forEach(function (x) { B.block(x - 0.25, x + 0.25, g.f - 0.6, g.f + 0.6, top, top + DH + 0.3, stone); });
       B.block(-9, 9, g.f - 0.8, g.f + 0.8, top + DH, top + 8.6, stone);
       for (var b = -8; b <= 8; b += 2) decoBatch.box(b, top + 9.1, z, 1.1, 0.8, 1.6, dark);
@@ -310,7 +310,7 @@
       if (!woodSide) woodSide = new T.MeshLambertMaterial({ color: "#8E5E32" }), mats.woodSide = woodSide;
       for (var i = 0; i < 3; i++) {
         var plain = new T.MeshLambertMaterial({ color: "#B07A45" }); mats["door" + g.idx + i] = plain;
-        var mesh = new T.Mesh(boxGeo(1, 1, 1), [woodSide, woodSide, woodSide, woodSide, plain, woodSide]); mesh.scale.set(DW, DH, 0.5); mesh.position.set(DOORX[i], top + DH / 2, z); mesh.castShadow = true; mesh.receiveShadow = true; scene.add(mesh);
+        var mesh = new T.Mesh(doorGeo, [woodSide, woodSide, woodSide, woodSide, plain, woodSide]); mesh.scale.set(DW, DH, 0.5); mesh.position.set(DOORX[i], top + DH / 2, z); mesh.castShadow = true; mesh.receiveShadow = true; scene.add(mesh);
         var s = mkSolid(DOORX[i] - DW / 2, DOORX[i] + DW / 2, top, top + DH, z - 0.25, z + 0.25, { door: { gate: g, idx: i }, mesh: mesh }); solids.push(s); gridAdd(s); g.doors.push(s);
       }
       // question board over the doors
