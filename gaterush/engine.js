@@ -261,7 +261,7 @@
     /* ---------- build the map ---------- */
     function buildWorld() {
       map.build(B, { gates: questions.length });
-      // question gates (their stone frames go into the static batch, so build them before the batch mesh is made)
+      // question gates (each frame is its own mesh so it can fade; their solids join the static collision grid)
       gates.forEach(function (g, i) { buildGate(g, questions[i] || null); });
       scene.add(batch.mesh(matFor("#FFFFFF"))); scene.add(decoBatch.mesh(matFor("#FFFFFF")));
       // sea far below (falling = splash), sky clouds
@@ -306,16 +306,25 @@
     var woodSide = null, doorGeo = new T.BoxGeometry(1, 1, 1); geos.push(doorGeo);   // a stock box: it has one group per face, which the 6-material door needs
     function buildGate(g, q) {
       var z = -g.f, top = g.top, stone = "#D9C7A3", dark = "#8F7A55";
+      // the frame gets its own mesh (same boxes, same solids as before) so it can turn see-through once the runner is past it
+      var gb = new Batch();
+      var gblock = function (x0, x1, f0, f1, y0, y1, color, noSolid) {
+        gb.box((x0 + x1) / 2, (y0 + y1) / 2, -(f0 + f1) / 2, x1 - x0, y1 - y0, f1 - f0, color);
+        if (!noSolid) { var so = mkSolid(x0, x1, y0, y1, -f1, -f0); solids.push(so); gridAdd(so); }
+      };
       // frame: side towers, pillars between doors, lintel
-      [-1, 1].forEach(function (k) { var x0 = Math.min(k * 4.5, k * 9), x1 = Math.max(k * 4.5, k * 9); B.block(x0, x1, g.f - 0.7, g.f + 0.7, top, top + 8.6, stone); B.block(x0, x1, g.f - 0.9, g.f + 0.9, top + 8.6, top + 9.4, dark, true); });
-      [-1.55, 1.55].forEach(function (x) { B.block(x - 0.25, x + 0.25, g.f - 0.6, g.f + 0.6, top, top + DH + 0.3, stone); });
-      B.block(-9, 9, g.f - 0.8, g.f + 0.8, top + DH, top + 8.6, stone);
-      for (var b = -8; b <= 8; b += 2) decoBatch.box(b, top + 9.1, z, 1.1, 0.8, 1.6, dark);
+      [-1, 1].forEach(function (k) { var x0 = Math.min(k * 4.5, k * 9), x1 = Math.max(k * 4.5, k * 9); gblock(x0, x1, g.f - 0.7, g.f + 0.7, top, top + 8.6, stone); gblock(x0, x1, g.f - 0.9, g.f + 0.9, top + 8.6, top + 9.4, dark, true); });
+      [-1.55, 1.55].forEach(function (x) { gblock(x - 0.25, x + 0.25, g.f - 0.6, g.f + 0.6, top, top + DH + 0.3, stone); });
+      gblock(-9, 9, g.f - 0.8, g.f + 0.8, top + DH, top + 8.6, stone);
+      for (var b = -8; b <= 8; b += 2) gb.box(b, top + 9.1, z, 1.1, 0.8, 1.6, dark);
+      g.frameMat = new T.MeshLambertMaterial({ color: "#FFFFFF", map: blockTex, vertexColors: true }); mats["gate" + g.idx] = g.frameMat;
+      scene.add(gb.mesh(g.frameMat)); g.fade = 1; g.boardFade = 1;
+      g.sideMat = new T.MeshLambertMaterial({ color: "#8E5E32" }); mats["gside" + g.idx] = g.sideMat;
       g.q = q; g.doors = []; g.state = "wait"; g.first = -1; g.prepared = false;
       if (!woodSide) woodSide = new T.MeshLambertMaterial({ color: "#8E5E32" }), mats.woodSide = woodSide;
       for (var i = 0; i < 3; i++) {
         var plain = new T.MeshLambertMaterial({ color: "#B07A45" }); mats["door" + g.idx + i] = plain;
-        var mesh = new T.Mesh(doorGeo, [woodSide, woodSide, woodSide, woodSide, plain, woodSide]); mesh.scale.set(DW, DH, 0.5); mesh.position.set(DOORX[i], top + DH / 2, z); mesh.castShadow = true; mesh.receiveShadow = true; scene.add(mesh);
+        var mesh = new T.Mesh(doorGeo, [g.sideMat, g.sideMat, g.sideMat, g.sideMat, plain, g.sideMat]); mesh.scale.set(DW, DH, 0.5); mesh.position.set(DOORX[i], top + DH / 2, z); mesh.castShadow = true; mesh.receiveShadow = true; scene.add(mesh);
         var s = mkSolid(DOORX[i] - DW / 2, DOORX[i] + DW / 2, top, top + DH, z - 0.25, z + 0.25, { door: { gate: g, idx: i }, mesh: mesh }); solids.push(s); gridAdd(s); g.doors.push(s);
       }
       // question board over the doors
@@ -326,6 +335,21 @@
       if (g.prepared || !g.q) return; g.prepared = true;
       g.doors.forEach(function (s, i) { var m = s.mesh.material[4]; m.map = doorTexture(i, g.q.options[i]); m.color.set("#FFFFFF"); m.needsUpdate = true; });
       g.boardMat.map = boardTexture(g.q.prompt, "QUESTION " + (g.idx + 1) + " OF " + gates.length); g.boardMat.color.set("#FFFFFF"); g.boardMat.needsUpdate = true;
+    }
+
+    // a gate the runner has gone through turns see-through while the camera is still behind it, so the wall and the
+    // question board never hide the character or the path ahead; its board fades out for good once it is answered and passed
+    function setFade(m, a) {
+      var tr = a < 0.995; if (m.transparent !== tr) { m.transparent = tr; m.depthWrite = !tr; m.needsUpdate = true; } m.opacity = tr ? a : 1;
+    }
+    function updateGateFade(dt) {
+      for (var i = 0; i < gates.length; i++) {
+        var g = gates[i], passed = g.state === "done" && -p.z > g.f - 1, camBehind = camera.position.z > -g.f - 1.4;
+        var tgt = passed && camBehind ? 0.15 : 1; if (g.fade === tgt && (!passed || g.boardFade === 0)) continue;
+        g.fade = damp(g.fade, tgt, 9, dt); if (Math.abs(g.fade - tgt) < 0.003) g.fade = tgt;
+        setFade(g.frameMat, g.fade); setFade(g.sideMat, g.fade); g.doors.forEach(function (d) { setFade(d.mesh.material[4], g.fade); });
+        if (passed) { g.boardFade = Math.max(0, g.boardFade - dt / 0.3); setFade(g.boardMat, g.boardFade); if (g.boardFade === 0) g.board.visible = false; }
+      }
     }
 
     /* ---------- particles (one instanced mesh) ---------- */
@@ -630,7 +654,7 @@
         if (p.celebrate > 0 && state === "race") av.root.position.y += 0;
         // coins spin (only the ones near)
         coinT += dt; if (coinMesh) { for (var ci = 0; ci < coins.length; ci++) { var cc = coins[ci]; if (cc.got) { tmpO.scale.setScalar(0); } else if (Math.abs(cc.z - p.z) < 90) { tmpO.position.set(cc.x, cc.y + Math.sin(coinT * 3 + ci) * 0.12, cc.z); tmpO.rotation.set(0, coinT * 3 + ci, 0); tmpO.scale.setScalar(1); } else { tmpO.scale.setScalar(1); tmpO.position.set(cc.x, cc.y, cc.z); tmpO.rotation.set(0, ci, 0); } tmpO.updateMatrix(); coinMesh.setMatrixAt(ci, tmpO.matrix); } coinMesh.instanceMatrix.needsUpdate = true; }
-        updateParticles(dt); updateCamera(dt);
+        updateParticles(dt); updateCamera(dt); updateGateFade(dt);
         // sun follows the runner (snapped, so shadows do not swim)
         var stp = 48 / (QCFG[Q].shadow || 1024) * 32, sx = Math.round(p.x / stp) * stp, sz = Math.round((p.z - 8) / stp) * stp;
         sun.position.set(sx - 16, 34, sz + 12); sun.target.position.set(sx, 0, sz); sun.target.updateMatrixWorld();
