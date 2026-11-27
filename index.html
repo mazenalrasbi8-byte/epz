@@ -2160,6 +2160,38 @@ body.cz-arena-on{overflow:hidden}
 .lz-node .lz-tag{background:var(--gr-navy);color:var(--gr-gold);border:2px solid var(--gr-gold);font-weight:900}
 .lz-node .lz-st{color:var(--gr-gold);text-shadow:0 2px 0 var(--gr-navy),1px 1px 0 var(--gr-navy),-1px 1px 0 var(--gr-navy);bottom:-20px}
 @media (prefers-reduced-motion:reduce){.lz-island,.lz-node.current{animation:none}}
+/* ============================================================ epz-patch:look stage 5 — one bright Gate Rush theme for the whole site.
+   Overrides the old notebook / chalkboard variables (light and the automatic dark mode): sky, sand, navy outlines, teal and gold. */
+html:root, html:root:not([data-theme="light"]), html:root[data-theme="dark"] {
+  --bg: #CDE9F2; --grid: rgb(19 35 47 / .045); --surface: #FFFDF6; --surface-2: #F3EBD6; --ink: #13232F; --muted: #4B5A66; --line: #13232F;
+  --brand: #0B7A63; --brand-deep: #075646; --on-brand: #FFFFFF; --sun: #F2B632; --sun-ink: #13232F;
+  --good: #1F9D57; --good-bg: #DDF7E6; --good-ink: #0D5530; --bad: #E5484D; --bad-bg: #FDE4E5; --bad-ink: #7C1820; --on-state: #FFFFFF;
+  --board: #13232F; --chalk: #FFFFFF; --chalk-dim: #BCD3DD; --wood: #F2B632; --pen: #E5484D;
+  --cover: #0B7A63; --cover-deep: #075646; --on-cover: #FFFFFF;
+  --shadow: 0 4px 0 #13232F;
+  color-scheme: light;
+}
+body { background-color: #CDE9F2; background-image: linear-gradient(180deg, #7FD3EA 0, #CDE9F2 380px, #E6F4F8 100%); background-size: auto; background-attachment: fixed; }
+/* cards: cream with a navy outline and a solid offset shadow */
+.prog-card, .go-skills, .board, .me-block, .dash-card, .dash-hero, .name-form, .wotd-home, .passage, .audio-box, .w-mini, .w-tips,
+.arch-card, .arch-none, .su-card, .qarea, .results, .level-switch, .search, .unlock, .block {
+  border: 3px solid var(--gr-navy) !important; box-shadow: 0 5px 0 var(--gr-navy) !important; border-radius: 18px;
+}
+/* chalkboard panels become navy panels with a gold frame */
+.lz-locker, .cz-stage-wrap { border-color: var(--gr-navy); }
+/* buttons: chunky, navy outline, solid shadow */
+.btn { border: 3px solid var(--gr-navy) !important; box-shadow: 0 4px 0 var(--gr-navy) !important; font-weight: 800; }
+.btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--gr-navy) !important; }
+.btn-primary { background: var(--gr-gold) !important; color: var(--gr-navy) !important; }
+h1, h2 { font-family: var(--gr-head); letter-spacing: 0; }
+/* bottom tab bar: navy bar, gold chip on the current tab */
+.tabbar { background: var(--gr-navy) !important; border-top: 3px solid var(--gr-navy) !important; box-shadow: 0 -4px 0 rgb(19 35 47 / .12) !important; }
+.tab { color: #BCD3DD !important; }
+.tab[aria-current="page"] { color: #FFFFFF !important; }
+.tab[aria-current="page"] .tab-ic { background: var(--gr-gold) !important; color: var(--gr-navy) !important; box-shadow: 0 3px 0 #B9801A !important; }
+/* lesson and practice play screens: sky background */
+.lz-play { background-color: #CDE9F2 !important; background-image: linear-gradient(180deg, #7FD3EA, #E6F4F8 60%) !important; }
+.lz-opt { background: var(--gr-cream) !important; border: 3px solid var(--gr-navy) !important; box-shadow: 0 4px 0 var(--gr-navy) !important; color: var(--gr-navy) !important; }
 canvas.cz3{display:block;border-radius:50%;flex:none;animation:cz3-in .35s ease}
 canvas.cz3-full{margin:0 auto;filter:drop-shadow(0 4px 0 rgb(0 0 0 / .18))}
 @keyframes cz3-in{from{opacity:0;transform:scale(.92)}}
@@ -10226,7 +10258,20 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     // ---------------------------------------------------------------- CHALLENGE: a sunny floating kingdom drawn under the existing battle
     // The 2D battle keeps all its rules and timing. Its towers, troops, arrows and fire stay in the page (invisible); every frame
     // the 3D scene reads where they are and draws 3D towers and troops in the same spots, so health bars and cards still line up.
+    // epz-patch:look stage 5 — the duel kingdom in the blocky Gate Rush style: inside duel() every round shape is built as a block
+    // (spheres, cylinders, capsules -> boxes; cones -> four-sided pyramids). Sizes, positions and all game logic stay the same.
+    function threeNow() { return T; }
+    function blockyT(T0) {
+      var B = Object.assign({}, T0), box = function (w, h, d) { return new T0.BoxGeometry(Math.max(.02, w), Math.max(.02, h), Math.max(.02, d)); };
+      B.SphereGeometry = function (r) { return box(r * 1.7, r * 1.7, r * 1.7); };
+      B.CylinderGeometry = function (rt, rb, h) { var r = Math.max(rt || 0, rb || 0); return box(r * 1.8, h, r * 1.8); };
+      B.ConeGeometry = function (r, h) { var g = new T0.ConeGeometry(r * 1.15, h, 4, 1); g.rotateY(Math.PI / 4); return g; };
+      B.CapsuleGeometry = function (r, l) { return box(r * 2, l + r * 2, r * 2); };
+      B.DodecahedronGeometry = B.IcosahedronGeometry = function (r) { return box(r * 1.6, r * 1.6, r * 1.6); };
+      return B;
+    }
     function duel(ar, foeName) {
+      var T = blockyT(threeNow());
       var field = ar.querySelector("#ar-field"); if (!field) return null;
       ar.classList.add("ar3d");
       var R = makeRenderer(field, { exposure: 1.05 }), scene = new T.Scene(), cam = new T.PerspectiveCamera(38, 1, .1, 200);
