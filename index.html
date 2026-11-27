@@ -2095,6 +2095,38 @@ body.cz-arena-on{overflow:hidden}
 /* 3D avatars (epz-patch:char3d) */
 .cz3-hid{display:none!important}
 .cz3-wait svg.epzc{visibility:hidden}.czb-wrap svg{width:100%;height:100%;display:block}
+/* ============================================================ epz-patch:look — Gate Rush design tokens + avatar maker and Locker (stage 2) */
+:root{--gr-navy:#13232F;--gr-teal:#27C3C3;--gr-tealD:#0B7A63;--gr-gold:#F2B632;--gr-red:#E5484D;--gr-sand:#E8C98F;--gr-sandD:#CFA96B;--gr-cream:#FFFDF6;--gr-sky:#7FD3EA;--gr-sky2:#CDE9F2;--gr-head:'Kalam','Lexend',system-ui,sans-serif}
+.cz3-on svg.epzc:not(.cz3-hid){visibility:hidden}
+.cz-make{background:transparent}
+.cz-stage-wrap{background:linear-gradient(var(--gr-sky),var(--gr-sky2) 64%,var(--gr-sand) 64%,var(--gr-sandD));border:4px solid var(--gr-navy);border-radius:22px;box-shadow:0 6px 0 var(--gr-navy);overflow:hidden}
+.cz-stage-wrap:before{display:none}
+.cz-floor{left:18%;right:18%;bottom:14px;height:16px;border-radius:50%;background:rgb(19 35 47 / .22);box-shadow:none}
+.cz-stage-t{font-family:var(--gr-head);font-size:1.35rem;color:#fff;text-shadow:0 3px 0 var(--gr-navy),2px 2px 0 var(--gr-navy),-2px 2px 0 var(--gr-navy),2px -1px 0 var(--gr-navy),-2px -1px 0 var(--gr-navy)}
+.cz-try button,.cz-tools button{background:var(--gr-cream);color:var(--gr-navy);border:3px solid var(--gr-navy);border-radius:12px;box-shadow:0 3px 0 var(--gr-navy);font-weight:800}
+.cz-try button:active,.cz-tools button:active{transform:translateY(3px);box-shadow:0 0 0 var(--gr-navy)}
+.cz-tabs button{background:var(--gr-cream);color:var(--gr-navy);border:3px solid var(--gr-navy);border-radius:14px;box-shadow:0 4px 0 var(--gr-navy);font-weight:800}
+.cz-tabs button[aria-selected="true"]{background:var(--gr-gold);color:var(--gr-navy);border-color:var(--gr-navy);box-shadow:0 4px 0 var(--gr-navy)}
+.cz-opts .cz-h{font-family:var(--gr-head);font-size:1.4rem;letter-spacing:.2px}
+.cz-opt{background:var(--gr-cream);color:var(--gr-navy);border:3px solid var(--gr-navy);border-radius:16px;box-shadow:0 4px 0 var(--gr-navy);transition:transform .08s,box-shadow .08s}
+.cz-opt:hover{transform:translateY(-2px)}
+.cz-opt:active{transform:translateY(3px);box-shadow:0 1px 0 var(--gr-navy)}
+.cz-opt.on{background:#E3FAF7;border-color:var(--gr-tealD);box-shadow:0 4px 0 var(--gr-tealD),0 0 0 3px var(--gr-teal)}
+.cz-opt.locked{background:#EDE7D6}
+.cz-opt .cz-thumb{background:linear-gradient(var(--gr-sky2),#fff);border-radius:11px;margin:2px}
+.cz-src{position:absolute;top:6px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:.62rem;font-weight:900;background:var(--gr-navy);color:var(--gr-gold);padding:2px 7px;border-radius:99px;z-index:1}
+.cz-opt-l{color:var(--gr-navy)}
+.cz-sw{border:3px solid var(--gr-navy);border-radius:10px;box-shadow:0 3px 0 var(--gr-navy)}
+.cz-sw.on{outline:3px solid var(--gr-gold);outline-offset:2px}
+.cz-sl input{accent-color:var(--gr-gold)}
+.cz-style{background:var(--gr-cream);border:3px solid var(--gr-navy);box-shadow:0 3px 0 var(--gr-navy)}
+.cz-style button{color:var(--gr-navy);font-weight:800}.cz-style button.on{background:var(--gr-gold);color:var(--gr-navy)}
+.lz-locker{background:linear-gradient(var(--gr-sky),var(--gr-sky2) 70%,var(--gr-sand) 70%);border:4px solid var(--gr-navy);border-radius:22px;box-shadow:0 6px 0 var(--gr-navy);color:var(--gr-navy)}
+.lz-locker h2{font-family:var(--gr-head);color:#fff;text-shadow:0 3px 0 var(--gr-navy),2px 2px 0 var(--gr-navy),-2px 2px 0 var(--gr-navy)}
+.lz-locker .lz-muted{color:var(--gr-navy);font-weight:700}
+.lz-item{background:var(--gr-cream);color:var(--gr-navy);border:3px solid var(--gr-navy);border-radius:16px;box-shadow:0 4px 0 var(--gr-navy)}
+.lz-item.on{background:#E3FAF7;border-color:var(--gr-tealD);box-shadow:0 4px 0 var(--gr-tealD),0 0 0 3px var(--gr-teal)}
+.lz-item.lock{background:#EDE7D6}
 canvas.cz3{display:block;border-radius:50%;flex:none;animation:cz3-in .35s ease}
 canvas.cz3-full{margin:0 auto;filter:drop-shadow(0 4px 0 rgb(0 0 0 / .18))}
 @keyframes cz3-in{from{opacity:0;transform:scale(.92)}}
@@ -8843,11 +8875,18 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     /* ---------- LOCKER: the student's character, prizes, settings ---------- */
     function viewMe() {
       var h = '<div class="lz-card lz-locker"><div class="lz-locker-me">' + hero("idle", 210) + '</div><div><h2>' + hx(firstName(me().name)) + '</h2><p class="lz-muted">Your character learns, battles and celebrates with you.</p><a class="lz-btn" href="#avatar">✏️ Edit my character</a></div></div>'
-        + '<h3 class="lz-h3">Boss Rush prizes <span class="lz-muted">' + S.owned.length + " / " + PRIZES.length + '</span></h3><div class="lz-grid">';
+        + '<h3 class="lz-h3">Boss Rush prizes <span class="lz-muted">' + PRIZES.filter(function (i) { return S.owned.indexOf(i.k) > -1; }).length + " / " + PRIZES.length + '</span></h3><div class="lz-grid">';
       PRIZES.forEach(function (i) {
         var own = S.owned.indexOf(i.k) > -1;
         h += '<div class="lz-item' + (own ? " on" : " lock") + '"><span class="lz-ic">' + preview(i.k, 64) + "</span>" + hx(i.name) + '<br><small class="lz-muted">' + (own ? "Won" : "🔒 Win in a chest") + "</small></div>";
       });
+      // epz-patch:look — the exclusive weekly Gate Rush packs (crown, cape, visor in four colours); they can only be won
+      var WK = [["Gold", 1], ["Aqua", 2], ["Ruby", 3], ["Violet", 4]];
+      h += '</div><h3 class="lz-h3">Weekly exclusives <span class="lz-muted">' + WK.reduce(function (n, p) { return n + ["hat:grcrown", "extra:grcape", "gl:grvisor"].filter(function (b) { return S.owned.indexOf(b + p[1]) > -1; }).length; }, 0) + ' / 12</span></h3><p class="lz-muted" style="margin:-4px 0 8px">Win a pack by finishing in the top 3 of a Gate Rush week. They cannot be bought.</p><div class="lz-grid">';
+      WK.forEach(function (p) { [["hat:grcrown", "Crown"], ["extra:grcape", "Racer cape"], ["gl:grvisor", "Visor"]].forEach(function (it) {
+        var k = it[0] + p[1], own = S.owned.indexOf(k) > -1;
+        h += '<div class="lz-item' + (own ? " on" : " lock") + '"><span class="lz-ic">' + preview(k, 64) + "</span>" + hx(p[0] + " " + it[1]) + '<br><small class="lz-muted">' + (own ? "Won" : "🏆 Weekly prize") + "</small></div>";
+      }); });
       return h + "</div>" + (S.chests ? '<button class="lz-btn blue" id="lz-chest" style="margin-top:14px">Open a chest 🎁 (' + S.chests + ")</button>" : "")
         + '<h3 class="lz-h3">Settings</h3><div class="lz-row"><span>Sound effects</span><button class="lz-sw' + (S.sound ? " on" : "") + '" id="lz-snd" aria-label="Sound effects"></button></div><div class="lz-row"><span>Arabic encouragement</span><button class="lz-sw' + (S.ar ? " on" : "") + '" id="lz-arb" aria-label="Arabic encouragement"></button></div>';
     }
@@ -9351,7 +9390,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   function czCfg(c) {
     let o = duoCfg(c);
     for (let k in CZ_NEW) CZ_NEW[k].some((p) => p[0] === o[k]) || (o[k] = CZ_DEF[k]);
-    czHas("hat", o.hat) || (o.hat = "none"), czHas("cl", o.cl) || (o.cl = "dish"), czHas("extra", o.extra) || (o.extra = "none");
+    czHas("hat", o.hat) || (o.hat = "none"), czHas("cl", o.cl) || (o.cl = "dish"), czHas("extra", o.extra) || (o.extra = "none"), czHas("gl", o.gl) || (o.gl = "none");
     let col = {}, sz = {}, src = c && typeof c == "object" ? c : {};
     CZ_COLS.forEach((k) => { let v = src.col && src.col[k]; /^#[0-9a-f]{6}$/i.test(v || "") && (col[k] = v); });
     for (let k in CZ_SZ) { let v = Number(src.sz && src.sz[k]); sz[k] = isFinite(v) && src.sz && src.sz[k] != null ? Math.max(CZ_SZ[k][0], Math.min(CZ_SZ[k][1], v)) : CZ_SZ[k][2]; }
@@ -9721,6 +9760,13 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       var v = { svg: svg, cv: cv, ctx: cv.getContext("2d"), key: svg.dataset.cfg || "{}", still: still, bg: !svg.hasAttribute("data-nobg"), done: false, full: frame !== "bust" || svg.classList.contains("cz-hero"), hero: svg.classList.contains("cz-hero") };
       try { v.cfg = JSON.parse(v.key); } catch (e) { v.cfg = DUO_DEF; }
       views.push(v); io && io.observe(cv); cv._cz3vis = true;
+      // the big character (avatar maker) can be spun by dragging; it eases back to facing you after a moment
+      if (v.hero) {
+        var lastX = null; cv.style.touchAction = "pan-y"; cv.style.cursor = "grab";
+        cv.addEventListener("pointerdown", function (e) { lastX = e.clientX; hero.drag = true; try { cv.setPointerCapture(e.pointerId); } catch (x) {} });
+        cv.addEventListener("pointermove", function (e) { if (lastX === null) return; hero.yaw += (e.clientX - lastX) * .018; lastX = e.clientX; hero.last = performance.now(); });
+        var end = function () { lastX = null; hero.drag = false; hero.last = performance.now(); }; cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+      }
     }
     function draw(v, dt) {
       var cv = v.cv, rect = cv.getBoundingClientRect(), D = Math.max(rect.width, rect.height); if (!D) return;
@@ -9738,10 +9784,11 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       pose(m, st, v.svg, dt, v);
       // close-up of head and shoulders for small avatars; a bigger character shows down to the knees
       // close-up of head and shoulders for small avatars, head to knees for bigger ones, the whole body in the avatar maker
+      if (v.hero) { if (!hero.drag && performance.now() - hero.last > 1800) hero.yaw += (Math.sin(performance.now() / 1400) * .22 - hero.yaw) * Math.min(1, dt * 2.5); m.rotation.y = hero.yaw; } else m.rotation.y = 0;
       if (v.hero) { cam.position.set(0, -2, 24); cam.lookAt(0, -2.1, 0); } else if (v.full) { cam.position.set(0, -1.5, 17); cam.lookAt(0, -1.6, 0); } else { cam.position.set(0, -.5, 16.5); cam.lookAt(0, -.75, 0); }
       scene.add(m); R.setViewport(0, 0, px, px); R.setScissor(0, 0, px, px); R.setScissorTest(true); R.clear(); cam.aspect = 1; cam.updateProjectionMatrix(); R.render(scene, cam); scene.remove(m);
       var g = v.ctx, c = m.userData.cfg, bg = czColors(c).bg;
-      g.clearRect(0, 0, px, px); g.save(); g.beginPath(); g.arc(px / 2, px / 2, px / 2 - px * .015, 0, Math.PI * 2); g.clip();
+      g.clearRect(0, 0, px, px); g.save(); if (v.bg) { g.beginPath(); g.arc(px / 2, px / 2, px / 2 - px * .015, 0, Math.PI * 2); g.clip(); }   // only round badges are clipped
       if (v.bg) { var gr = g.createRadialGradient(px * .5, px * .38, px * .05, px * .5, px * .5, px * .55); gr.addColorStop(0, czShade(bg, .35)); gr.addColorStop(1, czShade(bg, -.12)); g.fillStyle = gr; g.fillRect(0, 0, px, px); }
       g.drawImage(R.domElement, 0, BUF - px, px, px, 0, 0, px, px);
       g.restore();
@@ -9767,7 +9814,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         draw(v, dt), n++, v.done = true;
       }
     }
-    var live = null, liveT = 0;
+    var live = null, liveT = 0, hero = { yaw: 0, drag: false, last: 0 };
     function scan() { if (!on) return; document.querySelectorAll("svg.epzc:not(.cz3-hid)").forEach(attach); }
     function start() {
       if (on || failed) return;
@@ -10373,7 +10420,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     // a section is: ["opts", title, key, groups] | ["col", title, colourKey] | ["sl", key] | ["note", text]
     function sections() {
       let robe = czRobe(cfg.cl);
-      return tab === "body" ? [["col", "Skin colour", "skin"]].concat(CZ3.on ? [] : [["sl", "h"]], [["sl", "b"], ["sl", "hd"]])
+      return tab === "body" ? [["col", "Skin colour", "skin"], ["sl", "h"], ["sl", "b"], ["sl", "hd"]]
         : tab === "face" ? [["opts", "Face shape", "face", [["", opts("face")]]], ["opts", "Eyes", "eyes", [["", opts("eyes")]]], ["col", "Eye colour", "eyes"], ["sl", "es"], ["sl", "ed"], ["opts", "Eyebrows", "brows", [["", opts("brows")]]], ["sl", "by"], ["sl", "ns"], ["opts", "Smile", "mouth", [["", opts("mouth")]]], ["sl", "mw"], ["opts", "Glasses", "gl", [["", opts("gl")]]]]
         : tab === "hair" ? [["opts", "Hair style", "hair", [["", opts("hair")]]], ["col", "Hair colour", "hair"]]
         : tab === "beard" ? [["opts", "Beard", "beard", split("beard")], ["note", "The beard uses your hair colour."]]
@@ -10388,9 +10435,9 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let thumb = (k, v) => {
       let c2 = JSON.parse(JSON.stringify(cfg)); c2[k] = v;
       k === "hair" && c2.hat !== "crown" && (c2.hat = "none");
-      let lockKey = k === "cl" || k === "hat" || k === "extra" ? k + ":" + v : "", locked = CZ_LOCKED[lockKey] && czOwned().indexOf(lockKey) < 0;
+      let lockKey = k === "cl" || k === "hat" || k === "extra" || k === "gl" ? k + ":" + v : "", locked = CZ_LOCKED[lockKey] && czOwned().indexOf(lockKey) < 0, src = locked ? (grPk(v) ? "🏆 Weekly prize" : "⚔ Boss Rush") : "";
       let full = /^(cl|pose|extra|bottom|shoes)$/.test(k);
-      return `<button type="button" class="cz-opt${cfg[k] === v ? " on" : ""}${locked ? " locked" : ""}${full ? " tall" : ""}" data-k="${k}" data-v="${v}" aria-pressed="${cfg[k] === v}"><span class="cz-thumb">${czSvg(c2, { size: full ? 92 : 74, frame: full ? "full" : "bust", still: !0, pose: k === "pose" ? v : "relaxed", bg: !1 })}</span><span class="cz-opt-l">${locked ? "🔒 " : ""}${esc(label(k, v))}</span></button>`;
+      return `<button type="button" class="cz-opt${cfg[k] === v ? " on" : ""}${locked ? " locked" : ""}${full ? " tall" : ""}" data-k="${k}" data-v="${v}" aria-pressed="${cfg[k] === v}"><span class="cz-thumb">${czSvg(c2, { size: full ? 92 : 74, frame: full ? "full" : "bust", still: !0, pose: k === "pose" ? v : "relaxed", bg: !1 })}</span>${src ? `<span class="cz-src">${src}</span>` : ""}<span class="cz-opt-l">${locked ? "🔒 " : ""}${esc(label(k, v))}</span></button>`;
     };
     let colRow = (title, k) => {
       let cur = C()[k].toLowerCase(), list = PRE[k] || [];
@@ -10403,12 +10450,12 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let stageT = 0;
     function drawStage(reaction) {
       let st = app.querySelector("#cz-stage");
-      st.innerHTML = CZ3.on ? czSvg(cfg, { size: 206, frame: "bust", cls: "cz-me cz-hero" }) : czSvg(cfg, { size: 178, cls: "cz-me cz-hero" });
+      st.innerHTML = CZ3.on ? czSvg(cfg, { size: 236, frame: "bust", cls: "cz-me cz-hero", bg: !1 }) : czSvg(cfg, { size: 178, cls: "cz-me cz-hero" });
       reaction && setTimeout(() => CZ.react(st, reaction), 30);
     }
     let liveStage = () => { cancelAnimationFrame(stageT); stageT = requestAnimationFrame(() => drawStage()); };
     function drawOpts() {
-      app.querySelector("#cz-tabs").innerHTML = TABS3.filter(([k]) => !(CZ3.on && /^(pose|bottom|shoes)$/.test(k))).map(([k, l, ic]) => `<button type="button" role="tab" data-t="${k}" aria-selected="${k === tab}"><span>${ic}</span>${l}</button>`).join("");
+      app.querySelector("#cz-tabs").innerHTML = TABS3.map(([k, l, ic]) => `<button type="button" role="tab" data-t="${k}" aria-selected="${k === tab}"><span>${ic}</span>${l}</button>`).join("");
       let styleSw = /^(top|head|beard|shoes)$/.test(tab) ? `<div class="cz-style">${CZ_NEW.style.map(([v, l]) => `<button type="button" data-style="${v}" class="${cfg.style === v ? "on" : ""}">${l} first</button>`).join("")}</div>` : "";
       app.querySelector("#cz-undo").disabled = !hist.length;
       app.querySelector("#cz-opts").innerHTML = styleSw + sections().map((s) => s[0] === "col" ? colRow(s[1], s[2]) : s[0] === "sl" ? slider(s[1]) : s[0] === "note" ? `<p class="cz-note">${esc(s[1])}</p>`
@@ -10439,7 +10486,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (rs) return snap(), cfg.sz[rs.dataset.szr] = CZ_SZ[rs.dataset.szr][2], drawStage("happy"), drawOpts();
       if (o) {
         let k = o.dataset.k, v = o.dataset.v;
-        if (o.classList.contains("locked")) return toast("Win this in a Boss Rush chest (Book → Boss Rush).", "info", 2600), CZ.react(app.querySelector("#cz-stage"), "surprised");
+        if (o.classList.contains("locked")) return toast(grPk(v) ? "Exclusive! Finish in the top 3 of a Gate Rush week to win this. It cannot be bought." : "Win this in a Boss Rush chest (Book → Boss Rush).", "info", 3200), CZ.react(app.querySelector("#cz-stage"), "surprised");
         snap(), cfg[k] = v, k === "hair" && cfg.hat !== "crown" && (cfg.hat = "none");
         let st = app.querySelector("#cz-stage");
         st.classList.remove("cz-swap"), void st.offsetWidth, st.classList.add("cz-swap");
