@@ -1771,6 +1771,310 @@ body.playing .tabbar { display: none; }
 .duo-lg-next > svg:first-child { animation: none !important; }
 .duo-lg-next .hl-spark { display: none; }
 </style>
+<style id="lz-style">
+/* ============================================================ epz-patch:learn — Book path, lessons, Boss Rush, Locker (classes start with lz-)
+   Same notebook identity as the rest of EPZ: ink blue, highlighter yellow, chalkboard green, paper cards with a 3px edge. */
+.lz,.lz-play{color:var(--ink);font-family:var(--font)}
+.lz *,.lz-play *{box-sizing:border-box}
+.lz button,.lz-play button{font:inherit;color:inherit;cursor:pointer}
+.lz-stats{display:flex;gap:8px;align-items:center;margin:4px 0 12px}
+.lz-pill{display:flex;align-items:center;gap:6px;font-weight:700;padding:6px 12px;border-radius:999px;background:var(--surface);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line)}
+.lz-grow{flex:1;min-width:0}
+.lz-ring{--p:0;width:40px;height:40px;border-radius:50%;background:conic-gradient(var(--sun) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center;transition:--p 1s}
+.lz-ring i{font-style:normal;width:30px;height:30px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-size:.9rem}
+.lz-seg{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--surface-2);border:1.5px solid var(--line);border-radius:16px;padding:4px;margin-bottom:6px}
+.lz-seg button{border:0;background:none;border-radius:12px;padding:10px 2px;font-weight:700;font-size:.9rem;white-space:nowrap;color:var(--muted);transition:background .25s,color .25s,transform .12s}
+.lz-seg button.on{background:var(--brand);color:var(--on-brand);box-shadow:0 3px 0 var(--brand-deep)}
+.lz-seg button:active{transform:scale(.96)}
+.lz-btn{display:block;border:0;border-radius:14px;padding:14px 18px;font-weight:800;letter-spacing:.01em;background:var(--brand);color:var(--on-brand)!important;box-shadow:0 4px 0 var(--brand-deep);width:100%;text-align:center;text-decoration:none;transition:transform .12s,box-shadow .12s,filter .15s}
+.lz-btn:active{transform:translateY(4px);box-shadow:0 0 0 var(--brand-deep)}
+@media (hover:hover){.lz-btn:hover:not([disabled]){filter:brightness(1.07)}}
+.lz-btn[disabled]{background:var(--surface-2);color:var(--muted)!important;box-shadow:0 4px 0 var(--line);cursor:default}
+.lz-btn.blue{background:var(--sun);color:var(--sun-ink)!important;box-shadow:0 4px 0 #B98F00}
+.lz-btn.red{background:var(--bad);color:#fff!important;box-shadow:0 4px 0 color-mix(in srgb,var(--bad) 60%,#000)}
+.lz-btn.good{background:var(--good);color:#fff!important;box-shadow:0 4px 0 color-mix(in srgb,var(--good) 60%,#000)}
+.lz-btn.ghost{background:var(--surface);color:var(--brand)!important;border:1.5px solid var(--line);box-shadow:0 4px 0 var(--line)}
+/* hero: the student's character with the book progress */
+.lz-hero{position:relative;display:flex;align-items:flex-end;gap:12px;margin-top:10px;background:var(--board);color:var(--chalk);border:6px solid var(--wood);border-radius:20px;padding:12px 14px 0;overflow:hidden;box-shadow:0 4px 0 rgb(0 0 0 / .15)}
+.lz-hero:before{content:"";position:absolute;inset:0;background:radial-gradient(70% 90% at 20% 100%,rgb(255 255 255 / .12),transparent 60%);pointer-events:none}
+.lz-hero-me{flex:none;margin-bottom:-4px}
+.lz-hero .lz-say{flex:1;padding-bottom:14px}
+.lz-kick{display:block;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--chalk-dim)}
+.lz-say b{display:block;font-family:var(--hand);font-size:1.6rem;line-height:1.15;margin:2px 0 8px}
+.lz-hero .lz-muted{color:var(--chalk-dim)}
+.lz-hero .lz-ar{color:var(--chalk-dim)}
+.lz-pbar{height:12px;border-radius:999px;background:rgb(0 0 0 / .25);overflow:hidden;margin-bottom:4px}
+.lz-pbar i{display:block;height:100%;width:var(--w,0%);border-radius:999px;background:linear-gradient(90deg,#FFD83D,#FFB800);transition:width 1.2s cubic-bezier(.3,1,.4,1);animation:lz-grow 1.2s cubic-bezier(.3,1,.4,1)}
+@keyframes lz-grow{from{width:0}}
+.lz-pbar.big{height:16px;background:var(--surface-2);border:1.5px solid var(--line)}
+/* the path */
+.lz-unit{position:relative;margin-top:22px;border-radius:18px;padding:16px 18px;color:#fff;background:var(--board);border:5px solid var(--wood);box-shadow:0 4px 0 rgb(0 0 0 / .15);overflow:hidden}
+.lz-unit:after{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:var(--uc,var(--brand));opacity:.55}
+.lz-unit small{position:relative;color:var(--chalk-dim);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.lz-unit h2{position:relative;margin:2px 0 0;font-family:var(--hand);font-size:1.7rem;color:var(--chalk);line-height:1.1}
+.lz-lane{position:relative;display:flex;flex-direction:column;align-items:center;padding:8px 0 6px}
+.lz-node{position:relative;width:78px;height:78px;margin:30px 0 10px;padding:0;border-radius:50%;border:3px solid var(--ink);font-size:2rem!important;line-height:1;display:grid;place-items:center;color:#fff;background:var(--surface);box-shadow:0 6px 0 var(--ink);transition:transform .14s cubic-bezier(.3,1.4,.5,1),box-shadow .14s}
+.lz-node:active{transform:translateY(5px);box-shadow:0 1px 0 var(--ink)}
+@media (hover:hover){.lz-node:not(.locked):hover{transform:translateY(-3px) rotate(-3deg)}}
+.lz-node.locked{background:var(--surface-2)!important;border-color:var(--line);box-shadow:0 6px 0 var(--line);cursor:not-allowed;filter:grayscale(.6);opacity:.85}
+.lz-node.done{background:var(--sun)!important}
+.lz-node.current{animation:lz-pulse 1.8s infinite}
+.lz-node .lz-st{position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);font-size:.85rem;white-space:nowrap;letter-spacing:-1px;color:#E0A800;text-shadow:0 1px 0 var(--ink)}
+.lz-node .lz-tag{position:absolute;top:-36px;left:50%;transform:translateX(-50%);background:var(--sun);color:var(--sun-ink);border:2px solid var(--ink);border-radius:10px;padding:2px 10px;font-size:.78rem;font-weight:800;white-space:nowrap;animation:lz-bob 1.6s ease-in-out infinite}
+.lz-node-me{position:absolute;left:100%;top:50%;margin-left:10px;transform:translateY(-58%);pointer-events:none}
+.lz-ltitle{font-size:.78rem;color:var(--muted);text-align:center;margin-top:12px;font-weight:700;max-width:140px}
+@keyframes lz-pulse{0%,100%{box-shadow:0 6px 0 var(--ink),0 0 0 0 color-mix(in srgb,var(--sun) 70%,transparent)}50%{box-shadow:0 6px 0 var(--ink),0 0 0 14px color-mix(in srgb,var(--sun) 0%,transparent)}}
+@keyframes lz-bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
+/* play screens: an exam paper */
+.lz-play{position:fixed;inset:0;z-index:2000;background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:22px 22px;display:flex;flex-direction:column;align-items:center;overflow:hidden;animation:lz-in .3s ease}
+@keyframes lz-in{from{opacity:0;transform:translateY(12px)}}
+.lz-play>.lz-in{width:100%;max-width:560px;flex:1;display:flex;flex-direction:column;padding:12px 16px 0;min-height:0}
+.lz-ptop{display:flex;align-items:center;gap:12px}
+.lz-x{border:0;background:none;font-size:1.5rem;color:var(--muted);padding:4px 8px;border-radius:10px}
+.lz-x:hover{background:var(--surface-2)}
+.lz-bar{flex:1;height:16px;border-radius:999px;background:var(--surface-2);border:1.5px solid var(--line);overflow:hidden}
+.lz-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),#5B6EF0);border-radius:999px;transition:width .5s cubic-bezier(.3,1.3,.5,1)}
+.lz-qwrap{flex:1;overflow:auto;padding:18px 0 190px}
+.lz-qwrap>*{animation:lz-q .35s cubic-bezier(.2,.9,.3,1) both}
+.lz-qwrap>*:nth-child(2){animation-delay:.04s}.lz-qwrap>*:nth-child(3){animation-delay:.08s}.lz-qwrap>*:nth-child(4){animation-delay:.12s}.lz-qwrap>*:nth-child(5){animation-delay:.16s}.lz-qwrap>*:nth-child(n+6){animation-delay:.2s}
+@keyframes lz-q{from{opacity:0;transform:translateX(18px)}}
+.lz-inst{font-size:1.25rem;font-weight:800;margin:0 0 12px}
+.lz-passage{background:var(--surface);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);border-radius:14px;padding:12px 14px;margin-bottom:14px;line-height:1.6;max-height:34vh;overflow:auto}
+.lz-prompt{font-size:1.18rem;font-weight:600;margin:0 0 16px;line-height:1.5}
+.lz-sayb{border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:3px 9px;margin-inline-start:6px;font-size:1rem;vertical-align:middle;transition:transform .12s}
+.lz-sayb:active{transform:scale(.9)}
+.lz-opt{display:block;width:100%;text-align:left;margin:0 0 10px;padding:14px 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);box-shadow:0 3px 0 var(--line);font-weight:600;transition:transform .12s,box-shadow .12s,border-color .15s,background .15s}
+@media (hover:hover){.lz-opt:hover{border-color:var(--brand)}}
+.lz-opt:active{transform:translateY(3px);box-shadow:0 0 0 var(--line)}
+.lz-opt.sel{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,var(--surface));color:var(--brand);box-shadow:0 3px 0 var(--brand)}
+.lz-opt.good{border-color:var(--good);background:var(--good-bg);color:var(--good-ink);box-shadow:0 3px 0 var(--good);animation:lz-yes .4s cubic-bezier(.3,1.6,.5,1)}
+.lz-opt.bad{border-color:var(--bad);background:var(--bad-bg);color:var(--bad-ink);box-shadow:0 3px 0 var(--bad)}
+.lz-opt.done{opacity:.35;pointer-events:none;transform:scale(.97)}
+@keyframes lz-yes{40%{transform:scale(1.03)}}
+.lz-inp{width:100%;padding:14px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:600;font-size:1.1rem;outline:0;box-shadow:0 3px 0 var(--line)}
+.lz-inp:focus{border-color:var(--brand);box-shadow:0 3px 0 var(--brand)}
+.lz-tiles{display:flex;flex-wrap:wrap;gap:8px;min-height:50px}
+.lz-answer{border-bottom:2px dashed var(--line);border-top:2px dashed var(--line);padding:8px 0;margin-bottom:16px;min-height:62px}
+.lz-tile{padding:9px 13px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);box-shadow:0 3px 0 var(--line);font-weight:600;animation:lz-tile .22s cubic-bezier(.3,1.5,.5,1)}
+@keyframes lz-tile{from{transform:scale(.6);opacity:0}}
+.lz-tile.used{visibility:hidden}
+.lz-mcol{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lz-mcol .lz-opt{text-align:center}
+.lz-shake{animation:lz-shake .35s}
+@keyframes lz-shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.lz-foot{position:fixed;left:0;right:0;bottom:0;padding:14px 16px calc(14px + env(safe-area-inset-bottom));background:var(--surface);border-top:1.5px solid var(--line);transition:background .25s,border-color .25s}
+.lz-foot>div{max-width:560px;margin:0 auto}
+.lz-foot.good{background:var(--good-bg);border-color:var(--good);color:var(--good-ink)}
+.lz-foot.bad{background:var(--bad-bg);border-color:var(--bad);color:var(--bad-ink)}
+.lz-foot.good .lz-fb,.lz-foot.bad .lz-fb{animation:lz-fb .35s cubic-bezier(.3,1.4,.5,1)}
+@keyframes lz-fb{from{transform:translateY(16px);opacity:0}}
+.lz-foot.good .lz-btn{background:var(--good);box-shadow:0 4px 0 color-mix(in srgb,var(--good) 60%,#000)}
+.lz-fb{display:flex;gap:12px;align-items:center;margin-bottom:12px;padding-right:96px}
+.lz-fb h3{margin:0;font-size:1.2rem;color:inherit}
+.lz-fb p{margin:2px 0 0;font-size:.92rem}
+.lz-combo{position:absolute;top:58px;right:16px;font-weight:800;color:var(--sun-ink);background:var(--sun);border:2px solid var(--ink);padding:3px 12px;border-radius:12px;box-shadow:0 3px 0 var(--ink);animation:lz-pop .35s cubic-bezier(.3,1.8,.5,1)}
+@keyframes lz-pop{0%{transform:scale(.4)}100%{transform:scale(1)}}
+.lz-mood{position:fixed;right:max(8px,calc(50% - 280px + 8px));bottom:118px;pointer-events:none;z-index:2;transition:bottom .25s}
+.lz-foot.good~.lz-mood,.lz-foot.bad~.lz-mood{bottom:178px}
+.lz-xppop{position:fixed;left:50%;top:38%;transform:translateX(-50%);font-size:2rem;font-weight:800;color:var(--brand);animation:lz-rise 1s forwards;pointer-events:none;z-index:2100;text-shadow:0 2px 0 var(--surface)}
+@keyframes lz-rise{0%{opacity:0;transform:translate(-50%,20px) scale(.6)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-90px) scale(1.2)}}
+.lz-conf{position:fixed;top:-12px;width:9px;height:13px;z-index:2100;pointer-events:none;border:1.5px solid #1E2550;animation:lz-fall linear forwards}
+@keyframes lz-fall{to{transform:translateY(110vh) rotate(720deg)}}
+/* results */
+.lz-sum{text-align:center;padding:10px 0 200px}
+.lz-sum h1{margin:6px 0 2px;font-family:var(--hand);font-size:2.2rem;line-height:1.1;animation:lz-pop .45s .2s cubic-bezier(.3,1.6,.5,1) both}
+.lz-sum-stage{position:relative;height:210px;display:grid;place-items:end center}
+.lz-rays{position:absolute;left:50%;top:50%;width:340px;height:340px;margin:-170px 0 0 -170px;border-radius:50%;background:repeating-conic-gradient(color-mix(in srgb,var(--sun) 40%,transparent) 0 10deg,transparent 10deg 20deg);mask:radial-gradient(circle,#000 20%,transparent 68%);-webkit-mask:radial-gradient(circle,#000 20%,transparent 68%);animation:lz-spin 14s linear infinite}
+@keyframes lz-spin{to{transform:rotate(360deg)}}
+.lz-sum-me{position:relative;animation:lz-pop .5s cubic-bezier(.3,1.5,.5,1)}
+.lz-stars{font-size:2.8rem;letter-spacing:8px;line-height:1}
+.lz-stars span{display:inline-block;color:var(--line);-webkit-text-stroke:2px var(--ink)}
+.lz-stars span.on{color:var(--sun);animation:lz-star .55s cubic-bezier(.3,1.8,.5,1) both}
+@keyframes lz-star{0%{transform:scale(0) rotate(-90deg);color:var(--line)}100%{transform:none}}
+.lz-stat{display:flex;gap:10px;justify-content:center;margin:14px 0;flex-wrap:wrap}
+.lz-stat div{border:1.5px solid var(--line);border-radius:14px;padding:8px 14px;min-width:96px;background:var(--surface);box-shadow:0 3px 0 var(--line)}
+.lz-stat div.lz-xp{background:var(--sun);border-color:var(--ink);box-shadow:0 3px 0 var(--ink);color:var(--sun-ink)}
+.lz-stat div.lz-pop{animation:lz-chip .5s cubic-bezier(.3,1.8,.5,1)}
+@keyframes lz-chip{40%{transform:scale(1.18) rotate(-3deg)}}
+.lz-stat small{display:block;color:inherit;opacity:.7;font-weight:700;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em}
+.lz-stat b{font-size:1.3rem}
+.lz-unitbar{max-width:360px;margin:4px auto 0;text-align:left;font-weight:700;font-size:.85rem;color:var(--muted)}
+.lz-card{background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:16px;margin-top:14px;box-shadow:0 3px 0 var(--line)}
+.lz-card h2,.lz-card h3{margin:4px 0}
+.lz-muted{color:var(--muted)}
+.lz-h3{margin:22px 0 8px;display:flex;justify-content:space-between;align-items:baseline}
+/* Boss Rush */
+.lz-rush-card{position:relative;overflow:hidden;text-align:center;color:#fff;background:radial-gradient(90% 70% at 50% 30%,#3B2A7A,#1B1440);border:3px solid var(--ink);box-shadow:0 5px 0 var(--ink)}
+.lz-rush-card .lz-muted{color:#CFC8F5}
+.lz-rush-card h2{font-family:var(--hand);font-size:2rem;color:#FFD83D}
+.lz-rush-duo{display:flex;align-items:flex-end;justify-content:center;gap:10px}
+.lz-rush-duo .lz-vs{font-family:var(--hand);font-size:1.8rem;color:#FFD83D;align-self:center}
+.lz-timer{font-weight:800;font-size:1.4rem;min-width:56px;text-align:center;font-variant-numeric:tabular-nums}
+.lz-timer.low{color:var(--bad);animation:lz-pop .5s infinite alternate}
+.lz-hp{height:16px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin:6px 0 2px;border:2px solid var(--ink)}
+.lz-hp i{display:block;height:100%;background:linear-gradient(90deg,var(--bad),#FF9600);transition:width .3s cubic-bezier(.3,1.3,.5,1)}
+.lz-bossrow{display:flex;gap:12px;align-items:center}
+.lz-hit{animation:lz-hit .35s}
+@keyframes lz-hit{25%{transform:translateX(10px) rotate(8deg) scale(.92);filter:brightness(1.8)}75%{transform:translateX(-8px) rotate(-6deg)}}
+.lz-rush-me{position:fixed;left:max(6px,calc(50% - 280px));bottom:46px;pointer-events:none}
+.lz-rush-sc{position:fixed;left:0;right:0;bottom:14px;text-align:center;font-weight:700;color:var(--muted)}
+.lz-rush-sc b{color:var(--ink);font-size:1.1rem}
+.lz-rush .lz-qwrap{padding-bottom:180px}
+.lz-big{font-size:3.4rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+/* Locker */
+.lz-locker{display:flex;align-items:flex-end;gap:12px;background:var(--board);color:var(--chalk);border:6px solid var(--wood);padding:12px 16px 0;overflow:hidden}
+.lz-locker h2{font-family:var(--hand);font-size:1.8rem;color:var(--chalk)}
+.lz-locker .lz-muted{color:var(--chalk-dim);margin:0 0 10px}
+.lz-locker>div:last-child{padding-bottom:16px;flex:1}
+.lz-locker-me{flex:none;margin-bottom:-4px}
+.lz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.lz-item{border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:10px 4px;text-align:center;box-shadow:0 3px 0 var(--line);font-size:.78rem;font-weight:700}
+.lz-item.on{border-color:var(--good);box-shadow:0 3px 0 var(--good)}
+.lz-item .lz-ic{display:grid;place-items:center;height:68px}
+.lz-item.lock .lz-ic{filter:grayscale(.9) opacity(.5)}
+.lz-chestroom{display:flex;flex-direction:column;align-items:center}
+.lz-chest{position:relative;width:110px;height:90px;margin:40px auto 10px;animation:lz-shake .5s infinite}
+.lz-chest .lz-boxb{position:absolute;left:0;right:0;bottom:0;height:60px;border-radius:10px;background:#C4975F;border:3px solid var(--ink);box-shadow:inset 0 -10px 0 rgb(0 0 0 / .15)}
+.lz-chest .lz-lid{position:absolute;left:-4px;right:-4px;top:0;height:36px;border-radius:14px 14px 6px 6px;background:var(--sun);border:3px solid var(--ink);z-index:1}
+.lz-prize{display:grid;place-items:center;animation:lz-pop .5s cubic-bezier(.3,1.8,.5,1)}
+.lz-chest-me{margin-top:10px}
+.lz-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1.5px dashed var(--line)}
+.lz-sw{width:50px;height:30px;border-radius:16px;background:var(--line);border:0;position:relative;flex:none;transition:background .2s}
+.lz-sw:after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .2s cubic-bezier(.3,1.5,.5,1);box-shadow:0 1px 2px rgb(0 0 0 / .3)}
+.lz-sw.on{background:var(--good)}.lz-sw.on:after{left:23px}
+.lz-toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);z-index:2200;background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:14px;max-width:90%;text-align:center;font-weight:700;animation:lz-fb .3s cubic-bezier(.3,1.4,.5,1)}
+.lz-ar{font-weight:600;color:var(--muted);font-size:.9rem;direction:rtl;unicode-bidi:isolate}
+.lz-promo{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.lz-promo b{display:block;font-size:1.15rem}
+.lz-promo-me{flex:none;margin:-14px 0 -16px}
+.lz-promo-card{overflow:hidden}
+@media (prefers-reduced-motion:reduce){.lz *,.lz-play *,.lz-play{animation:none!important;transition:none!important}}
+</style>
+<style id="cz-style">
+/* ============================================================ epz-patch:char + motion — living characters and feedback (classes start with cz-) */
+.epzc{display:block;overflow:visible}
+.epzc .cz-m{opacity:0;transition:opacity .12s}
+.epzc[data-m="smile"] .cz-m-smile,.epzc[data-m="grin"] .cz-m-grin,.epzc[data-m="teeth"] .cz-m-teeth,.epzc[data-m="o"] .cz-m-o,.epzc[data-m="flat"] .cz-m-flat,.epzc[data-m="tongue"] .cz-m-tongue,.epzc[data-m="sad"] .cz-m-sad,.epzc[data-m="det"] .cz-m-det,.epzc[data-m="cele"] .cz-m-cele,.epzc[data-m="think"] .cz-m-think{opacity:1}
+.epzc .cz-ec{opacity:0}
+.epzc[data-mood="celebrate"] .cz-ec{opacity:1}.epzc[data-mood="celebrate"] .cz-eo{opacity:0}
+.epzc .cz-wink{opacity:1}.epzc .cz-wk{opacity:0}
+.epzc[data-mood="surprised"] .cz-wink,.epzc[data-mood="sad"] .cz-wink{opacity:0}.epzc[data-mood="surprised"] .cz-wk,.epzc[data-mood="sad"] .cz-wk{opacity:1}
+.epzc .cz-brL,.epzc .cz-brR,.epzc .cz-white{transform-box:fill-box;transform-origin:center;transition:transform .32s cubic-bezier(.3,1.4,.5,1)}
+.epzc[data-mood="happy"] .cz-brL,.epzc[data-mood="happy"] .cz-brR{transform:translateY(-2.5px)}
+.epzc[data-mood="celebrate"] .cz-brL,.epzc[data-mood="celebrate"] .cz-brR{transform:translateY(-4px)}
+.epzc[data-mood="surprised"] .cz-brL,.epzc[data-mood="surprised"] .cz-brR{transform:translateY(-5px)}
+.epzc[data-mood="surprised"] .cz-white{transform:scale(1.14)}
+.epzc[data-mood="sad"] .cz-brL{transform:translateY(-1px) rotate(-15deg)}.epzc[data-mood="sad"] .cz-brR{transform:translateY(-1px) rotate(15deg)}
+.epzc[data-mood="excited"] .cz-brL{transform:translateY(1px) rotate(13deg)}.epzc[data-mood="excited"] .cz-brR{transform:translateY(1px) rotate(-13deg)}
+.epzc[data-mood="think"] .cz-brL{transform:translateY(-4px)}.epzc[data-mood="think"] .cz-brR{transform:rotate(-8deg)}
+.epzc[data-mood="proud"] .cz-brL,.epzc[data-mood="proud"] .cz-brR{transform:translateY(-1.5px)}
+.cz-spark{position:fixed;z-index:3000;width:9px;height:9px;border-radius:2px;background:var(--c);border:1.5px solid #1E2550;pointer-events:none;animation:cz-spark .95s cubic-bezier(.2,.7,.3,1) forwards}
+.cz-spark.star{width:14px;height:14px;border:0;border-radius:0;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+@keyframes cz-spark{0%{transform:translate(-50%,-50%) scale(.3) rotate(0);opacity:1}70%{opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy) + 40px)) scale(1) rotate(200deg);opacity:0}}
+/* character maker */
+.cz-make{position:relative;text-align:center;padding:4px 0 6px}
+.cz-stage-wrap{position:relative;margin:0 auto;max-width:340px;height:270px;border-radius:24px;background:radial-gradient(120% 90% at 50% 100%,#2C6252 0%,var(--board) 62%);border:6px solid var(--wood);box-shadow:inset 0 0 0 2px rgb(255 255 255 / .06),0 4px 0 rgb(0 0 0 / .18);overflow:hidden}
+.cz-stage-wrap:before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 18%,rgb(255 255 255 / .16),transparent 70%)}
+.cz-floor{position:absolute;left:10%;right:10%;bottom:14px;height:22px;border-radius:50%;background:rgb(0 0 0 / .25);filter:blur(3px)}
+.cz-stage{position:absolute;left:50%;bottom:8px;transform:translateX(-50%)}
+.cz-stage .epzc{filter:drop-shadow(0 3px 0 rgb(0 0 0 / .18))}
+.cz-stage.cz-swap{animation:cz-swap .42s cubic-bezier(.3,1.3,.5,1)}
+@keyframes cz-swap{0%{transform:translateX(-50%) scaleX(1)}35%{transform:translateX(-50%) scaleX(.06)}100%{transform:translateX(-50%) scaleX(1)}}
+.cz-try{position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:6px}
+.cz-try button{width:38px;height:38px;border-radius:12px;border:2px solid rgb(255 255 255 / .18);background:rgb(255 255 255 / .1);font-size:1.15rem;cursor:pointer;transition:transform .15s,background .15s}
+.cz-try button:hover{background:rgb(255 255 255 / .22);transform:scale(1.08)}.cz-try button:active{transform:scale(.92)}
+.cz-title{font-family:var(--hand);font-size:2rem;margin:14px 0 0;line-height:1.1}
+.cz-sub{margin:4px 0 10px;color:var(--muted)}
+.cz-style{display:inline-flex;gap:4px;padding:4px;border-radius:14px;background:var(--surface-2);border:1.5px solid var(--line)}
+.cz-style button{border:0;border-radius:10px;padding:8px 14px;font:inherit;font-weight:700;background:none;color:var(--muted);cursor:pointer;transition:background .2s,color .2s}
+.cz-style button.on{background:var(--brand);color:var(--on-brand);box-shadow:0 2px 0 var(--brand-deep)}
+.cz-dice{margin-left:8px}
+.cz-tabs{display:flex;gap:6px;overflow-x:auto;padding:12px 2px 6px;scrollbar-width:none;position:sticky;top:0;z-index:5;background:var(--bg)}
+.cz-tabs::-webkit-scrollbar{display:none}
+.cz-tabs button{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:68px;padding:8px 10px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);font:inherit;font-size:.78rem;font-weight:700;color:var(--muted);cursor:pointer;box-shadow:0 3px 0 var(--line);transition:transform .12s,box-shadow .12s,background .2s,color .2s}
+.cz-tabs button span{font-size:1.25rem}
+.cz-tabs button[aria-selected="true"]{background:var(--sun);color:var(--sun-ink);border-color:var(--sun-ink);box-shadow:0 3px 0 var(--sun-ink)}
+.cz-tabs button:active{transform:translateY(3px);box-shadow:0 0 0 var(--line)}
+.cz-opts{padding:4px 0 20px}
+.cz-h{margin:14px 0 6px;font-size:1rem}
+.cz-g{margin:8px 0 6px;font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.cz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.cz-opt{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px 6px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;font:inherit;color:inherit;box-shadow:0 3px 0 var(--line);transition:transform .14s,box-shadow .14s,border-color .2s}
+@media (hover:hover){.cz-opt:hover{transform:translateY(-2px);box-shadow:0 5px 0 var(--line)}}
+.cz-opt:active{transform:translateY(3px);box-shadow:0 0 0 var(--line)}
+.cz-opt.on{border-color:var(--brand);box-shadow:0 3px 0 var(--brand),0 0 0 3px color-mix(in srgb,var(--brand) 20%,transparent)}
+.cz-opt.locked .cz-thumb{filter:grayscale(.85) opacity(.55)}
+.cz-thumb{display:grid;place-items:center;height:96px}
+.cz-opt-l{font-size:.74rem;font-weight:700;line-height:1.2}
+.cz-swatches{display:flex;flex-wrap:wrap;gap:8px}
+.cz-sw{width:44px;height:44px;border-radius:12px;border:2px solid var(--line);background:var(--sw);cursor:pointer;transition:transform .14s}
+.cz-sw:hover{transform:scale(1.08)}.cz-sw.on{outline:3px solid var(--brand);outline-offset:2px}
+/* the character on the answer bar */
+.cz-dock{position:absolute;right:10px;bottom:100%;margin-bottom:-6px;pointer-events:none;z-index:1;animation:cz-rise .5s cubic-bezier(.3,1.4,.5,1)}
+.cz-dock .epzc{filter:drop-shadow(0 2px 0 rgb(0 0 0 / .15))}
+body.playing.cz-docked{padding-bottom:300px}
+@keyframes cz-rise{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+/* points fly into the points chip */
+.cz-fly{position:fixed;z-index:3000;width:18px;height:18px;background:#FFD83D;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);pointer-events:none;animation:cz-fly .9s cubic-bezier(.5,0,.2,1) forwards}
+@keyframes cz-fly{0%{transform:scale(.2)}25%{transform:scale(1.3)}100%{left:var(--tx);top:var(--ty);transform:scale(.6);opacity:.4}}
+.pts-chip{position:relative;transition:transform .2s}
+.pts-chip.cz-pop{animation:cz-chip .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes cz-chip{40%{transform:scale(1.25) rotate(-4deg)}}
+.cz-plus{position:absolute;right:0;top:100%;margin-top:4px;font-weight:800;font-size:.9rem;color:var(--good);white-space:nowrap;animation:cz-plus 1.8s ease forwards;pointer-events:none}
+@keyframes cz-plus{0%{opacity:0;transform:translateY(-6px)}15%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0;transform:translateY(6px)}}
+/* ranking */
+.cz-rank-av{display:inline-block;vertical-align:middle;margin-right:6px;width:34px;height:34px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 2px var(--sun)}
+.cz-rank-av .epzc{width:34px;height:34px}
+.board li.me.cz-glow{animation:cz-glow 1.6s ease 1}
+.board li.me.cz-climb{position:relative;z-index:2;animation:cz-climb 1.1s cubic-bezier(.3,1.2,.4,1) both,cz-glow 1.8s .9s ease 1}
+@keyframes cz-climb{0%{transform:translateY(var(--from));box-shadow:0 10px 30px rgb(0 0 0 / .25)}100%{transform:none}}
+@keyframes cz-glow{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 4px color-mix(in srgb,var(--sun) 70%,transparent)}}
+/* arena entrance for battles */
+.cz-arena{position:fixed;inset:0;z-index:2500;display:grid;place-items:center;color:#fff;cursor:pointer;animation:cz-fade .3s ease}
+.cz-arena.out{animation:cz-out .38s ease forwards}
+.cz-ar-bg{position:absolute;inset:0;background:radial-gradient(70% 55% at 50% 45%,#2C6252 0%,#14322A 55%,#0A1A16 100%)}
+.cz-ar-bg:before,.cz-ar-bg:after{content:"";position:absolute;top:-10%;width:40%;height:120%;background:linear-gradient(180deg,rgb(255 216 61 / .22),transparent 70%);filter:blur(6px);animation:cz-beam 2.4s ease-in-out infinite alternate}
+.cz-ar-bg:before{left:8%;transform:rotate(14deg)}.cz-ar-bg:after{right:8%;transform:rotate(-14deg);animation-delay:-1.2s}
+.cz-ar-in{position:relative;width:min(560px,100%);padding:16px;text-align:center}
+.cz-ar-kicker{margin:0;font-family:var(--hand);font-size:1.6rem;color:#FFD83D;letter-spacing:.02em}
+.cz-ar-vs{display:flex;align-items:flex-end;justify-content:center;gap:6px;margin-top:6px}
+.cz-ar-me,.cz-ar-foe{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:0}
+.cz-ar-me{animation:cz-in-l .55s cubic-bezier(.2,1.2,.4,1) both}
+.cz-ar-foe{animation:cz-in-r .55s .1s cubic-bezier(.2,1.2,.4,1) both}
+.cz-ar-me b,.cz-ar-foe b{font-size:1.05rem;background:rgb(0 0 0 / .35);padding:4px 12px;border-radius:999px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cz-ar-me .epzc{width:auto;height:min(190px,32vh)}
+.cz-ar-boss{width:min(170px,40vw);height:auto;filter:drop-shadow(0 6px 0 rgb(0 0 0 / .3))}
+.cz-ar-init{display:grid;place-items:center;width:120px;height:120px;border-radius:50%;background:#D8343F;font-size:2.6rem;font-weight:800;border:5px solid #FFD83D}
+.cz-ar-x{align-self:center;font-family:var(--hand);font-size:3rem;color:#FFD83D;text-shadow:0 4px 0 #8A5300;animation:cz-vs .6s .25s cubic-bezier(.3,1.8,.5,1) both}
+.cz-ar-count{height:90px;margin-top:8px;font-family:var(--hand);font-size:4.4rem;line-height:90px;color:#fff;text-shadow:0 5px 0 rgb(0 0 0 / .35)}
+.cz-ar-count.go{animation:cz-count .62s cubic-bezier(.3,1.6,.5,1)}
+body.cz-arena-on{overflow:hidden}
+@keyframes cz-fade{from{opacity:0}}@keyframes cz-out{to{opacity:0;transform:scale(1.06)}}
+@keyframes cz-in-l{from{transform:translateX(-60vw)}}@keyframes cz-in-r{from{transform:translateX(60vw)}}
+@keyframes cz-vs{from{transform:scale(3) rotate(-20deg);opacity:0}}
+@keyframes cz-count{0%{transform:scale(2.2);opacity:0}100%{transform:none;opacity:1}}
+@keyframes cz-beam{to{opacity:.4}}
+/* page transitions and tactile controls across the site */
+#app.cz-enter>*{animation:cz-page .42s cubic-bezier(.2,.9,.3,1) both}
+#app.cz-enter>*:nth-child(2){animation-delay:.04s}#app.cz-enter>*:nth-child(3){animation-delay:.08s}#app.cz-enter>*:nth-child(4){animation-delay:.12s}#app.cz-enter>*:nth-child(5){animation-delay:.16s}#app.cz-enter>*:nth-child(6){animation-delay:.2s}#app.cz-enter>*:nth-child(n+7){animation-delay:.24s}
+@keyframes cz-page{from{opacity:0;transform:translateY(14px)}}
+.btn,.tab,.peer,.prog-card,.go-skills,.duo-nudge,.lz-node,.lz-opt,.lz-btn{transition:transform .14s cubic-bezier(.3,1.4,.5,1),box-shadow .14s,filter .14s}
+.btn:active:not([disabled]),.peer:active,.prog-card:active,.duo-nudge:active{transform:translateY(2px) scale(.985)}
+@media (hover:hover){.prog-card:hover,.go-skills:hover,.duo-nudge:hover,.board li .peer:hover{transform:translateY(-2px)}.btn:hover:not([disabled]){filter:brightness(1.05)}}
+.tab .tab-ic{transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.tab[aria-current="page"] .tab-ic{transform:translateY(-2px) scale(1.08)}
+.tab:active .tab-ic{transform:scale(.88)}
+.avatar.duo-av{overflow:hidden}
+.avatar.duo-av .epzc{width:100%;height:100%}
+.duo-praise-av .epzc,.duo-nudge-av .epzc{width:100%;height:100%}
+.duo-praise.cz-full{align-items:flex-end}
+.duo-praise.cz-full .duo-praise-av{width:auto;height:auto;border-radius:0;background:none;box-shadow:none;overflow:visible;flex:none}
+.cz-dash-me{flex:none;display:block;margin:-16px -2px -22px -8px}
+.hello .avatar.cz-standing{width:auto;height:auto;border-radius:0;background:none;box-shadow:none;overflow:visible;padding:0;margin:-10px 0 -22px -6px;align-self:flex-end}
+.hello .avatar.cz-standing .epzc{width:auto;height:112px;filter:drop-shadow(0 3px 0 rgb(0 0 0 / .25))}
+.dh-art .dh-t.me .epzc{height:104px;width:auto}
+@media (prefers-reduced-motion:reduce){#app.cz-enter>*,.cz-dock,.cz-arena,.cz-ar-me,.cz-ar-foe,.cz-ar-x,.board li.me.cz-climb{animation:none!important}}
+</style>
 </head>
 <body>
 <div id="storage-warning" class="storage-warning" hidden>This browser is not saving your progress. Open the link in a normal (not private) window.</div>
@@ -7116,7 +7420,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       <a class="pts-chip" href="#dashboard" aria-label="${fmtNum(totalPoints())} points">${icon("star", 16)}<b>${fmtNum(totalPoints())}</b></a>
     </header>
     <section class="duel-hero">
-      <div class="dh-art" aria-hidden="true"><span class="dh-t me">${troopSvg("k", "me", 74)}</span><span class="dh-x">${icon("duel", 30)}</span><span class="dh-t foe">${troopSvg("d", "foe", 78)}</span></div>
+      <div class="dh-art" aria-hidden="true"><span class="dh-t me">${czMe({ size: 104, pose: "ready", mood: "excited" })}</span><span class="dh-x">${icon("duel", 30)}</span><span class="dh-t foe">${troopSvg("d", "foe", 78)}</span></div>
       <h1>Challenge a friend</h1>
       <p>Pick the right word cards fast. Faster answers send stronger troops! Winner gets <b>+${DUEL_WIN}</b>.</p>
       <div class="dh-left"><span class="dh-dots">${Array.from({ length: DUEL_MAX }, (_, i) => `<i class="${i < left ? "on" : ""}"></i>`).join("")}</span>${left ? `${left} of ${DUEL_MAX} battles left today` : "No battles left today \xB7 come back tomorrow"}</div>
@@ -7125,7 +7429,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     </section>
     ${inc.length ? `<section class="block duel-inc"><div class="block-head"><h2>${icon("duel", 20)} Fight back!</h2></div><ul class="inc-list">${inc.map((d) => `<li><span class="ar-av foe">${esc(initials(d.a_name))}</span><span class="inc-txt"><b>${esc(d.a_name)}</b><small>${d.a_class ? esc(d.a_class) + " \xB7 " : ""}challenged you \xB7 ${duelLeftLabel(DUEL_LIFE - (duelNow() - Date.parse(d.created_at)))}</small></span><button class="btn btn-sm inc-go" type="button" data-fight="${d.id}" ${left ? "" : "disabled"}>Fight</button></li>`).join("")}</ul>${left ? "" : '<p class="muted small">No battles left today. You can fight back tomorrow if the 24 hours are not over.</p>'}</section>` : ""}
     ${mine.length + done.length ? `<section class="block"><div class="block-head"><h2>My battles</h2></div><ul class="dl-list">${net.duels.filter((d) => !(d.me === "b" && duelOpen(d) && !s.started?.[d.id])).slice(0, 12).map(card).join("")}</ul></section>` : ""}
-    <section class="block duel-train"><div class="dt-txt"><b>Training battle</b><span>Learn the cards against a bot. No points, does not use your battles.</span></div><button class="btn btn-sm" id="dh-train" type="button">${icon("play", 16)} Train</button></section>
+    ${lzRushPromo()}<section class="block duel-train"><div class="dt-txt"><b>Training battle</b><span>Learn the cards against a bot. No points, does not use your battles.</span></div><button class="btn btn-sm" id="dh-train" type="button">${icon("play", 16)} Train</button></section>
     <details class="block duel-how"><summary>How to play</summary>
       <ul>
         <li>Each battle has ${DUEL_WAVES} waves. Read the sentence and play the card with the right word.</li>
@@ -7188,7 +7492,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       return;
     }
     if (h === "avatar") { /* epz-patch:duo */
-      duoAvatarScreen();
+      czMaker(); /* epz-patch:char (old: duoAvatarScreen) */
       return;
     }
     if (h === "streak") { /* epz-patch:duo */
@@ -7338,7 +7642,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     ${ownerBar()}
 
     <section class="hello">
-      <button class="avatar${state.avatar ? " duo-av" : ""}" id="me-btn" aria-label="Me: my name and avatar">${state.avatar ? duoAvatarSvg(state.avatar, 72) : esc(initials(m2.name))}<span class="duo-av-edit">${icon("edit", 12)}</span></button>
+      <button class="avatar duo-av cz-standing" id="me-btn" aria-label="Me: my name and character">${czMe({ size: 112 })}<span class="duo-av-edit">${icon("edit", 12)}</span></button>
       <div class="hello-txt">
         <h1>Hi, ${esc(firstName(m2.name))}!</h1>
         <button type="button" class="class-chip" id="class-btn" aria-label="Change your grade or class">${esc(classLabel())}<span>Change</span></button>
@@ -7526,7 +7830,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
 
     <section class="dash-hero">
       <div class="dh-id">
-        <span class="medal" style="--lg:${lg.color}">${icon("medal", 26)}</span>
+        <a class="cz-dash-me" href="#avatar" aria-label="Edit my character">${czMe({ size: 112, pose: "hips" })}</a>
         <div class="dh-name"><p class="eyebrow">My dashboard</p><h1>${esc(m2.name)}</h1><p>${lg.name} league \xB7 ${LEVELS2[m2.level].name} level</p></div>
       </div>
       <div class="dh-stats">
@@ -7909,6 +8213,390 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     lose: () => [392, 330, 262].forEach((f, i) => bkTone(f, 0.26, i * 0.15, "sine", 0.16))
   };
   var BK_OK3 = "3 in a row!", BK_OK5 = "5 in a row, you are on fire!", BK_KIND = ["Nearly! Look at the answer and try the next one.", "Good try! Read the answer, then keep going.", "No problem. Mistakes help you learn.", "Almost! You will get it next time."];
+  // ============================================================ epz-patch:learn
+  // Book path (replaces bookMap for Grade 9), Boss Rush and the Locker, all with the student's own character.
+  // Lessons still finish with recordRound(bookAid(l)) so points, ranking and old Book progress carry on.
+  // Extra things (outfits, chests, Rush best, weak questions) live in localStorage "epz-learn-v1".
+  var lzSub = "path";
+  var learnMount = (function () {
+    var KEY = "epz-learn-v1";
+    var S = { weak: {}, owned: ["cap"], equip: {}, chests: 0, best: 0, sound: true, ar: true };
+    try { var raw = localStorage.getItem(KEY); if (raw) { var o = JSON.parse(raw); for (var k in o) S[k] = o[k]; } } catch (e) {}
+    function lzSave() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+    var $ = function (s, r) { return (r || document).querySelector(s); };
+    var el = function (h) { var d = document.createElement("div"); d.innerHTML = h.trim(); return d.firstChild; };
+    var hx = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    var mix = function (a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; };
+    var pick = function (a) { return a[Math.floor(Math.random() * a.length)]; };
+    var UNLOCK_ALL = /[?&]unlock=all\b/.test(location.search);
+
+    /* ---------- content: the site's own BOOK data ---------- */
+    var PASS = {};
+    try { (typeof __EPZ_G9BOOK2 !== "undefined" ? __EPZ_G9BOOK2 : []).forEach(function (p) { PASS[p.id] = p.passage; }); } catch (e) {}
+    var QMAP = {};
+    BOOK.units.forEach(function (u) { u.lessons.forEach(function (l) { l.qs.forEach(function (q, i) { q.qid = l.id + ":" + i; QMAP[q.qid] = q; }); }); });
+    var passageOf = function (q) { return q.passage ? (PASS[q.passage] || "") : ""; };
+    var isOpen = function (l) { return UNLOCK_ALL || bookOpen(l); };
+    var starsOf = function (l) { var d = bookData().done[l.id]; if (!d && !bookDone(l)) return 0; var b = d && d.best || 0; return b >= 90 ? 3 : b >= 70 ? 2 : 1; };
+    var ICON = { vocab: "📖", grammar: "✏️", reading: "📰", writing: "✍️", test: "🏆" };
+
+    /* ---------- sound / speech / fx ---------- */
+    var AC = null;
+    function tone(f, d, t, v) { if (!S.sound) return; try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); var o = AC.createOscillator(), g = AC.createGain(), n = AC.currentTime; o.type = t || "sine"; o.frequency.value = f; g.gain.setValueAtTime(v || .08, n); g.gain.exponentialRampToValueAtTime(.0001, n + d); o.connect(g); g.connect(AC.destination); o.start(n); o.stop(n + d); } catch (e) {} }
+    var sfx = {
+      good: function (c) { var b = 523 * Math.pow(1.06, Math.min(c || 0, 8)); tone(b, .12, "triangle"); setTimeout(function () { tone(b * 1.5, .18, "triangle"); }, 90); },
+      bad: function () { tone(200, .2, "sawtooth", .06); setTimeout(function () { tone(150, .25, "sawtooth", .06); }, 120); },
+      win: function () { [523, 659, 784, 1047].forEach(function (f, i) { setTimeout(function () { tone(f, .22, "triangle", .09); }, i * 110); }); },
+      tick: function () { tone(880, .05, "square", .03); },
+      hit: function () { tone(120, .15, "square", .07); },
+      chest: function () { [392, 523, 659, 784, 1047, 1319].forEach(function (f, i) { setTimeout(function () { tone(f, .2, "triangle", .08); }, i * 90); }); }
+    };
+    function say(t) { try { if (!window.speechSynthesis) return; speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.lang = "en-GB"; u.rate = .9; speechSynthesis.speak(u); } catch (e) {} }
+    function confetti(n) { var cs = ["#58CC02", "#1CB0F6", "#FFC800", "#FF4B4B", "#A560F5", "#FF9600"]; for (var i = 0; i < (n || 40); i++) { var c = document.createElement("i"); c.className = "lz-conf"; c.style.left = Math.random() * 100 + "vw"; c.style.background = pick(cs); c.style.animationDuration = (1.2 + Math.random() * 1.6) + "s"; c.style.animationDelay = Math.random() * .3 + "s"; c.style.borderRadius = Math.random() > .5 ? "50%" : "2px"; document.body.appendChild(c); setTimeout(function (x) { x.remove(); }.bind(null, c), 3200); } }
+    function pop(t) { var d = el('<div class="lz-xppop">' + hx(t) + "</div>"); document.body.appendChild(d); setTimeout(function () { d.remove(); }, 1000); }
+    function note(t, ms) { var d = el('<div class="lz-toast">' + t + "</div>"); document.body.appendChild(d); setTimeout(function () { d.remove(); }, ms || 2600); }
+
+    /* ---------- chest prizes are things for the student's own character ---------- */
+    var PRIZES = [
+      { k: "hat:kummag", name: "Gold kumma", ic: "✨" }, { k: "cl:bishtg", name: "Royal bisht", ic: "🧥" }, { k: "hat:crown", name: "Champion crown", ic: "👑" },
+      { k: "extra:headphones", name: "Headphones", ic: "🎧" }, { k: "extra:medal", name: "Gold medal", ic: "🥇" }, { k: "extra:cape", name: "Hero cape", ic: "🦸" }
+    ];
+    S.owned = (S.owned || []).filter(function (x) { return String(x).indexOf(":") > 0; });
+    delete S.equip;
+    function hero(mood, size, pose) { return czMe({ size: size, mood: mood || "idle", pose: pose }); }
+    function preview(k, size) { var c = Object.assign({}, state.avatar || DUO_DEF), p = k.split(":"); c[p[0]] = p[1]; if (p[0] === "hat") c.hair = c.hair; return czSvg(c, { size: size, frame: "bust", still: true }); }
+    function unlockByPoints() {}
+    /* Rush bosses: the site's own boss drawings */
+    function bossArt(i, size) {
+      var b = BOSSES[i % BOSSES.length];
+      return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 200 200" aria-hidden="true">' + b.art(b.color, b.dark) + "</svg>";
+    }
+    var CHEER = ["ممتاز! 🔥", "أحسنت!", "رائع يا بطل!", "استمر هكذا!", "إجابة صحيحة!", "أنت نجم!"];
+    var OOPS = ["لا بأس، حاول مرة أخرى", "قريب جداً!", "الخطأ يعلّمنا", "ركّز وأنت قادر"];
+    var ar = function (list) { return S.ar ? ' <span class="lz-ar">' + pick(list) + "</span>" : ""; };
+
+    /* ---------- answer checking ---------- */
+    function norm(s) { return String(s).replace(/[‘’´`]/g, "'").replace(/[“”]/g, '"').toLowerCase().replace(/[.!?,;:]+/g, " ").replace(/\s+/g, " ").trim(); }
+    function textOK(user, ans) { return String(ans).split("|").map(norm).indexOf(norm(user)) > -1; }
+    function shown(q) { return String(q.answer || "").split("|")[0]; }
+
+    /* ---------- shell ---------- */
+    var timers = [];
+    function stopAll() { timers.forEach(clearInterval); timers = []; var ov = $(".lz-play"); if (ov) ov.remove(); document.body.style.overflow = ""; }
+    function mount() {
+      stopAll(); cleanup = stopAll; unlockByPoints();
+      var goal = Math.min(100, Math.round(todayRounds() / DAILY_GOAL * 100));
+      var body = lzSub === "rush" ? viewRush() : lzSub === "me" ? viewMe() : viewPath();
+      app.dataset.tab = "book";
+      app.innerHTML = '<header class="top"><div class="brand"><span class="logo-mark" aria-hidden="true">E</span><span>Book path</span></div><a class="pts-chip" href="#dashboard" aria-label="' + fmtNum(totalPoints()) + ' points">' + icon("star", 16) + "<b>" + fmtNum(totalPoints()) + "</b></a></header>"
+        + '<div class="lz"><div class="lz-stats"><div class="lz-pill" title="Day streak">🔥 <b>' + streak() + '</b></div><div class="lz-pill" title="Chests">🎁 <b>' + S.chests + '</b></div><div class="lz-grow"></div><div class="lz-ring" style="--p:' + goal + '" title="Daily goal"><i>' + (goal >= 100 ? "✅" : "🎯") + "</i></div></div>"
+        + '<div class="lz-seg"><button data-sub="path" class="' + (lzSub === "path" ? "on" : "") + '">🗺️ Path</button><button data-sub="rush" class="' + (lzSub === "rush" ? "on" : "") + '">⚔️ Boss Rush</button><button data-sub="me" class="' + (lzSub === "me" ? "on" : "") + '">🎒 Locker</button></div>'
+        + body + "</div>";
+      app.querySelectorAll("[data-sub]").forEach(function (b) { b.onclick = function () { lzSub = b.getAttribute("data-sub"); mount(); window.scrollTo(0, 0); }; });
+      if (lzSub === "path") {
+        app.querySelectorAll("[data-lesson]").forEach(function (b) { b.onclick = function () { var l = BOOK_ORDER[+b.getAttribute("data-lesson")]; if (!isOpen(l)) { b.classList.add("lz-shake"); setTimeout(function () { b.classList.remove("lz-shake"); }, 400); note("🔒 Finish the lesson before it first"); return; } startLesson(l); }; });
+        var c = $(".lz-node.current"); if (c && c.getBoundingClientRect().top > innerHeight * .75) c.scrollIntoView({ block: "center" });
+      }
+      if (lzSub === "rush") { var g = $("#lz-go"); if (g) g.onclick = startRush; setTimeout(function () { CZ.react($(".lz-rush-duo"), "excited", { ms: 2400 }); }, 250); }
+      if (lzSub === "path") setTimeout(function () { CZ.react($(".lz-hero-me"), todayRounds() >= DAILY_GOAL ? "celebrate" : "wave"); }, 350);
+      if (lzSub === "me") setTimeout(function () { CZ.react($(".lz-locker-me"), "proud"); }, 300);
+      var oc = $("#lz-chest"); if (oc) oc.onclick = openChest;
+      if (lzSub === "me") bindMe();
+    }
+
+    /* ---------- PATH ---------- */
+    function viewPath() {
+      var cur = BOOK_ORDER.filter(function (l) { return isOpen(l) && !bookDone(l); })[0];
+      var happy = todayRounds() >= DAILY_GOAL;
+      var doneN = BOOK_ORDER.filter(bookDone).length, pct = Math.round(doneN / BOOK_ORDER.length * 100);
+      var h = '<div class="lz-hero"><div class="lz-hero-me">' + hero(happy ? "happy" : "idle", 128) + '</div><div class="lz-say"><span class="lz-kick">Gold Experience 9A</span><b>' + (happy ? "Daily goal done! 🎉" : "Ready, " + hx(firstName(me().name)) + "?") + '</b><div class="lz-pbar"><i style="--w:' + pct + '%"></i></div><small class="lz-muted">' + doneN + " of " + BOOK_ORDER.length + " lessons</small>" + (S.ar ? '<br><span class="lz-ar">' + (happy ? "أحسنت، أنجزت هدف اليوم!" : "هيا نبدأ درساً جديداً!") + "</span>" : "") + "</div></div>";
+      var off = [0, 38, 58, 38, 0, -38, -58, -38], n = 0;
+      BOOK.units.forEach(function (u) {
+        h += '<div class="lz-unit" style="--uc:' + u.color + '"><small>' + hx(u.label) + "</small><h2>" + hx(u.name) + '</h2></div><div class="lz-lane">';
+        u.lessons.forEach(function (l) {
+          var idx = BOOK_ORDER.indexOf(l), open = isOpen(l), done = bookDone(l), isCur = l === cur, st = starsOf(l);
+          h += '<div style="position:relative;transform:translateX(' + off[n % 8] + 'px);text-align:center"><button class="lz-node ' + (open ? "" : "locked") + (done ? " done" : "") + (isCur ? " current" : "") + '" data-lesson="' + idx + '" style="background:' + u.color + '" aria-label="' + hx(l.title) + '">' + (open ? ICON[l.kind] || "⭐" : "🔒") + (isCur ? '<span class="lz-tag">START</span>' : "") + (done ? '<span class="lz-st">' + "★".repeat(st) + "</span>" : "") + '</button>' + (isCur ? '<div class="lz-node-me" style="' + (off[n % 8] > 0 ? "left:auto;right:100%;margin:0 10px 0 0" : "") + '">' + hero("idle", 96, "wave") + "</div>" : "") + '<div class="lz-ltitle">' + hx(l.title) + "</div></div>";
+          n++;
+        });
+        h += "</div>";
+      });
+      return h;
+    }
+
+    /* ---------- LESSON ---------- */
+    var L = null;
+    function startLesson(l) {
+      var base = l.qs.slice();
+      var weak = Object.keys(S.weak).filter(function (id) { var q = QMAP[id]; return q && id.indexOf(l.id + ":") !== 0 && { mcq: 1, fill: 1, truefalse: 1 }[q.type] && !q.passage; });
+      var extra = mix(weak).slice(0, 2).map(function (id) { return QMAP[id]; });
+      var queue = mix(base).concat(extra).map(function (q) { return { q: q, retry: 0 }; });
+      L = { l: l, queue: queue, i: 0, total: queue.length, base: base.length, passed: 0, first: 0, combo: 0, maxCombo: 0, locked: false };
+      showPlay('<div class="lz-in"><div class="lz-ptop"><button class="lz-x" id="lz-quit" aria-label="Quit">✕</button><div class="lz-bar"><i id="lz-pb" style="width:0"></i></div></div><div class="lz-qwrap" id="lz-qw"></div></div><div class="lz-foot" id="lz-foot"><div></div></div><div class="lz-mood" id="lz-mood"></div>');
+      $("#lz-quit").onclick = function () { if (confirm("Quit this lesson? Progress in it will be lost.")) mount(); };
+      nextQ();
+    }
+    function showPlay(h) { var ov = $(".lz-play"); if (ov) ov.remove(); ov = el('<div class="lz-play">' + h + "</div>"); document.body.appendChild(ov); document.body.style.overflow = "hidden"; return ov; }
+    // results: numbers count up, the unit bar grows, the character celebrates
+    function animateSummary(ov) {
+      setTimeout(function () { CZ.react(ov.querySelector(".lz-sum-me") || ov, "celebrate", { ms: 3000 }); }, 120);
+      ov.querySelectorAll("[data-count]").forEach(function (b) {
+        var to = Number(b.getAttribute("data-count")), suf = b.getAttribute("data-suf") || "", plus = suf ? "" : "+", t0 = 0;
+        function step(n) { t0 = t0 || n; var p = Math.min(1, (n - t0) / 1100), e = 1 - Math.pow(1 - p, 3); b.textContent = plus + Math.round(to * e) + suf; if (p < 1) requestAnimationFrame(step); else if (!suf) { b.parentNode.classList.add("lz-pop"); sfx.good(4); } }
+        setTimeout(function () { requestAnimationFrame(step); }, 700);
+      });
+      ov.querySelectorAll("[data-to]").forEach(function (i) { setTimeout(function () { i.style.setProperty("--w", i.getAttribute("data-to")); }, 1300); });
+    }
+    function mood(m) {
+      var d = $("#lz-mood"); if (!d) return;
+      if (!d.firstChild) { d.innerHTML = hero("idle", 116); setTimeout(function () { CZ.react(d, "wave", { ms: 1400 }); }, 250); return; }
+      if (m === "happy") CZ.react(d, L && L.combo >= 3 ? "celebrate" : "happy");
+      else if (m === "sad") CZ.react(d, "sad");
+      else if (m === "idle" && Math.random() < .4) CZ.react(d, "think", { ms: 1800 });
+    }
+    function nextQ() {
+      if (L.i >= L.queue.length) return finishLesson();
+      var it = L.queue[L.i], q = it.q, foot = $("#lz-foot");
+      $("#lz-pb").style.width = Math.round(L.passed / L.total * 100) + "%";
+      foot.className = "lz-foot";
+      foot.firstChild.innerHTML = '<button class="lz-btn" id="lz-chk" disabled>Check</button>';
+      var qw = $("#lz-qw"); qw.scrollTop = 0;
+      var api = renderQ(qw, q), chk = $("#lz-chk");
+      api.onReady = function (ok) { chk.disabled = !ok; };
+      chk.onclick = function () { if (!chk.disabled) resolve(it, api.check(), api); };
+      api.auto = function (ok) { resolve(it, ok, api); };
+      if (q.type === "match") foot.firstChild.innerHTML = '<p class="lz-muted" style="text-align:center;margin:8px 0">Tap a word on the left, then its partner on the right.</p>';
+      mood("idle");
+    }
+    function resolve(it, ok, api) {
+      if (L.locked) return; L.locked = true;
+      var q = it.q, foot = $("#lz-foot");
+      if (api.reveal) api.reveal(ok);
+      if (ok) {
+        L.passed++; if (!it.retry) L.first++; L.combo++; L.maxCombo = Math.max(L.maxCombo, L.combo);
+        if (S.weak[q.qid]) { S.weak[q.qid]--; if (S.weak[q.qid] <= 0) delete S.weak[q.qid]; }
+        sfx.good(L.combo); mood("happy");
+        if (L.combo >= 3) { var c = $(".lz-combo"); if (c) c.remove(); $(".lz-play").appendChild(el('<div class="lz-combo">🔥 ' + L.combo + " in a row</div>")); }
+        foot.className = "lz-foot good";
+        foot.firstChild.innerHTML = '<div class="lz-fb"><div style="font-size:2rem">✅</div><div><h3>Correct!' + ar(CHEER) + "</h3>" + (q.explanation ? "<p>" + hx(q.explanation) + "</p>" : "") + '</div></div><button class="lz-btn" id="lz-nx">Continue</button>';
+      } else {
+        L.combo = 0; var c2 = $(".lz-combo"); if (c2) c2.remove();
+        S.weak[q.qid] = (S.weak[q.qid] || 0) + 1;
+        if (it.retry < 2) L.queue.push({ q: q, retry: it.retry + 1 }); else L.passed++;
+        sfx.bad(); mood("sad"); var w = $("#lz-qw"); w.classList.add("lz-shake"); setTimeout(function () { w.classList.remove("lz-shake"); }, 400);
+        foot.className = "lz-foot bad";
+        foot.firstChild.innerHTML = '<div class="lz-fb"><div style="font-size:2rem">❌</div><div><h3>Not quite' + ar(OOPS) + "</h3><p><b>Correct answer:</b> " + hx(api.correct()) + (q.explanation ? "<br>" + hx(q.explanation) : "") + '</p></div></div><button class="lz-btn red" id="lz-nx">Continue</button>';
+      }
+      lzSave();
+      $("#lz-pb").style.width = Math.round(L.passed / L.total * 100) + "%";
+      var nx = $("#lz-nx"); nx.focus();
+      nx.onclick = function () { L.locked = false; L.i++; nextQ(); };
+    }
+    function finishLesson() {
+      var l = L.l, t = L.total, c = Math.min(L.first, t), acc = t ? Math.round(100 * c / t) : 0, stars = acc >= 90 ? 3 : acc >= 70 ? 2 : 1, wasDone0 = bookDone(l);
+      var skill = (BOOK_KINDS[l.kind] || {}).skill || "grammar";
+      var r = recordRound({ aid: bookAid(l), skill: skill, level: l.kind === "test" ? "medium" : "easy", c: c, i: t - c });
+      var b = bookData(), old = b.done[l.id] || {};
+      b.done[l.id] = { best: Math.max(old.best || 0, acc), n: (old.n || 0) + 1, at: new Date().toISOString() };
+      save();
+      try { typeof LIVE2 !== "undefined" && LIVE2 && syncBoard(); } catch (e) {}
+      unlockByPoints(); sfx.win(); confetti(60);
+      var next = BOOK_ORDER[BOOK_ORDER.indexOf(l) + 1];
+      var uDone = l.unit.lessons.filter(bookDone).length, uPct = Math.round(uDone / l.unit.lessons.length * 100), uWas = Math.round((uDone - (wasDone0 ? 0 : 1)) / l.unit.lessons.length * 100);
+      var ov = showPlay('<div class="lz-in"><div class="lz-qwrap lz-sum"><div class="lz-sum-stage"><div class="lz-rays"></div><div class="lz-sum-me">' + hero("celebrate", 190, "cheer") + "</div></div><h1>" + (stars === 3 ? "Perfect!" : l.kind === "test" ? hx(l.unit.label) + " complete!" : "Lesson complete!") + '</h1><div class="lz-stars">' + [1, 2, 3].map(function (n, i) { return '<span class="' + (n <= stars ? "on" : "") + '" style="animation-delay:' + (.5 + i * .28) + 's">★</span>'; }).join("") + '</div><div class="lz-stat"><div class="lz-xp"><small>Points</small><b data-count="' + r.points + '">+0</b></div><div><small>Accuracy</small><b data-count="' + acc + '" data-suf="%">0%</b></div><div><small>Best combo</small><b>' + L.maxCombo + '</b></div></div><div class="lz-unitbar"><span>' + hx(l.unit.label) + " · " + uDone + "/" + l.unit.lessons.length + '</span><div class="lz-pbar big"><i style="--w:' + uWas + '%" data-to="' + uPct + '%"></i></div></div>' + (r.leagueUp ? "<p>🏅 New league: " + hx(r.leagueUp.name || "") + "</p>" : "") + (S.ar ? '<p class="lz-ar">أحسنت! واصل التقدم</p>' : "") + '</div></div><div class="lz-foot"><div>' + (next ? '<button class="lz-btn" id="lz-n1" style="margin-bottom:10px">Next lesson</button>' : "") + '<button class="lz-btn ghost" id="lz-n2">Back to path</button></div></div>');
+      animateSummary(ov);
+      if (next) $("#lz-n1").onclick = function () { if (isOpen(next)) startLesson(next); else mount(); };
+      $("#lz-n2").onclick = function () { mount(); };
+    }
+
+    /* ---------- question types ---------- */
+    function sayBtn(t) { return '<button class="lz-sayb" data-say="' + hx(t) + '" aria-label="Listen">🔊</button>'; }
+    function bindSay(root) { root.querySelectorAll("[data-say]").forEach(function (b) { b.onclick = function (e) { e.stopPropagation(); say(b.getAttribute("data-say")); }; }); }
+    function head(q, inst) { var p = passageOf(q); return '<h2 class="lz-inst">' + inst + "</h2>" + (p ? '<div class="lz-passage">' + hx(p).replace(/\n/g, "<br>") + "</div>" : ""); }
+    var locked = function () { return L && L.locked; };
+    function renderQ(root, q) {
+      var api = { onReady: function () {}, auto: function () {}, check: function () { return false; }, correct: function () { return shown(q); } }, t = q.type;
+      if (t === "mcq" || t === "truefalse") {
+        var opts = t === "mcq" ? mix(q.options) : ["True", "False"], sel = null;
+        root.innerHTML = head(q, t === "mcq" ? "Choose the answer" : "True or false?") + '<p class="lz-prompt">' + hx(q.prompt) + sayBtn(q.prompt) + "</p>" + opts.map(function (o, i) { return '<button class="lz-opt" data-o="' + i + '">' + hx(o) + "</button>"; }).join("");
+        bindSay(root);
+        root.querySelectorAll(".lz-opt").forEach(function (b) { b.onclick = function () { if (locked()) return; root.querySelectorAll(".lz-opt").forEach(function (x) { x.classList.remove("sel"); }); b.classList.add("sel"); sel = opts[+b.getAttribute("data-o")]; tone(660, .05, "triangle"); api.onReady(true); }; });
+        api.check = function () { return sel !== null && norm(sel) === norm(q.answer); };
+        api.reveal = function () { root.querySelectorAll(".lz-opt").forEach(function (b) { var v = opts[+b.getAttribute("data-o")]; if (norm(v) === norm(q.answer)) b.classList.add("good"); else if (b.classList.contains("sel")) b.classList.add("bad"); }); };
+      } else if (t === "fill" || t === "correct") {
+        root.innerHTML = head(q, t === "fill" ? "Type the missing word" : "Fix the mistake — rewrite the sentence") + '<p class="lz-prompt">' + hx(q.prompt) + sayBtn(q.prompt) + '</p><input class="lz-inp" id="lz-ti" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Type here…">';
+        bindSay(root); var ti = $("#lz-ti", root); setTimeout(function () { ti.focus(); }, 50);
+        ti.oninput = function () { api.onReady(ti.value.trim().length > 0); };
+        ti.onkeydown = function (e) { if (e.key === "Enter" && ti.value.trim()) { var c = $("#lz-chk"); if (c && !c.disabled) c.click(); } };
+        api.check = function () { return textOK(ti.value, q.answer); };
+        api.reveal = function () { ti.disabled = true; };
+      } else if (t === "build") {
+        var words = shown(q).split(" "), bank = mix(words.map(function (w, i) { return { w: w, i: i }; })), chosen = [];
+        root.innerHTML = head(q, "Build the sentence") + '<p class="lz-prompt lz-muted">Topic: ' + hx(q.prompt) + '</p><div class="lz-answer"><div class="lz-tiles" id="lz-ans"></div></div><div class="lz-tiles" id="lz-bank"></div>';
+        var draw = function () {
+          var a = $("#lz-ans", root), b = $("#lz-bank", root);
+          a.innerHTML = chosen.map(function (x, k) { return '<button class="lz-tile" data-a="' + k + '">' + hx(x.w) + "</button>"; }).join("");
+          b.innerHTML = bank.map(function (x, k) { return '<button class="lz-tile' + (chosen.indexOf(x) > -1 ? " used" : "") + '" data-b="' + k + '">' + hx(x.w) + "</button>"; }).join("");
+          a.querySelectorAll("[data-a]").forEach(function (n) { n.onclick = function () { if (locked()) return; chosen.splice(+n.getAttribute("data-a"), 1); draw(); }; });
+          b.querySelectorAll("[data-b]").forEach(function (n) { n.onclick = function () { if (locked()) return; var x = bank[+n.getAttribute("data-b")]; if (chosen.indexOf(x) < 0) { chosen.push(x); tone(700, .04, "triangle"); draw(); } }; });
+          api.onReady(chosen.length === words.length);
+        };
+        draw();
+        api.check = function () { return textOK(chosen.map(function (x) { return x.w; }).join(" "), q.answer); };
+      } else if (t === "order") {
+        var items = mix(q.items.map(function (s, i) { return { s: s, i: i }; })), got = [];
+        root.innerHTML = head(q, "Put in the correct order") + '<p class="lz-prompt lz-muted">' + hx(q.prompt) + '</p><div id="lz-ol"></div>';
+        var draw2 = function () {
+          $("#lz-ol", root).innerHTML = items.map(function (x, k) { var p = got.indexOf(x); return '<button class="lz-opt' + (p > -1 ? " sel" : "") + '" data-k="' + k + '">' + (p > -1 ? "<b>" + (p + 1) + ".</b> " : "") + hx(x.s) + "</button>"; }).join("");
+          root.querySelectorAll("[data-k]").forEach(function (n) { n.onclick = function () { if (locked()) return; var x = items[+n.getAttribute("data-k")], p = got.indexOf(x); if (p > -1) got.splice(p, 1); else { got.push(x); tone(700, .04, "triangle"); } draw2(); }; });
+          api.onReady(got.length === items.length);
+        };
+        draw2();
+        api.check = function () { return got.every(function (x, k) { return x.i === k; }); };
+        api.correct = function () { return q.items.join(" → "); };
+      } else if (t === "match") {
+        var ls = mix(q.pairs.map(function (p, i) { return { t: p.left, i: i }; })), rs = mix(q.pairs.map(function (p, i) { return { t: p.right, i: i }; })), left = null, matched = {}, wrong = 0;
+        root.innerHTML = head(q, "Match the pairs") + '<p class="lz-prompt lz-muted">' + hx(q.prompt) + '</p><div class="lz-mcol"><div id="lz-lc"></div><div id="lz-rc"></div></div>';
+        var d3 = function () {
+          $("#lz-lc", root).innerHTML = ls.map(function (x, k) { return '<button class="lz-opt' + (matched[x.i] ? " done" : "") + (left === x ? " sel" : "") + '" data-l="' + k + '">' + hx(x.t) + "</button>"; }).join("");
+          $("#lz-rc", root).innerHTML = rs.map(function (x, k) { return '<button class="lz-opt' + (matched[x.i] ? " done" : "") + '" data-r="' + k + '">' + hx(x.t) + "</button>"; }).join("");
+          root.querySelectorAll("[data-l]").forEach(function (n) { n.onclick = function () { if (locked()) return; left = ls[+n.getAttribute("data-l")]; tone(660, .05, "triangle"); d3(); }; });
+          root.querySelectorAll("[data-r]").forEach(function (n) { n.onclick = function () {
+            if (!left || locked()) return; var x = rs[+n.getAttribute("data-r")];
+            if (x.i === left.i) { matched[x.i] = 1; left = null; sfx.good(1); d3(); if (Object.keys(matched).length === q.pairs.length) setTimeout(function () { api.auto(wrong === 0); }, 350); }
+            else { wrong++; sfx.bad(); n.classList.add("bad", "lz-shake"); left = null; setTimeout(d3, 350); }
+          }; });
+        };
+        d3();
+        api.correct = function () { return q.pairs.map(function (p) { return p.left + " = " + p.right; }).join("; "); };
+      } else { root.innerHTML = "<p>…</p>"; setTimeout(function () { api.auto(true); }, 100); }
+      return api;
+    }
+
+    /* ---------- BOSS RUSH ---------- */
+    function viewRush() {
+      return '<div class="lz-card lz-rush-card"><div class="lz-rush-duo"><span>' + hero("excited", 130, "ready") + '</span><span class="lz-vs">VS</span>' + bossArt(R0 = (R0 + 1) % BOSSES.length, 110) + '</div><h2>Boss Rush ⚔️</h2><p class="lz-muted" style="margin:0 0 12px">60 seconds. Right answers hit the boss and add 2 seconds. Wrong answers cost 5 seconds and break your combo. Beat bosses to win chests!</p><button class="lz-btn" id="lz-go">Start</button>' + (S.ar ? '<p class="lz-ar">أجب بسرعة، اهزم الوحوش واجمع الصناديق!</p>' : "") + "</div>"
+        + '<div class="lz-stat"><div><small>Best score</small><b>' + S.best + "</b></div><div><small>Chests</small><b>🎁 " + S.chests + "</b></div><div><small>To review</small><b>" + Object.keys(S.weak).length + "</b></div></div>"
+        + (S.chests ? '<button class="lz-btn blue" id="lz-chest">Open a chest 🎁</button>' : "");
+    }
+    var R = null, POOL = null, R0 = -1;
+    function pool() { return POOL || (POOL = Object.keys(QMAP).map(function (k) { return QMAP[k]; }).filter(function (q) { return !q.passage && (q.type === "mcq" || q.type === "truefalse" || q.type === "fill"); })); }
+    function drawQ() {
+      var weak = Object.keys(S.weak).map(function (i) { return QMAP[i]; }).filter(function (q) { return q && pool().indexOf(q) > -1; });
+      var q = weak.length && Math.random() < .35 ? pick(weak) : pick(pool());
+      if (q === R.q) q = pick(pool());
+      return q;
+    }
+    function newBoss() { R.maxhp = 6 + R.boss * 2; R.hp = R.maxhp; var b = BOSSES[R.boss % BOSSES.length]; R.bn = b.name + (R.boss >= BOSSES.length ? " Lv " + (Math.floor(R.boss / BOSSES.length) + 1) : ""); }
+    function drawBoss() { var i = $("#lz-bimg"); if (i) i.innerHTML = bossArt(R.boss, 64); var n = $("#lz-bname"); if (n) n.textContent = R.bn; var h = $("#lz-hp"); if (h) h.style.width = Math.max(0, R.hp / R.maxhp * 100) + "%"; }
+    var mult = function () { return Math.min(5, 1 + Math.floor(R.combo / 3)); };
+    function startRush() {
+      stopAll(); cleanup = stopAll;
+      var b0 = BOSSES[0];
+      czArena({ kicker: "Boss Rush", foe: '<svg width="170" height="170" viewBox="0 0 200 200" class="cz-ar-boss">' + b0.art(b0.color, b0.dark) + "</svg>", foeName: b0.name }, rushGo);
+    }
+    function rushGo() {
+      R = { t: 60, score: 0, combo: 0, max: 0, boss: 0, chests: 0, right: 0, q: null, wait: false, ended: false };
+      newBoss();
+      showPlay('<div class="lz-in lz-rush"><div class="lz-ptop"><button class="lz-x" id="lz-quit" aria-label="Stop">✕</button><div class="lz-grow"><div class="lz-bossrow"><div id="lz-bimg" style="width:64px;height:64px"></div><div class="lz-grow"><b id="lz-bname"></b><div class="lz-hp"><i id="lz-hp" style="width:100%"></i></div></div></div></div><div class="lz-timer" id="lz-tm">60</div></div><div class="lz-qwrap" id="lz-qw"></div><div class="lz-rush-me" id="lz-rme">' + hero("excited", 120, "ready") + '</div><div id="lz-sc" class="lz-rush-sc">Score <b>0</b></div></div>');
+      $("#lz-quit").onclick = endRush;
+      timers.push(setInterval(function () {
+        if (R.wait || R.ended) return;
+        R.t--; var tm = $("#lz-tm"); if (tm) { tm.textContent = Math.max(0, R.t); tm.className = "lz-timer" + (R.t <= 10 ? " low" : ""); if (R.t <= 10 && R.t > 0) sfx.tick(); }
+        if (R.t <= 0) endRush();
+      }, 1000));
+      drawBoss(); nextR();
+    }
+    function nextR() {
+      var q = R.q = drawQ(), qw = $("#lz-qw"); if (!qw) return;
+      var done = false, fin = function (ok) { if (done || R.wait || R.ended) return; done = true; answerR(ok, q, qw); };
+      if (q.type === "fill") {
+        qw.innerHTML = '<h2 class="lz-inst">Type the missing word</h2><p class="lz-prompt">' + hx(q.prompt) + '</p><input class="lz-inp" id="lz-ti" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Type and press Enter"><button class="lz-btn" id="lz-gq" style="margin-top:12px">Go</button>';
+        var ti = $("#lz-ti"); ti.focus(); var go = function () { if (ti.value.trim()) fin(textOK(ti.value, q.answer)); };
+        $("#lz-gq").onclick = go; ti.onkeydown = function (e) { if (e.key === "Enter") go(); };
+      } else {
+        var opts = q.type === "mcq" ? mix(q.options) : ["True", "False"];
+        qw.innerHTML = '<h2 class="lz-inst">' + (q.type === "mcq" ? "Quick! Choose" : "True or false?") + '</h2><p class="lz-prompt">' + hx(q.prompt) + "</p>" + opts.map(function (o) { return '<button class="lz-opt">' + hx(o) + "</button>"; }).join("");
+        qw.querySelectorAll(".lz-opt").forEach(function (b, i) { b.onclick = function () { var ok = norm(opts[i]) === norm(q.answer); b.classList.add(ok ? "good" : "bad"); fin(ok); }; });
+      }
+    }
+    function answerR(ok, q, qw) {
+      if (ok) {
+        R.right++; R.combo++; R.max = Math.max(R.max, R.combo); var m = mult();
+        R.score += 10 * m; R.t += 2;
+        if (S.weak[q.qid]) { S.weak[q.qid]--; if (S.weak[q.qid] <= 0) delete S.weak[q.qid]; }
+        sfx.good(R.combo); sfx.hit(); CZ.react($("#lz-rme"), R.combo >= 5 ? "celebrate" : "happy", { ms: 900 });
+        R.hp -= R.combo >= 3 ? 2 : 1;
+        var bi = $("#lz-bimg"); if (bi) { bi.classList.remove("lz-hit"); void bi.offsetWidth; bi.classList.add("lz-hit"); }
+        pop("+" + (10 * m) + (m > 1 ? " ×" + m : ""));
+        if (R.hp <= 0) { note("💥 " + hx(R.bn) + " defeated! +1 chest 🎁", 1800); R.boss++; R.chests++; S.chests++; R.score += 50; R.t += 5; sfx.chest(); confetti(50); newBoss(); }
+        drawBoss();
+      } else {
+        R.combo = 0; R.t = Math.max(0, R.t - 5); S.weak[q.qid] = (S.weak[q.qid] || 0) + 1; sfx.bad(); CZ.react($("#lz-rme"), "sad", { ms: 800 });
+        qw.classList.add("lz-shake"); setTimeout(function () { qw.classList.remove("lz-shake"); }, 350);
+        note("✗ " + hx(shown(q)), 1200);
+      }
+      var tm = $("#lz-tm"); if (tm) tm.textContent = Math.max(0, R.t);
+      var sc = $("#lz-sc"); if (sc) sc.innerHTML = "Score <b>" + R.score + "</b> · Combo <b>" + R.combo + "</b> · ×" + mult();
+      lzSave();
+      if (R.t <= 0) return endRush();
+      R.wait = true;
+      setTimeout(function () { R.wait = false; if (!R.ended) nextR(); }, ok ? 250 : 700);
+    }
+    function endRush() {
+      if (!R || R.ended) return; R.ended = true;
+      timers.forEach(clearInterval); timers = [];
+      var best = R.score > S.best; if (best) S.best = R.score; lzSave();
+      sfx.win(); if (best || R.boss) confetti(70);
+      var ov = showPlay('<div class="lz-in"><div class="lz-qwrap lz-sum"><div class="lz-sum-stage"><div class="lz-rays"></div><div class="lz-sum-me">' + hero(R.score > 0 ? "celebrate" : "idle", 180, R.score > 0 ? "cheer" : "relaxed") + "</div></div><h1>" + (best ? "New record! 🏆" : "Time's up!") + '</h1><div class="lz-big" data-count="' + R.score + '" data-suf=" ">0</div><div class="lz-stat"><div><small>Correct</small><b>' + R.right + "</b></div><div><small>Best combo</small><b>" + R.max + "</b></div><div><small>Bosses</small><b>" + R.boss + "</b></div></div>" + (R.chests ? "<p>🎁 +" + R.chests + " chest" + (R.chests > 1 ? "s" : "") + "</p>" : "") + (S.ar ? '<p class="lz-ar">محاولة أخرى لتكسر الرقم القياسي؟</p>' : "") + '</div></div><div class="lz-foot"><div><button class="lz-btn" id="lz-again" style="margin-bottom:10px">Play again</button><button class="lz-btn ghost" id="lz-back">Back</button></div></div>');
+      R.score > 0 ? animateSummary(ov) : setTimeout(function () { CZ.react(ov.querySelector(".lz-sum-me"), "encourage"); }, 300);
+      $("#lz-again").onclick = startRush; $("#lz-back").onclick = function () { lzSub = "rush"; mount(); };
+    }
+    function openChest() {
+      if (S.chests < 1) return; S.chests--;
+      var left = PRIZES.filter(function (i) { return S.owned.indexOf(i.k) < 0; });
+      var ov = showPlay('<div class="lz-in"><div class="lz-qwrap lz-sum lz-chestroom"><div class="lz-chest" id="lz-box"><span class="lz-lid"></span><span class="lz-boxb"></span></div><h1>Opening…</h1><div class="lz-chest-me">' + hero("excited", 150, "ready") + "</div></div></div>");
+      sfx.chest();
+      setTimeout(function () {
+        var it = left.length ? pick(left) : null, body;
+        if (it) { S.owned.push(it.k); body = '<div class="lz-prize">' + preview(it.k, 150) + "</div><h1>" + hx(it.name) + '!</h1><p class="lz-muted">New for your character. Wear it in the character maker.</p>'; }
+        else body = '<div class="lz-prize">' + hero("celebrate", 170) + '</div><h1>Lucky star!</h1><p class="lz-muted">You already won every prize. Legend!</p>';
+        lzSave(); confetti(60);
+        ov.innerHTML = '<div class="lz-in"><div class="lz-qwrap lz-sum">' + body + '<div class="lz-chest-me">' + hero("celebrate", 150) + '</div></div></div><div class="lz-foot"><div>' + (it ? '<a class="lz-btn" href="#avatar" id="lz-wear">Wear it now</a><div style="height:10px"></div>' : "") + '<button class="lz-btn ghost" id="lz-ok">Back</button></div></div>';
+        setTimeout(function () { CZ.react(ov.querySelector(".lz-chest-me"), "celebrate"); }, 60);
+        var w = $("#lz-wear"); if (w) w.onclick = function () { stopAll(); };
+        $("#lz-ok").onclick = function () { lzSub = "me"; mount(); };
+      }, 1500);
+    }
+
+    /* ---------- LOCKER: the student's character, prizes, settings ---------- */
+    function viewMe() {
+      var h = '<div class="lz-card lz-locker"><div class="lz-locker-me">' + hero("idle", 210) + '</div><div><h2>' + hx(firstName(me().name)) + '</h2><p class="lz-muted">Your character learns, battles and celebrates with you.</p><a class="lz-btn" href="#avatar">✏️ Edit my character</a></div></div>'
+        + '<h3 class="lz-h3">Boss Rush prizes <span class="lz-muted">' + S.owned.length + " / " + PRIZES.length + '</span></h3><div class="lz-grid">';
+      PRIZES.forEach(function (i) {
+        var own = S.owned.indexOf(i.k) > -1;
+        h += '<div class="lz-item' + (own ? " on" : " lock") + '"><span class="lz-ic">' + preview(i.k, 64) + "</span>" + hx(i.name) + '<br><small class="lz-muted">' + (own ? "Won" : "🔒 Win in a chest") + "</small></div>";
+      });
+      return h + "</div>" + (S.chests ? '<button class="lz-btn blue" id="lz-chest" style="margin-top:14px">Open a chest 🎁 (' + S.chests + ")</button>" : "")
+        + '<h3 class="lz-h3">Settings</h3><div class="lz-row"><span>Sound effects</span><button class="lz-sw' + (S.sound ? " on" : "") + '" id="lz-snd" aria-label="Sound effects"></button></div><div class="lz-row"><span>Arabic encouragement</span><button class="lz-sw' + (S.ar ? " on" : "") + '" id="lz-arb" aria-label="Arabic encouragement"></button></div>';
+    }
+    function bindMe() {
+      $("#lz-snd").onclick = function () { S.sound = !S.sound; lzSave(); mount(); };
+      $("#lz-arb").onclick = function () { S.ar = !S.ar; lzSave(); mount(); };
+    }
+
+    /* gentle break reminder after 20 minutes of lessons / Rush */
+    var played = 0;
+    setInterval(function () { if (document.hidden || !$(".lz-play")) return; if (++played >= 1200) { played = 0; note("☕ 20 minutes of learning — a short break helps you remember more!" + (S.ar ? '<br><span class="lz-ar" style="color:inherit">خذ استراحة قصيرة، ثم أكمل</span>' : ""), 6000); } }, 1000);
+    /* links elsewhere on the site (e.g. the Challenge tab) can open Boss Rush */
+    document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest("[data-lz-rush]"); if (a) lzSub = "rush"; else if (e.target.closest && e.target.closest("#tabbar .tab")) lzSub = "path"; }, true);
+    window.addEventListener("hashchange", function () { if (location.hash !== "#book") stopAll(); });
+
+    return mount;
+  })();
+  function lzRushPromo() {
+    return bookOn() ? `<section class="block lz lz-promo-card"><a class="lz-promo" href="#book" data-lz-rush><span class="lz-promo-me">${czMe({ size: 84, pose: "ready", mood: "excited" })}</span><span class="lz-grow"><b>Boss Rush ⚔️</b><span class="lz-muted">60 seconds. Beat bosses, win prizes for your character.</span></span><span class="lz-btn" style="width:auto;padding:10px 14px">Play</span></a></section>` : "";
+  }
+
   function bookRoute() {
     bookImport();
     if (!bookOn()) {
@@ -7924,7 +8612,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       </section>`;
       return;
     }
-    bookMap();
+    learnMount(); /* epz-patch:learn (old map: bookMap) */
   }
   function bookMap() {
     window.scrollTo(0, 0);
@@ -8218,7 +8906,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let nm = esc(firstName(state.name)), pick = (a) => a[Math.floor(Math.random() * a.length)];
     let msg = acc >= 100 ? pick(["Flawless! Not one mistake!", `Perfect, ${nm}! You are a star!`, "100%! Amazing work!"]) : acc >= 80 ? pick([`Brilliant work, ${nm}!`, "Excellent! Keep it up!", "Great job, you really know this!"]) : acc >= 50 ? pick(["Good effort! You are getting better.", `Nice work, ${nm}! Practice makes perfect.`]) : pick(["Well done for finishing! Every round makes you stronger.", `Keep going, ${nm}! You learn from every mistake.`]);
     let st = streak(), up = st > st0;
-    return `<div class="duo-praise">${state.avatar ? `<span class="duo-praise-av">${duoAvatarSvg(state.avatar, 64)}</span>` : ""}<p class="duo-bubble">${msg}</p></div>
+    return `<div class="duo-praise cz-full" data-acc="${acc}"><span class="duo-praise-av">${czMe({ size: 118, mood: "happy" })}</span><p class="duo-bubble">${msg}</p></div>
     ${up ? `<div class="duo-streak-up"><span class="duo-fl">${icon("flame", 30, "flame")}</span><div><b>${st} day streak!</b><span>${st === 1 ? "You started a new streak. Come back tomorrow!" : "You practised again today. Keep the fire going!"}</span></div></div>` : ""}`;
   }
   // ---------------------------------------------------------------- daily streak screen (#streak)
@@ -8297,7 +8985,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let col = cc === "#FFFFFF" ? "#2F6FDE" : cc;
     return h === "cap" ? `<path d="M31 42 Q31 15 60 15 Q89 15 89 42 Z" fill="${col}"/><path d="M60 15 V42 M44 18 Q40 30 41 42 M76 18 Q80 30 79 42" stroke="rgb(0 0 0 / .15)" stroke-width="1.5" fill="none"/><path d="M56 39 Q84 34 103 41 Q88 48 56 45 Z" fill="${col}" stroke="rgb(0 0 0 / .25)" stroke-width="1.5"/><circle cx="60" cy="15.5" r="2.6" fill="rgb(0 0 0 / .25)"/>` : h === "beanie" ? `<path d="M30 44 Q30 13 60 13 Q90 13 90 44 Z" fill="${col}"/><path d="M40 20 V40 M50 15 V40 M60 13 V40 M70 15 V40 M80 20 V40" stroke="rgb(0 0 0 / .12)" stroke-width="2"/><rect x="28" y="37" width="64" height="10" rx="5" fill="${col}" stroke="rgb(0 0 0 / .2)" stroke-width="1.5"/><circle cx="60" cy="11" r="6.5" fill="#FFFFFF" stroke="rgb(0 0 0 / .15)"/>` : "";
   }
-  function duoAvatarSvg(cfg, size = 56) {
+  function duoAvatarSvg(cfg, size = 56) { /* epz-patch:char */
+    return czSvg(cfg, { size, frame: "bust", cls: (cfg === state.avatar || !state.avatar && cfg === DUO_DEF ? "cz-me " : "") + "duo-av-svg" });
+  }
+  function duoAvatarSvgOld(cfg, size = 56) {
     let c = duoCfg(cfg), sk = DUO_SKIN[c.skin], hc = DUO_HAIRC[c.hc], cc = DUO_CLOTHC[c.cc], dark = "#2A1E1A", id = "duoav" + ++duoUid, cl = "", hair = "", eyes = "", mouth = "", gl = "";
     let light = c.cc === 0 || c.cc === 6;
     // clothes
@@ -8318,7 +9009,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     return `<svg class="duo-av-svg" width="${size}" height="${size}" viewBox="0 0 120 120" role="img" aria-label="My avatar"><defs><clipPath id="${id}"><circle cx="60" cy="60" r="60"/></clipPath></defs><g clip-path="url(#${id})"><rect width="120" height="120" fill="${DUO_BG[c.bg]}"/>${cl}<rect x="50" y="76" width="20" height="17" rx="6" fill="${sk}"/><rect x="50" y="80" width="20" height="5" fill="rgb(0 0 0 / .08)"/><circle cx="32" cy="58" r="7.5" fill="${sk}"/><circle cx="88" cy="58" r="7.5" fill="${sk}"/><rect x="32" y="24" width="56" height="60" rx="24" fill="${sk}"/>${hair}<ellipse cx="42" cy="68" rx="5" ry="3" fill="#F08A7E" opacity=".28"/><ellipse cx="78" cy="68" rx="5" ry="3" fill="#F08A7E" opacity=".28"/>${eyes}<path d="M60 60 Q57 66 60 67" stroke="rgb(0 0 0 / .22)" stroke-width="2.4" fill="none" stroke-linecap="round"/>${mouth}${gl}</g></svg>`;
   }
   function duoAvatarNudge() {
-    return state.avatar ? "" : `<a class="duo-nudge" href="#avatar"><span class="duo-nudge-av">${duoAvatarSvg(DUO_DEF, 52)}</span><span class="prog-txt"><b>Make your avatar!</b><span>Choose your face, hair and clothes.</span></span><span class="prog-go">Start</span></a>`;
+    return state.avatar ? "" : `<a class="duo-nudge" href="#avatar"><span class="duo-nudge-av">${duoAvatarSvg(DUO_DEF, 52)}</span><span class="prog-txt"><b>Create your character!</b><span>Dishdasha or hoodie, kumma or cap: make it you.</span></span><span class="prog-go">Start</span></a>`;
   }
   function duoAvatarScreen() {
     let cfg = duoCfg(state.avatar), tab = "skin";
@@ -8349,6 +9040,483 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       state.avatar = duoCfg(cfg), save(), toast("Your avatar is saved!", "success", 2e3), go("home");
     }), draw();
   }
+  // ============================================================ epz-patch:char — every student's own living character (the site's mascot)
+  // One drawing (head, body, two jointed arms) used everywhere: avatar circles, path, lessons, Boss Rush, battles, ranking.
+  // Saved avatars (state.avatar) keep working: old keys are read as before, new keys have defaults.
+  // A single animation loop moves every character on screen with soft springs: blinking, looking around, poses, reactions.
+  DUO_PARTS.hair.push(["long", "Long"], ["bun", "Top knot"]);
+  DUO_PARTS.hat.push(["kummag", "Kumma gold"], ["crown", "Crown"]);
+  DUO_PARTS.cl.push(["uniform", "School shirt"], ["jacket", "Jacket"], ["bishtg", "Royal bisht"]);
+  var CZ_INK = "#1E2550";
+  var CZ_NEW = {
+    face: [["round", "Round"], ["oval", "Oval"], ["square", "Square"]],
+    brows: [["soft", "Soft"], ["thick", "Thick"], ["straight", "Straight"]],
+    beard: [["none", "None"], ["stubble", "Stubble"], ["moustache", "Moustache"], ["beard", "Short beard"], ["goatee", "Goatee"]],
+    extra: [["none", "None"], ["backpack", "Backpack"], ["pen", "Pen pocket"], ["watch", "Watch"], ["headphones", "Headphones"], ["medal", "Gold medal"], ["cape", "Hero cape"]],
+    pose: [["relaxed", "Relaxed"], ["hips", "Hands on hips"], ["crossed", "Arms crossed"], ["think", "Thinking"], ["wave", "Waving"], ["ready", "Ready!"]],
+    style: [["omani", "Omani"], ["everyday", "Everyday"]]
+  };
+  var CZ_DEF = { face: "round", brows: "soft", beard: "none", extra: "none", pose: "relaxed", style: "omani" };
+  // things won from Boss Rush chests (key -> value)
+  var CZ_LOCKED = { "hat:kummag": 1, "hat:crown": 1, "cl:bishtg": 1, "extra:headphones": 1, "extra:medal": 1, "extra:cape": 1 };
+  var CZ_OMANI = { "cl:dish": 1, "cl:bisht": 1, "cl:bishtg": 1, "hat:kumma1": 1, "hat:kumma2": 1, "hat:kumma3": 1, "hat:kummag": 1, "hat:massar1": 1, "hat:massar2": 1, "hat:massar3": 1, "beard:beard": 1, "beard:moustache": 1, "beard:goatee": 1 };
+  function czOwned() {
+    try { return (JSON.parse(localStorage.getItem("epz-learn-v1") || "{}").owned) || []; } catch (e) { return []; }
+  }
+  var czHas = (k, v) => !CZ_LOCKED[k + ":" + v] || czOwned().indexOf(k + ":" + v) > -1;
+  function czCfg(c) {
+    let o = duoCfg(c);
+    for (let k in CZ_NEW) CZ_NEW[k].some((p) => p[0] === o[k]) || (o[k] = CZ_DEF[k]);
+    // a locked item the student no longer has falls back to a free one
+    czHas("hat", o.hat) || (o.hat = "none"), czHas("cl", o.cl) || (o.cl = "dish"), czHas("extra", o.extra) || (o.extra = "none");
+    return o;
+  }
+  function czShade(hex, amt) {
+    let n = parseInt(String(hex).slice(1), 16), r = n >> 16 & 255, g = n >> 8 & 255, b = n & 255, f = (x) => Math.max(0, Math.min(255, Math.round(amt < 0 ? x * (1 + amt) : x + (255 - x) * amt)));
+    return "#" + ((1 << 24) + (f(r) << 16) + (f(g) << 8) + f(b)).toString(16).slice(1);
+  }
+  // [left upper, left forearm, right upper, right forearm] in degrees; + is clockwise
+  var CZ_POSES = {
+    relaxed: [9, -6, -9, 6], hips: [38, -95, -38, 95], crossed: [-20, -80, 20, 80], think: [9, -6, 20, 146], wave: [9, -6, -150, -22],
+    ready: [20, -150, -20, 150], cheer: [150, 14, -150, -14], yes: [9, -6, -25, -150], down: [3, -2, -3, 2], shrug: [22, 62, -22, -62]
+  };
+  var czUid = 0;
+  function czLongSleeve(cl) { return !/^(tee|jersey)$/.test(cl); }
+  function czSvg(cfg, opt = {}) {
+    let c = czCfg(cfg), id = "cz" + ++czUid, size = opt.size || 120, frame = opt.frame || "full", mood = opt.mood || "idle";
+    let sk = DUO_SKIN[c.skin], skD = czShade(sk, -.16), hc = DUO_HAIRC[c.hc], cc = DUO_CLOTHC[c.cc], ink = CZ_INK;
+    let pose = CZ_POSES[opt.pose || c.pose] || CZ_POSES.relaxed;
+    let white = c.cc === 0;
+    // ---- clothes
+    let sleeve = cc, cloak = null, torso = "M50 152 C50 134 62 126 80 123 L120 123 C138 126 150 134 150 152 L154 240 L46 240 Z", T = "", behind = "", hood = "";
+    let base = (f) => `<path d="${torso}" fill="${f}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M130 128 C144 134 150 146 150 160 L153 240 L138 240 C140 200 138 160 130 128Z" fill="#000" opacity=".07"/>`;
+    if (c.cl === "dish" || c.cl === "bisht" || c.cl === "bishtg") {
+      let dc = c.cl === "dish" ? cc : "#FFFFFF", trim = czShade(dc, white || c.cl !== "dish" ? -.2 : -.28);
+      T = base(dc) + `<path d="M86 123 Q100 136 114 123" fill="none" stroke="${trim}" stroke-width="2.2"/><path d="M100 133 V170" stroke="${trim}" stroke-width="2.4"/><path d="M96.5 170 Q100 166 103.5 170 L102.5 182 Q100 186 97.5 182Z" fill="${trim}"/><g fill="${trim}">${[90, 94, 106, 110].map((x) => `<circle cx="${x}" cy="${127 + (x < 100 ? (x - 86) * .45 : (114 - x) * .45)}" r="1"/>`).join("")}</g>`;
+      sleeve = dc;
+      if (c.cl !== "dish") {
+        cloak = c.cl === "bishtg" ? "#1A1714" : white ? "#3B2A20" : cc;
+        let g = "#D9A93A", w = c.cl === "bishtg" ? 4 : 2.6;
+        T += `<path d="M48 154 C48 134 62 126 80 123 L86 124 Q84 180 80 240 L42 240 Z" fill="${cloak}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M152 154 C152 134 138 126 120 123 L114 124 Q116 180 120 240 L158 240 Z" fill="${cloak}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M84 124 Q82 180 78 240 M116 124 Q118 180 122 240" stroke="${g}" stroke-width="${w}" fill="none"/>${c.cl === "bishtg" ? `<path d="M83 140 l-4 4 4 4 M81 170 l-4 4 4 4 M117 140 l4 4 -4 4 M119 170 l4 4 -4 4" stroke="${g}" stroke-width="1.6" fill="none"/>` : ""}`;
+        sleeve = cloak;
+      }
+    } else if (c.cl === "tee") {
+      T = base(cc) + `<path d="M84 123 Q100 138 116 123" fill="none" stroke="${czShade(cc, -.25)}" stroke-width="3"/>`;
+    } else if (c.cl === "hoodie") {
+      hood = `<path d="M66 128 Q100 150 134 128 Q132 108 100 108 Q68 108 66 128Z" fill="${czShade(cc, -.12)}" stroke="${ink}" stroke-width="2.4"/>`;
+      T = base(cc) + `<path d="M76 124 Q100 146 124 124" fill="${czShade(cc, -.18)}" stroke="${ink}" stroke-width="2"/><path d="M93 134 V158 M107 134 V158" stroke="#F4F7EF" stroke-width="2.2" stroke-linecap="round"/><path d="M72 198 Q100 188 128 198 L132 228 L68 228Z" fill="${czShade(cc, -.1)}" stroke="${ink}" stroke-width="2"/>`;
+    } else if (c.cl === "shirt" || c.cl === "uniform") {
+      let sc = c.cl === "uniform" ? "#F4F7FB" : cc, tie = c.cl === "uniform" ? (white ? "#2B41C4" : cc) : null;
+      T = base(sc) + `<path d="M82 122 L100 134 L92 142 Z M118 122 L100 134 L108 142 Z" fill="${czShade(sc, -.08)}" stroke="${ink}" stroke-width="2" stroke-linejoin="round"/>` + (tie ? `<path d="M96 134 L104 134 L106 178 L100 186 L94 178 Z" fill="${tie}" stroke="${ink}" stroke-width="2" stroke-linejoin="round"/><path d="M96 134 L104 134 L102 141 L98 141Z" fill="${czShade(tie, -.25)}"/>` : `<g fill="${czShade(sc, -.3)}"><circle cx="100" cy="150" r="1.8"/><circle cx="100" cy="168" r="1.8"/><circle cx="100" cy="186" r="1.8"/></g>`) + `<path d="M114 156 h16 v12 h-16z" fill="none" stroke="${czShade(sc, -.22)}" stroke-width="1.6"/>`;
+      sleeve = sc;
+    } else if (c.cl === "sweater") {
+      T = base(cc) + `<path d="M82 123 Q100 140 118 123" fill="none" stroke="${czShade(cc, -.3)}" stroke-width="5"/><path d="M50 176 H150" stroke="${czShade(cc, .35)}" stroke-width="8"/><path d="M50 176 H150" stroke="${czShade(cc, -.25)}" stroke-width="2" stroke-dasharray="4 4"/>`;
+    } else if (c.cl === "jersey") {
+      let st = white ? "#2B41C4" : "#FFFFFF";
+      T = base(cc) + `<path d="M86 123 L100 140 L114 123" fill="none" stroke="${st}" stroke-width="4"/><text x="100" y="188" text-anchor="middle" font-family="Lexend,Arial,sans-serif" font-weight="800" font-size="34" fill="${st}" stroke="${ink}" stroke-width="1.2">9</text>`;
+    } else if (c.cl === "jacket") {
+      T = base("#F4F7FB") + `<path d="M84 123 Q100 136 116 123" fill="none" stroke="#C9D3E2" stroke-width="2.4"/><path d="M48 154 C48 134 62 126 80 123 L90 132 L84 150 L88 240 L44 240 Z" fill="${cc}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M152 154 C152 134 138 126 120 123 L110 132 L116 150 L112 240 L156 240 Z" fill="${cc}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/>`;
+    }
+    // ---- extras on the body
+    let ex = c.extra, exBack = "", exFront = "", exWrist = "";
+    ex === "cape" && (exBack = `<path d="M54 130 Q100 116 146 130 L172 238 Q100 226 28 238 Z" fill="#D8343F" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M100 124 L104 236" stroke="#000" opacity=".12" stroke-width="10"/>`);
+    ex === "backpack" && (exFront = `<path d="M70 128 Q64 160 68 200" stroke="#2B41C4" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M130 128 Q136 160 132 200" stroke="#2B41C4" stroke-width="7" fill="none" stroke-linecap="round"/>`);
+    ex === "medal" && (exFront = `<path d="M90 124 L100 160 L110 124" fill="none" stroke="#2B41C4" stroke-width="5"/><path d="M95 124 L100 150" stroke="#D8343F" stroke-width="3"/><circle cx="100" cy="168" r="10" fill="#FFD83D" stroke="${ink}" stroke-width="2.2"/><path d="M100 162 l1.9 3.8 4.2.6 -3 3 .7 4.2 -3.8-2 -3.8 2 .7-4.2 -3-3 4.2-.6z" fill="#E0A800"/>`);
+    ex === "pen" && (exFront = `<path d="M114 150 h18 v16 h-18z" fill="#000" opacity=".1"/><rect x="118" y="140" width="4" height="14" rx="1.5" fill="#2B41C4" stroke="${ink}" stroke-width="1.2"/><rect x="124" y="142" width="4" height="12" rx="1.5" fill="#D8343F" stroke="${ink}" stroke-width="1.2"/>`);
+    ex === "watch" && (exWrist = `<rect x="-10" y="24" width="20" height="7" rx="2" fill="#17224D"/><rect x="-4" y="23" width="8" height="9" rx="2" fill="#FFD83D" stroke="${ink}" stroke-width="1.2"/>`);
+    // ---- arms (drawn pointing down from the shoulder; the loop rotates them)
+    let long = czLongSleeve(c.cl);
+    let upper = (fill) => `<rect x="-10.5" y="-8" width="21" height="50" rx="10.5" fill="${long ? fill : sk}" stroke="${ink}" stroke-width="2.4"/>${long ? "" : `<path d="M-10.5 2 Q-10.5 -8 0 -8 Q10.5 -8 10.5 2 V18 H-10.5Z" fill="${fill}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/>`}`;
+    let fore = (fill, wrist) => `<rect x="-9.5" y="-6" width="19" height="40" rx="9.5" fill="${long ? fill : sk}" stroke="${ink}" stroke-width="2.4"/>${wrist || ""}<circle cx="0" cy="38" r="10.5" fill="${sk}" stroke="${ink}" stroke-width="2.4"/><path d="M-4 33 q-5 3 -3 8" stroke="${skD}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+    let arm = (side, a, b) => `<g class="cz-arm${side}" transform="translate(${side === "L" ? 61 : 139} 135) rotate(${a})"><g class="cz-fore${side}" transform="translate(0 40) rotate(${b})">${fore(sleeve, side === "L" ? exWrist : "")}</g>${upper(sleeve)}</g>`;
+    // ---- head
+    let faceP = c.face === "oval" ? "M100 42 C123 42 135 60 135 82 C135 106 119 122 100 122 C81 122 65 106 65 82 C65 60 77 42 100 42Z"
+      : c.face === "square" ? "M66 70 C66 50 80 43 100 43 C120 43 134 50 134 70 L134 94 C134 112 120 121 100 121 C80 121 66 112 66 94Z"
+      : "M100 44 C122 44 136 60 136 82 C136 104 121 120 100 120 C79 120 64 104 64 82 C64 60 78 44 100 44Z";
+    let hatOn = c.hat !== "none" && c.hat !== "crown";
+    let hairBack = "", hairFront = "";
+    let topCap = "M64 78 C60 50 78 34 100 34 C122 34 140 50 136 78 C132 62 120 54 100 54 C80 54 68 62 64 78Z";
+    if (!hatOn) {
+      let h = c.hair;
+      h === "short" && (hairFront = `<path d="${topCap}" fill="${hc}" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round"/>`);
+      h === "buzz" && (hairFront = `<path d="M66 72 C64 50 80 39 100 39 C120 39 136 50 134 72 C128 60 116 55 100 55 C84 55 72 60 66 72Z" fill="${hc}" opacity=".75"/>`);
+      h === "side" && (hairFront = `<path d="${topCap}" fill="${hc}" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round"/><path d="M70 62 C86 44 120 42 136 66 C120 56 98 58 80 72 Z" fill="${hc}" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round"/>`);
+      h === "fringe" && (hairFront = `<path d="M64 76 C60 48 80 34 100 34 C120 34 140 48 136 76 L130 70 L123 76 L115 66 L107 75 L99 66 L91 75 L83 66 L75 75 L68 68Z" fill="${hc}" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round"/>`);
+      h === "wavy" && (hairFront = `<path d="M62 80 C56 52 74 30 100 30 C126 30 144 52 138 80 C134 70 128 66 122 68 C120 60 112 58 106 62 C100 56 92 56 88 62 C82 58 74 62 74 70 C68 68 64 72 62 80Z" fill="${hc}" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round"/>`);
+      h === "curly" && (hairFront = `<g fill="${hc}" stroke="${ink}" stroke-width="2">${[[66, 70], [70, 56], [80, 46], [92, 40], [106, 39], [119, 44], [129, 53], [134, 66], [86, 52], [100, 50], [114, 53]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="9"/>`).join("")}</g>`);
+      h === "spiky" && (hairFront = `<path d="M64 76 C62 64 66 56 70 52 L64 38 L80 44 L82 28 L94 40 L100 24 L108 40 L120 28 L120 44 L136 38 L130 52 C134 58 138 64 136 76 C130 62 118 56 100 56 C82 56 70 62 64 76Z" fill="${hc}" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round"/>`);
+      h === "afro" && (hairBack = `<circle cx="100" cy="68" r="48" fill="${hc}" stroke="${ink}" stroke-width="2.4"/>`, hairFront = `<path d="M66 72 C70 54 84 48 100 48 C116 48 130 54 134 72 C124 62 112 60 100 60 C88 60 76 62 66 72Z" fill="${hc}"/>`);
+      h === "long" && (hairBack = `<path d="M62 70 C60 44 80 32 100 32 C120 32 140 44 138 70 L142 132 Q120 140 112 126 L88 126 Q80 140 58 132 Z" fill="${hc}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/>`, hairFront = `<path d="M64 80 C60 50 80 36 100 36 C120 36 140 50 136 80 C126 60 112 54 98 56 C86 58 72 66 64 80Z" fill="${hc}" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round"/>`);
+      h === "bun" && (hairFront = `<circle cx="100" cy="30" r="12" fill="${hc}" stroke="${ink}" stroke-width="2.2"/><path d="${topCap}" fill="${hc}" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round"/>`);
+    } else {
+      // under a kumma, mussar, cap or beanie only the sideburns show
+      hairFront = c.hair === "none" ? "" : `<path d="M66 74 Q64 88 68 96 L71 96 Q70 86 71 76Z M134 74 Q136 88 132 96 L129 96 Q130 86 129 76Z" fill="${hc}"/>`;
+      c.hair === "long" && (hairBack = `<path d="M64 80 L60 128 Q80 136 88 124 L112 124 Q120 136 140 128 L136 80Z" fill="${hc}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/>`);
+    }
+    // hats from the old avatar maker, scaled onto this head (old eyes 49/71 at y 56 -> new 86/114 at y 84)
+    let hat = "";
+    if (c.hat === "crown") hat = `<path d="M70 52 L74 22 L88 38 L100 16 L112 38 L126 22 L130 52 Z" fill="#FFD83D" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><circle cx="100" cy="40" r="4" fill="#D8343F" stroke="${ink}" stroke-width="1.4"/><path d="M72 46 H128" stroke="#E0A800" stroke-width="3"/>`;
+    else if (hatOn) hat = `<g transform="translate(23.6 12.7) scale(1.273)">${duoHat(c.hat, id, cc)}</g>`;
+    let phones = ex === "headphones" ? `<path d="M64 82 Q62 30 100 30 Q138 30 136 82" fill="none" stroke="${ink}" stroke-width="6.5" stroke-linecap="round"/><path d="M64 82 Q62 30 100 30 Q138 30 136 82" fill="none" stroke="#7E5BEF" stroke-width="3.5" stroke-linecap="round"/><rect x="55" y="74" width="16" height="24" rx="7" fill="#7E5BEF" stroke="${ink}" stroke-width="2.2"/><rect x="129" y="74" width="16" height="24" rx="7" fill="#7E5BEF" stroke="${ink}" stroke-width="2.2"/>` : "";
+    // ---- face
+    let EL = 86, ER = 114, EY = 84;
+    let eyeR = c.eyes === "big" || c.eyes === "happy" || c.eyes === "wink" || c.eyes === "cool" ? [7.2, 8.4] : [0, 0];
+    let pup = c.eyes === "dots" ? 3.9 : 4.4;
+    let eye = (x) => (eyeR[0] ? `<ellipse class="cz-white" cx="${x}" cy="${EY}" rx="${eyeR[0]}" ry="${eyeR[1]}" fill="#fff" stroke="${ink}" stroke-width="1.8"/>` : "") + `<g class="cz-pup"><circle cx="${x}" cy="${EY + .5}" r="${pup}" fill="${ink}"/><circle cx="${x - 1.4}" cy="${EY - 1.3}" r="1.4" fill="#fff"/></g>`;
+    let lid = (x) => `<rect class="cz-lid" x="${x - 9}" y="${EY - 10}" width="18" height="0" fill="${sk}"/>`;
+    let arc = (x) => `<path d="M${x - 6.5} ${EY + 1} Q${x} ${EY - 7} ${x + 6.5} ${EY + 1}" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+    let eyesOpen = `<g class="cz-eo">${c.eyes === "wink" ? `<g class="cz-eyeL">${eye(EL)}${lid(EL)}</g>` + `<g class="cz-wink">${arc(ER)}</g><g class="cz-eyeR cz-wk">${eye(ER)}${lid(ER)}</g>` : `<g class="cz-eyeL">${eye(EL)}${lid(EL)}</g><g class="cz-eyeR">${eye(ER)}${lid(ER)}</g>`}${c.eyes === "happy" ? `<path d="M${EL - 7} ${EY + 9} Q${EL} ${EY + 6} ${EL + 7} ${EY + 9} M${ER - 7} ${EY + 9} Q${ER} ${EY + 6} ${ER + 7} ${EY + 9}" stroke="${skD}" stroke-width="2" fill="none" stroke-linecap="round"/>` : ""}</g>`;
+    let eyesShut = `<g class="cz-ec">${arc(EL)}${arc(ER)}</g>`;
+    let bw = c.brows === "thick" ? 4.4 : c.brows === "straight" ? 3.2 : 2.8;
+    let brow = (x, side) => c.brows === "straight" ? `<path class="cz-br${side}" d="M${x - 7} ${EY - 14} H${x + 7}" stroke="${hc}" stroke-width="${bw}" stroke-linecap="round"/>` : `<path class="cz-br${side}" d="M${x - 7} ${EY - 13} Q${x} ${EY - 17} ${x + 7} ${EY - 13}" stroke="${hc}" stroke-width="${bw}" fill="none" stroke-linecap="round"/>`;
+    let beard = c.beard === "stubble" ? `<path d="M68 92 Q70 118 100 121 Q130 118 132 92 Q128 108 114 110 Q100 113 86 110 Q72 108 68 92Z" fill="${hc}" opacity=".22"/>`
+      : c.beard === "moustache" ? `<path d="M88 99 Q94 94 100 97 Q106 94 112 99 Q106 99 100 100 Q94 99 88 99Z" fill="${hc}" stroke="${ink}" stroke-width="1"/>`
+      : c.beard === "beard" ? `<path d="M66 86 Q66 120 100 123 Q134 120 134 86 Q130 104 118 108 Q110 110 106 108 Q100 112 94 108 Q90 110 82 108 Q70 104 66 86Z" fill="${hc}" stroke="${ink}" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="100" cy="103.5" rx="11.5" ry="6.8" fill="${sk}"/><path d="M88 99 Q94 94 100 97 Q106 94 112 99 Q106 100 100 100 Q94 100 88 99Z" fill="${hc}"/>`
+      : c.beard === "goatee" ? `<path d="M90 110 Q100 124 110 110 Q100 115 90 110Z" fill="${hc}" stroke="${ink}" stroke-width="1.4"/><path d="M89 99 Q100 94 111 99 Q100 99 89 99Z" fill="${hc}"/>` : "";
+    let M = 102, mouths = {
+      smile: `<path d="M90 ${M - 2} Q100 ${M + 7} 110 ${M - 2}" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+      grin: `<path d="M87 ${M - 4} Q100 ${M + 13} 113 ${M - 4} Z" fill="#7A2A2A" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M89 ${M - 3.4} H111 L109 ${M} H91Z" fill="#fff"/>`,
+      teeth: `<path d="M88 ${M - 3} Q100 ${M + 9} 112 ${M - 3} Z" fill="#fff" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M100 ${M - 3} V${M + 3.5} M94 ${M - 3} V${M + 2} M106 ${M - 3} V${M + 2}" stroke="${ink}" stroke-width="1.2" opacity=".5"/>`,
+      o: `<ellipse cx="100" cy="${M + 1}" rx="5" ry="6" fill="#7A2A2A" stroke="${ink}" stroke-width="2.4"/>`,
+      flat: `<path d="M92 ${M} H108" stroke="${ink}" stroke-width="3" stroke-linecap="round"/>`,
+      tongue: `<path d="M89 ${M - 3} Q100 ${M + 9} 111 ${M - 3}Z" fill="#7A2A2A" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M95 ${M + 2} Q100 ${M + 11} 105 ${M + 2}Z" fill="#F27A8A"/>`,
+      sad: `<path d="M92 ${M + 3} Q100 ${M - 3} 108 ${M + 3}" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+      det: `<path d="M91 ${M} Q101 ${M + 5} 110 ${M - 3}" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+      cele: `<path d="M85 ${M - 5} Q100 ${M + 17} 115 ${M - 5} Z" fill="#7A2A2A" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M93 ${M + 4} Q100 ${M + 11} 107 ${M + 4} Q100 ${M + 2} 93 ${M + 4}Z" fill="#F27A8A"/><path d="M87 ${M - 4.4} H113 L111 ${M - 1} H89Z" fill="#fff"/>`,
+      think: `<path d="M94 ${M + 1} Q102 ${M - 1} 109 ${M + 2}" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>`
+    };
+    let mouthG = Object.keys(mouths).map((k) => `<g class="cz-m cz-m-${k}">${mouths[k]}</g>`).join("");
+    let glasses = c.gl === "round" ? `<g fill="rgb(255 255 255 / .18)" stroke="${ink}" stroke-width="2.6"><circle cx="${EL}" cy="${EY}" r="11"/><circle cx="${ER}" cy="${EY}" r="11"/><path d="M97 ${EY} H103 M75 ${EY - 2} L66 ${EY - 5} M125 ${EY - 2} L134 ${EY - 5}" fill="none"/></g>`
+      : c.gl === "square" ? `<g fill="rgb(255 255 255 / .18)" stroke="${ink}" stroke-width="2.6"><rect x="${EL - 12}" y="${EY - 9}" width="23" height="18" rx="4"/><rect x="${ER - 11}" y="${EY - 9}" width="23" height="18" rx="4"/><path d="M97 ${EY - 2} H103 M74 ${EY - 3} L66 ${EY - 6} M126 ${EY - 3} L134 ${EY - 6}" fill="none"/></g>`
+      : c.gl === "sun" ? `<g stroke="${ink}" stroke-width="2.6"><path d="M73 ${EY - 8} H98 V${EY + 1} Q98 ${EY + 10} 86 ${EY + 10} Q73 ${EY + 10} 73 ${EY + 1}Z M102 ${EY - 8} H127 V${EY + 1} Q127 ${EY + 10} 114 ${EY + 10} Q102 ${EY + 10} 102 ${EY + 1}Z" fill="#1E2550"/><path d="M98 ${EY - 5} H102 M73 ${EY - 6} L66 ${EY - 8} M127 ${EY - 6} L134 ${EY - 8}" fill="none"/></g><path d="M77 ${EY - 5} l6 0 M106 ${EY - 5} l6 0" stroke="#fff" stroke-width="2" opacity=".5" stroke-linecap="round"/>` : "";
+    let ears = `<g class="cz-ears"><ellipse cx="64.5" cy="86" rx="7.5" ry="9.5" fill="${sk}" stroke="${ink}" stroke-width="2.2"/><ellipse cx="135.5" cy="86" rx="7.5" ry="9.5" fill="${sk}" stroke="${ink}" stroke-width="2.2"/><path d="M64 82 q3 4 0 8 M136 82 q-3 4 0 8" stroke="${skD}" stroke-width="2" fill="none"/></g>`;
+    let head = `<g class="cz-head">${hairBack}${ears}<path d="${faceP}" fill="${sk}" stroke="${ink}" stroke-width="2.4"/><ellipse cx="80" cy="99" rx="6.5" ry="4" fill="#FF7A6B" opacity=".22"/><ellipse cx="120" cy="99" rx="6.5" ry="4" fill="#FF7A6B" opacity=".22"/>`
+      + `<g class="cz-face">${beard}<path d="M99 88 Q104 94 99 96" stroke="${skD}" stroke-width="2.4" fill="none" stroke-linecap="round"/>${eyesOpen}${eyesShut}${brow(EL, "L")}${brow(ER, "R")}<g class="cz-mouth">${mouthG}</g>${glasses}</g>`
+      + `<g class="cz-top">${hairFront}${hat}${phones}</g></g>`;
+    let neck = `<path d="M90 106 H110 V128 Q100 134 90 128Z" fill="${sk}" stroke="${ink}" stroke-width="2.4"/><path d="M90 112 Q100 120 110 112 V118 Q100 124 90 118Z" fill="${skD}" opacity=".55"/>`;
+    let body = `<g class="cz-body">${exBack}${hood}${T}${exFront}${neck}${head}${arm("L", pose[0], pose[1])}${arm("R", pose[2], pose[3])}</g>`;
+    let mm = { idle: c.mouth, happy: "grin", celebrate: "cele", sad: "sad", excited: "det", surprised: "o", think: "think", proud: "teeth" }[mood] || c.mouth;
+    let attrs = `class="epzc ${opt.cls || ""}" data-mood="${mood}" data-m="${mm}" data-base-m="${c.mouth}" data-pose="${opt.pose || c.pose}" data-eyes="${c.eyes}"${opt.still ? ' data-still="1"' : ""}`;
+    if (frame === "bust") {
+      let bg = opt.bg === !1 ? "" : `<circle cx="100" cy="84" r="72" fill="${DUO_BG[c.bg]}"/>`;
+      return `<svg ${attrs} width="${size}" height="${size}" viewBox="28 12 144 144" role="img" aria-label="${esc(opt.label || "My character")}"><defs><clipPath id="${id}c"><circle cx="100" cy="84" r="72"/></clipPath></defs><g clip-path="url(#${id}c)">${bg}${body}</g></svg>`;
+    }
+    let shadow = `<ellipse class="cz-shadow" cx="100" cy="236" rx="56" ry="5" fill="#000" opacity=".12"/>`;
+    return `<svg ${attrs} width="${Math.round(size * 200 / 240)}" height="${size}" viewBox="0 0 200 240" role="img" aria-label="${esc(opt.label || "My character")}" style="overflow:visible">${shadow}${body}</svg>`;
+  }
+  // the student's character (state.avatar, or a friendly default until they make one)
+  var czMe = (opt = {}) => czSvg(state.avatar || DUO_DEF, Object.assign({ cls: "cz-me" }, opt));
+
+  // ---------------------------------------------------------------- the animation loop
+  var CZ = (function () {
+    var items = new Map(), raf = 0, prev = 0, reduce = false, pointer = null;
+    try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+    var K = 150, D = 19; // spring stiffness and damping
+    var MOUTH = { happy: "grin", celebrate: "cele", sad: "sad", excited: "det", surprised: "o", think: "think", proud: "teeth" };
+    function setup(svg) {
+      let q = (s) => svg.querySelector(s), qa = (s) => Array.from(svg.querySelectorAll(s));
+      let pose = CZ_POSES[svg.dataset.pose] || CZ_POSES.relaxed;
+      let it = {
+        svg, body: q(".cz-body"), head: q(".cz-head"), face: q(".cz-face"), top: q(".cz-top"), ears: q(".cz-ears"), pups: qa(".cz-pup"), lids: qa(".cz-lid"),
+        armL: q(".cz-armL"), armR: q(".cz-armR"), foreL: q(".cz-foreL"), foreR: q(".cz-foreR"),
+        basePose: svg.dataset.pose, baseMood: svg.dataset.mood, sleepy: svg.dataset.eyes === "cool",
+        x: { aL: pose[0], fL: pose[1], aR: pose[2], fR: pose[3], tilt: 0, turn: 0, lx: 0, ly: 0, y: 0 }, v: {}, t: {},
+        nextBlink: 0, blink: 0, blinkT: -1, nextLook: 0, hop: null, until: 0, phase: Math.random() * 6
+      };
+      for (let k in it.x) it.t[k] = it.x[k], it.v[k] = 0;
+      applyPose(it, svg.dataset.pose);
+      return it;
+    }
+    function applyPose(it, name) { let p = CZ_POSES[name] || CZ_POSES.relaxed; it.t.aL = p[0], it.t.fL = p[1], it.t.aR = p[2], it.t.fR = p[3], it.pose = name; }
+    function setMood(it, mood) { it.mood = mood; it.svg.dataset.mood = mood; it.svg.dataset.m = MOUTH[mood] || it.svg.dataset.baseM; }
+    function scan() {
+      document.querySelectorAll("svg.epzc:not([data-still])").forEach((s) => { items.has(s) || items.set(s, setup(s)); });
+      items.forEach((it, s) => { s.isConnected || items.delete(s); });
+      if (items.size && !raf) prev = 0, raf = requestAnimationFrame(tick);
+    }
+    function tick(now) {
+      raf = 0;
+      if (!items.size) return;
+      let dt = prev ? Math.min(.05, (now - prev) / 1e3) : .016; prev = now;
+      let t = now / 1e3;
+      items.forEach((it) => {
+        if (!it.svg.isConnected) return;
+        if (document.hidden) return;
+        // back to the resting pose and mood when a reaction ends
+        if (it.until && now > it.until) { it.until = 0; it.after ? (it.after(), it.after = null) : (applyPose(it, it.basePose), setMood(it, it.baseMood), it.t.tilt = 0, it.t.ly = 0); }
+        // look around now and then (or follow the pointer)
+        if (!reduce && now > it.nextLook && !it.until) {
+          if (pointer && now - pointer.at < 2500) {
+            let r = it.svg.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * .35;
+            it.t.lx = Math.max(-1, Math.min(1, (pointer.x - cx) / 260)), it.t.ly = Math.max(-1, Math.min(1, (pointer.y - cy) / 260));
+            it.nextLook = now + 120;
+          } else {
+            let r = Math.random();
+            r < .35 ? (it.t.lx = 0, it.t.ly = 0) : (it.t.lx = (Math.random() * 2 - 1) * .9, it.t.ly = (Math.random() * 2 - 1) * .45);
+            it.t.tilt = Math.random() < .3 ? (Math.random() * 2 - 1) * 5 : 0;
+            // a resting character sometimes changes pose
+            if (it.basePose === "relaxed" && Math.random() < .12) applyPose(it, ["hips", "think", "relaxed"][Math.floor(Math.random() * 3)]), it.until = now + 2600;
+            it.nextLook = now + 1600 + Math.random() * 3200;
+          }
+          it.t.turn = it.t.lx * .8;
+        }
+        // blink
+        if (now > it.nextBlink) { it.blinkT = now; it.nextBlink = now + 2200 + Math.random() * 4200; Math.random() < .18 && (it.nextBlink = now + 260); }
+        let lidAmt = it.sleepy ? .42 : 0;
+        if (it.blinkT >= 0) { let p = (now - it.blinkT) / 150; p >= 1 ? it.blinkT = -1 : lidAmt = Math.max(lidAmt, 1 - Math.abs(1 - 2 * p)); }
+        // springs
+        for (let k in it.x) { let a = (it.t[k] - it.x[k]) * K - it.v[k] * D; it.v[k] += a * dt; it.x[k] += it.v[k] * dt; }
+        let x = it.x, breathe = reduce ? 0 : Math.sin(t * 1.7 + it.phase), wave = it.pose === "wave" ? Math.sin(t * 9) * 20 : 0, hopY = 0;
+        if (it.hop) { let p = (now - it.hop.s) / it.hop.d; p >= 1 ? it.hop = null : hopY = -it.hop.h * Math.abs(Math.sin(p * Math.PI * it.hop.n)); }
+        let pump = it.pose === "yes" ? Math.sin(t * 10) * 7 : 0, bob = it.mood === "excited" ? Math.abs(Math.sin(t * 7)) * -3 : 0;
+        it.body && it.body.setAttribute("transform", `translate(0 ${(x.y + hopY + bob).toFixed(2)}) rotate(${(breathe * .5).toFixed(2)} 100 236) translate(100 236) scale(1 ${(1 + breathe * .008).toFixed(4)}) translate(-100 -236)`);
+        it.armL && it.armL.setAttribute("transform", `translate(61 135) rotate(${(x.aL + breathe * 1.2).toFixed(2)})`);
+        it.armR && it.armR.setAttribute("transform", `translate(139 135) rotate(${(x.aR - breathe * 1.2 + pump).toFixed(2)})`);
+        it.foreL && it.foreL.setAttribute("transform", `translate(0 40) rotate(${x.fL.toFixed(2)})`);
+        it.foreR && it.foreR.setAttribute("transform", `translate(0 40) rotate(${(x.fR + wave).toFixed(2)})`);
+        it.head && it.head.setAttribute("transform", `rotate(${x.tilt.toFixed(2)} 100 120)`);
+        it.face && it.face.setAttribute("transform", `translate(${(x.turn * 4.5).toFixed(2)} ${(x.ly * 1.6).toFixed(2)})`);
+        it.top && it.top.setAttribute("transform", `translate(${(x.turn * 1.6).toFixed(2)} 0)`);
+        it.ears && it.ears.setAttribute("transform", `translate(${(-x.turn * 2).toFixed(2)} 0)`);
+        it.pups.forEach((p) => p.setAttribute("transform", `translate(${(x.lx * 2.6).toFixed(2)} ${(x.ly * 2.2).toFixed(2)})`));
+        it.lids.forEach((l) => l.setAttribute("height", (20 * lidAmt).toFixed(2)));
+      });
+      raf = requestAnimationFrame(tick);
+    }
+    // reactions: "happy" (right answer), "sad" (mistake, gentle), "celebrate", "excited" (before a challenge), "surprised", "think", "wave", "proud"
+    var R = {
+      happy: { pose: "yes", ms: 1500, hop: [1, 9], tilt: 6 },
+      sad: { pose: "down", ms: 1300, tilt: -4, ly: .9, then: "encourage" },
+      encourage: { mood: "excited", pose: "relaxed", ms: 900, tilt: 3 },
+      celebrate: { pose: "cheer", ms: 2600, hop: [2, 15] },
+      excited: { pose: "ready", ms: 2200, hop: [1, 6] },
+      surprised: { pose: "shrug", ms: 900, tilt: -6 },
+      think: { pose: "think", ms: 2600, lx: .7, ly: -.8, tilt: 4 },
+      wave: { mood: "happy", pose: "wave", ms: 2000, tilt: 5 },
+      proud: { pose: "hips", ms: 2000, tilt: 3 }
+    };
+    function react(target, name, opt = {}) {
+      scan();
+      let r = R[name] || R.happy, list = [];
+      if (!target) items.forEach((it) => it.svg.classList.contains("cz-me") && list.push(it));
+      else (typeof target === "string" ? Array.from(document.querySelectorAll(target)) : [target]).forEach((s) => { s = s.matches && s.matches("svg.epzc") ? s : s.querySelector && s.querySelector("svg.epzc"); s && items.get(s) && list.push(items.get(s)); });
+      let now = performance.now();
+      list.forEach((it) => {
+        if (reduce) { setMood(it, r.mood || name); it.until = now + (opt.ms || r.ms); return; }
+        applyPose(it, opt.pose || r.pose); setMood(it, r.mood || name);
+        it.t.tilt = r.tilt || 0; r.ly != null && (it.t.ly = r.ly); r.lx != null && (it.t.lx = r.lx, it.t.turn = r.lx * .8);
+        r.hop && (it.hop = { s: now, n: r.hop[0], h: r.hop[1], d: 420 * r.hop[0] });
+        it.until = opt.hold ? Infinity : now + (opt.ms || r.ms);
+        it.after = r.then ? () => { let n = R[r.then]; applyPose(it, n.pose); setMood(it, n.mood); it.t.tilt = n.tilt || 0; it.t.ly = 0; it.until = performance.now() + n.ms; it.after = null; } : null;
+        it.nextLook = now + (opt.ms || r.ms);
+        name === "celebrate" && czSparks(it.svg);
+      });
+      return list.length;
+    }
+    function release(target) { items.forEach((it) => { if (!target || it.svg === target) it.until = 1; }); }
+    function lookAt(x, y) { let now = performance.now(); pointer = { x, y, at: now }; items.forEach((it) => it.nextLook = 0); }
+    window.addEventListener("pointermove", (e) => { e.pointerType === "mouse" && (pointer = { x: e.clientX, y: e.clientY, at: performance.now() }); }, { passive: true });
+    window.addEventListener("pointerdown", (e) => lookAt(e.clientX, e.clientY), { passive: true });
+    var mo = new MutationObserver(() => { clearTimeout(mo.t); mo.t = setTimeout(scan, 30); });
+    mo.observe(document.documentElement, { childList: true, subtree: true });
+    document.addEventListener("visibilitychange", () => { prev = 0; });
+    setTimeout(scan, 0);
+    return { react, release, scan, lookAt };
+  })();
+  // stars and confetti made of highlighter and pen colours, around a character
+  function czSparks(el) {
+    if (!el || !el.getBoundingClientRect) return;
+    let r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * .4, cols = ["#FFD83D", "#2B41C4", "#D8343F", "#178A4C"];
+    for (let i = 0; i < 14; i++) {
+      let s = document.createElement("i"), a = Math.PI * 2 * i / 14 + Math.random() * .4, d = 60 + Math.random() * 70;
+      s.className = "cz-spark" + (i % 3 ? "" : " star"), s.style.left = cx + "px", s.style.top = cy + "px", s.style.setProperty("--dx", Math.cos(a) * d + "px"), s.style.setProperty("--dy", Math.sin(a) * d - 30 + "px"), s.style.setProperty("--c", cols[i % 4]), s.style.animationDelay = Math.random() * .12 + "s";
+      document.body.appendChild(s), setTimeout(() => s.remove(), 1100);
+    }
+  }
+  // ---------------------------------------------------------------- the character maker (#avatar)
+  function czMaker() {
+    let cfg = czCfg(state.avatar || DUO_DEF), tab = "outfit", isNew = !state.avatar;
+    let TABS3 = [["outfit", "Outfit", "👕"], ["head", "Headwear", "🧢"], ["hair", "Hair", "💇"], ["face", "Face", "🙂"], ["beard", "Beard", "🧔"], ["skin", "Skin", "✋"], ["extra", "Extras", "🎒"], ["pose", "Pose", "🕺"], ["bg", "Circle", "⭕"]];
+    // each tab: groups of [key, values or colour list]
+    let opts = (k) => (DUO_PARTS[k] || CZ_NEW[k]).map((p) => p[0]);
+    let om = (k, v) => !!CZ_OMANI[k + ":" + v];
+    let split = (k) => { let all = opts(k), a = all.filter((v) => om(k, v)), b = all.filter((v) => !om(k, v)); return cfg.style === "omani" ? [["Omani", a], ["More", b]] : [["Everyday", b], ["Omani", a]]; };
+    let label = (k, v) => ((DUO_PARTS[k] || CZ_NEW[k]).find((p) => p[0] === v) || [, v])[1];
+    function sections() {
+      return tab === "outfit" ? [["Clothes", "cl", split("cl")], ["Colour", "cc", DUO_CLOTHC]]
+        : tab === "head" ? [["Headwear", "hat", split("hat")]]
+        : tab === "hair" ? [["Hair style", "hair", [["", opts("hair")]]], ["Hair colour", "hc", DUO_HAIRC]]
+        : tab === "face" ? [["Face shape", "face", [["", opts("face")]]], ["Eyes", "eyes", [["", opts("eyes")]]], ["Eyebrows", "brows", [["", opts("brows")]]], ["Smile", "mouth", [["", opts("mouth")]]], ["Glasses", "gl", [["", opts("gl")]]]]
+        : tab === "beard" ? [["Beard", "beard", split("beard")]]
+        : tab === "skin" ? [["Skin", "skin", DUO_SKIN]]
+        : tab === "extra" ? [["Extras", "extra", [["", opts("extra")]]]]
+        : tab === "pose" ? [["Favourite pose", "pose", [["", opts("pose")]]]]
+        : [["Circle colour", "bg", DUO_BG]];
+    }
+    let thumb = (k, v) => {
+      let c2 = Object.assign({}, cfg, { [k]: v });
+      k === "hair" && c2.hat !== "crown" && (c2.hat = "none");
+      let lockKey = k === "cl" || k === "hat" || k === "extra" ? k + ":" + v : "", locked = CZ_LOCKED[lockKey] && czOwned().indexOf(lockKey) < 0;
+      let full = k === "cl" || k === "pose" || k === "extra";
+      return `<button type="button" class="cz-opt${cfg[k] === v ? " on" : ""}${locked ? " locked" : ""}" data-k="${k}" data-v="${v}" aria-pressed="${cfg[k] === v}"><span class="cz-thumb">${czSvg(c2, { size: full ? 92 : 74, frame: full ? "full" : "bust", still: !0, pose: k === "pose" ? v : "relaxed", bg: !1 })}</span><span class="cz-opt-l">${locked ? "🔒 " : ""}${esc(label(k, v))}</span></button>`;
+    };
+    function drawStage(reaction) {
+      let st = app.querySelector("#cz-stage");
+      st.innerHTML = czSvg(cfg, { size: 250, cls: "cz-me cz-hero" });
+      reaction && setTimeout(() => CZ.react(st, reaction), 30);
+    }
+    function drawOpts() {
+      app.querySelector("#cz-tabs").innerHTML = TABS3.map(([k, l, ic]) => `<button type="button" role="tab" data-t="${k}" aria-selected="${k === tab}"><span>${ic}</span>${l}</button>`).join("");
+      app.querySelector("#cz-style").innerHTML = CZ_NEW.style.map(([v, l]) => `<button type="button" data-style="${v}" class="${cfg.style === v ? "on" : ""}">${v === "omani" ? "Omani style" : "Everyday style"}</button>`).join("");
+      app.querySelector("#cz-opts").innerHTML = sections().map(([title, k, list]) => `<h3 class="cz-h">${title}</h3>` + (Array.isArray(list[0]) ? list.map(([g, vals]) => vals.length ? `${g ? `<p class="cz-g">${g}</p>` : ""}<div class="cz-grid">${vals.map((v) => thumb(k, v)).join("")}</div>` : "").join("") : `<div class="cz-swatches">${list.map((col, i) => `<button type="button" class="cz-sw${cfg[k] === i ? " on" : ""}" data-k="${k}" data-v="${i}" style="--sw:${col}" aria-label="${title} ${i + 1}"></button>`).join("")}</div>`)).join("");
+    }
+    app.dataset.tab = "home";
+    app.innerHTML = `
+    <header class="top">
+      <a class="back-btn" href="#home">${icon("back", 20)} Home</a>
+      <button class="btn btn-primary" id="cz-save" type="button">${icon("check", 18)} Save</button>
+    </header>
+    <section class="cz-make">
+      <div class="cz-stage-wrap"><div class="cz-floor"></div><div id="cz-stage" class="cz-stage"></div>
+        <div class="cz-try" aria-label="Try a reaction">${[["happy", "😄"], ["celebrate", "🎉"], ["sad", "😕"], ["excited", "🔥"], ["think", "🤔"], ["wave", "👋"]].map(([r, e]) => `<button type="button" data-try="${r}" aria-label="${r}">${e}</button>`).join("")}</div>
+      </div>
+      <h1 class="cz-title">${isNew ? "Create your character" : "Your character"}</h1>
+      <p class="cz-sub">This is you on EPZ. It learns, battles and celebrates with you.</p>
+      <div class="cz-style" id="cz-style"></div>
+      <button type="button" class="btn btn-ghost btn-sm cz-dice" id="cz-dice">🎲 Surprise me</button>
+    </section>
+    <nav class="cz-tabs" id="cz-tabs" role="tablist"></nav>
+    <section class="cz-opts" id="cz-opts"></section>`;
+    let onClick = (e) => {
+      if (!app.querySelector("#cz-opts")) return;
+      let t = e.target.closest("[data-t]"), o = e.target.closest("[data-k]"), s = e.target.closest("[data-style]"), tr = e.target.closest("[data-try]");
+      if (tr) return CZ.react(app.querySelector("#cz-stage"), tr.dataset.try);
+      if (s) return cfg.style = s.dataset.style, drawOpts(), CZ.react(app.querySelector("#cz-stage"), "proud");
+      if (t) return tab = t.dataset.t, drawOpts(), app.querySelector("#cz-opts").scrollTo?.(0, 0);
+      if (o) {
+        let k = o.dataset.k, v = /^(skin|hc|cc|bg)$/.test(k) ? Number(o.dataset.v) : o.dataset.v;
+        if (o.classList.contains("locked")) return toast("Win this in a Boss Rush chest (Book → Boss Rush).", "info", 2600), CZ.react(app.querySelector("#cz-stage"), "surprised");
+        cfg[k] = v, k === "hair" && cfg.hat !== "crown" && (cfg.hat = "none");
+        let rx = k === "pose" ? null : k === "cl" || k === "hat" ? "proud" : k === "extra" ? "happy" : k === "mouth" || k === "eyes" ? "happy" : null;
+        drawStage(rx), k === "pose" && CZ.react(app.querySelector("#cz-stage"), v === "wave" ? "wave" : "proud", { pose: v, ms: 900 });
+        app.querySelector("#cz-stage").classList.remove("cz-swap"), void app.querySelector("#cz-stage").offsetWidth, app.querySelector("#cz-stage").classList.add("cz-swap");
+        drawOpts();
+      }
+    };
+    app.addEventListener("click", onClick), cleanup = () => app.removeEventListener("click", onClick);
+    app.querySelector("#cz-dice").addEventListener("click", () => {
+      let r = (n) => Math.floor(Math.random() * n), p = (k) => { let l = opts(k).filter((v) => czHas(k, v)); return l[r(l.length)]; };
+      let omani = cfg.style === "omani";
+      cfg = czCfg(Object.assign({}, cfg, { skin: r(DUO_SKIN.length), hair: p("hair"), hat: omani ? ["kumma1", "kumma2", "kumma3", "massar1", "massar2", "massar3", "none"][r(7)] : Math.random() < .6 ? "none" : p("hat"), hc: r(DUO_HAIRC.length), eyes: p("eyes"), mouth: p("mouth"), gl: Math.random() < .7 ? "none" : p("gl"), cl: omani ? ["dish", "dish", "bisht"][r(3)] : ["tee", "hoodie", "shirt", "sweater", "jersey", "uniform", "jacket"][r(7)], cc: omani ? (Math.random() < .7 ? 0 : r(DUO_CLOTHC.length)) : r(DUO_CLOTHC.length), bg: r(DUO_BG.length), face: p("face"), brows: p("brows"), beard: Math.random() < .6 ? "none" : p("beard") }));
+      drawStage("surprised"), drawOpts();
+    });
+    app.querySelector("#cz-save").addEventListener("click", () => {
+      state.avatar = czCfg(cfg), save(), CZ.react(app.querySelector("#cz-stage"), "celebrate"), toast(isNew ? "Welcome to EPZ! Your character is ready." : "Your character is saved!", "success", 2200);
+      setTimeout(() => go("home"), 1300);
+    });
+    drawStage("wave"), drawOpts();
+  }
+
+  // ---------------------------------------------------------------- epz-patch:motion — feedback for every important action
+  var czDock = null;
+  // the character stands on the answer bar during every round and reacts to each answer
+  function czDockSync() {
+    let foot = document.querySelector(".play-foot");
+    if (!foot || !document.body.classList.contains("playing")) { czDock && (czDock.remove(), czDock = null); document.body.classList.remove("cz-docked"); return; }
+    if (!czDock || !foot.contains(czDock)) {
+      czDock && czDock.remove();
+      czDock = document.createElement("div"), czDock.className = "cz-dock", czDock.innerHTML = czMe({ size: 92 }), foot.appendChild(czDock), document.body.classList.add("cz-docked");
+      setTimeout(() => CZ.react(czDock, "think"), 400);
+    }
+    let st = foot.classList.contains("good") ? "good" : foot.classList.contains("bad") ? "bad" : "";
+    if (st !== czDock.dataset.st) { czDock.dataset.st = st; st && CZ.react(czDock, st === "good" ? "happy" : "sad"); }
+  }
+  // points: count up and send stars into the points chip whenever they grow
+  function czPoints() {
+    let chip = document.querySelector(".pts-chip b");
+    if (!chip || chip.dataset.cz) return;
+    chip.dataset.cz = 1;
+    let now = totalPoints(), raw = null;
+    try { raw = sessionStorage.getItem("epz-pts-seen"), sessionStorage.setItem("epz-pts-seen", now); } catch (e) {}
+    let was = Number(raw);
+    if (raw === null || isNaN(was) || now <= was) return;
+    let host = chip.closest(".pts-chip"), r = host.getBoundingClientRect(), t0 = performance.now(), d = 1100;
+    for (let i = 0; i < Math.min(10, 3 + Math.floor((now - was) / 20)); i++) {
+      let s = document.createElement("i");
+      s.className = "cz-fly", s.style.left = innerWidth / 2 + (Math.random() * 120 - 60) + "px", s.style.top = innerHeight * .55 + (Math.random() * 80 - 40) + "px";
+      s.style.setProperty("--tx", r.left + r.width / 2 + "px"), s.style.setProperty("--ty", r.top + r.height / 2 + "px"), s.style.animationDelay = i * 70 + "ms";
+      document.body.appendChild(s), setTimeout(() => s.remove(), 1400);
+    }
+    let step = (n) => { let p = Math.min(1, (n - t0) / d), e = 1 - Math.pow(1 - p, 3); chip.textContent = fmtNum(Math.round(was + (now - was) * e)); p < 1 ? requestAnimationFrame(step) : (host.classList.add("cz-pop"), setTimeout(() => host.classList.remove("cz-pop"), 500)); };
+    chip.textContent = fmtNum(was), setTimeout(() => requestAnimationFrame(step), 350);
+    let plus = document.createElement("span"); plus.className = "cz-plus"; plus.textContent = "+" + fmtNum(now - was); host.appendChild(plus); setTimeout(() => plus.remove(), 1800);
+  }
+  // ranking: when my place improves, my row climbs and my character celebrates
+  function czRanking() {
+    let li = document.querySelector(".board li.me:not([data-cz])");
+    if (!li) return;
+    li.dataset.cz = 1;
+    let rk = Number((li.querySelector(".rk") || {}).textContent), key = "epz-rank-seen", was = Number(localStorage.getItem(key) || 0);
+    try { localStorage.setItem(key, rk); } catch (e) {}
+    if (!rk) return;
+    let nm = li.querySelector(".nm");
+    if (nm && !nm.querySelector(".cz-rank-av")) { let old = nm.querySelector(".duo-av-mini"); old && old.remove(); nm.insertAdjacentHTML("afterbegin", `<span class="cz-rank-av">${czMe({ size: 34, frame: "bust" })}</span>`); }
+    if (was && rk < was) {
+      let rows = Math.min(was - rk, 6), h = li.getBoundingClientRect().height || 56;
+      li.style.setProperty("--from", rows * h + "px"), li.classList.add("cz-climb");
+      setTimeout(() => { CZ.react(li, "celebrate"); toast(`You climbed to #${rk}! (from #${was})`, "success", 3200); }, 700);
+    } else li.classList.add("cz-glow");
+  }
+  // battles get an arena entrance: your character against the opponent, then 3-2-1
+  function czArena(o, go2) {
+    let ov = document.createElement("div");
+    ov.className = "cz-arena", ov.innerHTML = `<div class="cz-ar-bg"></div><div class="cz-ar-in"><p class="cz-ar-kicker">${esc(o.kicker || "Battle")}</p><div class="cz-ar-vs"><div class="cz-ar-me">${czMe({ size: 190, pose: "ready", mood: "excited" })}<b>${esc(firstName(state.name))}</b></div><div class="cz-ar-x">VS</div><div class="cz-ar-foe">${o.foe}<b>${esc(o.foeName)}</b></div></div><div class="cz-ar-count" id="cz-count"></div></div>`;
+    document.body.appendChild(ov), document.body.classList.add("cz-arena-on");
+    setTimeout(() => CZ.react(ov.querySelector(".cz-ar-me"), "excited", { ms: 3200 }), 300);
+    let n = 3, el = ov.querySelector("#cz-count"), skip = () => { clearInterval(iv); ov.classList.add("out"); setTimeout(() => { ov.remove(); document.body.classList.remove("cz-arena-on"); }, 380); go2(); };
+    let iv = setInterval(() => { if (n > 0) { el.textContent = n, el.classList.remove("go"), void el.offsetWidth, el.classList.add("go"); n--; } else { el.textContent = "GO!", clearInterval(iv), setTimeout(skip, 450); } }, 700);
+    ov.addEventListener("click", () => { n = -1; skip(); }, { once: !0 });
+  }
+  var _bossBattle = bossBattle;
+  bossBattle = function (b) { czArena({ kicker: "Boss Battle", foe: `<svg width="170" height="170" viewBox="0 0 200 200" class="cz-ar-boss">${b.art(b.color, b.dark)}</svg>`, foeName: b.name }, () => _bossBattle(b)); };
+  var _duelBattle = duelBattle;
+  duelBattle = function (o) { let f = o && o.foe || {}; czArena({ kicker: o && o.mode === "practice" ? "Training battle" : "Challenge a friend", foe: `<span class="cz-ar-init">${esc(initials(f.name || "Bot"))}</span>`, foeName: f.name || "Bot" }, () => _duelBattle(o)); };
+  // page changes: the new page slides in, its parts arrive one after another
+  var czLastHash = location.hash;
+  window.addEventListener("hashchange", () => {
+    let a = document.getElementById("app");
+    if (!a || location.hash === czLastHash) return;
+    czLastHash = location.hash, a.classList.remove("cz-enter"), void a.offsetWidth, a.classList.add("cz-enter");
+    clearTimeout(a.czT), a.czT = setTimeout(() => a.classList.remove("cz-enter"), 700);
+  });
+  // results screens: the character celebrates (or encourages) once the score is shown
+  function czResults() {
+    let p = document.querySelector(".duo-praise:not([data-cz])");
+    if (!p) return;
+    p.dataset.cz = 1;
+    let acc = Number(p.dataset.acc || 0);
+    setTimeout(() => CZ.react(p, acc >= 80 ? "celebrate" : acc >= 50 ? "happy" : "encourage"), 450);
+  }
+  // home: wave hello once per visit
+  function czHome() {
+    let b = document.querySelector("#me-btn:not([data-cz])");
+    if (!b) return;
+    b.dataset.cz = 1;
+    sessionStorage.getItem("epz-waved") || (sessionStorage.setItem("epz-waved", 1), setTimeout(() => CZ.react(b, "wave"), 500));
+  }
+  // big numbers on the dashboard count up when the page opens
+  function czCounts() {
+    document.querySelectorAll(".dh-stats b:not([data-cz])").forEach((b) => {
+      b.dataset.cz = 1;
+      let m = b.textContent.match(/^(#?)([\d,]+)$/);
+      if (!m) return;
+      let to = Number(m[2].replace(/,/g, "")), t0 = 0, step = (n) => { t0 = t0 || n; let p = Math.min(1, (n - t0) / 900), e = 1 - Math.pow(1 - p, 3); b.textContent = m[1] + fmtNum(Math.round(to * e)); p < 1 && requestAnimationFrame(step); };
+      to > 1 && requestAnimationFrame(step);
+    });
+  }
+  var czMo = new MutationObserver(() => { clearTimeout(czMo.t); czMo.t = setTimeout(() => { try { czDockSync(), czPoints(), czRanking(), czResults(), czHome(), czCounts(); } catch (e) {} }, 40); });
+  czMo.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
+
   // tap the hearts chip: how hearts work
   document.addEventListener("click", (e) => {
     if (!e.target.closest || !e.target.closest("[data-duo-hp]")) return;
