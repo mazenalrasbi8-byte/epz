@@ -5035,7 +5035,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   }
   var WOTD_ACTS = ["meaning", "sentence", "listen", "scramble", "write", "synonym"], WOTD_PTS = { first: 10, second: 5, bonus: 20 };
   function wotdPoints(keep = null) {
-    let n = bossPts(keep) + luckPts(keep) + duelPts(keep);
+    let n = bossPts(keep) + luckPts(keep) + duelPts(keep) + grPts(keep);
     for (let r of Object.values(state.wotd || {})) {
       for (let a of Object.values(r.a || {})) (!keep || keep(a.at)) && (n += a.p || 0);
       r.b && (!keep || keep(r.b.at)) && (n += r.b.p || 0);
@@ -6198,13 +6198,48 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     location.hash === `#${name}` ? route2() : location.hash = name;
   }
   // epz-patch:theme — bottom tab bar
-  var TABS = [["home", "Home", "home"], ["skills", "Practice", "book"], ["word", "Word", "calendar"], ["ranking", "Ranking", "trophy"], ["duel", "Challenge", "duel"]];
+  var TABS = [["home", "Home", "home"], ["skills", "Practice", "book"], ["word", "Word", "calendar"], ["ranking", "Ranking", "trophy"], ["gaterush", "Gate Rush", "gate"]]; /* epz-patch:gaterush (was the Challenge tab) */
   function drawTabs(h) {
     let nav = document.getElementById("tabbar");
     if (!nav) return;
-    let show = !!(me().name && me().grade) && h !== "setup", tab = h === "book" ? "book" /* epz-patch:book */ : h === "skills" || h === "quick" || h.startsWith("play-") ? "skills" : h === "ranking" ? "ranking" : h === "duel" ? "duel" : h === "dashboard" ? "dashboard" : h === "word" || h === "words" || h.startsWith("word/") ? "word" : "home";
-    nav.hidden = !show, document.body.classList.toggle("has-nav", show), nav.innerHTML = `<div class="tabbar-in">${bookTabs().map(([id, label, ic]) => `<a class="tab" href="#${id}"${id === tab ? ' aria-current="page"' : ""}><span class="tab-ic">${icon(ic, 22)}${id === "duel" && duelIncoming().length ? `<i class="tab-dot">${duelIncoming().length}</i>` : ""}</span><span>${label}</span></a>`).join("")}</div>`;
+    let show = !!(me().name && me().grade) && h !== "setup", tab = h === "book" ? "book" /* epz-patch:book */ : h === "skills" || h === "quick" || h.startsWith("play-") ? "skills" : h === "ranking" ? "ranking" : h === "gaterush" || h === "duel" ? "gaterush" : h === "dashboard" ? "dashboard" : h === "word" || h === "words" || h.startsWith("word/") ? "word" : "home";
+    nav.hidden = !show, document.body.classList.toggle("has-nav", show), nav.innerHTML = `<div class="tabbar-in">${bookTabs().map(([id, label, ic]) => `<a class="tab" href="#${id}"${id === tab ? ' aria-current="page"' : ""}><span class="tab-ic">${icon(ic, 22)}${id === "gaterush" && duelIncoming().length ? `<i class="tab-dot">${duelIncoming().length}</i>` : ""}</span><span>${label}</span></a>`).join("")}</div>`;
   }
+  // ============================================================ epz-patch:gaterush — Gate Rush replaces the Challenge tab (the card duel stays at #duel)
+  // The 3D game lives in gaterush/*.js and is only downloaded when a student opens the Gate Rush tab.
+  var grPts = (keep = null) => { let n = 0; for (let e of Object.values(state.gr && state.gr.prizes || {})) e && e.p && (!keep || keep(e.at)) && (n += e.p); return n; };
+  var grReady = null;
+  function grLoad() {
+    if (grReady) return grReady;
+    const files = ["net", "avatar", "engine", "map-fort", "ui"];
+    return grReady = Promise.all(files.map((f) => new Promise((ok, bad) => {
+      const s = document.createElement("script"); s.src = `gaterush/${f}.js?v=1`; s.async = !1; s.onload = ok; s.onerror = () => bad(new Error("load " + f)); document.head.appendChild(s);
+    }))).catch((e) => { grReady = null; throw e; });
+  }
+  function grHost() {
+    return window.GR_HOST || (window.GR_HOST = {
+      get app() { return app; }, go: (h) => go(h), toast: (...a) => toast(...a), icon: (...a) => icon(...a), openModal: (...a) => openModal(...a), confetti: (n) => confetti(n),
+      me: () => state, sbUrl: SB_URL, sbKey: SB_KEY,
+      avatarCfg: () => czCfg(state.avatar || DUO_DEF),
+      colors: (cfg) => czColors(czCfg(cfg)),
+      avatarSvg: (cfg, size) => czSvg(cfg ? czCfg(cfg) : czCfg(state.avatar || DUO_DEF), { size, frame: "bust", still: true }),
+      soundOn: () => { try { return JSON.parse(localStorage.getItem("epz-learn-v1") || "{}").sound !== false; } catch { return true; } },
+      setSound: (v) => { try { let o = JSON.parse(localStorage.getItem("epz-learn-v1") || "{}"); o.sound = !!v; localStorage.setItem("epz-learn-v1", JSON.stringify(o)); } catch {} },
+      // three-option questions come from the same bank as Quick Play (the student's grade)
+      mcqList: () => { let out = []; for (let a of allActivities()) for (let q of a.questions || []) q && q.type === "mcq" && out.push(q); return out; },
+      // prize points are kept in their own list (once per week key), so they never count as a practice day
+      addPoints: (pts, note) => { state.gr || (state.gr = { prizes: {} }); state.gr.prizes || (state.gr.prizes = {}); let k = "p" + Date.now(); state.gr.prizes[k] = { p: pts, at: new Date().toISOString(), n: note }; save(); },
+      grantItems: (keys) => { if (typeof window.__lzOwn === "function") keys.forEach((k) => window.__lzOwn(k)); },
+      loadThree: () => import("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js")
+    });
+  }
+  function grRoute() {
+    app.dataset.tab = "gaterush"; window.scrollTo(0, 0);
+    app.innerHTML = '<section class="block" style="text-align:center;padding:40px 12px"><p>Loading Gate Rush…</p></section>';
+    grLoad().then(() => { if (location.hash.replace("#", "") === "gaterush") { grHost(); GR.ui.mount(); } })
+      .catch(() => { app.innerHTML = '<section class="block" style="text-align:center;padding:30px 12px"><h2>Gate Rush</h2><p>Could not load the game. Check your connection and try again.</p><a class="btn btn-primary" href="#gaterush">Try again</a></section>'; });
+  }
+  function grAdmin() { grLoad().then(() => { grHost(); GR.ui.admin(); }).catch(() => toast("Could not load Gate Rush tools.", "error")); }
   // epz-patch:boss — Boss Battle (one boss per week, played alone, saved on this phone)
   var BOSS_START_UTC = Date.UTC(2026, 10, 15), BOSS_REWARD = 500, BOSS_TRIES = 2, BOSS_WINDOW = 864e5, BOSS_FAST_SECS = 120;
   var BOSS_EYE = (cx, cy, r) => `<g class="eye"><circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff"/><circle class="pupil" cx="${cx}" cy="${cy + r * 0.12}" r="${r * 0.52}" fill="#1B1B2F"/><circle cx="${cx - r * 0.22}" cy="${cy - r * 0.18}" r="${r * 0.17}" fill="#fff"/></g>`;
@@ -6926,7 +6961,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   var DUEL_HP = { p: 1e3, k: 1500 };
   var TEAM = { me: ["#2F7BEF", "#1B4FA8"], foe: ["#E5484D", "#A3262A"] };
   var P_DUEL = '<path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="m13 19 6-6M16 16l4 4M19 21l2-2"/><path d="M9.5 6.5 21 18v3h-3L6.5 9.5"/>';
-  typeof P == "object" && (P.duel = P_DUEL);
+  typeof P == "object" && (P.duel = P_DUEL, P.gate = '<path d="M5 21V10a7 7 0 0 1 14 0v11"/><path d="M3 21h18"/><path d="M12 3.2V21"/><path d="M9 12.5h.01M15 12.5h.01"/>'); /* epz-patch:gaterush */
   var duelTier = (ms) => ms < DUEL_TROOPS.d.until ? "d" : ms < DUEL_TROOPS.a.until ? "a" : "k";
 
   // ---------- art (drawn here, original): chunky cartoon style, dark outline, soft shading
@@ -7609,6 +7644,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     }
     if (h === "luck") {
       luckScreen();
+      return;
+    }
+    if (h === "gaterush") { /* epz-patch:gaterush */
+      cleanup && (cleanup(), cleanup = null), grRoute();
       return;
     }
     if (h === "duel") {
@@ -8386,6 +8425,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       { k: "extra:headphones", name: "Headphones", ic: "🎧" }, { k: "extra:medal", name: "Gold medal", ic: "🥇" }, { k: "extra:cape", name: "Hero cape", ic: "🦸" }
     ];
     S.owned = (S.owned || []).filter(function (x) { return String(x).indexOf(":") > 0; });
+    window.__lzOwn = function (k) { if (S.owned.indexOf(k) < 0) { S.owned.push(k); lzSave(); } }; /* epz-patch:gaterush */
     delete S.equip;
     function hero(mood, size, pose) { return czMe({ size: size, mood: mood || "idle", pose: pose }); }
     function preview(k, size) { var c = Object.assign({}, state.avatar || DUO_DEF), p = k.split(":"); c[p[0]] = p[1]; if (p[0] === "hat") c.hair = c.hair; return czSvg(c, { size: size, frame: "bust", still: true }); }
@@ -9179,10 +9219,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   var DUO_BG = ["#DCF5E3", "#E3ECFF", "#FFF1D6", "#FCE3E1", "#EFEBFF", "#DFF3F7", "#F4F8F6", "#FFE8C2"];
   var DUO_PARTS = {
     hair: [["none", "Bald"], ["buzz", "Buzz cut"], ["short", "Short"], ["side", "Side part"], ["fringe", "Fringe"], ["wavy", "Wavy"], ["curly", "Curly"], ["spiky", "Spiky"], ["afro", "Big hair"]],
-    hat: [["none", "None"], ["kumma1", "Kumma white"], ["kumma2", "Kumma blue"], ["kumma3", "Kumma navy"], ["massar1", "Massar blue"], ["massar2", "Massar red"], ["massar3", "Massar cream"], ["cap", "Cap"], ["beanie", "Beanie"]],
+    hat: [["none", "None"], ["kumma1", "Kumma white"], ["kumma2", "Kumma blue"], ["kumma3", "Kumma navy"], ["massar1", "Massar blue"], ["massar2", "Massar red"], ["massar3", "Massar cream"], ["cap", "Cap"], ["beanie", "Beanie"], ["grcrown1", "Gold Crown"], ["grcrown2", "Aqua Crown"], ["grcrown3", "Ruby Crown"], ["grcrown4", "Violet Crown"]],
     eyes: [["dots", "Dots"], ["big", "Big"], ["happy", "Happy"], ["wink", "Wink"], ["cool", "Sleepy"]],
     mouth: [["smile", "Smile"], ["grin", "Big smile"], ["teeth", "Teeth"], ["o", "Wow"], ["flat", "Calm"], ["tongue", "Silly"]],
-    gl: [["none", "None"], ["round", "Round"], ["square", "Square"], ["sun", "Sunglasses"]],
+    gl: [["none", "None"], ["round", "Round"], ["square", "Square"], ["sun", "Sunglasses"], ["grvisor1", "Gold Visor"], ["grvisor2", "Aqua Visor"], ["grvisor3", "Ruby Visor"], ["grvisor4", "Violet Visor"]],
     cl: [["dish", "Dishdasha"], ["bisht", "Bisht"], ["tee", "T-shirt"], ["hoodie", "Hoodie"], ["shirt", "Shirt"], ["sweater", "Sweater"], ["jersey", "Sports"]]
   };
   var DUO_DEF = { skin: 4, hair: "short", hat: "none", hc: 0, eyes: "big", mouth: "smile", gl: "none", cl: "dish", cc: 0, bg: 0 };
@@ -9286,7 +9326,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     beard: [["none", "None"], ["stubble", "Stubble"], ["moustache", "Moustache"], ["beard", "Short beard"], ["goatee", "Goatee"]],
     bottom: [["trousers", "Trousers"], ["jeans", "Jeans"], ["joggers", "Joggers"], ["shorts", "Shorts"]],
     shoes: [["sandals", "Omani sandals"], ["sneakers", "Sneakers"], ["school", "School shoes"], ["boots", "Boots"]],
-    extra: [["none", "None"], ["backpack", "Backpack"], ["pen", "Pen pocket"], ["watch", "Watch"], ["headphones", "Headphones"], ["medal", "Gold medal"], ["cape", "Hero cape"]],
+    extra: [["none", "None"], ["backpack", "Backpack"], ["pen", "Pen pocket"], ["watch", "Watch"], ["headphones", "Headphones"], ["medal", "Gold medal"], ["cape", "Hero cape"], ["grcape1", "Gold Racer Cape"], ["grcape2", "Aqua Racer Cape"], ["grcape3", "Ruby Racer Cape"], ["grcape4", "Violet Racer Cape"]],
     pose: [["relaxed", "Relaxed"], ["hips", "Hands on hips"], ["crossed", "Arms crossed"], ["think", "Thinking"], ["wave", "Waving"], ["ready", "Ready!"]],
     style: [["omani", "Omani"], ["everyday", "Everyday"]]
   };
@@ -9298,7 +9338,9 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   var CZ_BOTC = { trousers: "#2E3440", jeans: "#3D5A8A", joggers: "#3B3F4A", shorts: "#5A6B7A" };
   var CZ_SHOEC = { sandals: "#7A4B2A", sneakers: "#FFFFFF", school: "#1B1B1F", boots: "#6B4A2B" };
   // things won from Boss Rush chests (key -> value)
-  var CZ_LOCKED = { "hat:kummag": 1, "hat:crown": 1, "cl:bishtg": 1, "extra:headphones": 1, "extra:medal": 1, "extra:cape": 1 };
+  var GR_PACKS = { 1: ["#F2B632", "#B9801A"], 2: ["#27C3C3", "#12807F"], 3: ["#E5484D", "#A3262A"], 4: ["#8B5CF6", "#5B35B8"] }; /* epz-patch:gaterush — the four exclusive weekly packs */
+  function grPk(v) { let m = /^gr(?:crown|cape|visor)(\d)$/.exec(v || ""); return m ? GR_PACKS[m[1]] : null; }
+  var CZ_LOCKED = { "hat:grcrown1": 1, "hat:grcrown2": 1, "hat:grcrown3": 1, "hat:grcrown4": 1, "extra:grcape1": 1, "extra:grcape2": 1, "extra:grcape3": 1, "extra:grcape4": 1, "gl:grvisor1": 1, "gl:grvisor2": 1, "gl:grvisor3": 1, "gl:grvisor4": 1, "hat:kummag": 1, "hat:crown": 1, "cl:bishtg": 1, "extra:headphones": 1, "extra:medal": 1, "extra:cape": 1 };
   var CZ_OMANI = { "cl:dish": 1, "cl:bisht": 1, "cl:bishtg": 1, "hat:kumma1": 1, "hat:kumma2": 1, "hat:kumma3": 1, "hat:kummag": 1, "hat:massar1": 1, "hat:massar2": 1, "hat:massar3": 1, "beard:beard": 1, "beard:moustache": 1, "beard:goatee": 1, "shoes:sandals": 1 };
   function czOwned() {
     try { return (JSON.parse(localStorage.getItem("epz-learn-v1") || "{}").owned) || []; } catch (e) { return []; }
@@ -9377,7 +9419,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     }
     // ---- extras on the body
     let ex = c.extra, exBack = "", exFront = "", exWrist = "";
-    ex === "cape" && (exBack = `<path d="M${X(-24)} 118 Q100 106 ${X(24)} 118 L${X(46)} ${groundY - 18} Q100 ${groundY - 30} ${X(-46)} ${groundY - 18} Z" fill="#D8343F" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M100 114 L104 ${groundY - 26}" stroke="#000" opacity=".12" stroke-width="10"/>`);
+    (ex === "cape" || grPk(ex)) && (exBack = `<path d="M${X(-24)} 118 Q100 106 ${X(24)} 118 L${X(46)} ${groundY - 18} Q100 ${groundY - 30} ${X(-46)} ${groundY - 18} Z" fill="${grPk(ex) ? grPk(ex)[0] : "#D8343F"}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><path d="M100 114 L104 ${groundY - 26}" stroke="#000" opacity=".12" stroke-width="10"/>`);
     ex === "backpack" && (exBack += `<rect x="${X(-30)}" y="122" width="${(60 * B).toFixed(1)}" height="62" rx="12" fill="#2B41C4" stroke="${ink}" stroke-width="2.4"/>`, exFront = `<path d="M${X(-17)} 114 Q${X(-22)} 140 ${X(-20)} 176" stroke="#2B41C4" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M${X(17)} 114 Q${X(22)} 140 ${X(20)} 176" stroke="#2B41C4" stroke-width="6" fill="none" stroke-linecap="round"/>`);
     ex === "medal" && (exFront = `<path d="M92 113 L100 146 L108 113" fill="none" stroke="#2B41C4" stroke-width="4.5"/><path d="M96 113 L100 138" stroke="#D8343F" stroke-width="2.6"/><circle cx="100" cy="153" r="9" fill="#FFD83D" stroke="${ink}" stroke-width="2.2"/><path d="M100 147.6 l1.7 3.4 3.8.5 -2.7 2.7 .6 3.8 -3.4-1.8 -3.4 1.8 .6-3.8 -2.7-2.7 3.8-.5z" fill="#E0A800"/>`);
     ex === "pen" && (exFront = `<rect x="${X(10)}" y="132" width="3.5" height="12" rx="1.4" fill="#2B41C4" stroke="${ink}" stroke-width="1.1"/><rect x="${Number(X(10)) + 5}" y="134" width="3.5" height="10" rx="1.4" fill="#D8343F" stroke="${ink}" stroke-width="1.1"/><path d="M${X(9)} 140 h14 v11 h-14z" fill="#000" opacity=".1"/>`);
@@ -9404,7 +9446,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let faceP = c.face === "oval" ? "M100 42 C123 42 135 60 135 82 C135 106 119 122 100 122 C81 122 65 106 65 82 C65 60 77 42 100 42Z"
       : c.face === "square" ? "M66 70 C66 50 80 43 100 43 C120 43 134 50 134 70 L134 94 C134 112 120 121 100 121 C80 121 66 112 66 94Z"
       : "M100 44 C122 44 136 60 136 82 C136 104 121 120 100 120 C79 120 64 104 64 82 C64 60 78 44 100 44Z";
-    let hatOn = c.hat !== "none" && c.hat !== "crown";
+    let hatOn = c.hat !== "none" && c.hat !== "crown" && !/^grcrown/.test(c.hat);
     let hairBack = "", hairFront = "";
     let topCap = "M64 78 C60 50 78 34 100 34 C122 34 140 50 136 78 C132 62 120 54 100 54 C80 54 68 62 64 78Z";
     if (!hatOn) {
@@ -9426,7 +9468,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     }
     // hats from the old avatar maker, scaled onto this head (old eyes 49/71 at y 56 -> new 86/114 at y 84)
     let hat = "";
-    if (c.hat === "crown") hat = `<path d="M70 52 L74 22 L88 38 L100 16 L112 38 L126 22 L130 52 Z" fill="#FFD83D" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><circle cx="100" cy="40" r="4" fill="#D8343F" stroke="${ink}" stroke-width="1.4"/><path d="M72 46 H128" stroke="#E0A800" stroke-width="3"/>`;
+    if (grPk(c.hat)) hat = `<path d="M70 52 L74 22 L88 38 L100 16 L112 38 L126 22 L130 52 Z" fill="${grPk(c.hat)[0]}" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><circle cx="100" cy="40" r="4" fill="#FFFFFF" stroke="${ink}" stroke-width="1.4"/><path d="M72 46 H128" stroke="${grPk(c.hat)[1]}" stroke-width="3"/>`;
+    else if (c.hat === "crown") hat = `<path d="M70 52 L74 22 L88 38 L100 16 L112 38 L126 22 L130 52 Z" fill="#FFD83D" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/><circle cx="100" cy="40" r="4" fill="#D8343F" stroke="${ink}" stroke-width="1.4"/><path d="M72 46 H128" stroke="#E0A800" stroke-width="3"/>`;
     else if (hatOn) hat = `<g transform="translate(23.6 12.7) scale(1.273)">${duoHat(c.hat, id, C.hat)}</g>`;
     let phones = ex === "headphones" ? `<path d="M64 82 Q62 30 100 30 Q138 30 136 82" fill="none" stroke="${ink}" stroke-width="6.5" stroke-linecap="round"/><path d="M64 82 Q62 30 100 30 Q138 30 136 82" fill="none" stroke="#7E5BEF" stroke-width="3.5" stroke-linecap="round"/><rect x="55" y="74" width="16" height="24" rx="7" fill="#7E5BEF" stroke="${ink}" stroke-width="2.2"/><rect x="129" y="74" width="16" height="24" rx="7" fill="#7E5BEF" stroke="${ink}" stroke-width="2.2"/>` : "";
     // ---- face
@@ -9459,6 +9502,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let mouthG = Object.keys(mouths).map((k) => `<g class="cz-m cz-m-${k}">${mouths[k]}</g>`).join("");
     let glasses = c.gl === "round" ? `<g fill="rgb(255 255 255 / .18)" stroke="${ink}" stroke-width="2.6"><circle cx="${EL}" cy="${EY}" r="11"/><circle cx="${ER}" cy="${EY}" r="11"/><path d="M97 ${EY} H103 M75 ${EY - 2} L66 ${EY - 5} M125 ${EY - 2} L134 ${EY - 5}" fill="none"/></g>`
       : c.gl === "square" ? `<g fill="rgb(255 255 255 / .18)" stroke="${ink}" stroke-width="2.6"><rect x="${EL - 12}" y="${EY - 9}" width="23" height="18" rx="4"/><rect x="${ER - 11}" y="${EY - 9}" width="23" height="18" rx="4"/><path d="M97 ${EY - 2} H103 M74 ${EY - 3} L66 ${EY - 6} M126 ${EY - 3} L134 ${EY - 6}" fill="none"/></g>`
+      : grPk(c.gl) ? `<g stroke="${grPk(c.gl)[0]}" stroke-width="4"><path d="M71 ${EY - 9} H129 V${EY + 2} Q129 ${EY + 11} 114 ${EY + 11} H86 Q71 ${EY + 11} 71 ${EY + 2}Z" fill="#14213D"/></g>`
       : c.gl === "sun" ? `<g stroke="${ink}" stroke-width="2.6"><path d="M73 ${EY - 8} H98 V${EY + 1} Q98 ${EY + 10} 86 ${EY + 10} Q73 ${EY + 10} 73 ${EY + 1}Z M102 ${EY - 8} H127 V${EY + 1} Q127 ${EY + 10} 114 ${EY + 10} Q102 ${EY + 10} 102 ${EY + 1}Z" fill="#1E2550"/><path d="M98 ${EY - 5} H102 M73 ${EY - 6} L66 ${EY - 8} M127 ${EY - 6} L134 ${EY - 8}" fill="none"/></g><path d="M77 ${EY - 5} l6 0 M106 ${EY - 5} l6 0" stroke="#fff" stroke-width="2" opacity=".5" stroke-linecap="round"/>` : "";
     let ears = `<g class="cz-ears"><ellipse cx="64.5" cy="86" rx="7.5" ry="9.5" fill="${sk}" stroke="${ink}" stroke-width="2.2"/><ellipse cx="135.5" cy="86" rx="7.5" ry="9.5" fill="${sk}" stroke="${ink}" stroke-width="2.2"/><path d="M64 82 q3 4 0 8 M136 82 q-3 4 0 8" stroke="${skD}" stroke-width="2" fill="none"/></g>`;
     let head = `<g class="cz-head">${hairBack}${ears}<path d="${faceP}" fill="${sk}" stroke="${ink}" stroke-width="2.4"/><ellipse cx="80" cy="99" rx="6.5" ry="4" fill="#FF7A6B" opacity=".22"/><ellipse cx="120" cy="99" rx="6.5" ry="4" fill="#FF7A6B" opacity=".22"/>`
@@ -9731,7 +9775,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       // extras on the body
       if (c.extra === "medal") { mesh(new T.BoxGeometry(.1, .6, .02), clothMat("#2B41C4"), [-.11, -1.72, .73], [-.2, 0, .3], null, body); mesh(new T.BoxGeometry(.1, .6, .02), clothMat("#D8343F"), [.11, -1.72, .73], [-.2, 0, -.3], null, body); mesh(new T.CylinderGeometry(.17, .17, .05, 32), gold(), [0, -2.0, .86], [Math.PI / 2 - .2, 0, 0], null, body); }
       if (c.extra === "backpack") { var st = clothMat("#2B41C4"); mesh(new T.TorusGeometry(.5, .07, 10, 32, Math.PI), st, [-.76 * B, -1.8, .05], [0, Math.PI / 2, 0], [1, 1.2, 1], body); mesh(new T.TorusGeometry(.5, .07, 10, 32, Math.PI), st, [.76 * B, -1.8, .05], [0, Math.PI / 2, 0], [1, 1.2, 1], body); }
-      if (c.extra === "cape") { var cp = mesh(SPH(1.08, 48, 24, -Math.PI / 2 - 1.2, 2.4, .2, 1.4), clothMat("#D8343F"), [0, -2.25, -.05], null, [1.62 * B, .99, .9], body); cp.material.side = T.DoubleSide; }
+      if (c.extra === "cape" || grPk(c.extra)) { var cp = mesh(SPH(1.08, 48, 24, -Math.PI / 2 - 1.2, 2.4, .2, 1.4), clothMat(grPk(c.extra) ? grPk(c.extra)[0] : "#D8343F"), [0, -2.25, -.05], null, [1.62 * B, .99, .9], body); cp.material.side = T.DoubleSide; }
       if (c.extra === "pen") { mesh(new T.CylinderGeometry(.03, .03, .3, 8), new T.MeshStandardMaterial({ color: "#2B41C4", roughness: .3 }), [.46 * B, -1.82, .72], [-.3, 0, 0], null, body); mesh(new T.CylinderGeometry(.03, .03, .26, 8), new T.MeshStandardMaterial({ color: "#D8343F", roughness: .3 }), [.53 * B, -1.84, .7], [-.3, 0, 0], null, body); }
       // ---- head
       var headPivot = new T.Group(); headPivot.position.set(0, -.95, 0); body.add(headPivot); parts.pivot = headPivot;
@@ -9796,14 +9840,14 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       }
       if (c.hat === "cap") { var cm = clothMat(C.hat); mesh(SPH(1.06, 48, 24, 0, Math.PI * 2, 0, 1.35), cm, [0, .05, -.02], [-.35, 0, 0], face, hg); mesh(new T.CylinderGeometry(.75, .75, .05, 32, 1, false, -1.1, 2.2), cm, [0, .5, .34], [.22, 0, 0], [1.05, 1, 1.15], hg); }
       if (c.hat === "beanie") { var bm = clothMat(C.hat); mesh(SPH(1.07, 48, 24, 0, Math.PI * 2, 0, 1.4), bm, [0, .08, -.04], [-.3, 0, 0], face, hg); mesh(new T.TorusGeometry(1.0, .12, 12, 48), clothMat(czShade(C.hat, -.15)), [0, .48, .06], [Math.PI / 2 - .3, 0, 0], [face[0], 1, 1], hg); mesh(SPH(.2, 16, 12), bm, [0, 1.22, -.3], null, null, hg); }
-      if (c.hat === "crown") { var gm = gold(); mesh(new T.CylinderGeometry(.78, .82, .32, 40, 1, true), gm, [0, 1.02, -.05], [-.1, 0, 0], null, hg).material.side = T.DoubleSide; for (var q = 0; q < 6; q++) { var aq = q / 6 * Math.PI * 2; mesh(new T.ConeGeometry(.12, .3, 12), gm, [Math.cos(aq) * .78, 1.3, Math.sin(aq) * .78 - .05], null, null, hg); } mesh(SPH(.09, 16, 12), new T.MeshPhysicalMaterial({ color: "#D8343F", roughness: .05, clearcoat: 1 }), [0, 1.02, .76], null, null, hg); }
+      if (c.hat === "crown" || /^grcrown/.test(c.hat)) { var gm = grPk(c.hat) ? new T.MeshStandardMaterial({ color: grPk(c.hat)[0], metalness: .5, roughness: .3 }) : gold(); mesh(new T.CylinderGeometry(.78, .82, .32, 40, 1, true), gm, [0, 1.02, -.05], [-.1, 0, 0], null, hg).material.side = T.DoubleSide; for (var q = 0; q < 6; q++) { var aq = q / 6 * Math.PI * 2; mesh(new T.ConeGeometry(.12, .3, 12), gm, [Math.cos(aq) * .78, 1.3, Math.sin(aq) * .78 - .05], null, null, hg); } mesh(SPH(.09, 16, 12), new T.MeshPhysicalMaterial({ color: "#D8343F", roughness: .05, clearcoat: 1 }), [0, 1.02, .76], null, null, hg); }
       if (c.extra === "headphones") { var pm = new T.MeshStandardMaterial({ color: "#7E5BEF", roughness: .35 }); mesh(new T.TorusGeometry(1.08, .07, 12, 48, Math.PI), pm, [0, .05, 0], null, [face[0], 1.05, 1], hg); [-1, 1].forEach(function (s) { mesh(new T.CylinderGeometry(.26, .26, .18, 24), pm, [s * 1.05 * face[0], .02, 0], [0, 0, Math.PI / 2], null, hg); }); }
       // glasses
       if (c.gl !== "none") {
-        var fr = new T.MeshStandardMaterial({ color: "#1E2550", roughness: .3, metalness: .3 }), gz = ez + er * .9;
+        var fr = new T.MeshStandardMaterial({ color: grPk(c.gl) ? grPk(c.gl)[0] : "#1E2550", roughness: .3, metalness: .3 }), gz = ez + er * .9;
         [-1, 1].forEach(function (s) {
           var rim = mesh(new T.TorusGeometry(er * 1.5, .022, 8, c.gl === "square" ? 4 : 32), fr, [s * ex, ey, gz], [0, 0, c.gl === "square" ? Math.PI / 4 : 0], c.gl === "square" ? [1.25, .95, 1] : null, head, false);
-          if (c.gl === "sun") mesh(new T.CircleGeometry(er * 1.5, 32), new T.MeshPhysicalMaterial({ color: "#10131c", roughness: .05, clearcoat: 1, transparent: true, opacity: .92 }), [s * ex, ey, gz], null, null, head, false);
+          if (c.gl === "sun" || grPk(c.gl)) mesh(new T.CircleGeometry(er * 1.5, 32), new T.MeshPhysicalMaterial({ color: "#10131c", roughness: .05, clearcoat: 1, transparent: true, opacity: .92 }), [s * ex, ey, gz], null, null, head, false);
           mesh(new T.CylinderGeometry(.018, .018, .9, 6), fr, [s * .9 * face[0], ey + .02, .45], [Math.PI / 2, 0, 0], null, head, false);
         });
         mesh(new T.CylinderGeometry(.018, .018, ex * 2 - er * 3, 6), fr, [0, ey + .02, gz], [0, 0, Math.PI / 2], null, head, false);
