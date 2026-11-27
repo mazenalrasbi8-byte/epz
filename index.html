@@ -2132,6 +2132,34 @@ body.cz-arena-on{overflow:hidden}
 .cz3-on .boss3d.b3on>svg{visibility:hidden}
 .boss3d.beaten>canvas.b3{filter:grayscale(.85) opacity(.75)}.boss3d.shadowed>canvas.b3{filter:brightness(0) opacity(.5)}
 .boss-wrap .boss3d{width:150px;height:150px}.cz-ar-boss.boss-live{display:inline-block}
+/* Book map (stage 4): each unit is a blocky island; lessons are chunky stones joined by stepping stones */
+.lz-hero{background:linear-gradient(var(--gr-sky),var(--gr-sky2) 68%,var(--gr-sand) 68%,var(--gr-sandD));border:4px solid var(--gr-navy);border-radius:22px;box-shadow:0 6px 0 var(--gr-navy);color:var(--gr-navy)}
+.lz-hero:before{display:none}
+.lz-hero .lz-kick{color:var(--gr-tealD);font-weight:900}
+.lz-hero b{font-family:var(--gr-head);color:#fff;text-shadow:0 3px 0 var(--gr-navy),2px 2px 0 var(--gr-navy),-2px 2px 0 var(--gr-navy),2px -1px 0 var(--gr-navy),-2px -1px 0 var(--gr-navy)}
+.lz-hero .lz-muted,.lz-hero .lz-ar{color:var(--gr-navy);font-weight:700}
+.lz-hero .lz-pbar{background:rgb(19 35 47 / .25);border:2px solid var(--gr-navy)}.lz-hero .lz-pbar i{background:linear-gradient(90deg,var(--gr-teal),var(--gr-gold))}
+.lz-island{position:relative;margin-top:24px;border:4px solid var(--gr-navy);border-radius:24px;box-shadow:0 7px 0 var(--gr-navy);overflow:hidden;background:linear-gradient(180deg,#D7F1F8,#F4E6C2 30%,#EBD39C);animation:lz-isl-in .5s cubic-bezier(.2,1.2,.4,1) both}
+.lz-island:after{content:"";position:absolute;left:0;right:0;bottom:0;height:14px;background:repeating-linear-gradient(90deg,var(--gr-sandD) 0 22px,#B98F52 22px 44px);border-top:3px solid var(--gr-navy)}
+@keyframes lz-isl-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.lz-island .lz-unit{margin:0;border:0;border-bottom:4px solid var(--gr-navy);border-radius:0;background:var(--uc);box-shadow:inset 0 -8px 0 rgb(0 0 0 / .14);padding:14px 16px 16px}
+.lz-island .lz-unit:after{width:90px;height:90px;right:-14px;top:-24px;border-radius:14px;transform:rotate(12deg);background:#fff;opacity:.16}
+.lz-island .lz-unit small{color:rgb(255 255 255 / .85)}
+.lz-island .lz-unit h2{color:#fff;text-shadow:0 3px 0 rgb(19 35 47 / .55)}
+.lz-uprog{position:absolute;right:14px;bottom:14px;background:var(--gr-navy);color:var(--gr-gold);font-weight:900;font-size:.8rem;padding:3px 10px;border-radius:99px}
+.lz-isl-done .lz-uprog{background:var(--gr-gold);color:var(--gr-navy)}
+.lz-island .lz-lane{padding:6px 0 30px}
+.lz-island .lz-ltitle{color:var(--gr-navy);font-weight:800}
+.lz-peb{display:block;width:18px;height:12px;margin:5px auto;background:#E0CC9E;border:3px solid #8F7A55;border-radius:4px;box-shadow:0 3px 0 #8F7A55}
+.lz-node{border-radius:18px;border:4px solid var(--gr-navy);box-shadow:0 8px 0 var(--gr-navy),inset 0 -9px 0 rgb(0 0 0 / .18),inset 0 7px 0 rgb(255 255 255 / .28);margin:26px 0 12px}
+.lz-node:active{transform:translateY(6px);box-shadow:0 2px 0 var(--gr-navy),inset 0 -9px 0 rgb(0 0 0 / .18)}
+.lz-node.done{background:var(--gr-gold)!important}
+.lz-node.current{background:var(--gr-teal)!important;animation:lz-bob 1.6s ease-in-out infinite}
+@keyframes lz-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.lz-node.locked{background:#CFC8B6!important;border-color:#857C6A;box-shadow:0 6px 0 #857C6A,inset 0 -8px 0 rgb(0 0 0 / .12);filter:none;opacity:.9}
+.lz-node .lz-tag{background:var(--gr-navy);color:var(--gr-gold);border:2px solid var(--gr-gold);font-weight:900}
+.lz-node .lz-st{color:var(--gr-gold);text-shadow:0 2px 0 var(--gr-navy),1px 1px 0 var(--gr-navy),-1px 1px 0 var(--gr-navy);bottom:-20px}
+@media (prefers-reduced-motion:reduce){.lz-island,.lz-node.current{animation:none}}
 canvas.cz3{display:block;border-radius:50%;flex:none;animation:cz3-in .35s ease}
 canvas.cz3-full{margin:0 auto;filter:drop-shadow(0 4px 0 rgb(0 0 0 / .18))}
 @keyframes cz3-in{from{opacity:0;transform:scale(.92)}}
@@ -8465,7 +8493,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     S.owned = (S.owned || []).filter(function (x) { return String(x).indexOf(":") > 0; });
     window.__lzOwn = function (k) { if (S.owned.indexOf(k) < 0) { S.owned.push(k); lzSave(); } }; /* epz-patch:gaterush */
     delete S.equip;
-    function hero(mood, size, pose) { return czMe({ size: size, mood: mood || "idle", pose: pose }); }
+    function hero(mood, size, pose, free) { return czMe({ size: size, mood: mood || "idle", pose: pose, bg: free ? !1 : void 0, cls: free ? "cz-me cz-free" : "cz-me" }); }
     function preview(k, size) { var c = Object.assign({}, state.avatar || DUO_DEF), p = k.split(":"); c[p[0]] = p[1]; if (p[0] === "hat") c.hair = c.hair; return czSvg(c, { size: size, frame: "bust", still: true }); }
     function unlockByPoints() {}
     /* Rush bosses: the site's own boss drawings */
@@ -8499,7 +8527,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       app.querySelectorAll("[data-sub]").forEach(function (b) { b.onclick = function () { lzSub = b.getAttribute("data-sub"); mount(); window.scrollTo(0, 0); }; });
       if (lzSub === "path") {
         app.querySelectorAll("[data-lesson]").forEach(function (b) { b.onclick = function () { var l = BOOK_ORDER[+b.getAttribute("data-lesson")]; if (!isOpen(l)) { b.classList.add("lz-shake"); setTimeout(function () { b.classList.remove("lz-shake"); }, 400); note("🔒 Finish the lesson before it first"); return; } startLesson(l); }; });
-        var c = $(".lz-node.current"); if (c && c.getBoundingClientRect().top > innerHeight * .75) c.scrollIntoView({ block: "center" });
+        var c = $(".lz-node.current"); if (c && c.getBoundingClientRect().top > innerHeight * .75) c.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
       }
       if (lzSub === "rush") { var g = $("#lz-go"); if (g) g.onclick = startRush; bindRush(); setTimeout(function () { CZ.react($(".lz-rush-duo"), "excited", { ms: 2400 }); }, 250); }
       if (lzSub === "path") setTimeout(function () { CZ.react($(".lz-hero-me"), todayRounds() >= DAILY_GOAL ? "celebrate" : "wave"); }, 350);
@@ -8515,14 +8543,17 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       var doneN = BOOK_ORDER.filter(bookDone).length, pct = Math.round(doneN / BOOK_ORDER.length * 100);
       var h = '<div class="lz-hero"><div class="lz-hero-me">' + hero(happy ? "happy" : "idle", 128) + '</div><div class="lz-say"><span class="lz-kick">Gold Experience 9A</span><b>' + (happy ? "Daily goal done! 🎉" : "Ready, " + hx(firstName(me().name)) + "?") + '</b><div class="lz-pbar"><i style="--w:' + pct + '%"></i></div><small class="lz-muted">' + doneN + " of " + BOOK_ORDER.length + " lessons</small>" + (S.ar ? '<br><span class="lz-ar">' + (happy ? "أحسنت، أنجزت هدف اليوم!" : "هيا نبدأ درساً جديداً!") + "</span>" : "") + "</div></div>";
       var off = [0, 38, 58, 38, 0, -38, -58, -38], n = 0;
+      // little stepping stones between two lessons, following the zig-zag
+      var peb = function (a, b) { return [1, 2].map(function (k) { return '<i class="lz-peb" style="transform:translateX(' + Math.round(a + (b - a) * k / 3) + 'px)"></i>'; }).join(""); };
       BOOK.units.forEach(function (u) {
-        h += '<div class="lz-unit" style="--uc:' + u.color + '"><small>' + hx(u.label) + "</small><h2>" + hx(u.name) + '</h2></div><div class="lz-lane">';
+        var uDone = u.lessons.filter(bookDone).length;
+        h += '<section class="lz-island' + (uDone === u.lessons.length ? " lz-isl-done" : "") + '" style="--uc:' + u.color + '"><div class="lz-unit" style="--uc:' + u.color + '"><small>' + hx(u.label) + "</small><h2>" + hx(u.name) + '</h2><span class="lz-uprog">' + (uDone === u.lessons.length ? "✓ " : "") + uDone + " / " + u.lessons.length + '</span></div><div class="lz-lane">';
         u.lessons.forEach(function (l) {
           var idx = BOOK_ORDER.indexOf(l), open = isOpen(l), done = bookDone(l), isCur = l === cur, st = starsOf(l);
-          h += '<div style="position:relative;transform:translateX(' + off[n % 8] + 'px);text-align:center"><button class="lz-node ' + (open ? "" : "locked") + (done ? " done" : "") + (isCur ? " current" : "") + '" data-lesson="' + idx + '" style="background:' + u.color + '" aria-label="' + hx(l.title) + '">' + (open ? ICON[l.kind] || "⭐" : "🔒") + (isCur ? '<span class="lz-tag">START</span>' : "") + (done ? '<span class="lz-st">' + "★".repeat(st) + "</span>" : "") + '</button>' + (isCur ? '<div class="lz-node-me" style="' + (off[n % 8] > 0 ? "left:auto;right:100%;margin:0 10px 0 0" : "") + '">' + hero("idle", 96, "wave") + "</div>" : "") + '<div class="lz-ltitle">' + hx(l.title) + "</div></div>";
+          h += (u.lessons.indexOf(l) ? peb(off[(n + 7) % 8], off[n % 8]) : "") + '<div class="lz-stop" style="position:relative;transform:translateX(' + off[n % 8] + 'px);text-align:center"><button class="lz-node ' + (open ? "" : "locked") + (done ? " done" : "") + (isCur ? " current" : "") + '" data-lesson="' + idx + '" style="background:' + u.color + '" aria-label="' + hx(l.title) + '">' + (open ? ICON[l.kind] || "⭐" : "🔒") + (isCur ? '<span class="lz-tag">START</span>' : "") + (done ? '<span class="lz-st">' + "★".repeat(st) + "</span>" : "") + '</button>' + (isCur ? '<div class="lz-node-me" style="' + (off[n % 8] > 0 ? "left:auto;right:100%;margin:0 10px 0 0" : "") + '">' + hero("idle", 110, "wave", 1) + "</div>" : "") + '<div class="lz-ltitle">' + hx(l.title) + "</div></div>";
           n++;
         });
-        h += "</div>";
+        h += "</div></section>";
       });
       return h;
     }
@@ -9762,7 +9793,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       var fill = frame === "bust" && /^(100%|auto)?$/.test(svg.style.width || "") && svg.closest(".avatar,.duo-praise-av,.duo-nudge-av,.cz-rank-av");
       cv.style.width = cv.style.height = Math.round(D) + "px";
       svg.after(cv); svg.classList.add("cz3-hid"); svg._cz3 = cv;
-      var v = { svg: svg, cv: cv, ctx: cv.getContext("2d"), key: svg.dataset.cfg || "{}", still: still, bg: !svg.hasAttribute("data-nobg"), done: false, full: frame !== "bust" || svg.classList.contains("cz-hero"), hero: svg.classList.contains("cz-hero") };
+      var v = { svg: svg, cv: cv, ctx: cv.getContext("2d"), key: svg.dataset.cfg || "{}", still: still, bg: !svg.hasAttribute("data-nobg"), done: false, full: frame !== "bust" || svg.classList.contains("cz-hero"), hero: svg.classList.contains("cz-hero"), body: svg.classList.contains("cz-free") };
       try { v.cfg = JSON.parse(v.key); } catch (e) { v.cfg = DUO_DEF; }
       views.push(v); io && io.observe(cv); cv._cz3vis = true;
       // the big character (avatar maker) can be spun by dragging; it eases back to facing you after a moment
@@ -9790,7 +9821,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       // close-up of head and shoulders for small avatars; a bigger character shows down to the knees
       // close-up of head and shoulders for small avatars, head to knees for bigger ones, the whole body in the avatar maker
       if (v.hero) { if (!hero.drag && performance.now() - hero.last > 1800) hero.yaw += (Math.sin(performance.now() / 1400) * .22 - hero.yaw) * Math.min(1, dt * 2.5); m.rotation.y = hero.yaw; } else m.rotation.y = 0;
-      if (v.hero) { cam.position.set(0, -2, 24); cam.lookAt(0, -2.1, 0); } else if (v.full) { cam.position.set(0, -1.5, 17); cam.lookAt(0, -1.6, 0); } else { cam.position.set(0, -.5, 16.5); cam.lookAt(0, -.75, 0); }
+      if (v.hero || v.body) { cam.position.set(0, -2, 24); cam.lookAt(0, -2.1, 0); } else if (v.full) { cam.position.set(0, -1.5, 17); cam.lookAt(0, -1.6, 0); } else { cam.position.set(0, -.5, 16.5); cam.lookAt(0, -.75, 0); }
       scene.add(m); R.setViewport(0, 0, px, px); R.setScissor(0, 0, px, px); R.setScissorTest(true); R.clear(); cam.aspect = 1; cam.updateProjectionMatrix(); R.render(scene, cam); scene.remove(m);
       var g = v.ctx, c = m.userData.cfg, bg = czColors(c).bg;
       g.clearRect(0, 0, px, px); g.save(); if (v.bg) { g.beginPath(); g.arc(px / 2, px / 2, px / 2 - px * .015, 0, Math.PI * 2); g.clip(); }   // only round badges are clipped
