@@ -55,35 +55,67 @@
     }
     var armL = arm(-1), armR = arm(1);
     // ---- head with a drawn face that changes mood
-    var fc = document.createElement("canvas"); fc.width = fc.height = 64; var fx = fc.getContext("2d");
-    var ftex = new T.CanvasTexture(fc); ftex.colorSpace = T.SRGBColorSpace; ftex.magFilter = T.NearestFilter; texs.push(ftex);
+    var fc = document.createElement("canvas"); fc.width = fc.height = 128; var fx = fc.getContext("2d"); fx.scale(2, 2);
+    var ftex = new T.CanvasTexture(fc); ftex.colorSpace = T.SRGBColorSpace; ftex.magFilter = T.NearestFilter; ftex.minFilter = T.LinearFilter; ftex.generateMipmaps = false; texs.push(ftex);
     var faceMat = new T.MeshLambertMaterial({ map: ftex });
     var headMats = [mat(skin), mat(skin), mat(skin), mat(skin), faceMat, mat(skin)];
-    var head = new T.Group(); head.position.y = 0.62; body.add(head);
-    var hm = new T.Mesh(unit, headMats); hm.scale.set(0.56, 0.54, 0.54); hm.position.y = 0.27; hm.castShadow = true; head.add(hm);
-    var curMood = "";
-    function drawFace(mood) {
-      if (mood === curMood) return; curMood = mood;
-      fx.fillStyle = skin; fx.fillRect(0, 0, 64, 64);
-      var ink = "#1B1630", g = fx;
-      g.fillStyle = ink; g.strokeStyle = ink; g.lineWidth = 5; g.lineCap = "round";
-      var ex = [18, 46], ey = 26;
-      if (mood === "happy") { ex.forEach(function (x) { g.beginPath(); g.arc(x, ey + 4, 7, Math.PI * 1.1, Math.PI * 1.9); g.stroke(); }); g.beginPath(); g.fillStyle = "#7A1F2B"; g.moveTo(16, 42); g.quadraticCurveTo(32, 62, 48, 42); g.closePath(); g.fill(); g.fillStyle = "#fff"; g.fillRect(20, 42, 24, 4); }
-      else if (mood === "sad") { ex.forEach(function (x) { g.fillRect(x - 5, ey - 3, 10, 12); }); g.beginPath(); g.moveTo(12, 18); g.lineTo(26, 22); g.moveTo(52, 18); g.lineTo(38, 22); g.stroke(); g.beginPath(); g.moveTo(22, 52); g.quadraticCurveTo(32, 42, 42, 52); g.stroke(); }
-      else if (mood === "dizzy") { ex.forEach(function (x) { g.beginPath(); g.moveTo(x - 6, ey - 6); g.lineTo(x + 6, ey + 6); g.moveTo(x + 6, ey - 6); g.lineTo(x - 6, ey + 6); g.stroke(); }); g.beginPath(); g.moveTo(20, 48); for (var i = 0; i < 5; i++) g.lineTo(20 + i * 6, 48 + (i % 2 ? -4 : 4)); g.stroke(); }
-      else if (mood === "wow") { ex.forEach(function (x) { g.fillRect(x - 5, ey - 6, 10, 14); }); g.beginPath(); g.ellipse(32, 49, 7, 9, 0, 0, 7); g.fill(); }
-      else if (mood === "blink") { ex.forEach(function (x) { g.fillRect(x - 6, ey + 2, 12, 4); }); g.beginPath(); g.moveTo(22, 46); g.quadraticCurveTo(32, 54, 42, 46); g.stroke(); }
-      else { ex.forEach(function (x) { g.fillRect(x - 5, ey - 5, 10, 13); g.fillStyle = "#fff"; g.fillRect(x - 3, ey - 4, 4, 4); g.fillStyle = ink; }); g.beginPath(); g.moveTo(22, 46); g.quadraticCurveTo(32, 54, 42, 46); g.stroke(); }
+    var SZ = cfg.sz || {}, BX = SZ.b || 1, SH = { oval: [0.52, 0.6, 0.54], square: [0.6, 0.54, 0.56] }[cfg.face] || [0.56, 0.54, 0.54];
+    var head = new T.Group(); head.position.y = 0.62; body.add(head); head.scale.setScalar(SZ.hd || 1);
+    var hm = new T.Mesh(unit, headMats); hm.scale.set(SH[0], SH[1], SH[2]); hm.position.y = 0.27; hm.castShadow = true; head.add(hm);
+    var curFace = "", EYEC = C.eyes || "#3B2A20";
+    // the face is drawn on a small canvas: eyes (with the chosen eye style and colour), brows, mouth, beard.
+    // mood: idle | happy | sad | dizzy | wow | think | blink. lx/ly move the pupils (looking around), lid closes the eyes.
+    function drawFace(mood, lx, ly, lid) {
+      var qx = Math.round((lx || 0) * 2), qy = Math.round((ly || 0) * 2), closed = lid > 0.55 || mood === "blink";
+      var key = mood + qx + "," + qy + (closed ? "c" : ""); if (key === curFace) return; curFace = key;
+      var g = fx, ink = "#1B1630"; g.fillStyle = skin; g.fillRect(0, 0, 64, 64);
+      g.fillStyle = ink; g.strokeStyle = ink; g.lineWidth = 4.5; g.lineCap = "round"; g.lineJoin = "round";
+      var es = SZ.es || 1, gap = 14 + (SZ.ed || 0) * 0.8, ex = [32 - gap, 32 + gap], ey = 27, px = qx * 1.6, py = qy * 1.4, style = cfg.eyes || "big";
+      var arc = function (x, y, up) { g.beginPath(); g.arc(x, y + (up ? 4 : -2), 6 * es, up ? Math.PI * 1.1 : Math.PI * 0.15, up ? Math.PI * 1.9 : Math.PI * 0.85); g.stroke(); };
+      // eyes
+      if (closed) ex.forEach(function (x) { g.fillRect(x - 6 * es, ey + 1, 12 * es, 3.5); });
+      else if (mood === "happy") ex.forEach(function (x) { arc(x, ey, true); });
+      else if (mood === "dizzy") ex.forEach(function (x) { g.beginPath(); g.moveTo(x - 5, ey - 5); g.lineTo(x + 5, ey + 5); g.moveTo(x + 5, ey - 5); g.lineTo(x - 5, ey + 5); g.stroke(); });
+      else ex.forEach(function (x, i) {
+        var w = (style === "dots" ? 7 : 11) * es, h = (style === "dots" ? 7 : mood === "wow" ? 15 : 13) * es;
+        if (style === "happy" && mood === "idle") { arc(x, ey, true); return; }
+        if (style === "wink" && mood === "idle" && i === 1) { arc(x, ey, true); return; }
+        g.fillStyle = "#FFFFFF"; g.fillRect(x - w / 2 - 1, ey - h / 2 - 1, w + 2, h + 2);
+        g.fillStyle = style === "dots" ? ink : EYEC; var pw = style === "dots" ? w : w * 0.72, ph = style === "dots" ? h : h * 0.78;
+        g.fillRect(x - pw / 2 + px, ey - ph / 2 + py, pw, ph); g.fillStyle = ink; g.fillRect(x - pw / 4 + px, ey - ph / 4 + py, pw / 2, ph / 2);
+        g.fillStyle = "#FFFFFF"; g.fillRect(x - pw / 2 + px + 1, ey - ph / 2 + py + 1, 3, 3);
+        if (style === "cool" || mood === "think") { g.fillStyle = skin; g.fillRect(x - w / 2 - 1, ey - h / 2 - 1, w + 2, h * 0.45); g.fillStyle = ink; g.fillRect(x - w / 2 - 1, ey - h / 2 - 1 + h * 0.45, w + 2, 2); }
+        if (mood === "sad") { g.fillStyle = skin; g.beginPath(); g.moveTo(x - w, ey - h); g.lineTo(i ? x - w : x + w, ey - h); g.lineTo(i ? x - w : x + w, ey - h * 0.1); g.closePath(); g.fill(); }
+        g.fillStyle = ink;
+      });
+      // brows (style, height, mood)
+      var by = 13 - (SZ.by || 0) * 1.2 - (mood === "wow" ? 4 : mood === "happy" ? 1.5 : 0), bw = cfg.brows === "thick" ? 4.5 : 3;
+      ex.forEach(function (x, i) {
+        var s = i ? -1 : 1, tilt = mood === "sad" ? -4 * s : mood === "think" && i ? -3 : 0;
+        g.fillStyle = hair;
+        if (cfg.brows === "straight" || cfg.brows === "thick") { g.save(); g.translate(x, by); g.rotate(tilt * 0.06); g.fillRect(-8, -bw / 2, 16, bw); g.restore(); }
+        else { g.strokeStyle = hair; g.lineWidth = bw; g.beginPath(); g.moveTo(x - 7, by + 2 + tilt * 0.4 * s); g.quadraticCurveTo(x, by - 3, x + 7, by + 2 - tilt * 0.4 * s); g.stroke(); }
+      });
+      g.strokeStyle = ink; g.fillStyle = ink; g.lineWidth = 4.5;
+      // mouth
+      var mw = 10 * (SZ.mw || 1), my = 48, m = mood === "happy" ? "grin" : mood === "sad" ? "sad" : mood === "wow" ? "o" : mood === "dizzy" ? "wave" : mood === "think" ? "flat" : cfg.mouth || "smile";
+      if (m === "grin" || m === "teeth" || m === "tongue" && mood === "happy") { g.fillStyle = "#7A1F2B"; g.beginPath(); g.moveTo(32 - mw - 2, my - 4); g.lineTo(32 + mw + 2, my - 4); g.quadraticCurveTo(32 + mw, my + 10, 32, my + 10); g.quadraticCurveTo(32 - mw, my + 10, 32 - mw - 2, my - 4); g.fill(); g.fillStyle = "#FFFFFF"; g.fillRect(32 - mw, my - 4, mw * 2, m === "teeth" ? 5 : 3.5); }
+      else if (m === "sad") { g.beginPath(); g.moveTo(32 - mw, my + 4); g.quadraticCurveTo(32, my - 5, 32 + mw, my + 4); g.stroke(); }
+      else if (m === "o") { g.fillStyle = "#7A1F2B"; g.beginPath(); g.ellipse(32, my + 1, 5, 7, 0, 0, 7); g.fill(); }
+      else if (m === "flat") { g.fillRect(32 - mw * 0.7, my, mw * 1.4, 3.5); }
+      else if (m === "wave") { g.beginPath(); g.moveTo(32 - mw, my); for (var k = 1; k <= 4; k++) g.lineTo(32 - mw + k * mw / 2, my + (k % 2 ? -3 : 3)); g.stroke(); }
+      else { g.beginPath(); g.moveTo(32 - mw, my - 2); g.quadraticCurveTo(32, my + 7, 32 + mw, my - 2); g.stroke(); if (m === "tongue") { g.fillStyle = "#FF7A8A"; g.fillRect(29, my + 2, 7, 6); } }
+      // beard
       if (cfg.beard && cfg.beard !== "none") {
-        var bc = hair; g.fillStyle = bc;
-        if (cfg.beard === "stubble") { g.globalAlpha = .35; g.fillRect(8, 40, 48, 24); g.globalAlpha = 1; }
-        else if (cfg.beard === "moustache") { g.fillRect(16, 38, 32, 6); }
-        else if (cfg.beard === "goatee") { g.fillRect(16, 38, 32, 5); g.fillRect(24, 54, 16, 10); }
-        else { g.fillRect(4, 36, 56, 28); g.fillStyle = skin; if (mood === "happy") { g.fillStyle = "#7A1F2B"; g.fillRect(20, 44, 24, 8); } else { g.fillRect(22, 46, 20, 4); g.fillStyle = ink; g.fillRect(22, 46, 20, 3); } }
+        g.fillStyle = hair;
+        if (cfg.beard === "stubble") { g.globalAlpha = .3; g.fillRect(8, 40, 48, 24); g.globalAlpha = 1; }
+        else if (cfg.beard === "moustache") g.fillRect(32 - mw - 2, my - 9, mw * 2 + 4, 5);
+        else if (cfg.beard === "goatee") { g.fillRect(32 - mw - 2, my - 9, mw * 2 + 4, 4); g.fillRect(25, 58, 14, 6); }
+        else { g.fillRect(4, 56, 56, 8); g.fillRect(4, 40, 7, 20); g.fillRect(53, 40, 7, 20); g.fillRect(32 - mw - 2, my - 9, mw * 2 + 4, 4); }
       }
       ftex.needsUpdate = true;
     }
-    drawFace("idle");
+    drawFace("idle", 0, 0, 0);
     // ---- hair
     var hs = cfg.hair, hatOn = cfg.hat && cfg.hat !== "none";
     function hairBox(w, h, d, x, y, z) { return box(w, h, d, hair, x, y, z, head); }
@@ -131,7 +163,7 @@
     // dizzy stars
     var stars = new T.Group(); stars.position.y = 0.78; stars.visible = false; head.add(stars);
     for (var si = 0; si < 3; si++) { var sm = box(0.1, 0.1, 0.1, "#FFD93B", 0, 0, 0, stars, false); sm.userData.a = si * 2.094; }
-    root.add(new T.Object3D());
+    root.scale.y = SZ.h || 1;   // height slider
 
     var A = { ph: 0, run: 0, lean: 0, roll: 0, squash: 0, sq: 0, air: 0, blink: 3, t: 0, mood: "idle", moodT: 0, capeLag: 0 };
     function damp(a, b, k, dt) { return a + (b - a) * (1 - Math.exp(-k * dt)); }
@@ -144,7 +176,7 @@
         A.t += dt; A.moodT > 0 && (A.moodT -= dt, A.moodT <= 0 && (A.mood = "idle"));
         A.blink -= dt; var face = A.mood; if (face === "idle" && A.blink < 0) { face = "blink"; if (A.blink < -0.12) A.blink = 2 + Math.random() * 3; }
         if (face === "idle" && !st.ground && st.vy < -4) face = "wow";
-        drawFace(face);
+        drawFace(face === "blink" ? "idle" : face, 0, 0, face === "blink" ? 1 : 0);
         A.run = damp(A.run, st.pose === "run" && st.ground ? st.speed : 0, 14, dt);
         A.ph += dt * (4 + A.run * 9) * (A.run > 0.03 ? 1 : 0);
         var sw = Math.sin(A.ph) * 0.95 * A.run, bob = Math.abs(Math.cos(A.ph)) * 0.07 * A.run;
@@ -170,10 +202,35 @@
         // landing squash and stretch
         A.sq = damp(A.sq, 0, 9, dt);
         var stretch = st.ground ? 0 : Math.min(0.12, Math.abs(st.vy) * 0.008);
-        body.scale.set(1 + A.sq * 0.18 - stretch * 0.5, 1 - A.sq * 0.22 + stretch, 1 + A.sq * 0.18 - stretch * 0.5);
+        body.scale.set((1 + A.sq * 0.18 - stretch * 0.5) * BX, 1 - A.sq * 0.22 + stretch, (1 + A.sq * 0.18 - stretch * 0.5) * BX);
         body.position.y = 0.6 + bob + by - A.sq * 0.08;
         if (cape) { A.capeLag = damp(A.capeLag, Math.min(1.3, A.run * 0.8 + (st.ground ? 0 : 0.55)), 6, dt); cape.rotation.x = 0.12 + A.capeLag * 0.9 + Math.sin(A.t * 9) * 0.06 * (0.3 + A.run); }
         if (stars.visible) stars.children.forEach(function (s) { var a = s.userData.a + A.t * 5; s.position.set(Math.cos(a) * 0.3, Math.sin(A.t * 6 + a) * 0.03, Math.sin(a) * 0.3); s.rotation.y = a; });
+      },
+      // the site-wide character (portraits, home screen, avatar maker). st: { mood, lid 0..1, lx, ly (look -1..1), turn, tilt, hop, r (seconds since the mood started), t }
+      portrait: function (st, dt) {
+        var md = st.mood || "idle", r = st.r || 9, t = st.t || 0;
+        var face = md === "happy" || md === "celebrate" || md === "proud" || md === "excited" ? "happy" : md === "sad" ? "sad" : md === "surprised" ? "wow" : md === "think" ? "think" : "idle";
+        drawFace(face, st.lx || 0, st.ly || 0, st.lid || 0); stars.visible = false;
+        var pose = cfg.pose || "relaxed", la = 0.05, ra = 0.05, azl = 0.08, azr = 0.08, nod = 0, shake = 0, up = 0;
+        if (pose === "hips") { la = ra = 0.3; azl = azr = 0.75; }
+        else if (pose === "crossed") { la = ra = -1.25; azl = azr = -0.5; }
+        else if (pose === "think") { ra = -2.3; azr = -0.35; }
+        else if (pose === "wave") { ra = -2.75; azr = 0.25 + Math.sin(t * 8) * 0.3; }
+        else if (pose === "ready") { la = ra = -0.7; azl = azr = 0.3; }
+        else { la = Math.sin(t * 1.8) * 0.04; ra = -la; }
+        if (md === "celebrate") { la = -2.85 + Math.sin(t * 12) * 0.3; ra = -2.85 - Math.sin(t * 12) * 0.3; azl = azr = 0.35; up = Math.abs(Math.sin(r * 8)) * 0.12; }
+        else if (md === "happy" || md === "proud") { var k = Math.exp(-r * 1.5); ra = ra + (-2.6 - ra) * k; azr = azr + (0.2 - azr) * k; nod = Math.sin(r * 14) * 0.18 * Math.exp(-r * 2.2); up = Math.abs(Math.sin(r * 9)) * 0.1 * Math.exp(-r * 1.8); }
+        else if (md === "excited") up = Math.abs(Math.sin(r * 12)) * 0.06;
+        else if (md === "sad") { la = ra = 0.12; azl = azr = 0.02; shake = Math.sin(r * 16) * 0.32 * Math.exp(-r * 2.5); nod = 0.16; }
+        else if (md === "surprised") { nod = -0.16 * Math.exp(-r * 3); up = 0.08 * Math.exp(-r * 4); la = ra = -0.5 * Math.exp(-r * 2); azl = azr = 0.5; }
+        armL.rotation.x = damp(armL.rotation.x, la, 14, dt); armR.rotation.x = damp(armR.rotation.x, ra, 14, dt);
+        armL.rotation.z = damp(armL.rotation.z, -azl, 14, dt); armR.rotation.z = damp(armR.rotation.z, azr, 14, dt);
+        legL.rotation.x = damp(legL.rotation.x, 0, 10, dt); legR.rotation.x = damp(legR.rotation.x, 0, 10, dt);
+        head.rotation.set((st.ly || 0) * 0.18 + nod, (st.turn || 0) * 0.5 + shake, -(st.tilt || 0) * 0.02);
+        body.rotation.set(0, (st.turn || 0) * 0.12 + shake * 0.25, 0);
+        body.position.y = 0.6 + up - (st.hop || 0) * 0.004; body.scale.set(BX, 1 + Math.sin(t * 1.7) * 0.008, BX);
+        if (cape) cape.rotation.x = 0.1 + Math.sin(t * 2) * 0.04;
       },
       dispose: function () { geos.forEach(function (g) { g.dispose(); }); texs.forEach(function (t) { t.dispose(); }); Object.keys(mats).forEach(function (k) { mats[k].dispose(); }); faceMat.dispose(); }
     };
