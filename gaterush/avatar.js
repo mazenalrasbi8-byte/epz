@@ -193,6 +193,12 @@
           // superman: body stretched out flat, arms reaching forward, legs straight back, eyes on the landing
           flat = true; tl = 1.32 + clamp(-st.vy * 0.02, -0.12, 0.12); ty = 0.78; tk = 20;
           la = -2.95 + Math.sin(A.t * 18) * 0.05; ra = -2.95 - Math.sin(A.t * 18) * 0.05; az = 0.16; ll = 0.12; rl = 0.22; hx = -0.55;
+        } else if (st.pose === "stagger") {
+          // bumped back by a locked door: lean back, arms windmill, quick backpedal steps, then upright
+          var e = smooth((st.stg || 0) / 0.7), w = A.t * 19;
+          tl = (-0.34 + Math.sin(w * 0.7) * 0.08) * e; ty = 0.6; tk = 16; flat = true;
+          la = (-1.7 + Math.sin(w) * 1.3) * e; ra = (-1.7 + Math.sin(w + 2.2) * 1.3) * e; az = 0.35 + 0.55 * e;
+          ll = Math.sin(w * 1.1) * 0.6 * e; rl = -ll; hx = -0.3 * e; hz = Math.sin(w * 0.6) * 0.14 * e;
         } else if (st.pose === "recover") {
           // belly landing, then push up with the arms and pop back onto the feet
           var u = clamp(st.rec || 0, 0, 1), down = smooth(u / 0.55);
@@ -211,7 +217,7 @@
         A.lean = damp(A.lean, st.ground ? A.run * 0.22 : 0.1 + (st.vy < 0 ? 0.1 : 0), 10, dt);
         body.rotation.x = damp(body.rotation.x, flat ? 0 : A.lean + bx, 14, dt);
         A.tilt = damp(A.tilt, tl, tk, dt); A.tiltY = damp(A.tiltY, ty, tk, dt); tilt.rotation.x = A.tilt; tilt.position.y = A.tiltY;
-        A.roll = damp(A.roll, -(st.turn || 0) * 0.22, 8, dt); body.rotation.z = A.roll + (st.pose === "stun" ? Math.sin(A.t * 7) * 0.12 : 0);
+        A.roll = damp(A.roll, -(st.turn || 0) * 0.22, 8, dt); body.rotation.z = A.roll + (st.pose === "stun" ? Math.sin(A.t * 7) * 0.12 : st.pose === "stagger" ? Math.sin(A.t * 11) * 0.15 * smooth((st.stg || 0) / 0.7) : 0);
         head.rotation.z = damp(head.rotation.z, hz, 16, dt); head.rotation.x = damp(head.rotation.x, hx, 12, dt);
         // landing squash and stretch
         A.sq = damp(A.sq, 0, 9, dt);
