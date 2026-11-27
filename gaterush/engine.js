@@ -5,7 +5,7 @@
   var GR = (window.GR = window.GR || {});
   GR.maps = GR.maps || {};
 
-  var PR = 0.34, PH = 0.85, MAXSP = 9.5, GRAV = 34, JUMP_V = 11.2, STEP = 0.45, CELL = 12;
+  var PR = 0.34, PH = 0.85, MAXSP = 9.5, GRAV = 34, JUMP_V = 12.2, STEP = 0.45, CELL = 12;
   var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
   var damp = function (a, b, k, dt) { return a + (b - a) * (1 - Math.exp(-k * dt)); };
   var toward = function (a, b, d) { return a < b ? Math.min(a + d, b) : Math.max(a - d, b); };
@@ -346,6 +346,20 @@
 
     /* ---------- the player ---------- */
     var av = GR.avatar(T, o.cfg, o.colors); scene.add(av.root);
+    // landing marker: a soft round shadow on whatever is under the runner (always on, also when real shadows are off)
+    var blob = (function () {
+      var c = document.createElement("canvas"); c.width = c.height = 64; var g = c.getContext("2d"), gr = g.createRadialGradient(32, 32, 4, 32, 32, 31);
+      gr.addColorStop(0, "rgba(19,35,47,.55)"); gr.addColorStop(0.7, "rgba(19,35,47,.35)"); gr.addColorStop(1, "rgba(19,35,47,0)"); g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
+      var t = new T.CanvasTexture(c); texs.push(t); var geo = new T.PlaneGeometry(1.3, 1.3); geo.rotateX(-Math.PI / 2); geos.push(geo);
+      var m = new T.Mesh(geo, new T.MeshBasicMaterial({ map: t, transparent: true, depthWrite: false })); mats.blob = m.material; m.renderOrder = 2; scene.add(m); return m;
+    })();
+    function placeBlob() {
+      var feet = p.y - PH + 0.05, best = -1e9;
+      near();
+      for (var i = 0; i < cand.length; i++) { var s = cand[i]; if (s.on && !s.door && p.x > s.minx && p.x < s.maxx && p.z > s.minz && p.z < s.maxz && s.maxy <= feet && s.maxy > best) best = s.maxy; }
+      if (best < -50) { blob.visible = false; return; }
+      var hgt = feet - best, k = Math.max(0.45, 1 - hgt * 0.12); blob.visible = true; blob.position.set(p.x, best + 0.03, p.z); blob.scale.setScalar(k); blob.material.opacity = Math.max(0.35, 1 - hgt * 0.1);
+    }
     var p = { x: 0, y: 0, z: 0, vx: 0, vy: 0, vz: 0, grounded: false, gs: null, face: Math.PI, stun: 0, inv: 0, coyote: 0, jbuf: 0, jholding: false, wasGround: false, turn: 0, cp: -1, celebrate: 0, doorCd: 0 };
     S = p;
     var R = { correct: 0, wrong: 0, coins: 0, hits: 0, falls: 0, penaltyMs: 0, rawMs: 0, answers: [] };
@@ -473,12 +487,12 @@
         // ride the platform we stand on
         if (p.gs && p.gs.on && p.grounded) { p.x += p.gs.dx; p.y += p.gs.dy; p.z += p.gs.dz; }
         var a = (state === "race" && p.stun <= 0) ? axis() : { x: 0, y: 0 }, mag = Math.sqrt(a.x * a.x + a.y * a.y);
-        var tvx = a.x * MAXSP, tvz = -a.y * MAXSP, acc = p.grounded ? (mag > 0.05 ? 58 : 66) : 24;
+        var tvx = a.x * MAXSP, tvz = -a.y * MAXSP, acc = p.grounded ? (mag > 0.05 ? 58 : 66) : 36;   // good steering in the air
         if (p.stun > 0) acc = p.grounded ? 14 : 3;
         if (state === "finish") { tvx = tvz = 0; acc = 22; }
         p.vx = toward(p.vx, tvx, acc * h); p.vz = toward(p.vz, tvz, acc * h);
         // jump (buffered + coyote)
-        if (p.grounded) p.coyote = 0.11; else p.coyote -= h;
+        if (p.grounded) p.coyote = 0.16; else p.coyote -= h;   // a little time to jump after running off an edge
         if (jumpQueued) { p.jbuf = 0.13; jumpQueued = false; } else p.jbuf -= h;
         var spaceHeld = keys.Space || jumpHeld;
         if (state === "race" && p.stun <= 0 && p.jbuf > 0 && p.coyote > 0) { p.vy = JUMP_V; p.grounded = false; p.gs = null; p.coyote = 0; p.jbuf = 0; sfx.jump(); burst(p.x, p.y - PH, p.z, 4, ["#FFFFFF", "#E9DFC9"], 1.6, 0.14, 0.4, 1.5, 4); }
@@ -592,7 +606,7 @@
         // checkpoints
         for (var k = 0; k < checkpoints.length; k++) if (-p.z >= checkpoints[k].f && k > p.cp) p.cp = k;
         // avatar
-        av.root.position.set(p.x, p.y - PH, p.z); av.root.rotation.y = p.face;
+        av.root.position.set(p.x, p.y - PH, p.z); av.root.rotation.y = p.face; placeBlob();
         var sp = Math.min(1, Math.sqrt(p.vx * p.vx + p.vz * p.vz) / MAXSP);
         av.update({ speed: sp, vy: p.vy, ground: p.grounded, pose: state === "finish" || p.celebrate > 0.05 && state !== "race" ? "celebrate" : p.stun > 0 ? "stun" : "run", turn: p.turn }, dt);
         if (p.celebrate > 0 && state === "race") av.root.position.y += 0;
