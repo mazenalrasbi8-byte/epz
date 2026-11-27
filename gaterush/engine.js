@@ -6,6 +6,8 @@
   GR.maps = GR.maps || {};
 
   var PR = 0.34, PH = 0.85, MAXSP = 9.5, GRAV = 34, JUMP_V = 12.2, STEP = 0.45, CELL = 12;
+  // dive (second jump press in the air): forward burst, small pop, belly landing and a short get-up
+  var DIVE_SP = 13.5, DIVE_VY = 5.2, DIVE_REC = 0.35;
   var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
   var damp = function (a, b, k, dt) { return a + (b - a) * (1 - Math.exp(-k * dt)); };
   var toward = function (a, b, d) { return a < b ? Math.min(a + d, b) : Math.max(a - d, b); };
@@ -35,6 +37,7 @@
       unlock: function () { if (init() && ctx.state === "suspended") ctx.resume(); },
       set: function (v) { enabled = v; }, get: function () { return enabled; },
       jump: function () { tone(330, 0.16, "square", 0.12, 760); },
+      dive: function () { noise(0.16, 0.16, 1500); tone(520, 0.14, "triangle", 0.12, 240); },
       land: function () { noise(0.07, 0.12, 700); },
       coin: function () { tone(988, 0.07, "square", 0.12); tone(1319, 0.14, "square", 0.12, null, 0.06); },
       correct: function () { [523, 659, 784, 1047].forEach(function (f, i) { tone(f, 0.18, "triangle", 0.2, null, i * 0.07); }); },
@@ -360,7 +363,7 @@
       if (best < -50) { blob.visible = false; return; }
       var hgt = feet - best, k = Math.max(0.45, 1 - hgt * 0.12); blob.visible = true; blob.position.set(p.x, best + 0.03, p.z); blob.scale.setScalar(k); blob.material.opacity = Math.max(0.35, 1 - hgt * 0.1);
     }
-    var p = { x: 0, y: 0, z: 0, vx: 0, vy: 0, vz: 0, grounded: false, gs: null, face: Math.PI, stun: 0, inv: 0, coyote: 0, jbuf: 0, jholding: false, wasGround: false, turn: 0, cp: -1, celebrate: 0, doorCd: 0 };
+    var p = { x: 0, y: 0, z: 0, vx: 0, vy: 0, vz: 0, grounded: false, gs: null, face: Math.PI, stun: 0, inv: 0, coyote: 0, jbuf: 0, jholding: false, wasGround: false, turn: 0, cp: -1, celebrate: 0, doorCd: 0, dive: false, canDive: false, rec: 0 };
     S = p;
     var R = { correct: 0, wrong: 0, coins: 0, hits: 0, falls: 0, penaltyMs: 0, rawMs: 0, answers: [] };
     var state = "load", stateT = 0, hudAcc = 0, fade = 0, fadeDir = 0, nearGate = null;
@@ -425,7 +428,7 @@
     function addPenalty(ms) { R.penaltyMs += ms; elPen.hidden = false; elPen.textContent = "+" + (R.penaltyMs / 1000).toFixed(0) + "s"; elPen.classList.remove("pop"); void elPen.offsetWidth; elPen.classList.add("pop"); }
     function hurt(dirx, dirz, force) {
       if (p.inv > 0 || state !== "race") return;
-      var l = Math.sqrt(dirx * dirx + dirz * dirz) || 1; p.vx = dirx / l * force; p.vz = dirz / l * force; p.vy = 8.5; p.grounded = false; p.gs = null; p.stun = 0.95; p.inv = 1.7; R.hits++;
+      var l = Math.sqrt(dirx * dirx + dirz * dirz) || 1; p.vx = dirx / l * force; p.vz = dirz / l * force; p.vy = 8.5; p.grounded = false; p.gs = null; p.dive = false; p.rec = 0; p.stun = 0.95; p.inv = 1.7; R.hits++;
       av.mood("dizzy", 1.2); sfx.hit(); burst(p.x, p.y, p.z, 10, ["#FFD93B", "#FFFFFF"], 4, 0.18, 0.6, 6);
     }
     function onDoor(s) {
@@ -445,7 +448,7 @@
         return "break";
       }
       if (p.doorCd <= 0) {
-        p.doorCd = 0.9; if (!s.pen) { s.pen = true; addPenalty(2000); } sfx.wrong(); av.mood("sad", 1.8); p.stun = 0.85; p.vz = 7.5; p.vy = 5.5; p.vx = (p.x - s.cx) * 1.5; p.grounded = false; p.gs = null;
+        p.doorCd = 0.9; if (!s.pen) { s.pen = true; addPenalty(2000); } sfx.wrong(); av.mood("sad", 1.8); p.dive = false; p.rec = 0; p.stun = 0.85; p.vz = 7.5; p.vy = 5.5; p.vx = (p.x - s.cx) * 1.5; p.grounded = false; p.gs = null;
         burst(p.x, p.y, p.z - 0.4, 8, ["#B07A45", "#FFFFFF"], 3, 0.16, 0.6, 5);
         if (g.first === idx) banner("bad", "Not quite!", "The answer is <u>" + esc(g.q.options[g.q.correct]) + "</u>. " + (g.q.explanation ? esc(g.q.explanation) : "") + " Try another door!", 3.6);
         else banner("bad", "That door is locked", "Try another one.", 1.8);
@@ -490,13 +493,24 @@
         var tvx = a.x * MAXSP, tvz = -a.y * MAXSP, acc = p.grounded ? (mag > 0.05 ? 58 : 66) : 36;   // good steering in the air
         if (p.stun > 0) acc = p.grounded ? 14 : 3;
         if (state === "finish") { tvx = tvz = 0; acc = 22; }
+        p.rec = Math.max(0, p.rec - h);
+        if (p.dive && !p.grounded) { tvx = p.ddx * DIVE_SP * 0.82 + a.x * 2.5; tvz = p.ddz * DIVE_SP * 0.82 - a.y * 2.5; acc = 5; }   // momentum carries the dive; only a light nudge
+        else if (p.rec > 0 && p.grounded && p.stun <= 0) { tvx = tvz = 0; acc = 17; }   // belly slide, then get up
         p.vx = toward(p.vx, tvx, acc * h); p.vz = toward(p.vz, tvz, acc * h);
         // jump (buffered + coyote)
         if (p.grounded) p.coyote = 0.16; else p.coyote -= h;   // a little time to jump after running off an edge
+        if (jumpQueued && state === "race" && !p.grounded && p.coyote <= 0 && p.canDive && !p.dive && p.stun <= 0 && p.rec <= 0) {
+          // second press in the air: dive toward the held direction, or the way we face
+          var dx = a.x, dz = -a.y, dl = Math.sqrt(dx * dx + dz * dz);
+          if (dl < 0.2) { dx = Math.sin(p.face); dz = Math.cos(p.face); dl = 1; }
+          p.ddx = dx / dl; p.ddz = dz / dl; p.dive = true; p.canDive = false; jumpQueued = false; p.jbuf = 0;
+          var hs = Math.max(DIVE_SP, p.vx * p.ddx + p.vz * p.ddz); p.vx = p.ddx * hs; p.vz = p.ddz * hs; p.vy = DIVE_VY;
+          sfx.dive(); av.mood("wow", 0.5); burst(p.x, p.y, p.z, 5, ["#FFFFFF", "#E9DFC9"], 1.8, 0.13, 0.35, 1.5, 4);
+        }
         if (jumpQueued) { p.jbuf = 0.13; jumpQueued = false; } else p.jbuf -= h;
         var spaceHeld = keys.Space || jumpHeld;
-        if (state === "race" && p.stun <= 0 && p.jbuf > 0 && p.coyote > 0) { p.vy = JUMP_V; p.grounded = false; p.gs = null; p.coyote = 0; p.jbuf = 0; sfx.jump(); burst(p.x, p.y - PH, p.z, 4, ["#FFFFFF", "#E9DFC9"], 1.6, 0.14, 0.4, 1.5, 4); }
-        if (!spaceHeld && p.vy > 3.5 && !p.grounded) p.vy -= 50 * h;   // let go early = shorter hop
+        if (state === "race" && p.stun <= 0 && p.rec <= 0 && p.jbuf > 0 && p.coyote > 0) { p.vy = JUMP_V; p.canDive = true; p.grounded = false; p.gs = null; p.coyote = 0; p.jbuf = 0; sfx.jump(); burst(p.x, p.y - PH, p.z, 4, ["#FFFFFF", "#E9DFC9"], 1.6, 0.14, 0.4, 1.5, 4); }
+        if (!spaceHeld && !p.dive && p.vy > 3.5 && !p.grounded) p.vy -= 50 * h;   // let go early = shorter hop
         p.vy = Math.max(p.vy - GRAV * h, -32);
         // move axis by axis
         var preVy = p.vy; p.grounded = false; p.gs = null;
@@ -506,7 +520,8 @@
         p.y += p.vy * h; collide(1);
         // anything that moved into us
         for (var i = 0; i < dyn.length; i++) { var s = dyn[i]; if (s.on && overlaps(s) && (p.gs !== s)) { collide(0); collide(2); break; } }
-        if (p.grounded && !p.wasGround) { if (preVy < -5) { av.land(Math.min(1, -preVy / 20)); sfx.land(); burst(p.x, p.y - PH, p.z, 5, ["#FFFFFF", "#E9DFC9"], 2, 0.16, 0.4, 1.5, 4); } if (p.gs && p.gs.pad) { p.vy = 20; p.grounded = false; p.gs = null; sfx.pad(); burst(p.x, p.y - PH, p.z, 12, ["#3DDC84", "#FFFFFF"], 3, 0.18, 0.6, 4); } }
+        if (p.grounded) { p.canDive = true; if (p.dive) { p.dive = false; p.rec = DIVE_REC; av.land(0.55); sfx.land(); burst(p.x, p.y - PH, p.z, 7, ["#FFFFFF", "#E9DFC9"], 2.4, 0.16, 0.45, 1.5, 4); } }
+        if (p.grounded && !p.wasGround) { if (p.gs && p.gs.pad) p.rec = 0; if (preVy < -5) { av.land(Math.min(1, -preVy / 20)); sfx.land(); burst(p.x, p.y - PH, p.z, 5, ["#FFFFFF", "#E9DFC9"], 2, 0.16, 0.4, 1.5, 4); } if (p.gs && p.gs.pad) { p.vy = 20; p.grounded = false; p.gs = null; sfx.pad(); burst(p.x, p.y - PH, p.z, 12, ["#3DDC84", "#FFFFFF"], 3, 0.18, 0.6, 4); } }
         p.wasGround = p.grounded;
         // hazards
         if (state === "race") { for (var hi = 0; hi < hazards.length; hi++) { if (hazards[hi](p, kb)) { hurt(kb.x, kb.z, 12); break; } } }
@@ -519,7 +534,7 @@
     function respawn() {
       var cp = checkpoints[Math.max(0, p.cp)] || { x: startPos.x, y: startPos.y, z: startPos.z };
       sfx.fall(); R.falls++; addPenalty(2000); banner("bad", "Splash!", "Back to the last checkpoint. +2s", 1.8);
-      p.x = cp.x || 0; p.y = cp.y + PH + 0.3; p.z = cp.z; p.vx = p.vy = p.vz = 0; p.stun = 0.4; p.inv = 1.5; p.gs = null; p.grounded = false; camSnap = true; fade = 1; fadeDir = -1; av.mood("wow", 0.8);
+      p.x = cp.x || 0; p.y = cp.y + PH + 0.3; p.z = cp.z; p.vx = p.vy = p.vz = 0; p.dive = false; p.canDive = false; p.rec = 0; p.stun = 0.4; p.inv = 1.5; p.gs = null; p.grounded = false; camSnap = true; fade = 1; fadeDir = -1; av.mood("wow", 0.8);
     }
 
     /* ---------- camera ---------- */
@@ -608,7 +623,7 @@
         // avatar
         av.root.position.set(p.x, p.y - PH, p.z); av.root.rotation.y = p.face; placeBlob();
         var sp = Math.min(1, Math.sqrt(p.vx * p.vx + p.vz * p.vz) / MAXSP);
-        av.update({ speed: sp, vy: p.vy, ground: p.grounded, pose: state === "finish" || p.celebrate > 0.05 && state !== "race" ? "celebrate" : p.stun > 0 ? "stun" : "run", turn: p.turn }, dt);
+        av.update({ speed: sp, vy: p.vy, ground: p.grounded, pose: state === "finish" || p.celebrate > 0.05 && state !== "race" ? "celebrate" : p.stun > 0 ? "stun" : p.dive ? "dive" : p.rec > 0 ? "recover" : "run", rec: p.rec / DIVE_REC, turn: p.turn }, dt);
         if (p.celebrate > 0 && state === "race") av.root.position.y += 0;
         // coins spin (only the ones near)
         coinT += dt; if (coinMesh) { for (var ci = 0; ci < coins.length; ci++) { var cc = coins[ci]; if (cc.got) { tmpO.scale.setScalar(0); } else if (Math.abs(cc.z - p.z) < 90) { tmpO.position.set(cc.x, cc.y + Math.sin(coinT * 3 + ci) * 0.12, cc.z); tmpO.rotation.set(0, coinT * 3 + ci, 0); tmpO.scale.setScalar(1); } else { tmpO.scale.setScalar(1); tmpO.position.set(cc.x, cc.y, cc.z); tmpO.rotation.set(0, ci, 0); } tmpO.updateMatrix(); coinMesh.setMatrixAt(ci, tmpO.matrix); } coinMesh.instanceMatrix.needsUpdate = true; }

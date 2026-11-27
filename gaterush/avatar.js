@@ -26,10 +26,12 @@
     var C = colors, skin = C.skin, top = C.top, bottom = C.bottom, hair = C.hair;
     var long = cfg.cl === "dish" || cfg.cl === "bisht" || cfg.cl === "bishtg";
     var shortSleeve = cfg.cl === "tee" || cfg.cl === "jersey";
-    var body = new T.Group(); body.position.y = 0.6; root.add(body);          // pivot at the hips
+    // whole-body pitch for the dive: tilt pivots at the hips, rig sits inside it unchanged (identity at rest)
+    var tilt = new T.Group(); tilt.position.y = 0.6; root.add(tilt); var rig = new T.Group(); rig.position.y = -0.6; tilt.add(rig);
+    var body = new T.Group(); body.position.y = 0.6; rig.add(body);          // pivot at the hips
     // ---- legs (pivot at hip so they swing)
     function leg(s) {
-      var g = new T.Group(); g.position.set(s * 0.15, 0.6, 0); root.add(g);
+      var g = new T.Group(); g.position.set(s * 0.15, 0.6, 0); rig.add(g);
       var shorts = cfg.bottom === "shorts" && !long;
       box(0.26, 0.6, 0.3, long ? top : bottom, 0, -0.3, 0, g);
       if (shorts) box(0.27, 0.3, 0.31, skin, 0, -0.45, 0, g);
@@ -165,8 +167,10 @@
     for (var si = 0; si < 3; si++) { var sm = box(0.1, 0.1, 0.1, "#FFD93B", 0, 0, 0, stars, false); sm.userData.a = si * 2.094; }
     root.scale.y = SZ.h || 1;   // height slider
 
-    var A = { ph: 0, run: 0, lean: 0, roll: 0, squash: 0, sq: 0, air: 0, blink: 3, t: 0, mood: "idle", moodT: 0, capeLag: 0 };
+    var A = { tilt: 0, tiltY: 0.6, ph: 0, run: 0, lean: 0, roll: 0, squash: 0, sq: 0, air: 0, blink: 3, t: 0, mood: "idle", moodT: 0, capeLag: 0 };
     function damp(a, b, k, dt) { return a + (b - a) * (1 - Math.exp(-k * dt)); }
+    function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+    function smooth(x) { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); }
     var api = {
       root: root, head: head, body: body,
       mood: function (m, secs) { A.mood = m; A.moodT = secs || 0; },
@@ -180,11 +184,20 @@
         A.run = damp(A.run, st.pose === "run" && st.ground ? st.speed : 0, 14, dt);
         A.ph += dt * (4 + A.run * 9) * (A.run > 0.03 ? 1 : 0);
         var sw = Math.sin(A.ph) * 0.95 * A.run, bob = Math.abs(Math.cos(A.ph)) * 0.07 * A.run;
-        var la = 0, ra = 0, ll = sw, rl = -sw, az = 0.06, bx = 0, by = 0, hz = 0, hx = 0;
+        var la = 0, ra = 0, ll = sw, rl = -sw, az = 0.06, bx = 0, by = 0, hz = 0, hx = 0, tl = 0, ty = 0.6, tk = 14, flat = false;
         if (st.pose === "celebrate") {
           la = -2.9 + Math.sin(A.t * 14) * 0.35; ra = -2.9 - Math.sin(A.t * 14) * 0.35; az = 0.35; ll = Math.sin(A.t * 10) * 0.5; rl = -ll; by = Math.abs(Math.sin(A.t * 7)) * 0.25; root.rotation.y += dt * 0; hx = -0.15;
         } else if (st.pose === "stun") {
           la = 0.5; ra = 0.5; az = 0.5; bx = -0.28 + Math.sin(A.t * 8) * 0.05; hz = Math.sin(A.t * 9) * 0.25; ll = 0.3; rl = -0.2; stars.visible = true;
+        } else if (st.pose === "dive") {
+          // superman: body stretched out flat, arms reaching forward, legs straight back, eyes on the landing
+          flat = true; tl = 1.32 + clamp(-st.vy * 0.02, -0.12, 0.12); ty = 0.78; tk = 20;
+          la = -2.95 + Math.sin(A.t * 18) * 0.05; ra = -2.95 - Math.sin(A.t * 18) * 0.05; az = 0.16; ll = 0.12; rl = 0.22; hx = -0.55;
+        } else if (st.pose === "recover") {
+          // belly landing, then push up with the arms and pop back onto the feet
+          var u = clamp(st.rec || 0, 0, 1), down = smooth(u / 0.55);
+          flat = true; tl = 1.48 * down; ty = 0.6 - 0.3 * down; tk = 24;
+          la = ra = u > 0.55 ? -2.6 : -0.35 - 1.2 * down; az = u > 0.55 ? 0.2 : 0.45; ll = rl = 0.15 * down; hx = -0.45 * down;
         } else if (!st.ground) {
           var up = st.vy > 0;
           la = ra = up ? -2.6 : -2.3 + Math.sin(A.t * 22) * 0.35; az = up ? 0.45 : 0.9;
@@ -196,7 +209,8 @@
         armL.rotation.x = damp(armL.rotation.x, la, 26, dt); armR.rotation.x = damp(armR.rotation.x, ra, 26, dt);
         armL.rotation.z = damp(armL.rotation.z, -az, 20, dt); armR.rotation.z = damp(armR.rotation.z, az, 20, dt);
         A.lean = damp(A.lean, st.ground ? A.run * 0.22 : 0.1 + (st.vy < 0 ? 0.1 : 0), 10, dt);
-        body.rotation.x = damp(body.rotation.x, A.lean + bx, 14, dt);
+        body.rotation.x = damp(body.rotation.x, flat ? 0 : A.lean + bx, 14, dt);
+        A.tilt = damp(A.tilt, tl, tk, dt); A.tiltY = damp(A.tiltY, ty, tk, dt); tilt.rotation.x = A.tilt; tilt.position.y = A.tiltY;
         A.roll = damp(A.roll, -(st.turn || 0) * 0.22, 8, dt); body.rotation.z = A.roll + (st.pose === "stun" ? Math.sin(A.t * 7) * 0.12 : 0);
         head.rotation.z = damp(head.rotation.z, hz, 16, dt); head.rotation.x = damp(head.rotation.x, hx, 12, dt);
         // landing squash and stretch
