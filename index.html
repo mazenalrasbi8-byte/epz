@@ -6115,7 +6115,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     if (grReady) return grReady;
     const files = ["net", "avatar", "engine", "map-fort", "ui"];
     return grReady = Promise.all(files.map((f) => new Promise((ok, bad) => {
-      const s = document.createElement("script"); s.src = `gaterush/${f}.js?v=8`; s.async = !1; s.onload = ok; s.onerror = () => bad(new Error("load " + f)); document.head.appendChild(s);
+      const s = document.createElement("script"); s.src = `gaterush/${f}.js?v=9`; s.async = !1; s.onload = ok; s.onerror = () => bad(new Error("load " + f)); document.head.appendChild(s);
     }))).catch((e) => { grReady = null; throw e; });
   }
   function grHost() {
