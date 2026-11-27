@@ -2101,6 +2101,12 @@ canvas.cz3-full{margin:0 auto;filter:drop-shadow(0 4px 0 rgb(0 0 0 / .18))}
 .cz3-on .hello .avatar.cz-standing{margin:0 0 4px;align-self:flex-start;border-radius:50%}
 .cz3-on .lz-sum-stage{place-items:center}
 .cz3-on .lz-sum-me canvas.cz3{width:176px!important;height:176px!important;filter:drop-shadow(0 6px 0 rgb(0 0 0 / .18))}
+canvas.cz3.cz3-good{animation:cz3-good 1.1s cubic-bezier(.3,1.5,.5,1)}
+canvas.cz3.cz3-bad{animation:cz3-bad .9s ease}
+canvas.cz3.cz3-party{animation:cz3-party 1.3s cubic-bezier(.3,1.5,.5,1)}
+@keyframes cz3-good{0%{box-shadow:0 0 0 0 rgb(23 138 76 / .9)}25%{transform:scale(1.14);box-shadow:0 0 0 10px rgb(69 201 127 / .55)}60%{transform:scale(.97)}100%{transform:none;box-shadow:0 0 0 22px rgb(69 201 127 / 0)}}
+@keyframes cz3-bad{0%{box-shadow:0 0 0 0 rgb(216 52 63 / .9)}15%,45%{transform:translateX(-6px)}30%,60%{transform:translateX(6px)}100%{transform:none;box-shadow:0 0 0 18px rgb(216 52 63 / 0)}}
+@keyframes cz3-party{0%{box-shadow:0 0 0 0 rgb(255 216 61 / .95)}30%{transform:scale(1.18) rotate(-4deg);box-shadow:0 0 0 14px rgb(255 216 61 / .6)}55%{transform:scale(1.05) rotate(3deg)}100%{transform:none;box-shadow:0 0 0 28px rgb(255 216 61 / 0)}}
 .cz-stage canvas.cz3{filter:drop-shadow(0 6px 0 rgb(0 0 0 / .25))}
 .cz3-on .lz-hero,.cz3-on .lz-locker{align-items:center;padding-bottom:12px}
 .cz3-on .lz-hero-me,.cz3-on .lz-locker-me{margin:0}
@@ -9564,7 +9570,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       [-1, 1].forEach(function (s) { var g = new T.Group(); g.position.set(s * ex, .36 + sz.by * .018, .9); g.rotation.y = s * .32; head.add(g); var b = mesh(new T.CapsuleGeometry(bw, .2, 6, 12), hair, null, [0, 0, Math.PI / 2 + (c.brows === "straight" ? 0 : -s * .12)], null, g); parts.brows.push(g); });
       // mouth: rebuilt from a few numbers (width, corner lift, opening) whenever the expression moves
       var mouthG = new T.Group(); mouthG.position.set(0, -.42, .94); mouthG.scale.set(sz.mw * 1.3, 1.3, 1); head.add(mouthG); parts.mouth = mouthG;
-      parts.mouthMats = { in: new T.MeshStandardMaterial({ color: "#4A1717", roughness: .7 }), lip: new T.MeshPhysicalMaterial({ color: czShade(C.skin, -.32), roughness: .35, clearcoat: .4 }), teeth: new T.MeshPhysicalMaterial({ color: "#F6F3EA", roughness: .22, clearcoat: .5, clearcoatRoughness: .2 }), tongue: new T.MeshStandardMaterial({ color: "#D9606E", roughness: .55 }) };
+      parts.mouthMats = { in: new T.MeshStandardMaterial({ color: "#3A1212", roughness: .8 }), lip: new T.MeshPhysicalMaterial({ color: czShade(C.skin, -.32), roughness: .35, clearcoat: .4 }), teeth: new T.MeshPhysicalMaterial({ color: "#F6F3EA", roughness: .22, clearcoat: .5, clearcoatRoughness: .2 }), tongue: new T.MeshStandardMaterial({ color: "#D9606E", roughness: .55 }) };
       // facial hair
       var bmat = hairMat(C.hair); parts.beardZ = 0;
       if (c.beard === "beard" || c.beard === "stubble") { mesh(SPH(1.035, 64, 32, .35, 2.44, 1.92, .9), bmat, null, null, face, head); if (c.beard === "stubble") bmat.transparent = true, bmat.opacity = .35, bmat.depthWrite = false; else parts.beardZ = .06; }
@@ -9638,15 +9644,15 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
           var m2 = new T.Mesh(new T.ShapeGeometry(s, 3), mat); m2.position.z = z; bend(m2.geometry); g.add(m2);
         };
         var depth = function (x) { return Math.max(0, up(x) - lo(x)); };
-        o > .25 && band(function (x) { return lo(x) + .004; }, function (x) { return depth(x) * .38; }, w * .62, P.mouthMats.tongue, -.009);
+        o > .45 && band(function (x) { return lo(x) + .004; }, function (x) { return depth(x) * .3; }, w * .55, P.mouthMats.tongue, -.009);
         // one clean row of upper teeth that always stays inside the lips
-        teeth && o > .1 && band(function (x) { return up(x) - .004; }, function (x) { return -Math.min(.048, depth(x) * .42); }, w * .86, P.mouthMats.teeth, -.006);
+        teeth && o > .1 && band(function (x) { return up(x) - .004; }, function (x) { return -Math.min(.032, depth(x) * .32); }, w * .78, P.mouthMats.teeth, -.006);
         g.add(new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(ptsL), 32, .022, 8), P.mouthMats.lip));
       }
       g.add(new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(ptsU), 32, o > .02 ? .022 : .026, 8), P.mouthMats.lip));
       function bend(geo) { var p = geo.attributes.position; for (var i2 = 0; i2 < p.count; i2++) p.setZ(i2, p.getZ(i2) - p.getX(i2) * p.getX(i2) * .9); p.needsUpdate = true; }
     }
-    var MOUTH = { smile: [.17, .06, 0, 0], grin: [.2, .07, .45, 1], teeth: [.19, .06, .3, 1], o: [.07, 0, .7, 0], flat: [.14, 0, 0, 0], tongue: [.18, .06, .35, 0], sad: [.14, -.05, 0, 0], det: [.17, .03, .12, 1], cele: [.23, .09, .8, 1], think: [.12, .015, 0, 0] };
+    var MOUTH = { smile: [.17, .06, 0, 0], grin: [.19, .07, .32, 1], teeth: [.19, .06, .24, 1], o: [.07, 0, .7, 0], flat: [.14, 0, 0, 0], tongue: [.18, .06, .35, 0], sad: [.14, -.05, 0, 0], det: [.17, .03, .06, 0], cele: [.21, .08, .62, 0], think: [.12, .015, 0, 0] };
     // expression targets per mood: [brow raise, brow inner angle, upper lid (0 open..1 shut), lower lid raise, head pitch]
     var FACE = { idle: [0, 0, .08, 0, 0], happy: [.05, .05, .12, .35, -.04], celebrate: [.07, .06, .78, .55, -.1], sad: [.01, .3, .3, 0, .16], excited: [-.03, -.28, .14, .15, 0], surprised: [.12, .05, -.1, 0, -.05], think: [.04, -.1, .18, .1, -.08], proud: [.03, 0, .2, .25, -.06] };
     // ---------------------------------------------------------------- renderer and lighting
@@ -9674,7 +9680,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     }
     function lerp(a, b, t) { return a + (b - a) * t; }
     // copy the 2D rig state into the 3D model
-    function pose(m, st, svg, dt) {
+    function pose(m, st, svg, dt, v) {
       var P = m.userData.parts, c = m.userData.cfg, mood = (svg && svg.dataset.mood) || "idle", f = FACE[mood] || FACE.idle, x = st ? st.x : null;
       var s = m.userData.s || (m.userData.s = { br: 0, ba: 0, lu: .08, ll: 0, pitch: 0, mw: MOUTH[c.mouth] || MOUTH.smile });
       var k = 1 - Math.pow(.0009, dt);
@@ -9685,8 +9691,15 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       for (var i = 0; i < 4; i++) s.mw[i] = lerp(s.mw[i], mt[i], k * 1.2);
       setMouth(m, s.mw[0], s.mw[1], s.mw[2], s.mw[3] > .5);
       var turn = x ? x.turn : 0, ly = x ? x.ly : 0, lx = x ? x.lx : 0, tilt = x ? x.tilt : 0, hop = st ? (st.hopY || 0) : 0, t = st ? st.time || 0 : performance.now() / 1e3;
-      P.pivot.rotation.set(ly * .16 + s.pitch, turn * .42, -tilt * Math.PI / 180 * 1.2);
-      P.body.position.y = -hop * .012; P.body.rotation.y = turn * .1;
+      // big, readable reactions for a head-and-shoulders portrait: nod yes, shake no, bounce, sway with joy
+      var r = v && v.moodT ? (performance.now() - v.moodT) / 1000 : 9, nod = 0, shake = 0, up = 0, roll = 0;
+      if (mood === "happy") nod = Math.sin(r * 15) * .2 * Math.exp(-r * 2.2), up = Math.abs(Math.sin(r * 9)) * .28 * Math.exp(-r * 1.8);
+      else if (mood === "sad") shake = Math.sin(r * 17) * .34 * Math.exp(-r * 2.6), nod = .08;
+      else if (mood === "celebrate") up = Math.abs(Math.sin(r * 8)) * .3, roll = Math.sin(r * 5) * .14, nod = Math.sin(r * 10) * .06;
+      else if (mood === "excited") up = Math.abs(Math.sin(r * 12)) * .12;
+      else if (mood === "surprised") nod = -.14 * Math.exp(-r * 3), up = .12 * Math.exp(-r * 4);
+      P.pivot.rotation.set(ly * .16 + s.pitch + nod, turn * .42 + shake, -tilt * Math.PI / 180 * 1.2 + roll);
+      P.body.position.y = -hop * .012 + up; P.body.rotation.y = turn * .1 + shake * .25;
       P.body.scale.y = 1 + Math.sin(t * 1.7) * .006;
       P.eyes.forEach(function (e) { e.rotation.set(ly * .28, lx * .42, 0); });
       P.lidsU.forEach(function (l) { l.rotation.x = lerp(-1.05, 1.62, lu); });
@@ -9712,7 +9725,15 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       var px = Math.min(BUF, Math.round(D * Math.min(MAXDPR, devicePixelRatio || 1)));
       if (cv.width !== px) cv.width = cv.height = px;
       var m = modelFor(v.key, v.cfg), st = CZ.get(v.svg);
-      pose(m, st, v.svg, dt);
+      // a new mood starts its reaction; the frame flashes green (right), red (mistake) or gold (celebration)
+      var md = v.svg.dataset.mood || "idle";
+      if (md !== v.mood) {
+        v.mood = md, v.moodT = performance.now();
+        var fx = md === "happy" ? "cz3-good" : md === "sad" ? "cz3-bad" : md === "celebrate" ? "cz3-party" : "";
+        cv.classList.remove("cz3-good", "cz3-bad", "cz3-party");
+        fx && (void cv.offsetWidth, cv.classList.add(fx), clearTimeout(v.fxT), v.fxT = setTimeout(function () { cv.classList.remove(fx); }, 1300));
+      }
+      pose(m, st, v.svg, dt, v);
       scene.add(m); R.setViewport(0, 0, px, px); R.setScissor(0, 0, px, px); R.setScissorTest(true); R.clear(); cam.aspect = 1; cam.updateProjectionMatrix(); R.render(scene, cam); scene.remove(m);
       var g = v.ctx, c = m.userData.cfg, bg = czColors(c).bg;
       g.clearRect(0, 0, px, px); g.save(); g.beginPath(); g.arc(px / 2, px / 2, px / 2 - px * .015, 0, Math.PI * 2); g.clip();
