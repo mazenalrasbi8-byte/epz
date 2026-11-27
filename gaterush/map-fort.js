@@ -36,10 +36,11 @@
     /* ---------------------------------------------------- B  BRIDGES & MOVING PLATFORMS  (f 62 .. 136) */
     B.slab(-0.95, 0.95, 62, 86, 0, 1, WOOD); for (var q = 64; q < 86; q += 5) { B.deco(-1.15, -0.95, q, q + 0.5, -1.4, 0.4, "#5A3A22"); B.deco(0.95, 1.15, q, q + 0.5, -1.4, 0.4, "#5A3A22"); }
     coinRow(66, 84, 7, 0, 1.2);
-    B.mover({ x: 0, y: 0, f: 90, w: 3.6, d: 3.6, th: 1, color: TEAL, fn: function (t) { return [2.8 * Math.sin(t * 1.15), 90]; } });
-    B.mover({ x: 0, y: 0, f: 96, w: 3.6, d: 3.6, th: 1, color: TEAL, fn: function (t) { return [2.8 * Math.sin(t * 1.15 + 3.14), 96]; } });
-    B.coin(0, 2.4, 87.5); B.coin(0, 2.9, 93); B.coin(0, 2.4, 98.5);
-    deck(101, 128, STONE, true); B.checkpoint(104, 0, 0); coinRow(106, 122, 5, -2.5); coinRow(106, 122, 5, 2.5);
+    // sliding platforms: wide, slow and close together so the jumps are fair (gaps about 1.5)
+    B.mover({ x: 0, y: 0, f: 90.5, w: 4.4, d: 6, th: 1, color: TEAL, fn: function (t) { return [2.0 * Math.sin(t * 0.8), 90.5]; } });   // 6 deep: a full-speed jump from the edge lands on it
+    B.mover({ x: 0, y: 0, f: 98, w: 4.4, d: 6, th: 1, color: TEAL, fn: function (t) { return [2.0 * Math.sin(t * 0.8 + 3.14), 98]; } });
+    B.coin(0, 2.4, 86.75); B.coin(0, 2.9, 94.25); B.coin(0, 2.4, 101.75);
+    deck(102.5, 128, STONE, true); B.checkpoint(104, 0, 0); coinRow(106, 122, 5, -2.5); coinRow(106, 122, 5, 2.5);
     B.pad({ x: 0, y: 0, f: 126, w: 3.6, d: 2.4 }); B.coin(0, 5, 130.5); B.coin(0, 5.6, 132.5); B.coin(0, 5, 134.5);
     /* ---------------------------------------------------- landing deck + gate 2 */
     deck(135, 192, SAND, true); B.gate(166, 0); B.checkpoint(172, 0, 0); coinRow(140, 160, 5, 0); coinRow(176, 188, 4, 0);
@@ -86,12 +87,13 @@
     deck(618, 650, STONE, true); B.gate(634, 0); B.checkpoint(641, 0, 0);
 
     /* ---------------------------------------------------- G  FALLING PLATFORMS  (f 650 .. 740) */
-    [[656, 0], [662, -2.2], [668, 2.2], [674, 0], [680, -2.6], [686, 2.6], [692, 0]].forEach(function (a) { B.faller({ x: a[1], y: 0, f: a[0], w: 3.6, d: 3.6, th: 0.9, color: ORANGE }); });
+    // falling platforms: 5.5 deep with 1.5 gaps, so an edge jump at full speed always lands on the next one
+    [[657.25, 0], [664.25, -1.6], [671.25, 1.6], [678.25, 0], [685.25, -1.6], [692.25, 1.6]].forEach(function (a) { B.faller({ x: a[1], y: 0, f: a[0], w: 4, d: 5.5, th: 0.9, color: ORANGE }); });
     B.slab(-5, 5, 650, 653, 0, 3, SAND);
-    B.mover({ x: 0, y: 0, f: 698.5, w: 3.4, d: 3.4, th: 1, color: TEAL, fn: function (t) { return [3 * Math.sin(t * 1.4), 698.5]; } });
-    B.mover({ x: 0, y: 0, f: 705, w: 3.4, d: 3.4, th: 1, color: TEAL, fn: function (t) { return [3.2 * Math.sin(t * 1.4 + 3), 705]; } });
-    coinRow(656, 692, 8, 0, 1.6); B.coin(0, 2.2, 698.5); B.coin(0, 2.2, 705);
-    deck(711, 760, SAND, true);
+    B.mover({ x: 0, y: 0, f: 699.5, w: 4.4, d: 6, th: 1, color: TEAL, fn: function (t) { return [2.0 * Math.sin(t * 1.0), 699.5]; } });
+    B.mover({ x: 0, y: 0, f: 707, w: 4.4, d: 6, th: 1, color: TEAL, fn: function (t) { return [2.0 * Math.sin(t * 1.0 + 3), 707]; } });
+    coinRow(657, 692, 6, 0, 1.6); B.coin(0, 2.2, 695.75); B.coin(0, 2.2, 703.25); B.coin(0, 2.2, 710.75);
+    deck(711.5, 760, SAND, true);
     B.sweeper({ x: 0, y: 0, f: 722, len: 4.6, speed: 2.3, phase: 0.6 }); B.coin(-3.8, 1.1, 733); B.coin(3.8, 1.1, 733);
     B.gate(746, 0); B.checkpoint(752, 0, 0);
 
