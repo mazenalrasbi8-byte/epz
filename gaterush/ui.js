@@ -147,7 +147,7 @@ body.grx-playing{overflow:hidden;overscroll-behavior:none}body.grx-playing .tabb
     app.querySelectorAll(".gr-tabs button").forEach(function (b) { b.addEventListener("click", function () { tab = b.dataset.t; draw(); }); });
     if (tab === "race") {
       var go = app.querySelector("#gr-go"); go && go.addEventListener("click", function () { ui.startRace(); });
-      var duel = app.querySelector("#gr-duel"); duel && duel.addEventListener("click", function () { h.go("duel"); }); var adm = app.querySelector("#gr-adm"); adm && adm.addEventListener("click", function () { ui.admin(); });
+      var adm = app.querySelector("#gr-adm"); adm && adm.addEventListener("click", function () { ui.admin(); });
     }
     if (tab === "board") loadBoard(true); if (tab === "champs") loadChamps(true); if (tab === "mine") loadMine();
   }
@@ -165,7 +165,7 @@ body.grx-playing{overflow:hidden;overscroll-behavior:none}body.grx-playing .tabb
       (can && left === 0 ? '<div class="gr-note">You used all ' + max + ' scored races this week. You can still race for practice!</div>' : "") + '</div>' +
       '<button id="gr-go" class="gr-go" type="button">' + h.icon("play", 24) + ' START RACE</button>' +
       '<div class="gr-card"><h2>How it works</h2><ul class="gr-how"><li><b>Run</b> with WASD or the arrow keys and <b>jump</b> with Space. On a phone, use the joystick and the jump button.</li><li><b>Read the question</b>, then run into the door with the right answer. The right door breaks. A wrong one bounces you back and costs 2 seconds.</li><li><b>Score</b> = ' + cfg.per_correct + ' points per correct answer, a speed bonus (up to ' + cfg.time_max + '), coins (' + cfg.coin + ' each, up to ' + cfg.coin_cap + ') and −' + cfg.hit_pen + ' for every obstacle hit.</li><li>Your <b>best race</b> of the week counts. At most ' + max + ' races are scored each week.</li><li>The top 3 win exclusive outfits! Positions 1–10 win bonus points. Everyone who races gets points.</li></ul></div>' +
-      '<button id="gr-duel" class="gr-more" type="button">⚔ Challenge a friend (card duel)</button><p style="text-align:center;margin:14px 0 0"><button id="gr-adm" type="button" style="background:none;border:0;font:inherit;font-size:.78rem;opacity:.6;text-decoration:underline;cursor:pointer;color:inherit">Teacher tools</button></p>';
+      '<p style="text-align:center;margin:14px 0 0"><button id="gr-adm" type="button" style="background:none;border:0;font:inherit;font-size:.78rem;opacity:.6;text-decoration:underline;cursor:pointer;color:inherit">Teacher tools</button></p>';
   }
 
   /* ---------- leaderboard ---------- */
