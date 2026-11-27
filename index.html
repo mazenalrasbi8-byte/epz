@@ -2094,6 +2094,7 @@ body.cz-arena-on{overflow:hidden}
 @media (max-height:700px){.cz-stage-wrap{height:240px}}
 /* 3D avatars (epz-patch:char3d) */
 .cz3-hid{display:none!important}
+.cz3-wait svg.epzc{visibility:hidden}.czb-wrap svg{width:100%;height:100%;display:block}
 canvas.cz3{display:block;border-radius:50%;flex:none;animation:cz3-in .35s ease}
 canvas.cz3-full{margin:0 auto;filter:drop-shadow(0 4px 0 rgb(0 0 0 / .18))}
 @keyframes cz3-in{from{opacity:0;transform:scale(.92)}}
@@ -6213,7 +6214,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     if (grReady) return grReady;
     const files = ["net", "avatar", "engine", "map-fort", "ui"];
     return grReady = Promise.all(files.map((f) => new Promise((ok, bad) => {
-      const s = document.createElement("script"); s.src = `gaterush/${f}.js?v=3`; s.async = !1; s.onload = ok; s.onerror = () => bad(new Error("load " + f)); document.head.appendChild(s);
+      const s = document.createElement("script"); s.src = `gaterush/${f}.js?v=4`; s.async = !1; s.onload = ok; s.onerror = () => bad(new Error("load " + f)); document.head.appendChild(s);
     }))).catch((e) => { grReady = null; throw e; });
   }
   function grHost() {
@@ -9673,271 +9674,39 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     try { mobile = matchMedia("(pointer: coarse)").matches || innerWidth < 700; } catch (e) {}
     var MAXDPR = mobile ? 1.5 : 2, FPS = mobile ? 30 : 60;
     // ---------------------------------------------------------------- textures drawn on a canvas
-    function canvasTex(w, h, draw, rep) {
-      var c = document.createElement("canvas"); c.width = w, c.height = h; draw(c.getContext("2d"), w, h);
-      var t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; t.anisotropy = 4;
-      rep && (t.wrapS = t.wrapT = T.RepeatWrapping, t.repeat.set(rep[0], rep[1]));
-      return t;
-    }
-    var strandTex = null;
-    function strands() {
-      return strandTex || (strandTex = canvasTex(256, 256, function (g, w, h) {
-        g.fillStyle = "#808080"; g.fillRect(0, 0, w, h);
-        for (var i = 0; i < 900; i++) { var x = Math.random() * w, l = 20 + Math.random() * 60, a = .15 + Math.random() * .5; g.strokeStyle = Math.random() < .5 ? "rgba(255,255,255," + a + ")" : "rgba(0,0,0," + a + ")"; g.lineWidth = 1 + Math.random() * 1.5; g.beginPath(); var y = Math.random() * h; g.moveTo(x, y); g.quadraticCurveTo(x + 4, y + l / 2, x + (Math.random() * 6 - 3), y + l); g.stroke(); }
-      }, [3, 3]), strandTex.colorSpace = T.NoColorSpace, strandTex);
-    }
-    var KUMMA = { kumma1: ["#FFFFFF", ["#C8323A", "#0B7A63", "#2F6FDE", "#E89A12"], "#D6DDDA"], kumma2: ["#FFFFFF", ["#1F5FA8", "#139C99", "#5AA6E0", "#0E3F7A"], "#D6DDDA"], kumma3: ["#1E2A4A", ["#F2C230", "#FFFFFF", "#E0601C", "#7FC3E8"], "#33456F"], kummag: ["#F7D774", ["#8A5A00", "#FFFFFF", "#C8323A", "#0B7A63"], "#C99A2E"] };
-    var MASSAR = { massar1: ["#BFDDF0", "#C8323A", "#E89A12", "#1F5FA8"], massar2: ["#8E2F3E", "#F2C230", "#FFFFFF", "#F2C230"], massar3: ["#F2E8D2", "#2F6FDE", "#C8323A", "#8A6A35"] };
-    function kummaSide(p) {
-      return canvasTex(1024, 256, function (g, w, h) {
-        g.fillStyle = p[0]; g.fillRect(0, 0, w, h);
-        for (var r = 0; r < 4; r++) for (var x = (r % 2) * 16, i = 0; x < w + 32; x += 32, i++) {
-          var y = 30 + r * 38, col = p[1][(i + r) % 4]; g.fillStyle = col; g.beginPath(); g.moveTo(x, y - 11); g.lineTo(x + 11, y); g.lineTo(x, y + 11); g.lineTo(x - 11, y); g.fill();
-          g.fillStyle = p[2]; g.beginPath(); g.arc(x + 16, y, 2.5, 0, 7); g.fill();
-        }
-        g.fillStyle = p[1][1]; g.fillRect(0, 186, w, 8); g.fillStyle = p[1][0]; g.fillRect(0, 196, w, 5);
-        for (var k = 0, x2 = 0; x2 < w; x2 += 24, k++) { g.fillStyle = p[1][k % 4]; g.beginPath(); g.moveTo(x2, h); g.lineTo(x2 + 12, 212); g.lineTo(x2 + 24, h); g.fill(); }
-      });
-    }
-    function kummaTop(p) {
-      return canvasTex(512, 512, function (g, w, h) {
-        g.fillStyle = p[0]; g.fillRect(0, 0, w, h);
-        for (var ring = 0; ring < 5; ring++) { g.strokeStyle = p[1][ring % 4]; g.lineWidth = 9; g.setLineDash([16, 10]); g.beginPath(); g.arc(256, 256, 40 + ring * 44, 0, 7); g.stroke(); }
-        for (var a = 0; a < 16; a++) { g.fillStyle = p[1][a % 4]; var ang = a / 16 * Math.PI * 2; g.beginPath(); g.arc(256 + Math.cos(ang) * 120, 256 + Math.sin(ang) * 120, 9, 0, 7); g.fill(); }
-      });
-    }
-    function massarTex(p) {
-      return canvasTex(512, 256, function (g, w, h) {
-        g.fillStyle = p[0]; g.fillRect(0, 0, w, h);
-        for (var y = 10; y < h; y += 28) for (var x = (y / 28 % 2) * 14; x < w; x += 28) { g.fillStyle = p[3]; g.globalAlpha = .55; g.beginPath(); g.ellipse(x, y, 6, 3.5, .6, 0, 7); g.fill(); g.globalAlpha = 1; }
-        g.fillStyle = p[1]; g.fillRect(0, 0, w, 12); g.fillRect(0, h - 22, w, 9); g.fillStyle = p[2]; g.fillRect(0, 14, w, 5); g.fillRect(0, h - 11, w, 5);
-      }, [3, 1]);
-    }
-    function jerseyTex(base, ink) {
-      return canvasTex(1024, 512, function (g, w, h) { g.fillStyle = base; g.fillRect(0, 0, w, h); g.fillStyle = ink; g.font = "800 150px Lexend, Arial, sans-serif"; g.textAlign = "center"; g.fillText("9", w * .25, h * .42); g.fillRect(0, h * .12, w, 10); });
-    }
-    function stripeTex(base, a, b) {
-      return canvasTex(512, 512, function (g, w, h) { g.fillStyle = base; g.fillRect(0, 0, w, h); g.fillStyle = a; g.fillRect(0, h * .26, w, 34); g.fillStyle = b; for (var x = 0; x < w; x += 18) g.fillRect(x, h * .26 + 12, 9, 10); });
-    }
-    function irisTex(col) {
-      return canvasTex(64, 256, function (g, w, h) {
-        var gr = g.createLinearGradient(0, 0, 0, h);
-        gr.addColorStop(0, "#050608"); gr.addColorStop(.36, "#07080b"); gr.addColorStop(.42, czShade(col, -.35)); gr.addColorStop(.7, col); gr.addColorStop(.9, czShade(col, -.25)); gr.addColorStop(1, "#111");
-        g.fillStyle = gr; g.fillRect(0, 0, w, h);
-        for (var i = 0; i < 40; i++) { g.strokeStyle = "rgba(255,255,255,.12)"; g.beginPath(); var x = Math.random() * w; g.moveTo(x, h * .42); g.lineTo(x, h * .9); g.stroke(); }
-      });
-    }
-    // ---------------------------------------------------------------- materials
-    function skinMat(col) { return new T.MeshPhysicalMaterial({ color: col, roughness: .52, metalness: 0, sheen: .35, sheenColor: new T.Color(czShade(col, .35)), sheenRoughness: .6, clearcoat: .08, clearcoatRoughness: .5 }); }
-    function clothMat(col, map) { return new T.MeshPhysicalMaterial({ color: map ? "#ffffff" : col, map: map || null, roughness: .82, sheen: .6, sheenColor: new T.Color(czShade(col, .4)), sheenRoughness: .7 }); }
-    function hairMat(col) { var s = strands(); return new T.MeshPhysicalMaterial({ color: col, roughness: .5, bumpMap: s, bumpScale: 1.4, sheen: 1, sheenColor: new T.Color(czShade(col, .45)), sheenRoughness: .35, clearcoat: .15 }); }
-    var gold = function () { return new T.MeshStandardMaterial({ color: "#E5B53A", metalness: 1, roughness: .28 }); };
-    // ---------------------------------------------------------------- the model (one per look; views share it)
-    function mesh(geo, mat, pos, rot, sc, parent, shadow) {
-      var m = new T.Mesh(geo, mat); pos && m.position.set(pos[0], pos[1], pos[2]); rot && m.rotation.set(rot[0], rot[1], rot[2]); sc && m.scale.set(sc[0], sc[1], sc[2]);
-      m.castShadow = shadow !== false; m.receiveShadow = true; parent && parent.add(m); return m;
-    }
-    var SPH = function (r, ws, hs, ps, pl, ts, tl) { return new T.SphereGeometry(r, ws || 48, hs || 32, ps || 0, pl == null ? Math.PI * 2 : pl, ts || 0, tl == null ? Math.PI : tl); };
+    // ---------------------------------------------------------------- the model: the same blocky character as Gate Rush (gaterush/avatar.js)
+    // Scaled so the head is at the origin and about as big as the old portrait head, so every camera and scene that used the old model still frames it.
+    var HEAD_Y = 1.49, SCALE = 3.5;
     function build(cfg) {
-      var c = czCfg(cfg), C = czColors(c), sz = c.sz, root = new T.Group(), parts = {};
-      var skin = skinMat(C.skin), hair = hairMat(C.hair), B = sz.b;
-      var hs = sz.hd, face = c.face === "oval" ? [.93, 1.16, 1] : c.face === "square" ? [1.05, 1.04, 1] : [1, 1.1, 1];
-      // ---- body: shoulders, neck, clothes
-      var body = new T.Group(); root.add(body); parts.body = body;
-      var robe = czRobe(c.cl), top = robe ? (c.cl === "dish" ? C.top : "#FFFFFF") : c.cl === "uniform" ? "#F4F7FB" : c.cl === "jacket" ? "#F4F7FB" : C.top;
-      var torsoMap = c.cl === "jersey" ? jerseyTex(C.top, czLight(C.top) ? "#2B41C4" : "#FFFFFF") : c.cl === "sweater" ? stripeTex(C.top, czShade(C.top, .35), czShade(C.top, -.3)) : null;
-      var torso = mesh(SPH(1, 64, 32), clothMat(top, torsoMap), [0, -2.25, 0], [0, 0, 0], [1.55 * B, .95, .85], body);
-      mesh(new T.CylinderGeometry(.38, .44, .5, 32), skin, [0, -1.22, -.04], null, null, body);
-      var trim = czShade(top, czLight(top) ? -.22 : .25);
-      if (robe) {
-        mesh(new T.TorusGeometry(.43, .045, 12, 48), clothMat(trim), [0, -1.36, .02], [Math.PI / 2 - .25, 0, 0], null, body);
-        mesh(new T.CylinderGeometry(.018, .018, .6, 8), clothMat(trim), [0, -1.76, .75], [-.34, 0, 0], null, body);
-        mesh(new T.CapsuleGeometry(.05, .12, 6, 12), clothMat(trim), [0, -2.02, .86], [-.3, 0, 0], null, body);
-        if (c.cl !== "dish") {
-          var ck = c.cl === "bishtg" ? "#16130F" : c.col.top || (czLight(C.top) ? "#3B2A20" : C.top);
-          var cloak = mesh(SPH(1.035, 64, 32, Math.PI / 2 + .42, Math.PI * 2 - .84, 0, Math.PI), clothMat(ck), [0, -2.25, 0], [0, 0, 0], [1.58 * B, .97, .88], body);
-          cloak.material.side = T.DoubleSide;
-          var edge = function (sgn) { var pts = []; for (var th = .45; th <= 1.55; th += .1) { var ph = Math.PI / 2 + sgn * .42; pts.push(new T.Vector3(-1.04 * Math.cos(ph) * Math.sin(th) * 1.58 * B, 1.04 * Math.cos(th) * .97 - 2.25, 1.04 * Math.sin(ph) * Math.sin(th) * .88)); } return new T.TubeGeometry(new T.CatmullRomCurve3(pts), 24, c.cl === "bishtg" ? .045 : .03, 8); };
-          mesh(edge(1), gold(), null, null, null, body); mesh(edge(-1), gold(), null, null, null, body);
-        }
-      } else if (c.cl === "hoodie") {
-        mesh(new T.TorusGeometry(.62, .2, 16, 48), clothMat(czShade(C.top, -.1)), [0, -1.35, -.25], [Math.PI / 2 - .5, 0, 0], [1, 1, .8], body);
-        mesh(new T.CylinderGeometry(.02, .02, .45, 8), clothMat("#F4F7EF"), [-.13, -1.68, .74], [-.2, 0, 0], null, body);
-        mesh(new T.CylinderGeometry(.02, .02, .45, 8), clothMat("#F4F7EF"), [.13, -1.68, .74], [-.2, 0, 0], null, body);
-      } else if (c.cl === "shirt" || c.cl === "uniform") {
-        var collar = clothMat(czShade(top, -.06));
-        mesh(new T.BoxGeometry(.32, .05, .26), collar, [-.2, -1.42, .42], [.9, .55, .3], null, body);
-        mesh(new T.BoxGeometry(.32, .05, .26), collar, [.2, -1.42, .42], [.9, -.55, -.3], null, body);
-        if (c.cl === "uniform") mesh(new T.BoxGeometry(.16, .7, .04), clothMat(c.col.top || "#2B41C4"), [0, -1.8, .77], [-.36, 0, 0], null, body);
-      } else if (c.cl === "jacket") {
-        var jk = clothMat(C.top), jc = mesh(SPH(1.03, 64, 32, Math.PI / 2 + .3, Math.PI * 2 - .6, 0, Math.PI), jk, [0, -2.25, 0], null, [1.58 * B, .97, .87], body); jc.material.side = T.DoubleSide;
-      } else mesh(new T.TorusGeometry(.42, .05, 12, 48), clothMat(czShade(C.top, -.2)), [0, -1.36, .02], [Math.PI / 2 - .25, 0, 0], null, body);
-      // extras on the body
-      if (c.extra === "medal") { mesh(new T.BoxGeometry(.1, .6, .02), clothMat("#2B41C4"), [-.11, -1.72, .73], [-.2, 0, .3], null, body); mesh(new T.BoxGeometry(.1, .6, .02), clothMat("#D8343F"), [.11, -1.72, .73], [-.2, 0, -.3], null, body); mesh(new T.CylinderGeometry(.17, .17, .05, 32), gold(), [0, -2.0, .86], [Math.PI / 2 - .2, 0, 0], null, body); }
-      if (c.extra === "backpack") { var st = clothMat("#2B41C4"); mesh(new T.TorusGeometry(.5, .07, 10, 32, Math.PI), st, [-.76 * B, -1.8, .05], [0, Math.PI / 2, 0], [1, 1.2, 1], body); mesh(new T.TorusGeometry(.5, .07, 10, 32, Math.PI), st, [.76 * B, -1.8, .05], [0, Math.PI / 2, 0], [1, 1.2, 1], body); }
-      if (c.extra === "cape" || grPk(c.extra)) { var cp = mesh(SPH(1.08, 48, 24, -Math.PI / 2 - 1.2, 2.4, .2, 1.4), clothMat(grPk(c.extra) ? grPk(c.extra)[0] : "#D8343F"), [0, -2.25, -.05], null, [1.62 * B, .99, .9], body); cp.material.side = T.DoubleSide; }
-      if (c.extra === "pen") { mesh(new T.CylinderGeometry(.03, .03, .3, 8), new T.MeshStandardMaterial({ color: "#2B41C4", roughness: .3 }), [.46 * B, -1.82, .72], [-.3, 0, 0], null, body); mesh(new T.CylinderGeometry(.03, .03, .26, 8), new T.MeshStandardMaterial({ color: "#D8343F", roughness: .3 }), [.53 * B, -1.84, .7], [-.3, 0, 0], null, body); }
-      // ---- head
-      var headPivot = new T.Group(); headPivot.position.set(0, -.95, 0); body.add(headPivot); parts.pivot = headPivot;
-      var head = new T.Group(); head.position.set(0, .86, 0); head.scale.setScalar(hs); headPivot.add(head); parts.head = head;
-      var skull = mesh(SPH(1, 64, 48), skin, [0, 0, 0], null, face, head);
-      [-1, 1].forEach(function (s) { mesh(SPH(.25, 24, 16), skin, [s * 1.0 * face[0], .02, -.04], [0, s * .35, 0], [.5, 1, .72], head); });
-      mesh(SPH(.12, 24, 16), skin, [0, -.1, .99], null, [.85 * sz.ns, 1.05 * sz.ns, 1 * sz.ns], head);
-      [-1, 1].forEach(function (s) { var b = mesh(SPH(.16, 16, 12), new T.MeshStandardMaterial({ color: "#FF7A6B", transparent: true, opacity: .16, roughness: 1, depthWrite: false }), [s * .5, -.28, .8], null, [1.2, .7, .4], head, false); b.receiveShadow = false; });
-      // eyes: eyeball (glossy), iris cap with a pupil, upper and lower lids that close over the ball
-      var es = sz.es, er = .19 * es, ex = .36 + sz.ed * .012, ey = .1, ez = .82;
-      parts.eyes = []; parts.lidsU = []; parts.lidsL = [];
-      var white = new T.MeshPhysicalMaterial({ color: "#FBFBF8", roughness: .08, clearcoat: 1, clearcoatRoughness: .04 }), iris = new T.MeshPhysicalMaterial({ map: irisTex(C.eyes), roughness: .15, clearcoat: 1, clearcoatRoughness: .02 });
-      [-1, 1].forEach(function (s) {
-        var eg = new T.Group(); eg.position.set(s * ex, ey, ez); head.add(eg);
-        var ball = new T.Group(); eg.add(ball); parts.eyes.push(ball);
-        mesh(SPH(er, 32, 24), white, null, null, null, ball, false);
-        mesh(SPH(er * 1.004, 32, 12, 0, Math.PI * 2, 0, .62), iris, null, [Math.PI / 2, 0, 0], null, ball, false);
-        mesh(SPH(er * .1, 12, 8), new T.MeshBasicMaterial({ color: "#ffffff" }), [-er * .32, er * .34, er * .96], null, null, ball, false);
-        var lu = new T.Group(); eg.add(lu); mesh(SPH(er * 1.12, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2), skin, null, null, null, lu, false); mesh(new T.TorusGeometry(er * 1.1, er * .09, 8, 32, Math.PI), new T.MeshStandardMaterial({ color: "#1B1414", roughness: .6 }), null, [Math.PI / 2, 0, 0], null, lu, false);
-        parts.lidsU.push(lu);
-        var ll = new T.Group(); eg.add(ll); mesh(SPH(er * 1.1, 32, 16, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), skin, null, null, null, ll, false); parts.lidsL.push(ll);
-      });
-      // brows
-      var bw = c.brows === "thick" ? .055 : c.brows === "straight" ? .042 : .036; parts.brows = [];
-      [-1, 1].forEach(function (s) { var g = new T.Group(); g.position.set(s * ex, .36 + sz.by * .018, .9); g.rotation.y = s * .32; head.add(g); var b = mesh(new T.CapsuleGeometry(bw, .2, 6, 12), hair, null, [0, 0, Math.PI / 2 + (c.brows === "straight" ? 0 : -s * .12)], null, g); parts.brows.push(g); });
-      // mouth: rebuilt from a few numbers (width, corner lift, opening) whenever the expression moves
-      var mouthG = new T.Group(); mouthG.position.set(0, -.42, .94); mouthG.scale.set(sz.mw * 1.3, 1.3, 1); head.add(mouthG); parts.mouth = mouthG;
-      parts.mouthMats = { in: new T.MeshStandardMaterial({ color: "#3A1212", roughness: .8 }), lip: new T.MeshPhysicalMaterial({ color: czShade(C.skin, -.32), roughness: .35, clearcoat: .4 }), teeth: new T.MeshPhysicalMaterial({ color: "#F6F3EA", roughness: .22, clearcoat: .5, clearcoatRoughness: .2 }), tongue: new T.MeshStandardMaterial({ color: "#D9606E", roughness: .55 }) };
-      // facial hair
-      var bmat = hairMat(C.hair); parts.beardZ = 0;
-      if (c.beard === "beard" || c.beard === "stubble") { mesh(SPH(1.035, 64, 32, .35, 2.44, 1.92, .9), bmat, null, null, face, head); if (c.beard === "stubble") bmat.transparent = true, bmat.opacity = .35, bmat.depthWrite = false; else parts.beardZ = .06; }
-      mouthG.position.z = .94 + parts.beardZ;
-      if (c.beard === "moustache" || c.beard === "beard" || c.beard === "goatee") mesh(new T.CapsuleGeometry(.045, .26, 6, 12), bmat, [0, -.27, .97 + parts.beardZ * .5], [0, 0, Math.PI / 2], null, head);
-      if (c.beard === "goatee") mesh(SPH(.14, 24, 16), bmat, [0, -.72, .78], null, [1, 1.1, .7], head);
-      // hair
-      var hatOn = c.hat !== "none", hh = new T.Group(); head.add(hh); parts.hair = hh;
-      var cap = function (r, th, tilt) { return mesh(SPH(r, 64, 32, 0, Math.PI * 2, 0, th), hair, [0, 0, 0], [tilt, 0, 0], face, hh); };
-      var hstyle = c.hair;
-      if (hstyle !== "none") {
-        if (hatOn && hstyle !== "long") cap(1.012, 1.45, -.55);
-        else if (hstyle === "buzz") { var bz = cap(1.02, 1.3, -.4); bz.material = hairMat(czShade(C.hair, .08)); bz.material.roughness = .9; }
-        else if (hstyle === "afro") { cap(1.06, 1.35, -.4); mesh(SPH(1.5, 48, 32), hair, [0, .45, -.25], null, [1, .95, 1], hh); }
-        else {
-          cap(1.06, 1.28, -.42);
-          if (hstyle === "side") mesh(SPH(.75, 32, 16), hair, [.28, .8, .42], [0, 0, -.35], [1, .38, .78], hh);
-          if (hstyle === "fringe") mesh(SPH(.8, 32, 16), hair, [0, .62, .62], [.3, 0, 0], [1.05, .3, .5], hh);
-          if (hstyle === "wavy") for (var i = 0; i < 7; i++) { var a = -1.1 + i * .37; mesh(SPH(.3, 20, 14), hair, [Math.sin(a) * .85, .78 + Math.cos(a * 2) * .06, Math.cos(a) * .55], null, [1, .75, 1], hh); }
-          if (hstyle === "curly") { var n = 46, inst = new T.InstancedMesh(SPH(.2, 14, 10), hair, n), d = new T.Object3D(); for (var k = 0; k < n; k++) { var yy = 1 - (k / (n - 1)) * 1.1, rr = Math.sqrt(1 - yy * yy), th2 = k * 2.4; d.position.set(Math.cos(th2) * rr * 1.06 * face[0], yy * 1.06 * face[1] + .05, Math.sin(th2) * rr * 1.06 - .05); if (d.position.z > .55 && d.position.y < .55) d.position.y = .6; d.updateMatrix(); inst.setMatrixAt(k, d.matrix); } inst.castShadow = true; hh.add(inst); }
-          if (hstyle === "spiky") for (var j = 0; j < 13; j++) { var a2 = j / 13 * Math.PI * 2, dir = new T.Vector3(Math.cos(a2) * .6, 1, Math.sin(a2) * .6 - .25).normalize(), cn = mesh(new T.ConeGeometry(.16, .55, 12), hair, [dir.x * 1.05, dir.y * 1.12, dir.z * 1.05], null, null, hh); cn.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), dir); }
-          if (hstyle === "bun") mesh(SPH(.36, 32, 24), hair, [0, 1.15, -.35], null, null, hh);
-        }
-        if (hstyle === "long") { if (!hatOn) cap(1.06, 1.3, -.4); mesh(SPH(1, 48, 32), hair, [0, -.55, -.5], null, [1.08, 1.35, .62], hh); }
-      }
-      // headwear
-      var hg = new T.Group(); head.add(hg); parts.hat = hg;
-      if (/^kumma/.test(c.hat)) { var kp = KUMMA[c.hat] || KUMMA.kumma1, side = new T.MeshPhysicalMaterial({ map: kummaSide(kp), roughness: .75, sheen: .5, sheenColor: new T.Color("#fff") }), topm = new T.MeshPhysicalMaterial({ map: kummaTop(kp), roughness: .75 }); var km = mesh(new T.CylinderGeometry(1.06 * face[0], 1.09 * face[0], .78, 64, 1, false), [side, topm, topm], [0, .78, -.04], [-.14, 0, 0], null, hg); }
-      if (/^massar/.test(c.hat)) {
-        var mp = MASSAR[c.hat] || MASSAR.massar1, mt = new T.MeshPhysicalMaterial({ map: massarTex(mp), roughness: .8, sheen: .6, sheenColor: new T.Color("#ffffff") });
-        mesh(SPH(1.02, 48, 24, 0, Math.PI * 2, 0, 1.2), mt, [0, .28, -.05], [-.2, 0, 0], [1.08 * face[0], 1.05, 1.08], hg);
-        for (var t2 = 0; t2 < 4; t2++) mesh(new T.TorusGeometry(.92 - t2 * .1, .2 - t2 * .02, 18, 64), mt, [0, .48 + t2 * .17, -.08 - t2 * .04], [Math.PI / 2 - .2 + (t2 % 2 ? .1 : -.1), (t2 % 2 ? .08 : -.08), 0], [face[0] * 1.05, 1.02, 1], hg);
-        mesh(SPH(.32, 24, 16), mt, [.78, .95, -.1], [0, 0, -.6], [.6, 1.2, .5], hg);
-      }
-      if (c.hat === "cap") { var cm = clothMat(C.hat); mesh(SPH(1.06, 48, 24, 0, Math.PI * 2, 0, 1.35), cm, [0, .05, -.02], [-.35, 0, 0], face, hg); mesh(new T.CylinderGeometry(.75, .75, .05, 32, 1, false, -1.1, 2.2), cm, [0, .5, .34], [.22, 0, 0], [1.05, 1, 1.15], hg); }
-      if (c.hat === "beanie") { var bm = clothMat(C.hat); mesh(SPH(1.07, 48, 24, 0, Math.PI * 2, 0, 1.4), bm, [0, .08, -.04], [-.3, 0, 0], face, hg); mesh(new T.TorusGeometry(1.0, .12, 12, 48), clothMat(czShade(C.hat, -.15)), [0, .48, .06], [Math.PI / 2 - .3, 0, 0], [face[0], 1, 1], hg); mesh(SPH(.2, 16, 12), bm, [0, 1.22, -.3], null, null, hg); }
-      if (c.hat === "crown" || /^grcrown/.test(c.hat)) { var gm = grPk(c.hat) ? new T.MeshStandardMaterial({ color: grPk(c.hat)[0], metalness: .5, roughness: .3 }) : gold(); mesh(new T.CylinderGeometry(.78, .82, .32, 40, 1, true), gm, [0, 1.02, -.05], [-.1, 0, 0], null, hg).material.side = T.DoubleSide; for (var q = 0; q < 6; q++) { var aq = q / 6 * Math.PI * 2; mesh(new T.ConeGeometry(.12, .3, 12), gm, [Math.cos(aq) * .78, 1.3, Math.sin(aq) * .78 - .05], null, null, hg); } mesh(SPH(.09, 16, 12), new T.MeshPhysicalMaterial({ color: "#D8343F", roughness: .05, clearcoat: 1 }), [0, 1.02, .76], null, null, hg); }
-      if (c.extra === "headphones") { var pm = new T.MeshStandardMaterial({ color: "#7E5BEF", roughness: .35 }); mesh(new T.TorusGeometry(1.08, .07, 12, 48, Math.PI), pm, [0, .05, 0], null, [face[0], 1.05, 1], hg); [-1, 1].forEach(function (s) { mesh(new T.CylinderGeometry(.26, .26, .18, 24), pm, [s * 1.05 * face[0], .02, 0], [0, 0, Math.PI / 2], null, hg); }); }
-      // glasses
-      if (c.gl !== "none") {
-        var fr = new T.MeshStandardMaterial({ color: grPk(c.gl) ? grPk(c.gl)[0] : "#1E2550", roughness: .3, metalness: .3 }), gz = ez + er * .9;
-        [-1, 1].forEach(function (s) {
-          var rim = mesh(new T.TorusGeometry(er * 1.5, .022, 8, c.gl === "square" ? 4 : 32), fr, [s * ex, ey, gz], [0, 0, c.gl === "square" ? Math.PI / 4 : 0], c.gl === "square" ? [1.25, .95, 1] : null, head, false);
-          if (c.gl === "sun" || grPk(c.gl)) mesh(new T.CircleGeometry(er * 1.5, 32), new T.MeshPhysicalMaterial({ color: "#10131c", roughness: .05, clearcoat: 1, transparent: true, opacity: .92 }), [s * ex, ey, gz], null, null, head, false);
-          mesh(new T.CylinderGeometry(.018, .018, .9, 6), fr, [s * .9 * face[0], ey + .02, .45], [Math.PI / 2, 0, 0], null, head, false);
-        });
-        mesh(new T.CylinderGeometry(.018, .018, ex * 2 - er * 3, 6), fr, [0, ey + .02, gz], [0, 0, Math.PI / 2], null, head, false);
-      }
-      root.userData = { parts: parts, cfg: c, mouthKey: "" };
-      root.traverse(function (o) { o.isMesh && o.material && o.material.map && (o.material.map.needsUpdate = true); });
-      return root;
+      var c = czCfg(cfg), api = window.GR.avatar(T, c, czColors(c)), g = new T.Group();
+      api.root.scale.multiplyScalar(SCALE); api.root.position.y = -HEAD_Y * SCALE; g.add(api.root);
+      g.userData = { cfg: c, api: api };
+      return g;
     }
-    // mouth shape: w = half width, cy = corner lift (+ smile), o = opening (0..1), t = teeth showing
-    function setMouth(model, w, cy, o, teeth) {
-      var ud = model.userData, P = ud.parts, key = [w, cy, o, teeth ? 1 : 0].map(function (v) { return Number(v).toFixed(3); }).join();
-      if (key === ud.mouthKey) return; ud.mouthKey = key;
-      var g = P.mouth; while (g.children.length) { var ch = g.children.pop(); ch.geometry.dispose(); }
-      var up = function (x) { var f = 1 - (x / w) * (x / w); return cy * (1 - f) + (o * .05 + cy * .15) * f; };
-      var lo = function (x) { var f = 1 - (x / w) * (x / w); return cy * (1 - f) + (cy * -.55 - o * .32) * f - .005; };
-      var N = 24, ptsU = [], ptsL = [];
-      for (var i = 0; i <= N; i++) { var x = -w + 2 * w * i / N; ptsU.push(new T.Vector3(x, up(x), -x * x * .9)); ptsL.push(new T.Vector3(x, lo(x), -x * x * .9)); }
-      if (o > .02) {
-        var sh = new T.Shape(); sh.moveTo(ptsU[0].x, ptsU[0].y); ptsU.forEach(function (p) { sh.lineTo(p.x, p.y); }); for (var j = N; j >= 0; j--) sh.lineTo(ptsL[j].x, ptsL[j].y);
-        var ins = new T.Mesh(new T.ShapeGeometry(sh, 2), P.mouthMats.in); ins.position.z = -.012; bend(ins.geometry); g.add(ins);
-        // tongue resting at the bottom of the open mouth
-        var band = function (edge, h, lim, mat, z) {
-          var s = new T.Shape(), M2 = 16, xs = [];
-          for (var q = 0; q <= M2; q++) xs.push(-lim + 2 * lim * q / M2);
-          xs.forEach(function (x, q) { var y = edge(x); q ? s.lineTo(x, y) : s.moveTo(x, y); });
-          for (var q2 = M2; q2 >= 0; q2--) { var x2 = xs[q2]; s.lineTo(x2, edge(x2) + h(x2)); }
-          var m2 = new T.Mesh(new T.ShapeGeometry(s, 3), mat); m2.position.z = z; bend(m2.geometry); g.add(m2);
-        };
-        var depth = function (x) { return Math.max(0, up(x) - lo(x)); };
-        o > .45 && band(function (x) { return lo(x) + .004; }, function (x) { return depth(x) * .3; }, w * .55, P.mouthMats.tongue, -.009);
-        // one clean row of upper teeth that always stays inside the lips
-        teeth && o > .1 && band(function (x) { return up(x) - .004; }, function (x) { return -Math.min(.032, depth(x) * .32); }, w * .78, P.mouthMats.teeth, -.006);
-        g.add(new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(ptsL), 32, .022, 8), P.mouthMats.lip));
-      }
-      g.add(new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(ptsU), 32, o > .02 ? .022 : .026, 8), P.mouthMats.lip));
-      function bend(geo) { var p = geo.attributes.position; for (var i2 = 0; i2 < p.count; i2++) p.setZ(i2, p.getZ(i2) - p.getX(i2) * p.getX(i2) * .9); p.needsUpdate = true; }
-    }
-    var MOUTH = { smile: [.17, .06, 0, 0], grin: [.19, .07, .32, 1], teeth: [.19, .06, .24, 1], o: [.07, 0, .7, 0], flat: [.14, 0, 0, 0], tongue: [.18, .06, .35, 0], sad: [.14, -.05, 0, 0], det: [.17, .03, .06, 0], cele: [.21, .08, .62, 0], think: [.12, .015, 0, 0] };
-    // expression targets per mood: [brow raise, brow inner angle, upper lid (0 open..1 shut), lower lid raise, head pitch]
-    var FACE = { idle: [0, 0, .08, 0, 0], happy: [.05, .05, .12, .35, -.04], celebrate: [.07, .06, .78, .55, -.1], sad: [.01, .3, .3, 0, .16], excited: [-.03, -.28, .14, .15, 0], surprised: [.12, .05, -.1, 0, -.05], think: [.04, -.1, .18, .1, -.08], proud: [.03, 0, .2, .25, -.06] };
-    // ---------------------------------------------------------------- renderer and lighting
     function init() {
-      R = new T.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true, powerPreference: "high-performance" });
-      R.setPixelRatio(1); R.setSize(BUF, BUF, false); R.setClearColor(0, 0);
-      R.outputColorSpace = T.SRGBColorSpace; R.toneMapping = T.ACESFilmicToneMapping; R.toneMappingExposure = 1.05;
-      R.shadowMap.enabled = !mobile; R.shadowMap.type = T.PCFSoftShadowMap;
+      // flat, bright Gate Rush lighting: no tone mapping, no shadows, no environment map (cheap and the same look as the game)
+      R = new T.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true, powerPreference: mobile ? "low-power" : "default" });
+      R.setPixelRatio(1); R.setSize(BUF, BUF, false); R.setClearColor(0, 0); R.outputColorSpace = T.SRGBColorSpace;
       scene = new T.Scene();
-      // a small studio for reflections in the eyes and soft light on the skin
-      var env = new T.Scene(), room = new T.Mesh(new T.BoxGeometry(20, 20, 20), new T.MeshBasicMaterial({ color: "#5a6070", side: T.BackSide })); env.add(room);
-      [[0, 9, 2, 8, 2.2], [-8, 3, 6, 4, 1.4], [8, 2, 4, 3, .8], [0, -2, 9, 6, .5]].forEach(function (p) { var m = new T.Mesh(new T.PlaneGeometry(p[3], p[3] * .6), new T.MeshBasicMaterial({ color: new T.Color(1, 1, 1).multiplyScalar(p[4] * 6) })); m.position.set(p[0], p[1], p[2]); m.lookAt(0, 0, 0); env.add(m); });
-      var pm = new T.PMREMGenerator(R); scene.environment = pm.fromScene(env, .04).texture; scene.environmentIntensity = .9;
-      var key = new T.DirectionalLight("#fff4e6", 2.4); key.position.set(-3, 4, 6); key.castShadow = true; key.shadow.mapSize.set(1024, 1024); key.shadow.radius = 6; key.shadow.bias = -.0004; key.shadow.normalBias = .02;
-      var sc = key.shadow.camera; sc.left = -3, sc.right = 3, sc.top = 3, sc.bottom = -4, sc.near = 1, sc.far = 20; scene.add(key);
-      var rim = new T.DirectionalLight("#bcd4ff", 1.6); rim.position.set(4, 2, -4); scene.add(rim);
-      var fill = new T.DirectionalLight("#ffe2c8", .5); fill.position.set(3, -1, 5); scene.add(fill);
-      cam = new T.PerspectiveCamera(20, 1, .1, 50); cam.position.set(0, -.25, 13.2); cam.lookAt(0, -.62, 0);
+      scene.add(new T.HemisphereLight("#EAF6FF", "#C9A878", 1.15));
+      var key = new T.DirectionalLight("#FFF1D0", 1.5); key.position.set(-3, 5, 7); scene.add(key);
+      var rim = new T.DirectionalLight("#BCE8FF", 0.6); rim.position.set(4, 3, -5); scene.add(rim);
+      cam = new T.PerspectiveCamera(20, 1, .1, 80);
       io = "IntersectionObserver" in window ? new IntersectionObserver(function (es) { es.forEach(function (e) { e.target._cz3vis = e.isIntersecting; }); }) : null;
     }
     function modelFor(key, cfg) {
       var m = models.get(key);
-      if (!m) { m = build(cfg); models.set(key, m); if (models.size > 60) { var k0 = models.keys().next().value; var old = models.get(k0); models.delete(k0); old.traverse(function (o) { o.geometry && o.geometry.dispose(); }); } }
+      if (!m) { m = build(cfg); models.set(key, m); if (models.size > 40) { var k0 = models.keys().next().value, old = models.get(k0); models.delete(k0); old.userData.api.dispose(); } }
       return m;
     }
     function lerp(a, b, t) { return a + (b - a) * t; }
-    // copy the 2D rig state into the 3D model
+    // copy the 2D rig state (mood, where it looks, head turn and tilt, blinking, hops) into the 3D model
     function pose(m, st, svg, dt, v) {
-      var P = m.userData.parts, c = m.userData.cfg, mood = (svg && svg.dataset.mood) || "idle", f = FACE[mood] || FACE.idle, x = st ? st.x : null;
-      var s = m.userData.s || (m.userData.s = { br: 0, ba: 0, lu: .08, ll: 0, pitch: 0, mw: MOUTH[c.mouth] || MOUTH.smile });
-      var k = 1 - Math.pow(.0009, dt);
-      s.br = lerp(s.br, f[0], k), s.ba = lerp(s.ba, f[1], k), s.ll = lerp(s.ll, f[3], k), s.pitch = lerp(s.pitch, f[4], k);
-      var lidT = f[2] + (c.eyes === "cool" ? .32 : 0), blink = st ? st.lid || 0 : 0; s.lu = lerp(s.lu, lidT, k);
-      var lu = Math.max(s.lu, blink);
-      var mk = (svg && svg.dataset.m) || c.mouth, mt = MOUTH[mk] || MOUTH.smile;
-      for (var i = 0; i < 4; i++) s.mw[i] = lerp(s.mw[i], mt[i], k * 1.2);
-      setMouth(m, s.mw[0], s.mw[1], s.mw[2], s.mw[3] > .5);
-      var turn = x ? x.turn : 0, ly = x ? x.ly : 0, lx = x ? x.lx : 0, tilt = x ? x.tilt : 0, hop = st ? (st.hopY || 0) : 0, t = st ? st.time || 0 : performance.now() / 1e3;
-      // big, readable reactions for a head-and-shoulders portrait: nod yes, shake no, bounce, sway with joy
-      var r = v && v.moodT ? (performance.now() - v.moodT) / 1000 : 9, nod = 0, shake = 0, up = 0, roll = 0;
-      if (mood === "happy") nod = Math.sin(r * 15) * .2 * Math.exp(-r * 2.2), up = Math.abs(Math.sin(r * 9)) * .28 * Math.exp(-r * 1.8);
-      else if (mood === "sad") shake = Math.sin(r * 17) * .34 * Math.exp(-r * 2.6), nod = .08;
-      else if (mood === "celebrate") up = Math.abs(Math.sin(r * 8)) * .3, roll = Math.sin(r * 5) * .14, nod = Math.sin(r * 10) * .06;
-      else if (mood === "excited") up = Math.abs(Math.sin(r * 12)) * .12;
-      else if (mood === "surprised") nod = -.14 * Math.exp(-r * 3), up = .12 * Math.exp(-r * 4);
-      P.pivot.rotation.set(ly * .16 + s.pitch + nod, turn * .42 + shake, -tilt * Math.PI / 180 * 1.2 + roll);
-      P.body.position.y = -hop * .012 + up; P.body.rotation.y = turn * .1 + shake * .25;
-      P.body.scale.y = 1 + Math.sin(t * 1.7) * .006;
-      P.eyes.forEach(function (e) { e.rotation.set(ly * .28, lx * .42, 0); });
-      P.lidsU.forEach(function (l) { l.rotation.x = lerp(-1.05, 1.62, lu); });
-      P.lidsL.forEach(function (l) { l.rotation.x = lerp(.62, -.3, Math.min(1, s.ll + (mood === "celebrate" ? .2 : 0))); });
-      P.brows.forEach(function (b, i) { var sgn = i ? -1 : 1; b.position.y = (.36 + c.sz.by * .018) + s.br; b.rotation.z = sgn * -s.ba * .5; });
+      var x = st ? st.x : null;
+      m.userData.api.portrait({
+        mood: (svg && svg.dataset.mood) || "idle", lid: st ? st.lid || 0 : 0, lx: x ? x.lx : 0, ly: x ? x.ly : 0, turn: x ? x.turn : 0, tilt: x ? x.tilt : 0,
+        hop: st ? st.hopY || 0 : 0, r: v && v.moodT ? (performance.now() - v.moodT) / 1000 : 9, t: st ? st.time || 0 : performance.now() / 1e3
+      }, dt);
     }
     // ---------------------------------------------------------------- views: one canvas per character on screen
     function attach(svg) {
@@ -9949,7 +9718,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       var fill = frame === "bust" && /^(100%|auto)?$/.test(svg.style.width || "") && svg.closest(".avatar,.duo-praise-av,.duo-nudge-av,.cz-rank-av");
       cv.style.width = cv.style.height = Math.round(D) + "px";
       svg.after(cv); svg.classList.add("cz3-hid"); svg._cz3 = cv;
-      var v = { svg: svg, cv: cv, ctx: cv.getContext("2d"), key: svg.dataset.cfg || "{}", still: still, bg: !svg.hasAttribute("data-nobg"), done: false };
+      var v = { svg: svg, cv: cv, ctx: cv.getContext("2d"), key: svg.dataset.cfg || "{}", still: still, bg: !svg.hasAttribute("data-nobg"), done: false, full: frame !== "bust" || svg.classList.contains("cz-hero"), hero: svg.classList.contains("cz-hero") };
       try { v.cfg = JSON.parse(v.key); } catch (e) { v.cfg = DUO_DEF; }
       views.push(v); io && io.observe(cv); cv._cz3vis = true;
     }
@@ -9967,6 +9736,9 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         fx && (void cv.offsetWidth, cv.classList.add(fx), clearTimeout(v.fxT), v.fxT = setTimeout(function () { cv.classList.remove(fx); }, 1300));
       }
       pose(m, st, v.svg, dt, v);
+      // close-up of head and shoulders for small avatars; a bigger character shows down to the knees
+      // close-up of head and shoulders for small avatars, head to knees for bigger ones, the whole body in the avatar maker
+      if (v.hero) { cam.position.set(0, -2, 24); cam.lookAt(0, -2.1, 0); } else if (v.full) { cam.position.set(0, -1.5, 17); cam.lookAt(0, -1.6, 0); } else { cam.position.set(0, -.5, 16.5); cam.lookAt(0, -.75, 0); }
       scene.add(m); R.setViewport(0, 0, px, px); R.setScissor(0, 0, px, px); R.setScissorTest(true); R.clear(); cam.aspect = 1; cam.updateProjectionMatrix(); R.render(scene, cam); scene.remove(m);
       var g = v.ctx, c = m.userData.cfg, bg = czColors(c).bg;
       g.clearRect(0, 0, px, px); g.save(); g.beginPath(); g.arc(px / 2, px / 2, px / 2 - px * .015, 0, Math.PI * 2); g.clip();
@@ -9977,31 +9749,63 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     }
     function tick(now) {
       raf = requestAnimationFrame(tick);
-      if (document.hidden || now - last < 1000 / FPS - 2) return;
+      if (document.hidden || now - last < 1000 / FPS - 2 || document.body.classList.contains("grx-playing")) return;   // nothing to draw behind a full-screen game
       var dt = Math.min(.1, (now - last) / 1000 || .016); last = now;
       views = views.filter(function (v) { if (v.cv.isConnected && v.svg.isConnected) return true; io && io.unobserve(v.cv); v.cv.remove(); return false; });
-      var overlay = document.querySelector(".lz-play,.cz-arena"), budget = mobile ? 6 : 12, n = 0;
+      // only ONE character is animated live: the biggest one on screen. Every other avatar is drawn once and then kept as a
+      // still picture (it is drawn again only when its mood changes). This is what keeps lists and rankings light.
+      if (now - liveT > 400) {
+        liveT = now; live = null; var best = 0;
+        views.forEach(function (v) { if (v.still || v.cv._cz3vis === false) return; var w = v.cv.getBoundingClientRect().width; if (w > best) best = w, live = v; });
+      }
+      var overlay = document.querySelector(".lz-play,.cz-arena"), budget = mobile ? 4 : 8, n = 0;
       for (var i = 0; i < views.length && n < budget; i++) {
         var v = views[i];
-        if (v.still && v.done) continue;
         if (v.cv._cz3vis === false) continue;
         if (overlay && !overlay.contains(v.cv)) continue;
+        if (v.done && v !== live && (v.svg.dataset.mood || "idle") === v.mood) continue;
         draw(v, dt), n++, v.done = true;
       }
     }
+    var live = null, liveT = 0;
     function scan() { if (!on) return; document.querySelectorAll("svg.epzc:not(.cz3-hid)").forEach(attach); }
     function start() {
       if (on || failed) return;
-      try { var t = document.createElement("canvas"); if (!(t.getContext("webgl2") || t.getContext("webgl"))) throw 0; } catch (e) { failed = true; return; }
-      import("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js").then(function (mod) {
-        T = mod; init(); on = true; document.documentElement.classList.add("cz3-on"); window.dispatchEvent(new Event("cz3ready"));
+      try { var t = document.createElement("canvas"); if (!(t.getContext("webgl2") || t.getContext("webgl"))) throw 0; } catch (e) { failed = true; czFallbackOn(); return; }
+      var model = window.GR && window.GR.avatar ? Promise.resolve() : new Promise(function (ok, bad) { var s = document.createElement("script"); s.src = "gaterush/avatar.js?v=4"; s.onload = ok; s.onerror = bad; document.head.appendChild(s); });
+      Promise.all([import("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"), model]).then(function (res) {
+        var mod = res[0]; T = mod; init(); on = true; document.documentElement.classList.remove("cz3-wait"); document.documentElement.classList.add("cz3-on"); window.dispatchEvent(new Event("cz3ready"));
         scan(); new MutationObserver(function () { clearTimeout(scan.t); scan.t = setTimeout(scan, 20); }).observe(document.documentElement, { childList: true, subtree: true });
         raf = requestAnimationFrame(tick);
-      }).catch(function () { failed = true; });
+      }).catch(function () { failed = true; czFallbackOn(); });
     }
     return { start: start, get on() { return on; }, get T() { return T; }, build: build, pose: pose, mobile: mobile };
   })();
-  CZ3.start();
+  /* epz-patch:look — CZ3 now starts lazily (see below) */
+  // Start the 3D characters when the browser is idle (the page shows first). Characters stay hidden for that short moment,
+  // so the old drawing never flashes; if 3D is not possible, a flat blocky drawing of the same character is shown instead.
+  document.documentElement.classList.add("cz3-wait");
+  (window.requestIdleCallback || function (f) { return setTimeout(f, 200); })(function () { CZ3.start(); }, { timeout: 1200 });
+  setTimeout(function () { if (!CZ3.on) czFallbackOn(); }, 6000);
+  function czBlockSvg(cfg, full) {
+    let c = czCfg(cfg), C = czColors(c), ink = "#13232F", sk = C.skin, top = C.top, R = (x, y, w, h, f) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}" stroke="${ink}" stroke-width="2.5"/>`;
+    let hairOn = c.hair !== "none" && !(c.hat && c.hat !== "none"), hat = c.hat && c.hat !== "none" ? R(66, 30, 68, 20, grPk(c.hat) ? grPk(c.hat)[0] : /^kumma|cap|beanie/.test(c.hat) ? (c.hat === "kumma3" ? "#1E2A4A" : C.hat) : "#2F6FDE") : "";
+    let body = R(64, 112, 72, 62, top) + R(44, 116, 20, 52, top) + R(136, 116, 20, 52, top) + R(48, 166, 14, 12, sk) + R(138, 166, 14, 12, sk);
+    let legs = full ? R(72, 172, 24, 22, c.cl === "dish" || c.cl === "bisht" ? top : C.bottom) + R(104, 172, 24, 22, c.cl === "dish" || c.cl === "bisht" ? top : C.bottom) : "";
+    let head = R(68, 46, 64, 64, sk) + (hairOn ? R(66, 38, 68, 14, C.hair) : "") + hat
+      + `<rect x="80" y="70" width="10" height="12" fill="${ink}"/><rect x="110" y="70" width="10" height="12" fill="${ink}"/><path d="M88 94 Q100 102 112 94" fill="none" stroke="${ink}" stroke-width="3.5" stroke-linecap="round"/>`;
+    return `<svg viewBox="${full ? "20 20 160 180" : "30 26 140 140"}" class="czb" aria-hidden="true"><circle cx="100" cy="${full ? 110 : 96}" r="${full ? 88 : 70}" fill="${C.bg}"/>${legs}${body}${head}</svg>`;
+  }
+  function czFallbackOn() {
+    document.documentElement.classList.remove("cz3-wait");
+    let put = () => document.querySelectorAll("svg.epzc:not(.czb-done)").forEach((s) => {
+      let cfg = {}; try { cfg = JSON.parse(s.dataset.cfg || "{}"); } catch {}
+      let r = s.getBoundingClientRect(), w = Math.round(r.width || Number(s.getAttribute("width")) || 60), d = document.createElement("span");
+      d.className = "czb-wrap"; d.style.cssText = `display:inline-block;width:${w}px;height:${w}px`; d.innerHTML = czBlockSvg(cfg, s.dataset.frame !== "bust");
+      s.classList.add("czb-done", "cz3-hid"); s.after(d);
+    });
+    put(); new MutationObserver(() => { clearTimeout(put.t); put.t = setTimeout(put, 30); }).observe(document.body, { childList: true, subtree: true });
+  }
   // ============================================================ epz-patch:game3d — 3D game scenes (Boss Rush arena, Challenge sky kingdom)
   // Uses the Three.js that the 3D avatars already loaded (CZ3.T) and the same avatar model (CZ3.build / CZ3.pose).
   // Each scene has its own WebGL canvas and is disposed when its screen closes. Without WebGL the 2D games run as before.
@@ -10074,7 +9878,9 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     // ---------------------------------------------------------------- the student's 3D avatar as a scene actor
     var MOUTHS = { happy: "grin", celebrate: "cele", sad: "sad", excited: "det", surprised: "o", think: "think", proud: "teeth" };
     function Puppet(cfg) {
-      var m = CZ3.build(cfg), c = m.userData.cfg, fake = { dataset: { mood: "idle", m: c.mouth } }, st = { x: { turn: 0, ly: 0, lx: 0, tilt: 0 }, lid: 0, hopY: 0, time: 0 }, v = {};
+      // the blocky model has a full body: shrink it and lift it so its feet stand where the old head-and-shoulders bust stood
+      var m0 = CZ3.build(cfg), m = new T.Group(); m0.scale.setScalar(.6); m0.position.y = .26; m.add(m0); m.userData = m0.userData;
+      var c = m.userData.cfg, fake = { dataset: { mood: "idle", m: c.mouth } }, st = { x: { turn: 0, ly: 0, lx: 0, tilt: 0 }, lid: 0, hopY: 0, time: 0 }, v = {};
       var nextBlink = 0, blinkT = -1, until = 0, gaze = { x: 0, y: 0 }, nextLook = 0;
       m.traverse(function (o) { o.isMesh && (o.castShadow = !mobile); });
       return {
