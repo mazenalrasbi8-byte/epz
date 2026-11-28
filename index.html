@@ -2162,6 +2162,36 @@ body {
 .wd-pack-more{margin-top:10px;width:100%;padding:9px;border-radius:12px;border:2px solid var(--gr-navy);background:var(--gr-sky);font:inherit;font-weight:800;color:var(--gr-navy);cursor:pointer}
 .wd-pack .cz-grid{margin-top:10px}
 .wd-wear{width:100%;margin-top:10px}
+/* epz-patch:collection5 — reveal of new items, collection trophy, rarity burst, NEW badge */
+.wd-new{position:absolute;left:5px;top:4px;padding:1px 6px;border-radius:999px;background:#D8343F;color:#fff;font-size:.56rem;font-weight:900;letter-spacing:.05em;pointer-events:none;box-shadow:0 2px 0 rgb(0 0 0 / .2);animation:wd-newp 1.6s ease-in-out infinite}
+@keyframes wd-newp{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+.cz-reveal{position:fixed;inset:0;z-index:2600;display:grid;place-items:center;padding:16px;animation:cz-fade .25s ease}
+.cz-reveal.out{animation:cz-out .26s ease forwards}
+.cz-rv-bg{position:absolute;inset:0;background:radial-gradient(70% 60% at 50% 40%,rgb(39 195 195 / .45),rgb(19 35 47 / .88))}
+.cz-rv-in{position:relative;width:min(520px,100%);max-height:calc(100dvh - 32px);overflow:auto;text-align:center;background:var(--gr-cream);color:var(--gr-navy);border:4px solid var(--gr-navy);border-radius:24px;box-shadow:0 8px 0 var(--gr-navy);padding:20px 16px 18px;animation:cz-rv-pop .45s cubic-bezier(.3,1.5,.5,1)}
+@keyframes cz-rv-pop{from{transform:scale(.7) translateY(30px);opacity:0}}
+.cz-rv-kick{margin:0;font-family:var(--gr-head);font-size:1.7rem;line-height:1.1}
+.cz-rv-sub{margin:6px 0 12px;color:var(--muted);font-weight:700}
+.cz-rv-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;perspective:800px}
+.cz-rv-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px 10px;border:3px solid var(--gr-navy);border-radius:16px;background:#fff;box-shadow:0 4px 0 var(--gr-navy);animation:cz-rv-flip .6s calc(.2s + var(--i) * .14s) cubic-bezier(.3,1.3,.5,1) both;transform-style:preserve-3d}
+.cz-rv-card b{font-size:.8rem;line-height:1.2;overflow-wrap:anywhere}
+.cz-rv-th{display:grid;place-items:center;height:96px;width:100%;border-radius:11px;background:linear-gradient(var(--gr-sky2),#fff);overflow:hidden}
+.cz-rv-th canvas.cz3{width:96px!important;height:96px!important}   /* measured while the card is still flipping in, so fix the size */
+.cz-rv-card.rar-uncommon .cz-rv-th{background:linear-gradient(160deg,#DDF5E6,#fff)}.cz-rv-card.rar-rare .cz-rv-th{background:linear-gradient(160deg,#DCE5FF,#fff)}
+.cz-rv-card.rar-epic .cz-rv-th{background:linear-gradient(160deg,#EADCFF,#fff)}.cz-rv-card.rar-legendary .cz-rv-th{background:linear-gradient(160deg,#FFEFB8,#fff)}.cz-rv-card.rar-mythic .cz-rv-th{background:linear-gradient(160deg,#FFD0D3,#fff)}
+.cz-rv-card.rar-epic,.cz-rv-card.rar-legendary,.cz-rv-card.rar-mythic{box-shadow:0 4px 0 var(--gr-navy),0 0 18px color-mix(in srgb,var(--rc) 60%,transparent)}
+@keyframes cz-rv-flip{0%{transform:rotateY(180deg) scale(.6);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+.cz-rv-more{margin:10px 0 0;font-weight:800}
+.cz-rv-btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+.cz-rv-btns .btn-big{min-width:180px}
+.cz-rv-trophy{font-size:4.6rem;line-height:1;margin:4px 0 6px;filter:drop-shadow(0 6px 0 rgb(0 0 0 / .2));animation:cz-rv-trophy .9s .1s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes cz-rv-trophy{0%{transform:scale(0) rotate(-30deg)}60%{transform:scale(1.25) rotate(8deg)}100%{transform:none}}
+.cz-rv-set{display:inline-flex;align-items:center;gap:8px;margin:10px 0 0;padding:8px 16px;border-radius:14px;border:3px solid var(--gr-navy);border-left:10px solid var(--pc);background:#fff;font-size:1.3rem}
+.cz-ring{position:fixed;z-index:2999;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:4px solid var(--rc);pointer-events:none;animation:cz-ring .85s ease-out forwards}
+@keyframes cz-ring{from{transform:scale(.4);opacity:1}to{transform:scale(7);opacity:0}}
+.cz-rarpop{position:fixed;z-index:3001;transform:translateX(-50%);padding:4px 12px;border-radius:999px;background:var(--rc);color:#fff;font-weight:900;font-size:.95rem;border:3px solid var(--gr-navy);box-shadow:0 3px 0 var(--gr-navy);pointer-events:none;white-space:nowrap;animation:cz-rarpop 1.45s cubic-bezier(.3,1.5,.5,1) forwards}
+@keyframes cz-rarpop{0%{transform:translateX(-50%) scale(.3);opacity:0}18%{transform:translateX(-50%) scale(1.15);opacity:1}30%{transform:translateX(-50%) scale(1)}80%{opacity:1;transform:translate(-50%,-14px)}100%{opacity:0;transform:translate(-50%,-26px)}}
+@media (prefers-reduced-motion:reduce){.wd-new,.cz-reveal,.cz-rv-in,.cz-rv-card,.cz-rv-trophy{animation:none!important}}
 .wd .cz-opt{min-width:0}
 .wd .wd-title{font-size:1rem;top:8px;left:12px}
 @media (max-width:859px){.wd .wd-title{display:none}}
@@ -7106,6 +7136,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let tab = h === "skills" ? "skills" : h === "ranking" ? "ranking" : "home";
     app.dataset.tab = tab, window.scrollTo(0, 0);
     home();
+    tab === "home" && setTimeout(czCelebrate, 900); /* epz-patch:collection5 */
   }
   var ownerBar = () => ownerState === "owner" ? `<div class="owner-bar">${icon("shield", 18)}<span>Teacher view. Only you see this.</span><button class="btn btn-sm" id="owner-open" type="button">Teacher corner</button></div>` : "";
   function welcome() {
@@ -8857,11 +8888,84 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   }
   // remembers when each item was first owned. Items owned before this existed count as "already had" (time 0), so only new ones are "recent".
   function czTrack() {
-    let s = czStore(), first = !s.seen, now = Date.now(), changed = first;
+    let s = czStore(), first = !s.seen, now = Date.now(), changed = first, fresh = [], sets = [];
     s.seen = s.seen || {};
-    czAllItems().forEach((it) => { if (!(it.key in s.seen) && czOwns(it.key)) s.seen[it.key] = first ? 0 : now, changed = !0; });
+    czAllItems().forEach((it) => { if (!(it.key in s.seen) && czOwns(it.key)) s.seen[it.key] = first ? 0 : now, changed = !0, first || fresh.push(it.key); });
+    /* epz-patch:collection5 — completed collections are remembered in s.done; ones finished before this existed are recorded quietly */
+    let firstDone = !Array.isArray(s.done); s.done = firstDone ? [] : s.done;
+    czSets().forEach((st) => { if (s.done.indexOf(st.id) < 0 && st.items.every(czOwns)) s.done.push(st.id), changed = !0, firstDone || sets.push(st); });
     changed && save();
+    czTrack.fresh = (czTrack.fresh || []).concat(fresh), czTrack.sets = (czTrack.sets || []).concat(sets);
     return s;
+  }
+  /* epz-patch:collection5 — animations: new-item reveal, collection trophy, rarity bursts when equipping, "NEW" badges */
+  var czReduce = () => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return !1; } };
+  var CZ_RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4, mythic: 5 };
+  var CZ_NEW_MS = 3 * 864e5;
+  var czIsNew = (key) => { let s = state.cz, t = s && s.seen && s.seen[key]; return !!t && Date.now() - t < CZ_NEW_MS; };
+  function czOverlay(html, cls, onDone) {
+    let ov = document.createElement("div"), prev = document.activeElement;
+    ov.className = "cz-reveal " + (cls || ""), ov.setAttribute("role", "dialog"), ov.setAttribute("aria-modal", "true");
+    ov.innerHTML = `<div class="cz-rv-bg"></div><div class="cz-rv-in">${html}</div>`;
+    document.body.appendChild(ov);
+    let shut = !1, close = () => { if (shut) return; shut = !0; ov.classList.add("out"); document.removeEventListener("keydown", onKey); setTimeout(() => { ov.remove(); prev && prev.focus && prev.focus(); onDone && onDone(); }, 260); };
+    let onKey = (e) => { e.key === "Escape" && close(); };
+    ov.addEventListener("click", (e) => { (e.target.closest("[data-rv-close]") || e.target.classList.contains("cz-rv-bg")) && close(); });
+    document.addEventListener("keydown", onKey);
+    setTimeout(() => { let b = ov.querySelector("[data-rv-close]"); b && b.focus({ preventScroll: !0 }); }, 60);
+    return ov;
+  }
+  function czRevealItems(keys, done) {
+    let base = czCfg(state.avatar || DUO_DEF), names = {}, best = 0, show = keys.slice(0, 6), more = keys.length - show.length;
+    czAllItems().forEach((it) => names[it.key] = it.name);
+    let BUSTK = { hat: 1, mf: 1, gl: 1, neck: 1, hair: 1, hairline: 1, face: 1, cheeks: 1, nose: 1, eyes: 1, brows: 1, mouth: 1, mark: 1, beard: 1 };
+    let cards = show.map((key, i) => {
+      let j = key.indexOf(":"), k = key.slice(0, j), v = k === "mf" ? Number(key.slice(j + 1)) : key.slice(j + 1), c2 = JSON.parse(JSON.stringify(base)), r = k === "mf" ? "common" : czMeta(k, v).rarity;
+      c2[k] = v; if (k === "mf" && !/^mz/.test(c2.hat)) c2.hat = "mzclassic"; if (k === "hair" && c2.hat !== "none") c2.hat = "none";
+      if ((k === "bottom" || k === "shoes") && (czRobe(c2.cl) || c2.cl === "wizard")) c2.cl = "tee";   // a robe would hide them
+      best = Math.max(best, CZ_RANK[r] || 0);
+      return `<div class="cz-rv-card rar-${r}" style="--i:${i}"><span class="cz-rv-th">${czSvg(c2, { size: 92, frame: BUSTK[k] ? "bust" : "full", still: !0, bg: !1, cls: BUSTK[k] ? "cz-face" : "cz-free" })}</span><b>${esc(names[key] || key)}</b>${r !== "common" ? `<span class="wd-rar">${r}</span>` : ""}</div>`;
+    }).join("");
+    let onAvatar = location.hash === "#avatar";
+    czOverlay(`<p class="cz-rv-kick">${keys.length === 1 ? "New item unlocked!" : `${keys.length} new items unlocked!`}</p><p class="cz-rv-sub">They are in your wardrobe now.</p><div class="cz-rv-cards">${cards}</div>`
+      + (more > 0 ? `<p class="cz-rv-more">+${more} more in your Collection</p>` : "")
+      + `<div class="cz-rv-btns">${onAvatar ? `<button type="button" class="btn btn-primary btn-big" data-rv-close>Great!</button>` : `<a class="btn btn-primary btn-big" href="#avatar" data-rv-close>Try them on</a><button type="button" class="btn btn-ghost" data-rv-close>Later</button>`}</div>`, "cz-rv-items", done);
+    czReduce() || setTimeout(() => confetti(best >= 3 ? 110 : 45), 250 + show.length * 140);
+  }
+  function czRevealSet(st, done) {
+    czOverlay(`<div class="cz-rv-trophy" aria-hidden="true">🏆</div><p class="cz-rv-kick">Collection complete!</p><h2 class="cz-rv-set" style="--pc:${st.col}"><span>${st.ic}</span> ${esc(st.name)}</h2><p class="cz-rv-sub">You have all ${st.items.length} items. Wear them with pride!</p><div class="cz-rv-btns"><button type="button" class="btn btn-primary btn-big" data-rv-close>Brilliant!</button></div>`, "cz-rv-done", done);
+    czReduce() || confetti(140);
+  }
+  var czCelebrating = !1;
+  function czCelebrate() {
+    if (czCelebrating || !state.avatar || document.querySelector(".cz-reveal,.modal-backdrop,.cz-arena") || document.body.classList.contains("playing")) return;
+    if (["", "#", "#home", "#avatar"].indexOf(location.hash) < 0) return;
+    czTrack();
+    let fresh = czTrack.fresh || [], sets = czTrack.sets || [];
+    czTrack.fresh = [], czTrack.sets = [];
+    if (!fresh.length && !sets.length) return;
+    let queue = [];
+    fresh.length && queue.push((nx) => czRevealItems(fresh, nx));
+    sets.forEach((st) => queue.push((nx) => czRevealSet(st, nx)));
+    czCelebrating = !0;
+    let next = () => { let f = queue.shift(); f ? f(next) : czCelebrating = !1; };
+    next();
+  }
+  // a burst around the character when an item goes on: bigger and brighter the rarer it is, with a label for epic and above
+  function czEquipFx(el, r) {
+    let n = { uncommon: 6, rare: 10, epic: 14, legendary: 20, mythic: 24 }[r];
+    if (!el || !n || czReduce()) return;
+    let cols = { uncommon: ["#45C97F", "#178A4C", "#FFFFFF"], rare: ["#2F6FDE", "#9FB4FF", "#FFFFFF"], epic: ["#7C3AED", "#C9B6F2", "#FFD83D"], legendary: ["#F2B632", "#FFD83D", "#FFFFFF"], mythic: ["#D8343F", "#FFD83D", "#7C3AED"] }[r];
+    let b = el.getBoundingClientRect(), cx = b.left + b.width / 2, cy = b.top + b.height * .45;
+    for (let i = 0; i < n; i++) {
+      let s = document.createElement("i"), a = Math.PI * 2 * i / n + Math.random() * .4, d = 50 + Math.random() * (30 + n * 3);
+      s.className = "cz-spark" + (i % 2 && CZ_RANK[r] >= 3 ? " star" : ""), s.style.left = cx + "px", s.style.top = cy + "px", s.style.setProperty("--dx", Math.cos(a) * d + "px"), s.style.setProperty("--dy", Math.sin(a) * d - 30 + "px"), s.style.setProperty("--c", cols[i % cols.length]), s.style.animationDelay = Math.random() * .1 + "s";
+      document.body.appendChild(s), setTimeout(() => s.remove(), 1150);
+    }
+    if (CZ_RANK[r] >= 3) {
+      let ring = document.createElement("i"); ring.className = "cz-ring rar-" + r; ring.style.left = cx + "px", ring.style.top = cy + "px"; document.body.appendChild(ring), setTimeout(() => ring.remove(), 900);
+      let lab = document.createElement("b"); lab.className = "cz-rarpop rar-" + r; lab.textContent = "✨ " + r.charAt(0).toUpperCase() + r.slice(1) + "!"; lab.style.left = cx + "px", lab.style.top = b.top + 14 + "px"; document.body.appendChild(lab), setTimeout(() => lab.remove(), 1500);
+    }
   }
   // epz-patch:costumes — a piece of one of the dress-up costumes (keeps its own colours)
   var czCostume = (slot, v) => { let e = (WD[slot] || []).find((x) => x[0] === v); return !!(e && (e[2] || []).indexOf("costume") > -1); };
@@ -9318,7 +9422,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (v.hero) {
         if (hero.lock !== null && !hero.drag) { var dy2 = hero.lock - hero.yaw; dy2 = Math.atan2(Math.sin(dy2), Math.cos(dy2)); hero.yaw += dy2 * Math.min(1, dt * 7); }
         else if (!hero.drag && performance.now() - hero.last > 1800) hero.yaw += (Math.sin(performance.now() / 1400) * .22 - hero.yaw) * Math.min(1, dt * 2.5);
-        m.rotation.y = hero.yaw; hero.zoom += (hero.zt - hero.zoom) * Math.min(1, dt * 8);
+        m.rotation.y = hero.yaw; hero.zoom += (hero.zt - hero.zoom) * Math.min(1, dt * 8); if (hero.spinS) { var sk = (performance.now() - hero.spinS) / 950; if (sk >= 1) hero.spinS = 0; else m.rotation.y += (1 - Math.pow(1 - sk, 3)) * Math.PI * 2; } /* epz-patch:collection5 — a full turn when an outfit goes on */
       } else m.rotation.y = 0;
       // epz-patch:costumes — tall headwear (wizard hat, space helmet, knight plume) gets a little more room above the head
       var tk = /^(wizard|astro|knight)$/.test((m.userData.cfg || v.cfg || {}).hat) ? .14 : 0, ty3 = tk * 3;
@@ -9404,7 +9508,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         raf = requestAnimationFrame(tick);
       }).catch(function () { failed = true; czFallbackOn(); });
     }
-    return { start: start, get on() { return on; }, get T() { return T; }, build: build, pose: pose, mobile: mobile, hero: { zoom: function (z) { hero.zt = Math.max(1, Math.min(2.6, z)); }, get zt() { return hero.zt; }, view: function (y) { hero.lock = y; hero.last = performance.now(); }, reset: function () { hero.lock = null; hero.zt = 1; } } };
+    return { start: start, get on() { return on; }, get T() { return T; }, build: build, pose: pose, mobile: mobile, hero: { zoom: function (z) { hero.zt = Math.max(1, Math.min(2.6, z)); }, get zt() { return hero.zt; }, view: function (y) { hero.lock = y; hero.last = performance.now(); }, spin: function () { try { if (matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (e) {} hero.spinS = performance.now(); }, reset: function () { hero.lock = null; hero.zt = 1; } } };
   })();
   /* epz-patch:look — CZ3 now starts lazily (see below) */
   // Start the 3D characters when the browser is idle (the page shows first). Characters stay hidden for that short moment,
@@ -9768,7 +9872,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (slot === "mf" && !mzOn()) c2.hat = "mzclassic";
       if (slot === "hair" && c2.hat !== "none" && !/crown/.test(c2.hat)) c2.hat = "none";
       let frame = BUST[slot] ? "bust" : "full", lk = lockTxt(slot, v), p = WD_PACK_OF[slot + ":" + v], on = isOn(slot, v), rar = slot === "mf" ? "common" : czMeta(slot, v).rarity;
-      return `<button type="button" class="cz-opt wd-opt rar-${rar}${on ? " on" : ""}${lk ? " locked" : ""}${frame === "full" ? " tall" : ""}" data-k="${slot}" data-v="${v}" aria-pressed="${on}"><span class="cz-thumb">${czSvg(c2, { size: frame === "bust" ? 76 : 96, frame, still: true, bg: !1, cls: BODY[slot] ? "cz-free" : BUST[slot] ? "cz-face" : "" })}</span><span class="cz-opt-l">${esc(label)}</span>${lk ? `<span class="wd-lock">🔒 ${esc(lk)}</span>` : p ? `<span class="wd-pk" title="${esc(p.name)}">${p.ic}</span>` : ""}${rar !== "common" ? `<span class="wd-rar r-${rar}">${rar}</span>` : ""}</button>`;
+      return `<button type="button" class="cz-opt wd-opt rar-${rar}${on ? " on" : ""}${lk ? " locked" : ""}${frame === "full" ? " tall" : ""}" data-k="${slot}" data-v="${v}" aria-pressed="${on}"><span class="cz-thumb">${czSvg(c2, { size: frame === "bust" ? 76 : 96, frame, still: true, bg: !1, cls: BODY[slot] ? "cz-free" : BUST[slot] ? "cz-face" : "" })}</span><span class="cz-opt-l">${esc(label)}</span>${lk ? `<span class="wd-lock">🔒 ${esc(lk)}</span>` : p ? `<span class="wd-pk" title="${esc(p.name)}">${p.ic}</span>` : ""}${!lk && czIsNew(slot + ":" + v) ? `<span class="wd-new">NEW</span>` : ""}${rar !== "common" ? `<span class="wd-rar r-${rar}">${rar}</span>` : ""}</button>`;
     }
     let grid = (title, slot, list) => list.length ? `${title ? `<h3 class="cz-h">${esc(title)}</h3>` : ""}<div class="cz-grid">${list.map((e) => tile(slot, e[0], e[1])).join("")}</div>` : "";
     let colRow = (title, k) => {
@@ -9863,7 +9967,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       } else if (o && act === "wear") {
         let c2 = czCfg(o.c), locked = CZ_LOCK_SLOTS.filter((k) => !czHas(k, c2[k]));
         locked.forEach((k) => c2[k] = cfg[k]);
-        snap(), cfg = c2, state.avatar = czCfg(cfg), save(), drawStage("proud");
+        snap(), cfg = c2, state.avatar = czCfg(cfg), save(), drawStage("proud"), CZ3.hero && CZ3.hero.spin();
         toast(locked.length ? `Now wearing "${o.name}". ${locked.length} locked item${locked.length > 1 ? "s were" : " was"} kept as before.` : `Now wearing "${o.name}".`, "success", 2600);
       } else if (o && act === "ren") renaming = id;
       else if (o && act === "rensave") { let inp = app.querySelector(`[data-oren="${id}"]`), v = (inp && inp.value || "").replace(/\s+/g, " ").trim().slice(0, 24); v && (o.name = v, save()); renaming = null; }
@@ -9932,7 +10036,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (zm) return CZ3.hero && CZ3.hero.zoom(zm.dataset.zoom === "face" ? (CZ3.hero.zt > 2 ? 1 : 2.4) : CZ3.hero.zt + (zm.dataset.zoom === "in" ? .4 : -.4));
       if (pk) return openPack = openPack === pk.dataset.pack ? null : pk.dataset.pack, drawOpts();
       let wp = e.target.closest("[data-wearpack]"); /* epz-patch:costumes — put on every piece of an unlocked costume at once */
-      if (wp) { let p = WD_PACKS.find((x) => x.id === wp.dataset.wearpack); if (!p) return; snap(); ["gl", "neck", "wrist", "extra"].forEach((k) => czCostume(k, cfg[k]) && (cfg[k] = "none")); p.items.forEach((key) => { let [k, v] = key.split(":"); czOwns(key) && (cfg[k] = k === "mf" ? Number(v) : v); }); let st = app.querySelector("#cz-stage"); st.classList.remove("cz-swap"), void st.offsetWidth, st.classList.add("cz-swap"); drawStage("celebrate"), drawOpts(); return toast(`You are dressed as ${/^[aeiou]/i.test(p.name) ? "an" : "a"} ${p.name.toLowerCase()}! Press Save to keep it.`, "success", 2600); }
+      if (wp) { let p = WD_PACKS.find((x) => x.id === wp.dataset.wearpack); if (!p) return; snap(); ["gl", "neck", "wrist", "extra"].forEach((k) => czCostume(k, cfg[k]) && (cfg[k] = "none")); p.items.forEach((key) => { let [k, v] = key.split(":"); czOwns(key) && (cfg[k] = k === "mf" ? Number(v) : v); }); let st = app.querySelector("#cz-stage"); st.classList.remove("cz-swap"), void st.offsetWidth, st.classList.add("cz-swap"); drawStage("celebrate"), drawOpts(), CZ3.hero && CZ3.hero.spin(); return toast(`You are dressed as ${/^[aeiou]/i.test(p.name) ? "an" : "a"} ${p.name.toLowerCase()}! Press Save to keep it.`, "success", 2600); }
       let ss = e.target.closest("[data-set]"), oa = e.target.closest("[data-oact]"); /* epz-patch:collection2 */
       if (ss) return openSet = openSet === ss.dataset.set ? null : ss.dataset.set, drawOpts();
       if (oa) return outfitAct(oa.dataset.oact, oa.dataset.oid);
@@ -9953,7 +10057,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         if (k === "mf" && !mzOn()) cfg.hat = "mzclassic";
         let st = app.querySelector("#cz-stage");
         st.classList.remove("cz-swap"), void st.offsetWidth, st.classList.add("cz-swap");
-        drawStage(k === "pose" ? null : /^(cl|hat|bottom|shoes|mf)$/.test(k) ? "proud" : "happy"), k === "pose" && CZ.react(st, v === "wave" ? "wave" : "proud", { pose: v, ms: 900 });
+        drawStage(k === "pose" ? null : /^(cl|hat|bottom|shoes|mf)$/.test(k) ? "proud" : "happy"), k === "pose" && CZ.react(st, v === "wave" ? "wave" : "proud", { pose: v, ms: 900 }); k !== "mf" && k !== "pose" && czEquipFx(st, czMeta(k, v).rarity); /* epz-patch:collection5 */
         drawOpts();
       }
     };
@@ -9989,6 +10093,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       setTimeout(() => go("home"), 1300);
     });
     drawStage("wave"), drawOpts();
+    setTimeout(czCelebrate, 700); /* epz-patch:collection5 */
   }
 
   // ---------------------------------------------------------------- epz-patch:motion — feedback for every important action
