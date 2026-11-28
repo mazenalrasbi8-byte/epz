@@ -5314,6 +5314,11 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         forms = forms.flatMap((v) => re.test(v) ? [v.replace(re, "$1\uE000" + (re === RULES[0][0] ? "s" : "d")), ...words.map((w) => v.replace(re, `$1 ${w}`))] : [v]);
     return forms.map((v) => v.replace(/\uE000/g, "'"));
   }
+  // epz-patch:easy — for questions about capital letters and punctuation the answer must match exactly (spaces and curly quotes are the only things ignored)
+  function strictMatches(given, key) {
+    const n = (s) => String(s ?? "").replace(/[\u2019\u2018]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/\s+/g, " ").trim();
+    return String(key ?? "").split("|").some((k) => n(k) === n(given));
+  }
   function typedMatches(given, key) {
     const keys = String(key ?? "").split("|").flatMap(answerForms).join("|");
     return answerForms(given).some((g) => answerMatches(g, keys));
@@ -5327,7 +5332,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     ${shown.map((o2, i) => `<button class="opt" data-i="${i}"><span class="opt-key">${i + 1}</span><span>${esc(o2)}</span></button>`).join("")}
   </div>`;
     let chosen = null, btns = Array.from(area.querySelectorAll(".opt")), reveal = () => btns.forEach((b2, i) => {
-      answerMatches(shown[i], q.answer) && b2.classList.add("correct");
+      (q.strict ? String(shown[i]) === String(firstAnswer(q.answer)) : answerMatches(shown[i], q.answer)) && b2.classList.add("correct");
     }), lock = () => btns.forEach((b2) => b2.disabled = !0);
     return btns.forEach((b2) => b2.addEventListener("click", () => {
       chosen = Number(b2.dataset.i), ctx.submitNow();
@@ -5338,7 +5343,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       correctText: () => firstAnswer(q.answer),
       evaluate() {
         lock();
-        let ok = chosen !== null && answerMatches(shown[chosen], q.answer);
+        let ok = chosen !== null && (q.strict ? String(shown[chosen]) === String(firstAnswer(q.answer)) : answerMatches(shown[chosen], q.answer));
         return chosen !== null && btns[chosen].classList.add(ok ? "correct" : "wrong"), ok || reveal(), { ok, correctText: firstAnswer(q.answer), given: chosen !== null ? String(shown[chosen]) : "" };
       }
     };
@@ -5358,7 +5363,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       correctText: () => firstAnswer(q.answer),
       evaluate() {
         input.disabled = !0;
-        let ok = typedMatches(input.value, q.answer);
+        let ok = q.strict ? strictMatches(input.value, q.answer) : typedMatches(input.value, q.answer);
         return input.classList.add(ok ? "correct" : "wrong"), { ok, correctText: firstAnswer(q.answer), given: input.value.trim() };
       }
     };
