@@ -7509,7 +7509,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
           <span class="audio-txt"><b>Listen first</b><span>Play it as many times as you like.</span></span>
           <button class="btn btn-primary" id="play-audio" type="button">${icon("volume", 18)} Play</button>
           <button class="btn btn-ghost" id="play-slow" type="button">${icon("slow", 18)} Slow</button>
-        </div>` : ""}
+        </div><p class="ez-vnote" id="audio-note" hidden></p>` : ""}
       <section class="qarea" id="qarea" aria-live="polite"></section>
     </div>
     <div class="play-foot" id="foot">
@@ -7520,7 +7520,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       </div>
     </div>`;
     let qarea = app.querySelector("#qarea"), foot = app.querySelector("#foot"), feedback = app.querySelector("#feedback"), checkBtn = app.querySelector("#check-btn"), nextBtn = app.querySelector("#next-btn"), idx = 0, correct = 0, answered = !1, finished = !1, current = null, sk = {};
-    app.querySelector("#play-audio")?.addEventListener("click", () => speak(act2.audio_text, 0.92)), app.querySelector("#play-slow")?.addEventListener("click", () => speak(act2.audio_text, 0.7)), app.querySelector("#quit").addEventListener("click", () => {
+    app.querySelector("#play-audio")?.addEventListener("click", () => act2.course ? EPZ_EASY.speak(act2.audio_text, 0.92) : speak(act2.audio_text, 0.92)), app.querySelector("#play-slow")?.addEventListener("click", () => act2.course ? EPZ_EASY.speak(act2.audio_text, 0.7) : speak(act2.audio_text, 0.7)), act2?.course && act2.audio_text && EPZ_EASY.voiceCheck(app.querySelector("#audio-note")), app.querySelector("#quit").addEventListener("click", () => {
       if (idx === 0 && !answered) {
         go(act2?.back || "home");
         return;

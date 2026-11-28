@@ -18,6 +18,6 @@ A 3D parkour race with English question doors. One map ("Sunrise Fort Run").
 
 - Code: `easy/course.js` (curriculum, screens, Learn viewer, scoring), loaded only when a student opens the course.
 - Content: `easy/data/<skill>-<n>.js`, one file per Part (a Learn section and exactly 5 tests of 10 questions). Loaded when that Part opens.
-- A skill goes live when its files exist and it is added to `E.READY` in `easy/course.js`. Written so far: Grammar (7 Parts), Vocabulary (8) and Reading (5).
+- A skill goes live when its files exist and it is added to `E.READY` in `easy/course.js`. Written so far: Grammar (7), Vocabulary (8), Reading (5) and Listening (5).
 - Check content before merging: see `easy/validate.js`.
 - Tests are normal EPZ activities (ids `ez-<skill>-<part>-<test>`), so points, streaks, badges and the ranking work as before. Retakes only earn points for answers that beat the best score.
