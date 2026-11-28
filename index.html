@@ -2165,6 +2165,18 @@ body {
 .wd .wd-title{font-size:1rem;top:8px;left:12px}
 @media (max-width:859px){.wd .wd-title{display:none}}
 .wd .cz-opt-l{overflow-wrap:anywhere}
+/* epz-patch:collection3 — three modes: Wardrobe / Collections / Outfits (mobile first) */
+.wd-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:12px 2px 0;padding:4px;border:3px solid var(--gr-navy);border-radius:18px;background:var(--gr-cream);box-shadow:0 4px 0 var(--gr-navy)}
+.wd-modes button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-height:56px;padding:6px 4px;border:0;border-radius:13px;background:transparent;font:inherit;color:var(--gr-navy);cursor:pointer;transition:background .18s,transform .12s}
+.wd-modes button:active{transform:scale(.96)}
+.wd-mode-ic{font-size:1.3rem;line-height:1}
+.wd-mode-l{font-size:.8rem;font-weight:900;line-height:1.1}
+.wd-modes small{font-size:.64rem;font-weight:800;opacity:.75;line-height:1}
+.wd-modes button[aria-selected="true"]{background:var(--gr-gold);box-shadow:inset 0 0 0 2px var(--gr-navy)}
+.wd-search[hidden],.cz-tabs[hidden]{display:none}
+.wd-modes+.wd-search{margin-top:10px}
+.wd-modes~.wd-sub{padding-top:8px}
+@media (max-width:420px){.wd .cz-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.wd .cz-thumb{height:84px}.wd .cz-opt.tall .cz-thumb{height:108px}.wd-mode-l{font-size:.74rem}}
 @media (min-width:860px){.wd{display:grid;grid-template-columns:minmax(300px,400px) 1fr;gap:22px;align-items:start}.wd .cz-make{position:sticky;top:8px}.wd .cz-stage-wrap{height:480px;max-width:none}.wd .wd-search{margin-top:4px}}
 </style>
 </head>
@@ -9711,7 +9723,9 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   function czMaker() {
     let cfg = czCfg(state.avatar || DUO_DEF), isNew = !state.avatar, hist = [], cat = "face", sub = {}, q = "", openPack = null;
     let snap = () => { hist.push(JSON.stringify(cfg)); hist.length > 40 && hist.shift(); };
-    let CATS = [["face", "Face", "🙂"], ["hair", "Hair", "💇"], ["head", "Headwear", "🧢"], ["top", "Tops", "👕"], ["bottom", "Bottoms", "👖"], ["shoes", "Shoes", "👟"], ["acc", "Extras", "🎒"], ["body", "Body", "🧍"], ["packs", "Packs", "🎁"], ["collection", "Collection", "📚"], ["outfits", "Outfits", "👔"]]; /* epz-patch:collection2 */
+    let CATS = [["face", "Face", "🙂"], ["hair", "Hair", "💇"], ["head", "Headwear", "🧢"], ["top", "Tops", "👕"], ["bottom", "Bottoms", "👖"], ["shoes", "Shoes", "👟"], ["acc", "Extras", "🎒"], ["body", "Body", "🧍"]]; /* epz-patch:collection3 — wardrobe categories; collections and outfits are their own modes */
+    let MODES = [["wardrobe", "Wardrobe", "👕"], ["collections", "Collections", "📚"], ["outfits", "Outfits", "👔"]], mode = "wardrobe", colSub = "collection";
+    let CSUBS = [["collection", "My collection"], ["packs", "Point packs"]];
     let SUBS = {
       face: [["shape", "Shape & skin"], ["eyes", "Eyes"], ["brows", "Brows"], ["nose", "Nose & mouth"], ["details", "Details & beard"]],
       hair: [["style", "Style & colour"], ["line", "Hairline"]],
@@ -9753,6 +9767,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let note = (t) => `<p class="cz-note">${esc(t)}</p>`;
     function top2Label() { return /^bisht/.test(cfg.cl) ? "Bisht colour" : /^dish/.test(cfg.cl) ? "Embroidery and tassel colour" : cfg.cl === "blazer" ? "Tie colour" : /^(jersey|kit\d|bball|track)$/.test(cfg.cl) ? "Second colour" : cfg.cl === "explorer" ? "T-shirt colour" : "Trim colour"; }
     function body() {
+      if (mode === "outfits") return outfitsView();
+      if (mode === "collections") return colSub === "packs" ? packsView() : collectionView();
       let s = sub[cat] || (SUBS[cat] ? SUBS[cat][0][0] : "");
       if (cat === "face") return s === "shape" ? colRow("Skin colour", "skin") + grid("Face shape", "face", WD.face) + grid("Cheeks", "cheeks", WD.cheeks) + slider("hd")
         : s === "eyes" ? grid("Eyes", "eyes", WD.eyes) + colRow("Eye colour", "eyes") + slider("es") + slider("ed")
@@ -9772,7 +9788,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (cat === "acc") return s === "gl" ? grid("Glasses", "gl", WD.gl) : s === "neck" ? grid("Around the neck", "neck", WD.neck) + colRow("Accessory colour", "acc")
         : s === "wrist" ? grid("Wrist", "wrist", WD.wrist) + colRow("Accessory colour", "acc") : grid("Bags and more", "extra", WD.extra) + colRow("Accessory colour", "acc");
       if (cat === "body") return slider("h") + slider("b") + slider("hd") + grid("Favourite pose", "pose", WD.pose) + colRow("Circle colour (small pictures)", "bg");
-      return cat === "collection" ? collectionView() : cat === "outfits" ? outfitsView() : packsView();
+      return "";
     }
     function itemName(key) { let [k, v] = key.split(":"), e = (WD[k] || []).find((x) => String(x[0]) === v); return e ? (k === "mf" ? "Mussar fabric · " + e[1] : e[1]) : v; }
     function packsView() {
@@ -9856,12 +9872,22 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       reaction && setTimeout(() => CZ.react(st, reaction), 30);
     }
     let liveStage = () => { cancelAnimationFrame(stageT); stageT = requestAnimationFrame(() => drawStage()); };
+    function modeBadge(m) {
+      if (m === "outfits") return czStore().outfits.length + "/" + CZ_MAX_OUTFITS;
+      if (m === "collections") { let all = czAllItems(); return Math.round(100 * all.filter((it) => czOwns(it.key)).length / all.length) + "%"; }
+      return "";
+    }
     function drawOpts() {
-      app.querySelector("#cz-tabs").innerHTML = CATS.map(([k, l, ic]) => `<button type="button" role="tab" data-t="${k}" aria-selected="${k === cat && !q}"><span>${ic}</span>${l}</button>`).join("");
+      let wr = mode === "wardrobe";
+      app.querySelector("#wd-modes").innerHTML = MODES.map(([k, l, ic]) => { let b = modeBadge(k); return `<button type="button" role="tab" data-mode="${k}" aria-selected="${k === mode}"><span class="wd-mode-ic">${ic}</span><span class="wd-mode-l">${l}</span>${b ? `<small>${b}</small>` : ""}</button>`; }).join("");
+      app.querySelector(".wd-search").hidden = !wr;
+      app.querySelector("#cz-tabs").hidden = !wr;
+      app.querySelector("#cz-tabs").innerHTML = wr ? CATS.map(([k, l, ic]) => `<button type="button" role="tab" data-t="${k}" aria-selected="${k === cat && !q}"><span>${ic}</span>${l}</button>`).join("") : "";
       let subs = SUBS[cat], s = sub[cat] || (subs ? subs[0][0] : "");
-      app.querySelector("#wd-sub").innerHTML = !q && subs ? subs.map(([k, l]) => `<button type="button" data-sub="${k}" class="${k === s ? "on" : ""}">${l}</button>`).join("") : "";
+      app.querySelector("#wd-sub").innerHTML = mode === "collections" ? CSUBS.map(([k, l]) => `<button type="button" data-csub="${k}" class="${k === colSub ? "on" : ""}">${l}</button>`).join("")
+        : wr && !q && subs ? subs.map(([k, l]) => `<button type="button" data-sub="${k}" class="${k === s ? "on" : ""}">${l}</button>`).join("") : "";
       app.querySelector("#cz-undo").disabled = !hist.length;
-      app.querySelector("#cz-opts").innerHTML = q ? searchView() : body();
+      app.querySelector("#cz-opts").innerHTML = wr && q ? searchView() : body();
     }
     app.dataset.tab = "home", app.classList.add("wide");
     app.innerHTML = `
@@ -9879,6 +9905,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       </div>
     </section>
     <div class="wd-side">
+      <nav class="wd-modes" id="wd-modes" role="tablist" aria-label="Wardrobe, collections or outfits"></nav>
       <label class="wd-search">🔎<input type="search" id="wd-q" placeholder="Search the wardrobe: kumma, hoodie, glasses…" autocomplete="off" aria-label="Search the wardrobe"></label>
       <nav class="cz-tabs" id="cz-tabs" role="tablist"></nav>
       <nav class="wd-sub" id="wd-sub" aria-label="Filter"></nav>
@@ -9894,6 +9921,9 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       let ss = e.target.closest("[data-set]"), oa = e.target.closest("[data-oact]"); /* epz-patch:collection2 */
       if (ss) return openSet = openSet === ss.dataset.set ? null : ss.dataset.set, drawOpts();
       if (oa) return outfitAct(oa.dataset.oact, oa.dataset.oid);
+      let md = e.target.closest("[data-mode]"), cs = e.target.closest("[data-csub]"); /* epz-patch:collection3 */
+      if (md) { if (md.dataset.mode === mode) return; mode = md.dataset.mode, openSet = null, renaming = null, drawOpts(), CZ3.hero && CZ3.hero.zoom(mode === "wardrobe" && /^(face|hair|head)$/.test(cat) ? 2.1 : 1); app.querySelector("#wd-modes").scrollIntoView({ block: "nearest" }); return; }
+      if (cs) return colSub = cs.dataset.csub, openSet = null, openPack = null, drawOpts();
       if (t) return q = "", app.querySelector("#wd-q").value = "", cat = t.dataset.t, drawOpts(), t.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" }), CZ3.hero && CZ3.hero.zoom(cat === "face" || cat === "hair" || cat === "head" ? 2.1 : 1);
       if (sb) return sub[cat] = sb.dataset.sub, drawOpts();
       if (sw) return snap(), cfg.col[sw.dataset.col] = sw.dataset.hex, drawStage(), drawOpts();
