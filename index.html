@@ -1225,23 +1225,27 @@ body.playing .tabbar { display: none; }
 
 /* epz-patch:luck — Lucky Box */
 .app[data-tab="skills"] > .luck-home, .app[data-tab="ranking"] > .luck-home { display: none; }
-.luck-home { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--r); text-decoration: none; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); box-shadow: 0 3px 0 var(--line); }
-.luck-home.ready { background: linear-gradient(135deg, #FFF4C2, #FFE1F0); border-color: #F5B70A; box-shadow: 0 4px 0 #D99A06; color: #2B2300; }
-.luck-home.golden { background: linear-gradient(135deg, #FFE27A, #FFB800); }
-.lh-art { width: 64px; height: 64px; flex-shrink: 0; }
-.lh-art .luck-box { width: 64px; height: 64px; }
+.luck-home { display: flex; align-items: center; gap: 14px; padding: 14px 16px; transition: transform .15s ease, box-shadow .15s ease; border-radius: var(--r); text-decoration: none; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); box-shadow: 0 3px 0 var(--line); }
+.luck-home:hover { transform: translateY(-1px); } .luck-home:active { transform: translateY(2px); }
+.luck-home.ready { background: linear-gradient(135deg, #FFF6E2, #FFE9A8); border-color: var(--line); box-shadow: 0 4px 0 var(--line); color: #17224D; }
+.luck-home.golden { background: linear-gradient(135deg, #FFE27A, #FFC21A); }
+.lh-art { width: 76px; height: 76px; flex-shrink: 0; display: grid; place-items: center; border-radius: 18px; background: rgb(23 34 77 / .07); }
+.lh-art .luck-box { width: 68px; height: 68px; }
 .lh-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.lh-txt .eyebrow { color: #C2410C; }
+.lh-txt .eyebrow { color: #8A5A00; }
 .luck-home:not(.ready) .lh-txt .eyebrow { color: var(--muted); }
 .lh-txt > b { font-family: var(--display); font-size: 1.15rem; line-height: 1.2; }
 .lh-sub { font-size: .86rem; font-weight: 600; opacity: .8; }
 .lh-sub b, [data-luck-cd] { font-variant-numeric: tabular-nums; }
 .lh-go { flex-shrink: 0; font-family: var(--display); font-weight: 800; font-size: 1.05rem; padding: 11px 14px; border-radius: 14px; background: var(--surface-2); color: var(--muted); }
-.luck-home.ready .lh-go { background: #E11D48; color: #fff; box-shadow: 0 4px 0 #8A0F2B; animation: bh-pulse 1.6s ease-in-out infinite; }
+.luck-home.ready .lh-go { background: #17224D; color: #FFD83D; box-shadow: 0 4px 0 rgb(23 34 77 / .35); animation: lh-glow 2.6s ease-in-out infinite; }
+@keyframes lh-glow { 0%, 100% { box-shadow: 0 4px 0 rgb(23 34 77 / .35), 0 0 0 0 rgb(255 216 61 / 0); } 50% { box-shadow: 0 4px 0 rgb(23 34 77 / .35), 0 0 0 6px rgb(255 216 61 / .45); } }
 
+@media (max-width: 400px) { .luck-home { gap: 10px; padding: 12px; } .lh-art { width: 58px; height: 58px; border-radius: 15px; } .lh-art .luck-box { width: 52px; height: 52px; } .lh-go { padding: 10px 12px; font-size: 1rem; } .lh-txt > b { font-size: 1.05rem; } .lh-txt .eyebrow { white-space: nowrap; } }
 .luck-box { display: block; overflow: visible; }
 .luck-box .lb-body, .luck-box .lb-lid, .luck-box .lb-shadow { transform-box: fill-box; }
 .luck-box .lb-lid { transform-origin: 50% 100%; transition: transform .5s cubic-bezier(.3, 1.6, .5, 1), opacity .5s; }
+.luck-box .lb-glow { transition: opacity .5s; } .luck-box.wiggle .lb-glow { opacity: .55; } .luck-box.open .lb-glow { opacity: 1; }
 .luck-box.wiggle { animation: lb-wiggle 2.4s ease-in-out infinite; transform-origin: 50% 90%; }
 .luck-box.shut { filter: grayscale(.6) opacity(.7); }
 .luck-box.shake1 { animation: lb-shake .35s ease; transform-origin: 50% 90%; }
@@ -1253,7 +1257,7 @@ body.playing .tabbar { display: none; }
 @keyframes lb-pop { 40% { transform: scale(1.12, .9); } }
 
 .luck-intro { text-align: center; color: #fff; border-radius: var(--r); padding: 16px 16px 20px; display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; overflow: hidden;
-  background: radial-gradient(circle at 50% 40%, rgb(168 85 247 / .55) 0, transparent 60%), linear-gradient(180deg, #2A1650, #120A26); box-shadow: 0 4px 0 #0A0518; border: 1.5px solid var(--line); }
+  background: radial-gradient(circle at 50% 42%, rgb(255 216 61 / .3) 0, transparent 62%), linear-gradient(180deg, #243382, #131C4A); box-shadow: 0 4px 0 #0B1130; border: 1.5px solid var(--line); }
 .luck-intro.golden { background: radial-gradient(circle at 50% 40%, rgb(250 204 21 / .6) 0, transparent 60%), linear-gradient(180deg, #3D2A05, #1A1203); }
 .li-day { font-size: .82rem; font-weight: 800; color: #FFD83D; background: rgb(255 255 255 / .1); padding: 3px 12px; border-radius: 99px; }
 .li-art .luck-box { width: 170px; height: 170px; margin: 4px auto 0; }
@@ -6696,18 +6700,21 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   }
   var luckCd = (ms) => typeof bossCountdown == "function" ? bossCountdown(ms) : `${Math.ceil(ms / 36e5)}h`;
   function luckBoxSvg(golden, cls = "") {
-    let body = golden ? "#F5B70A" : "#8B5CF6", dark = golden ? "#B7791F" : "#5B34C4", rib = golden ? "#E11D48" : "#FFD83D", ribD = golden ? "#9F1239" : "#C99A06";
+    /* epz-patch:luck3d — the same block-style chest as the 3D scene (wood planks, gold trim, a lid that lifts), drawn flat so the homepage stays light */
+    let w1 = golden ? "#E8A317" : "#9A622F", w2 = golden ? "#D9930C" : "#8A5527", w3 = golden ? "#F3B72E" : "#A86E38", gold = golden ? "#E11D48" : "#FFD83D", goldD = golden ? "#9F1239" : "#B9801A", ink = "#17224D";
     return `<svg class="luck-box ${cls}" viewBox="0 0 200 200" aria-hidden="true">
-      <ellipse class="lb-shadow" cx="100" cy="186" rx="62" ry="8" fill="#000" opacity=".18"/>
-      <g class="lb-body"><rect x="38" y="92" width="124" height="88" rx="10" fill="${body}" stroke="${dark}" stroke-width="5"/>
-        <rect x="88" y="92" width="24" height="88" fill="${rib}" stroke="${ribD}" stroke-width="3"/>
-        <rect x="46" y="100" width="20" height="60" rx="6" fill="#fff" opacity=".18"/>
-        <text x="100" y="152" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="30" fill="#fff" opacity=".9">?</text></g>
-      <g class="lb-lid"><rect x="30" y="70" width="140" height="28" rx="8" fill="${body}" stroke="${dark}" stroke-width="5"/>
-        <rect x="88" y="70" width="24" height="28" fill="${rib}" stroke="${ribD}" stroke-width="3"/>
-        <path d="M100 70 C80 40 52 46 62 62 C68 72 88 72 100 70Z" fill="${rib}" stroke="${ribD}" stroke-width="4" stroke-linejoin="round"/>
-        <path d="M100 70 C120 40 148 46 138 62 C132 72 112 72 100 70Z" fill="${rib}" stroke="${ribD}" stroke-width="4" stroke-linejoin="round"/>
-        <circle cx="100" cy="68" r="8" fill="${rib}" stroke="${ribD}" stroke-width="4"/></g>
+      <ellipse class="lb-shadow" cx="100" cy="188" rx="66" ry="8" fill="#17224D" opacity=".22"/>
+      <ellipse class="lb-glow" cx="100" cy="100" rx="58" ry="14" fill="#FFE27A" opacity="0"/>
+      <g class="lb-body"><rect x="34" y="98" width="132" height="84" fill="${w1}" stroke="${ink}" stroke-width="5" stroke-linejoin="round"/>
+        <rect x="39" y="126" width="122" height="5" fill="${w2}"/><rect x="39" y="152" width="122" height="5" fill="${w2}"/><rect x="39" y="103" width="122" height="5" fill="${w3}" opacity=".7"/>
+        <rect x="34" y="98" width="16" height="84" fill="${gold}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/><rect x="150" y="98" width="16" height="84" fill="${gold}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/>
+        <rect x="34" y="168" width="132" height="14" fill="${goldD}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/></g>
+      <g class="lb-lid"><rect x="30" y="68" width="140" height="34" fill="${w1}" stroke="${ink}" stroke-width="5" stroke-linejoin="round"/>
+        <rect x="44" y="46" width="112" height="26" fill="${w3}" stroke="${ink}" stroke-width="5" stroke-linejoin="round"/>
+        <rect x="52" y="74" width="96" height="5" fill="${w2}"/>
+        <rect x="58" y="46" width="16" height="56" fill="${gold}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/><rect x="126" y="46" width="16" height="56" fill="${gold}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/>
+        <rect x="30" y="94" width="140" height="10" fill="${goldD}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/>
+        <rect x="88" y="86" width="24" height="26" fill="${gold}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/><circle cx="100" cy="97" r="4" fill="${ink}"/><rect x="98" y="97" width="4" height="9" fill="${ink}"/></g>
     </svg>`;
   }
   function luckDots(st) {
@@ -6837,28 +6844,26 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     ${luckHeader()}
     <section class="luck-intro luck-reveal${st.golden ? " golden" : ""}" id="lr">
       <span class="li-day">${st.golden ? "⭐ Golden box ⭐" : `\u{1F525} Day ${(st.next - 1) % 7 + 1} of 7`}</span>
-      <button class="lr-box" id="lr-box" type="button" aria-label="Tap the box to open it">${luckBoxSvg(st.golden, "wiggle")}<span class="lr-rays" aria-hidden="true"></span></button>
-      <p class="li-sub" id="lr-hint"><b>Tap the box</b> to open it!</p>
+      <button class="lr-box" id="lr-box" type="button" aria-label="Open the box">${luckBoxSvg(st.golden, "wiggle")}<span class="lr-rays" aria-hidden="true"></span></button>
+      <p class="li-sub" id="lr-hint">You got the key! Open your box.</p>
+      <button class="btn btn-big luck-start" id="lr-open" type="button">\u{1F511} Open</button>
       <div class="lr-prize" id="lr-prize" hidden></div>
     </section>`;
-    let box = app.querySelector("#lr-box"), taps = 0, opened = !1, prize = null;
-    box.addEventListener("click", () => {
+    let box = app.querySelector("#lr-box"), openBtn = app.querySelector("#lr-open"), opened = !1, prize = null;
+    luckWebgl() && luckLoad().catch(() => {
+    });
+    const doOpen = () => {
       if (opened) return;
-      taps++;
       let svg = box.querySelector(".luck-box");
-      if (svg.classList.remove("wiggle", "shake1", "shake2"), svg.offsetWidth, taps < 3) {
-        svg.classList.add(taps === 1 ? "shake1" : "shake2"), typeof sfxNoise == "function" && sfxNoise(0.25, 900 + taps * 500, 0.4, "bandpass"), app.querySelector("#lr-hint").innerHTML = taps === 1 ? "<b>Again!</b>" : "<b>One more time!</b>";
-        try {
-          navigator.vibrate && navigator.vibrate(30 * taps);
-        } catch {
-        }
-        return;
-      }
-      opened = !0, prize = luckRoll(st.next, st.golden);
+      svg.classList.remove("wiggle", "shake1", "shake2"), svg.offsetWidth, svg.classList.add("shake2"), typeof sfxCtx == "function" && sfxCtx();
+      /* epz-patch:luck3d — one press opens it. The prize is rolled and saved right here, once, before any animation is shown. */
+      opened = !0, openBtn && (openBtn.disabled = !0), prize = luckRoll(st.next, st.golden);
       let s = luckData(), leagueBefore = league().index, before = new Set(Object.keys(state.badges)), at = (/* @__PURE__ */ new Date()).toISOString();
       s.o.push({ at, p: prize.p, r: prize.tier }), s.streak = st.next, prize.tier === "legend" && (s.legend = !0), s.best = Math.max(s.best || 0, s.streak), refreshBadges(), save(), LIVE2 && syncBoard();
       let newBadges = Object.keys(state.badges).filter((k) => !before.has(k)), lgUp = league().index > leagueBefore ? league() : null, t = LUCK_TIERS[prize.tier], big = prize.tier === "rare" || prize.tier === "legend";
-      svg.classList.add("open"), app.querySelector("#lr").style.setProperty("--t", t.color), app.querySelector("#lr").style.setProperty("--tg", t.glow), app.querySelector("#lr").classList.add("opened", `t-${prize.tier}`), app.querySelector("#lr-hint").hidden = !0;
+      /* the plain reveal below is the fallback: it runs only if the 3D scene cannot start */
+      const flat = () => {
+      svg.classList.remove("shake2"), svg.classList.add("open"), app.querySelector("#lr").style.setProperty("--t", t.color), app.querySelector("#lr").style.setProperty("--tg", t.glow), app.querySelector("#lr").classList.add("opened", `t-${prize.tier}`), app.querySelector("#lr-hint").hidden = !0;
       typeof SFX == "object" && (big ? (SFX.boom(), setTimeout(() => SFX.super(), 250)) : SFX.crit());
       try {
         navigator.vibrate && navigator.vibrate(big ? [60, 40, 120] : 60);
@@ -6882,7 +6887,62 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         };
         requestAnimationFrame(step), big && confetti(prize.tier === "legend" ? 140 : 80);
       }, 650);
+      };
+      luckScene3d({ prize, tier: t, golden: st.golden, day: (st.next - 1) % 7 + 1, streak: s.streak, lgUp, newBadges }).then((ok) => {
+        ok || flat();
+      }).catch((e) => {
+        console.warn("Lucky Box 3D scene unavailable, using the plain reveal.", e), document.querySelector(".lbx")?.remove(), flat();
+      });
+    };
+    box.addEventListener("click", doOpen), openBtn && openBtn.addEventListener("click", doOpen);
+  }
+  // epz-patch:luck3d — the 3D opening scene (gaterush/luckybox.js + the student's 3D character from gaterush/avatar.js, three.js from the same CDN Gate Rush uses).
+  // Nothing here is downloaded on the homepage: it is only fetched when the student reaches the "Open" screen.
+  function luckWebgl() {
+    try {
+      let c = document.createElement("canvas");
+      return !!(c.getContext("webgl2") || c.getContext("webgl"));
+    } catch {
+      return !1;
+    }
+  }
+  var luckLoadP = null;
+  function luckLoad() {
+    return luckLoadP || (luckLoadP = Promise.all([["avatar", 12], ["luckybox", 1]].map(([f, v]) => new Promise((ok, bad) => {
+      if (document.querySelector(`script[data-lb="${f}"]`)) return ok();
+      const s = document.createElement("script");
+      s.src = `gaterush/${f}.js?v=${v}`, s.dataset.lb = f, s.async = !1, s.onload = ok, s.onerror = () => bad(new Error("load " + f)), document.head.appendChild(s);
+    }))).then(() => grHost().loadThree()).catch((e) => {
+      throw luckLoadP = null, e;
+    }));
+  }
+  async function luckScene3d(o) {
+    if (!luckWebgl()) return !1;
+    const T = await Promise.race([luckLoad(), new Promise((_, no) => setTimeout(() => no(new Error("slow")), 12e3))]);
+    if (!document.getElementById("lr")) return !0;
+    const h = grHost(), cfg = h.avatarCfg(), t = o.tier, p = o.prize, snd = (fn) => () => {
+      try {
+        fn();
+      } catch {
+      }
+    }, big = p.tier === "rare" || p.tier === "legend";
+    const lines = [`\u{1F525} ${o.streak} day${o.streak === 1 ? "" : "s"} in a row${o.streak % 7 === 6 ? " \xB7 tomorrow is a golden box!" : ""}`];
+    o.lgUp && lines.push(`\u{1F3C5} New league: <b>${esc(o.lgUp.name)}</b>`), o.newBadges.forEach((k) => lines.push(`\u{1F396} New badge: <b>${esc(BADGES[k].name)}</b>`));
+    const sc = GR.luckScene(T, {
+      container: document.body, cfg, colors: h.colors(cfg), key: p.tier, tier: t, points: p.p, golden: o.golden,
+      caption: `Lucky Box \xB7 Day ${o.day}${o.golden ? " \xB7 Golden" : ""}`, lines,
+      sfx: {
+        start: snd(() => SFX.whoosh()),
+        shake: snd(() => (sfxNoise(0.22, 900, 0.35, "bandpass"), sfxNoise(0.22, 1400, 0.3, "bandpass", 0.35), sfxNoise(0.22, 1900, 0.35, "bandpass", 0.7))),
+        open: snd(() => big ? (SFX.boom(), setTimeout(() => SFX.super(), 250)) : SFX.crit()),
+        reveal: snd(() => SFX.power()),
+        claim: snd(() => SFX.power())
+      },
+      onClaim: () => {
+        cleanup = null, toast(`+${p.p} points added`, "success"), go("home");
+      }
     });
+    return cleanup = () => sc.dispose(), !0;
   }
 
   // epz-patch:gaterush — Challenge a friend (the card duel) was removed in Nov 2026. Points students already won in duels
