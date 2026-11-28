@@ -18,7 +18,7 @@
     { k: "correction", parts: ["Spelling", "Capitalization", "Verb Forms", "Basic Grammar", "Punctuation"] }
   ];
   // skills whose Parts are written and shipped (the rest show as "Coming soon", so no number on screen is ever a promise)
-  E.READY = { grammar: true, vocabulary: true, reading: true, listening: true };
+  E.READY = { grammar: true, vocabulary: true, reading: true, listening: true, building: true };
   E.TESTS = TESTS; E.QS = QS;
 
   /* ---------------------------------------------------------------- question helpers used by the data files (same shapes as the rest of EPZ) */
