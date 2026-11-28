@@ -2167,6 +2167,19 @@ body {
 .wd-pack-more{margin-top:10px;width:100%;padding:9px;border-radius:12px;border:2px solid var(--gr-navy);background:var(--gr-sky);font:inherit;font-weight:800;color:var(--gr-navy);cursor:pointer}
 .wd-pack .cz-grid{margin-top:10px}
 .wd-wear{width:100%;margin-top:10px}
+/* epz-patch:collection6 — collection titles and rewards */
+.cz-title-chip{display:inline-flex;align-items:center;gap:5px;margin:2px 0 4px;padding:3px 10px 3px 6px;border-radius:999px;border:2px solid var(--gr-navy,#13232F);border-left:7px solid var(--pc);background:#fff;color:var(--gr-navy,#13232F);font-size:.78rem;font-weight:900;text-decoration:none;box-shadow:0 2px 0 var(--gr-navy,#13232F);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cz-title-chip span{font-size:.95rem}
+.wd-titles{display:flex;flex-wrap:wrap;gap:7px;margin:4px 0 8px}
+.wd-tchip{display:inline-flex;align-items:center;gap:5px;padding:6px 11px 6px 8px;border-radius:999px;border:2px solid var(--gr-navy);border-left:7px solid var(--pc,var(--gr-navy));background:#fff;font:inherit;font-size:.8rem;font-weight:800;color:var(--gr-navy);cursor:pointer;box-shadow:0 3px 0 var(--gr-navy);transition:transform .1s}
+.wd-tchip:active{transform:translateY(2px)}
+.wd-tchip.on{background:var(--gr-gold);box-shadow:0 3px 0 var(--gr-navy),0 0 0 3px color-mix(in srgb,var(--gr-gold) 45%,transparent)}
+.wd-tchip.locked{opacity:.5;cursor:default;box-shadow:none;border-left-color:#B9C0CA}
+.cz-rv-reward{display:flex;align-items:center;gap:10px;margin:10px 0 0;padding:10px 12px;border-radius:14px;border:2px solid var(--gr-navy);border-left:8px solid var(--pc,var(--gr-gold));background:#fff;text-align:left;animation:lp-drop .5s .7s cubic-bezier(.3,1.5,.5,1) both}
+.cz-rv-reward.badge{border-left-color:var(--gr-gold);animation-delay:.9s}
+.cz-rv-reward div{display:flex;flex-direction:column}.cz-rv-reward span:not(.cz-rv-rw-ic){font-size:.8rem;color:var(--muted);font-weight:700}
+.cz-rv-rw-ic{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--gr-sky2,#CDE9F2);font-size:1.3rem}
+@media (prefers-reduced-motion:reduce){.cz-rv-reward{animation:none}}
 /* epz-patch:collection5 — reveal of new items, collection trophy, rarity burst, NEW badge */
 .wd-new{position:absolute;left:5px;top:4px;padding:1px 6px;border-radius:999px;background:#D8343F;color:#fff;font-size:.56rem;font-weight:900;letter-spacing:.05em;pointer-events:none;box-shadow:0 2px 0 rgb(0 0 0 / .2);animation:wd-newp 1.6s ease-in-out infinite}
 @keyframes wd-newp{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
@@ -4832,7 +4845,11 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     bossSlayer: { name: "Boss Slayer", desc: "Beat a Boss Battle", icon: "sword" },
     bossFlawless: { name: "Untouchable", desc: "Beat a boss without losing a heart", icon: "shield" },
     bossFast: { name: "Lightning Hero", desc: "Beat a boss in under 2 minutes", icon: "bolt" },
-    luckyStar: { name: "Lucky Star", desc: "Get a Legendary Lucky Box", icon: "star" }
+    luckyStar: { name: "Lucky Star", desc: "Get a Legendary Lucky Box", icon: "star" },
+    collector1: { name: "Collector", desc: "Complete a wardrobe collection", icon: "award" },
+    collector5: { name: "Super Collector", desc: "Complete 5 wardrobe collections", icon: "medal" },
+    costumeMaster: { name: "Costume Master", desc: "Complete all 5 costume collections", icon: "star" },
+    collectorAll: { name: "Master Collector", desc: "Complete every points collection", icon: "trophy" }
   }, DAILY_GOAL = 3, QUICK_SIZE = 8, CLASS = { updated_at: null, board: null, students: [], activities: {}, hidden: [] };
   try {
     let el = document.getElementById("epz-class");
@@ -5039,7 +5056,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       pts1000: pts >= 1e3,
       pts5000: pts >= 5e3,
       ...bossBadgeRules(),
-      luckyStar: !!state.luck?.legend
+      luckyStar: !!state.luck?.legend,
+      ...czBadgeRules() /* epz-patch:collection6 */
     }, now = (/* @__PURE__ */ new Date()).toISOString();
     for (let [k, ok] of Object.entries(rules)) ok && !state.badges[k] && (state.badges[k] = now);
   }
@@ -7290,7 +7308,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     <section class="hello">
       <button class="avatar duo-av cz-standing" id="me-btn" aria-label="Me: my name and character">${czMe({ size: 112 })}<span class="duo-av-edit">${icon("edit", 12)}</span></button>
       <div class="hello-txt">
-        <h1>Hi, ${esc(firstName(m2.name))}!</h1>
+        <h1>Hi, ${esc(firstName(m2.name))}!</h1>${czTitleChip() /* epz-patch:collection6 */}
         <button type="button" class="class-chip" id="class-btn" aria-label="Change your grade or class">${esc(classLabel())}<span>Change</span></button>
       </div>
       <a class="hello-league duo-lg" href="#dashboard" style="--lg:${lg.color}" aria-label="You are in the ${lg.name} league. ${lg.next ? `${fmtNum(lg.toNext)} points to ${lg.next.name}` : "Top league"}"><!-- epz-patch:league -->
@@ -8926,10 +8944,31 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     /* epz-patch:collection5 — completed collections are remembered in s.done; ones finished before this existed are recorded quietly */
     let firstDone = !Array.isArray(s.done); s.done = firstDone ? [] : s.done;
     czSets().forEach((st) => { if (s.done.indexOf(st.id) < 0 && st.items.every(czOwns)) s.done.push(st.id), changed = !0, firstDone || sets.push(st); });
-    changed && save();
-    czTrack.fresh = (czTrack.fresh || []).concat(fresh), czTrack.sets = (czTrack.sets || []).concat(sets);
+    let bBefore = Object.keys(state.badges || {}); /* epz-patch:collection6 — finishing collections can earn badges */
+    changed && (refreshBadges(), save());
+    let newB = Object.keys(state.badges || {}).filter((k) => bBefore.indexOf(k) < 0 && /^(collector|costume)/.test(k));
+    czTrack.fresh = (czTrack.fresh || []).concat(fresh), czTrack.sets = (czTrack.sets || []).concat(sets), czTrack.badges = (czTrack.badges || []).concat(firstDone ? [] : newB);
     return s;
   }
+  /* epz-patch:collection6 — rewards for finished collections: four badges, and a title for each collection that the student can show under their name */
+  var CZ_COSTUME_SETS = ["pirate", "ninja", "knight", "astro", "wizard"];
+  function czBadgeRules() {
+    let d = state.cz && Array.isArray(state.cz.done) ? state.cz.done : [], packs = typeof WD_PACKS !== "undefined" && WD_PACKS ? WD_PACKS : null;
+    return { collector1: d.length >= 1, collector5: d.length >= 5, costumeMaster: CZ_COSTUME_SETS.every((x) => d.indexOf(x) > -1), collectorAll: !!packs && packs.every((p) => d.indexOf(p.id) > -1) };
+  }
+  var CZ_TITLES = {
+    heritage: "Heritage Keeper", sports: "Sports Star", street: "Street Style Icon", football: "Football Legend", pirate: "Pirate Captain", explorer: "Desert Explorer",
+    ninja: "Shadow Ninja", winter: "Winter Warrior", knight: "Brave Knight", festival: "Eid Star", astro: "Star Astronaut", royal: "Royal Champion", wizard: "Grand Wizard",
+    boss: "Boss Hunter", gr1: "Sunrise Champion", gr2: "Lagoon Champion", gr3: "Ruby Champion", gr4: "Violet Champion"
+  };
+  function czTitle() {
+    let s = state.cz, id = s && s.title;
+    if (!id || !CZ_TITLES[id] || !Array.isArray(s.done) || s.done.indexOf(id) < 0) return null;
+    let st = czSets().find((x) => x.id === id);
+    return st ? { id, name: CZ_TITLES[id], ic: st.ic, col: st.col } : null;
+  }
+  function czSetTitle(id) { let s = czStore(); s.title = id && CZ_TITLES[id] ? id : null; save(); }
+  var czTitleChip = () => { let t = czTitle(); return t ? `<a class="cz-title-chip" href="#avatar" style="--pc:${t.col}" aria-label="Your title: ${esc(t.name)}"><span>${t.ic}</span>${esc(t.name)}</a>` : ""; };
   /* epz-patch:collection5 — animations: new-item reveal, collection trophy, rarity bursts when equipping, "NEW" badges */
   var czReduce = () => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return !1; } };
   var CZ_RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4, mythic: 5 };
@@ -8942,7 +8981,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     document.body.appendChild(ov);
     let shut = !1, close = () => { if (shut) return; shut = !0; ov.classList.add("out"); document.removeEventListener("keydown", onKey); setTimeout(() => { ov.remove(); prev && prev.focus && prev.focus(); onDone && onDone(); }, 260); };
     let onKey = (e) => { e.key === "Escape" && close(); };
-    ov.addEventListener("click", (e) => { (e.target.closest("[data-rv-close]") || e.target.classList.contains("cz-rv-bg")) && close(); });
+    ov.addEventListener("click", (e) => {
+      let tb = e.target.closest("[data-title]"); tb && (czSetTitle(tb.dataset.title), toast(`Your title is now "${CZ_TITLES[tb.dataset.title]}".`, "success", 2400), location.hash === "" || location.hash === "#home" ? setTimeout(() => typeof redrawIf == "function" && redrawIf("home"), 300) : 0);
+      (e.target.closest("[data-rv-close]") || e.target.classList.contains("cz-rv-bg")) && close();
+    });
     document.addEventListener("keydown", onKey);
     setTimeout(() => { let b = ov.querySelector("[data-rv-close]"); b && b.focus({ preventScroll: !0 }); }, 60);
     return ov;
@@ -8964,8 +9006,12 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       + `<div class="cz-rv-btns">${onAvatar ? `<button type="button" class="btn btn-primary btn-big" data-rv-close>Great!</button>` : `<a class="btn btn-primary btn-big" href="#avatar" data-rv-close>Try them on</a><button type="button" class="btn btn-ghost" data-rv-close>Later</button>`}</div>`, "cz-rv-items", done);
     czReduce() || setTimeout(() => confetti(best >= 3 ? 110 : 45), 250 + show.length * 140);
   }
-  function czRevealSet(st, done) {
-    czOverlay(`<div class="cz-rv-trophy" aria-hidden="true">🏆</div><p class="cz-rv-kick">Collection complete!</p><h2 class="cz-rv-set" style="--pc:${st.col}"><span>${st.ic}</span> ${esc(st.name)}</h2><p class="cz-rv-sub">You have all ${st.items.length} items. Wear them with pride!</p><div class="cz-rv-btns"><button type="button" class="btn btn-primary btn-big" data-rv-close>Brilliant!</button></div>`, "cz-rv-done", done);
+  function czRevealSet(st, done, badges) {
+    let tn = CZ_TITLES[st.id], bl = (badges || []).filter((k) => BADGES[k]);
+    czOverlay(`<div class="cz-rv-trophy" aria-hidden="true">🏆</div><p class="cz-rv-kick">Collection complete!</p><h2 class="cz-rv-set" style="--pc:${st.col}"><span>${st.ic}</span> ${esc(st.name)}</h2><p class="cz-rv-sub">You have all ${st.items.length} items. Wear them with pride!</p>`
+      + (tn ? `<div class="cz-rv-reward" style="--pc:${st.col}"><span class="cz-rv-rw-ic">🎖️</span><div><b>New title: ${st.ic} ${esc(tn)}</b><span>Show it under your name on the home screen.</span></div></div>` : "")
+      + bl.map((k) => `<div class="cz-rv-reward badge"><span class="cz-rv-rw-ic">${icon(BADGES[k].icon, 22)}</span><div><b>New badge: ${esc(BADGES[k].name)}</b><span>${esc(BADGES[k].desc)}</span></div></div>`).join("")
+      + `<div class="cz-rv-btns">${tn ? `<button type="button" class="btn btn-primary btn-big" data-rv-close data-title="${st.id}">Use this title</button><button type="button" class="btn btn-ghost" data-rv-close>Not now</button>` : `<button type="button" class="btn btn-primary btn-big" data-rv-close>Brilliant!</button>`}</div>`, "cz-rv-done", done);
     czReduce() || confetti(140);
   }
   var czCelebrating = !1;
@@ -8973,12 +9019,12 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     if (czCelebrating || !state.avatar || document.querySelector(".cz-reveal,.modal-backdrop,.cz-arena") || document.body.classList.contains("playing")) return;
     if (["", "#", "#home", "#avatar"].indexOf(location.hash) < 0) return;
     czTrack();
-    let fresh = czTrack.fresh || [], sets = czTrack.sets || [];
-    czTrack.fresh = [], czTrack.sets = [];
+    let fresh = czTrack.fresh || [], sets = czTrack.sets || [], badges = czTrack.badges || [];
+    czTrack.fresh = [], czTrack.sets = [], czTrack.badges = [];
     if (!fresh.length && !sets.length) return;
     let queue = [];
     fresh.length && queue.push((nx) => czRevealItems(fresh, nx));
-    sets.forEach((st) => queue.push((nx) => czRevealSet(st, nx)));
+    sets.forEach((st, i) => queue.push((nx) => czRevealSet(st, nx, i === sets.length - 1 ? badges : [])));
     czCelebrating = !0;
     let next = () => { let f = queue.shift(); f ? f(next) : czCelebrating = !1; };
     next();
@@ -9957,6 +10003,15 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     }
     /* epz-patch:collection2 — Collection: totals, rarities, recently unlocked, every themed collection with its missing items */
     let openSet = null, renaming = null;
+    // epz-patch:collection6 — every finished collection gives a title; the student picks one to show under their name
+    function titlePicker(sets) {
+      let s = czStore(), d = Array.isArray(s.done) ? s.done : [], cur = czTitle(), list = sets.filter((x) => CZ_TITLES[x.id]);
+      let got = list.filter((x) => d.indexOf(x.id) > -1), rest = list.filter((x) => d.indexOf(x.id) < 0);
+      let chip = (x, on, lock) => `<button type="button" class="wd-tchip${on ? " on" : ""}${lock ? " locked" : ""}" data-title="${x.id}" style="--pc:${x.col}" ${lock ? `disabled title="Complete the ${esc(x.name)} collection"` : ""} aria-pressed="${on}"><span>${lock ? "🔒" : x.ic}</span>${esc(CZ_TITLES[x.id])}</button>`;
+      return `<h3 class="cz-h">Your title <small class="muted">${got.length}/${list.length}</small></h3>`
+        + `<p class="cz-note">Finish a collection to earn its title. The one you pick shows under your name on the home screen.</p>`
+        + `<div class="wd-titles">${got.length ? `<button type="button" class="wd-tchip${cur ? "" : " on"}" data-title="" aria-pressed="${!cur}"><span>—</span>No title</button>` : ""}${got.map((x) => chip(x, cur && cur.id === x.id)).join("")}${rest.map((x) => chip(x, !1, !0)).join("")}</div>`;
+    }
     function collectionView() {
       let st = czTrack(), all = czAllItems(), owned = all.filter((it) => czOwns(it.key)), pct = Math.round(100 * owned.length / all.length), sets = czSets();
       let done = sets.filter((s2) => s2.items.every(czOwns)).length;
@@ -9974,6 +10029,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       let rare = all.filter((it) => /^(epic|legendary|mythic)$/.test(czMeta(it.k, it.v).rarity));
       return `<section class="wd-sum"><div class="wd-sum-top"><div><b>${owned.length}</b><span>of ${all.length} items collected</span></div><div><b>${pct}%</b><span>complete</span></div><div><b>${done}/${sets.length}</b><span>collections done</span></div></div>`
         + `<div class="wd-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div><div class="wd-rcs">${rr}</div></section>`
+        + titlePicker(sets) /* epz-patch:collection6 */
         + `<h3 class="cz-h">Recently unlocked</h3>` + (recent.length ? `<div class="cz-grid">${recent.map(tileOf).join("")}</div>` : note("New items you unlock from now on appear here. Earn points, win Boss Rush chests and Gate Rush weeks to unlock more."))
         + `<h3 class="cz-h">Rare and exclusive items <small class="muted">${rare.filter((it) => czOwns(it.key)).length}/${rare.length}</small></h3>`
         + `<button type="button" class="wd-pack-more" data-set="rare">${openSet === "rare" ? "Hide rare items" : "Show rare items"}</button>` + (openSet === "rare" ? `<div class="cz-grid">${rare.map((it) => tile(it.k, it.v, it.name)).join("")}</div>` : "")
@@ -10072,6 +10128,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       let ss = e.target.closest("[data-set]"), oa = e.target.closest("[data-oact]"); /* epz-patch:collection2 */
       if (ss) return openSet = openSet === ss.dataset.set ? null : ss.dataset.set, drawOpts();
       if (oa) return outfitAct(oa.dataset.oact, oa.dataset.oid);
+      let tt = e.target.closest("[data-title]"); /* epz-patch:collection6 */
+      if (tt) { if (tt.disabled) return; czSetTitle(tt.dataset.title || null); toast(tt.dataset.title ? `Your title is now "${CZ_TITLES[tt.dataset.title]}".` : "Title hidden.", "success", 2e3); return drawOpts(); }
       let md = e.target.closest("[data-mode]"), cs = e.target.closest("[data-csub]"); /* epz-patch:collection3 */
       if (md) { if (md.dataset.mode === mode) return; mode = md.dataset.mode, openSet = null, renaming = null, drawOpts(), CZ3.hero && CZ3.hero.zoom(mode === "wardrobe" && /^(face|hair|head)$/.test(cat) ? 2.1 : 1); app.querySelector("#wd-modes").scrollIntoView({ block: "nearest" }); return; }
       if (cs) return colSub = cs.dataset.csub, openSet = null, openPack = null, drawOpts();
