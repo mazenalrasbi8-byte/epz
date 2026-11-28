@@ -18,7 +18,7 @@
     { k: "correction", parts: ["Spelling", "Capitalization", "Verb Forms", "Basic Grammar", "Punctuation"] }
   ];
   // skills whose Parts are written and shipped (the rest show as "Coming soon", so no number on screen is ever a promise)
-  E.READY = { grammar: true, vocabulary: true, reading: true };
+  E.READY = { grammar: true, vocabulary: true, reading: true, listening: true };
   E.TESTS = TESTS; E.QS = QS;
 
   /* ---------------------------------------------------------------- question helpers used by the data files (same shapes as the rest of EPZ) */
@@ -144,7 +144,7 @@ mark.ez-hl{background:#FFE9A8;color:inherit;padding:0 4px;border-radius:5px;font
 .ez-card-home{display:flex;align-items:center;gap:12px;padding:14px;border-radius:var(--r);text-decoration:none;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand-deep,#06604D));box-shadow:var(--shadow);margin-bottom:14px}.ez-card-home .tx{flex:1;min-width:0;display:flex;flex-direction:column}.ez-card-home b{font-family:var(--display);font-size:1.15rem}.ez-card-home small{opacity:.92;font-weight:700}.ez-card-home .go{background:#FFD83D;color:#2B2300;font-weight:900;padding:9px 14px;border-radius:12px;box-shadow:0 3px 0 #B9801A}\
 .ez-pass{background:var(--surface-2);border-left:5px solid var(--c);border-radius:0 14px 14px 0;padding:12px 14px;display:flex;flex-direction:column;gap:8px}.ez-pass p{font-size:1.02rem;line-height:1.55}\
 .ez-qbox{background:#E3EAF6;border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}.ez-qbox small{font-weight:900;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--c)}.ez-qbox b{font-size:1.02rem}\
-.ez-steps-l{list-style:none;counter-reset:s;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}.ez-steps-l li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start}.ez-steps-l li:before{content:counter(s);grid-row:1 / span 2;width:30px;height:30px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font-weight:900}.ez-steps-l b{display:block;grid-column:2}.ez-steps-l span{display:block;grid-column:2;color:var(--muted);font-weight:600;line-height:1.4}\.ez-topics{display:flex;flex-direction:column;gap:10px}\
+.ez-steps-l{list-style:none;counter-reset:s;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}.ez-steps-l li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start}.ez-steps-l li:before{content:counter(s);grid-row:1 / span 2;width:30px;height:30px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font-weight:900}.ez-steps-l b{display:block;grid-column:2}.ez-steps-l span{display:block;grid-column:2;color:var(--muted);font-weight:600;line-height:1.4}\.ez-vnote{background:#FFF1D6;border-radius:12px;padding:10px 12px;font-weight:700;color:#5A3A00}.ez-reveal{background:var(--surface-2);border-left:5px solid var(--c);border-radius:0 14px 14px 0;padding:12px 14px;display:flex;flex-direction:column;gap:6px}.ez-reveal p{font-size:.95rem;line-height:1.45}\
 .ez-topic{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:var(--r-s);background:var(--surface);border:2px solid var(--line);box-shadow:0 3px 0 var(--line)}\
 .ez-topic-main{display:grid;grid-template-columns:38px minmax(0,1fr);gap:12px;align-items:center;text-decoration:none;color:var(--ink)}\
 .ez-topic .no{width:38px;height:38px;border-radius:12px;background:var(--c);color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:800}\
@@ -271,6 +271,7 @@ mark.ez-hl{background:#FFE9A8;color:inherit;padding:0 4px;border-radius:5px;font
     if (k === "passage") return '<span class="ez-kick">' + esc(c.kick || "Read") + '</span>' + h + '<div class="ez-pass">' + String(c.text).split("\n").map(function (l) { return l ? '<p>' + hl(l) + '</p>' : ""; }).join("") + '</div>' + (c.p ? '<p>' + hl(c.p) + '</p>' : "");
     if (k === "steps") return '<span class="ez-kick">' + esc(c.kick || "Guided example") + '</span>' + h + (c.q ? '<div class="ez-qbox"><small>Question</small><b>' + hl(c.q) + '</b></div>' : "") + '<ol class="ez-steps-l">' + c.items.map(function (i) { return '<li><b>' + hl(i[0]) + '</b><span>' + hl(i[1]) + '</span></li>'; }).join("") + '</ol>' + (c.p ? '<p>' + hl(c.p) + '</p>' : "");    if (k === "mistakes") return '<span class="ez-kick">Common mistakes</span>' + h + '<div class="ez-mis">' + c.items.map(function (i) { return '<div><div class="no">' + esc(i[0]) + '</div><div class="yes">' + hl(i[1]) + '</div>' + (i[2] ? '<small>' + hl(i[2]) + '</small>' : "") + '</div>'; }).join("") + '</div>';
     if (k === "words") return '<span class="ez-kick">' + esc(c.kick || "Words") + '</span>' + h + '<div class="ez-words">' + c.items.map(function (w, i) { return '<div class="ez-word"><span class="em">' + (w[0] || "") + '</span><b>' + esc(w[1]) + '</b><span class="say">' + esc(w[3] || "") + '</span><small>' + esc(w[2]) + '</small>' + (w[4] ? '<small>' + hl(w[4]) + '</small>' : "") + '<button type="button" class="btn btn-ghost btn-sm" data-say="' + i + '">' + H.icon("volume", 14) + ' Hear it</button></div>'; }).join("") + '</div>';
+    if (k === "listen") return '<span class="ez-kick">' + esc(c.kick || "Listen") + '</span>' + h + '<p>' + hl(c.p || "Listen, then answer. You can play it again.") + '</p><div class="audio-box"><span class="audio-ic">' + H.icon("listening", 24) + '</span><span class="audio-txt"><b>Listen first</b><span>Play it as many times as you like.</span></span><button class="btn btn-primary" type="button" data-lplay="0.92">' + H.icon("volume", 18) + ' Play</button><button class="btn btn-ghost" type="button" data-lplay="0.7">' + H.icon("slow", 18) + ' Slow</button></div><p class="ez-vnote" hidden></p><div class="ez-prac" id="ez-prac"></div><div class="ez-reveal" id="ez-reveal" hidden><b>What you heard</b>' + String(c.script).split("\n").map(function (l) { return '<p>' + esc(l) + '</p>'; }).join("") + '</div>';
     if (k === "practice") return '<span class="ez-kick">Try it</span>' + h + '<p>' + esc(c.p || "Answer these quick questions.") + '</p>' + (c.text ? '<div class="ez-pass">' + String(c.text).split("\n").map(function (l) { return l ? '<p>' + hl(l) + '</p>' : ""; }).join("") + '</div>' : "") + '<div class="ez-prac" id="ez-prac"></div>';
     return '<p>' + hl(c.p || "") + '</p>';
   }
@@ -279,7 +280,8 @@ mark.ez-hl{background:#FFE9A8;color:inherit;padding:0 4px;border-radius:5px;font
   function mountCard(c) {
     var root = app().querySelector("#ez-card");
     root.querySelectorAll("[data-say]").forEach(function (b) { b.addEventListener("click", function () { H.speak(c.items[+b.dataset.say][1], 0.85); }); });
-    if (c.k !== "practice") return;
+    if (c.k === "listen") { root.querySelectorAll("[data-lplay]").forEach(function (b) { b.addEventListener("click", function () { E.speak(c.script, +b.dataset.lplay); }); }); E.voiceCheck(root.querySelector(".ez-vnote")); }
+    if (c.k !== "practice" && c.k !== "listen") return;
     var box = root.querySelector("#ez-prac"), qs = c.qs, i = 0, right = 0;
     function one() {
       var q = qs[i], wrap = document.createElement("div"); wrap.className = "ez-prac"; box.innerHTML = ""; box.appendChild(wrap);
@@ -291,7 +293,7 @@ mark.ez-hl{background:#FFE9A8;color:inherit;padding:0 4px;border-radius:5px;font
         fb.className = "ez-fb " + (res.ok ? "good" : "bad");
         fb.innerHTML = (res.ok ? "Correct! " : "Not quite. ") + (!res.ok && res.correctText ? "Answer: <b>" + esc(res.correctText) + "</b>" : "") + (q.explanation ? "<p>" + esc(q.explanation) + "</p>" : "");
         var nx = document.createElement("button"); nx.className = "btn btn-big " + (i < qs.length - 1 ? "btn-primary" : "btn-ghost"); nx.innerHTML = i < qs.length - 1 ? "Next question" : "Done (" + right + "/" + qs.length + ")";
-        nx.addEventListener("click", function () { if (i < qs.length - 1) { i++; one(); } else { nx.disabled = true; nx.textContent = "Nice work! " + right + "/" + qs.length + " ✓"; } }); wrap.appendChild(nx);
+        nx.addEventListener("click", function () { if (i < qs.length - 1) { i++; one(); } else { nx.disabled = true; nx.textContent = "Nice work! " + right + "/" + qs.length + " ✓"; var rv = root.querySelector("#ez-reveal"); rv && (rv.hidden = false); } }); wrap.appendChild(nx);
       }
       ctrl = H.mountQuestion(q, area, { setReady: function (r) { btn.disabled = !r; }, submitNow: check });
       btn.hidden = !!ctrl.autoCheck; btn.addEventListener("click", check);
@@ -321,6 +323,33 @@ mark.ez-hl{background:#FFE9A8;color:inherit;padding:0 4px;border-radius:5px;font
       '<div class="ez-rv" id="ez-rv" hidden>' + o.log.map(function (L, i) { return '<div class="' + (L.ok ? "ok" : "no") + '"><b>' + (i + 1) + '. ' + esc(L.prompt) + '</b>' + (L.given ? '<div class="a">Your answer: ' + esc(L.given) + '</div>' : "") + (L.ok ? '<div class="a">✓ Correct</div>' : '<div class="a">Correct answer: ' + esc(L.answer) + '</div>') + (L.explanation ? '<small>' + esc(L.explanation) + '</small>' : "") + '</div>'; }).join("") + '</div></section>';
     app().querySelector("#ez-rev").addEventListener("click", function () { var rv = app().querySelector("#ez-rv"); rv.hidden = !rv.hidden; this.lastChild.textContent = rv.hidden ? " Review answers" : " Hide answers"; });
     if (acc >= 80) H.confetti();
+  };
+
+  /* ---------------------------------------------------------------- audio: the phone's own English voice (free, no files). "Name: words" lines are read in a different voice or pitch for each speaker. */
+  E.voices = function () { try { return window.speechSynthesis.getVoices().filter(function (v) { return /^en/i.test(v.lang); }); } catch (e) { return []; } };
+  E.speak = function (text, rate) {
+    if (!("speechSynthesis" in window)) { H.toast("This browser cannot play audio. Try Chrome.", "error", 4000); return; }
+    var ss = window.speechSynthesis; ss.cancel();
+    var vs = E.voices().sort(function (a, b) { return (/en-GB/i.test(b.lang) ? 1 : 0) - (/en-GB/i.test(a.lang) ? 1 : 0); }), who = {}, n = 0, pitch = [1, 1.3, 0.8, 1.15];
+    String(text).split(/\n+/).filter(function (l) { return l.trim(); }).forEach(function (line) {
+      var m = /^([A-Z][A-Za-z.' ]{0,18}):\s*(.+)$/.exec(line), spk = m ? m[1] : "narrator", body = m ? m[2] : line;
+      if (!(spk in who)) who[spk] = n++;
+      var i = who[spk], u = new SpeechSynthesisUtterance(body); u.lang = "en-GB"; u.rate = rate || 0.92; u.pitch = pitch[i % 4];
+      if (vs.length) u.voice = vs[i % vs.length];
+      ss.speak(u);
+    });
+  };
+  // shows a plain message if the phone has no English voice, so the audio box is never silent without a reason
+  E.voiceCheck = function (el) {
+    if (!el) return;
+    function show(msg) { el.hidden = false; el.className = "ez-vnote"; el.textContent = msg; }
+    if (!("speechSynthesis" in window)) { show("This browser cannot play audio. Open EPZ in Chrome or Edge to take the listening tests."); return; }
+    var tries = 0;
+    (function look() {
+      var all = window.speechSynthesis.getVoices();
+      if (all.length) { if (!E.voices().length) show("This phone has no English voice. Open Settings, then Language, then Text-to-speech, and add an English voice. Then come back and try again."); return; }
+      if (++tries < 12) setTimeout(look, 250);
+    })();
   };
 
   E.init = function (host) { H = host; };

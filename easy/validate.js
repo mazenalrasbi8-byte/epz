@@ -4,7 +4,7 @@
 window.__check = async function (E, skill, nParts) {
   for (var n = 1; n <= nParts; n++) await E.loadPart(skill, n);
   var v = E.verify(), prob = v.problems.slice(), seen = {}, kinds = {}, fmt = {};
-  var need = skill === "grammar" ? { intro: 1, examples: 1, table: 1, tip: 1, mistakes: 1, practice: 1 } : skill === "reading" ? { intro: 1, passage: 1, steps: 1, tip: 1, practice: 1 } : { intro: 1, words: 1, examples: 1, table: 1, tip: 1, practice: 1 };
+  var need = skill === "grammar" ? { intro: 1, examples: 1, table: 1, tip: 1, mistakes: 1, practice: 1 } : skill === "reading" ? { intro: 1, passage: 1, steps: 1, tip: 1, practice: 1 } : skill === "listening" ? { intro: 1, steps: 1, listen: 1, tip: 1, practice: 1 } : { intro: 1, words: 1, examples: 1, table: 1, tip: 1, practice: 1 };
   for (var n2 = 1; n2 <= nParts; n2++) {
     var id = skill + "-" + n2, p = E.parts[id];
     var k = {}; p.learn.forEach(function (c) { k[c.k] = (k[c.k] || 0) + 1; });
@@ -12,6 +12,7 @@ window.__check = async function (E, skill, nParts) {
     p.learn.forEach(function (c, i) { if (c.k === "words") c.items.forEach(function (w) { if (!w[1] || !w[2] || !w[3] || !w[4]) prob.push(id + " word card: " + w[1] + " needs a meaning, a pronunciation and an example"); else if (w[4].indexOf("**") < 0) prob.push(id + " word card: example for " + w[1] + " has no highlighted word"); }); if (c.k === "practice" && (c.qs || []).length < 3) prob.push(id + " learn practice has <3 questions"); if (c.k === "table" && c.rows.some(function (r) { return r.length !== c.head.length; })) prob.push(id + " learn card " + i + ": table row width"); });
     p.tests.forEach(function (t, ti) {
       var tag = id + " T" + (ti + 1);
+      if (skill === "listening") { var aw = String(t.audio_text || "").split(/\s+/).filter(Boolean).length; if (aw < 60) prob.push(tag + ": audio script too short (" + aw + " words)"); if (aw > 260) prob.push(tag + ": audio script too long (" + aw + " words)"); if (t.passage) prob.push(tag + ": a listening test must not show a passage"); }
       if (skill === "reading") { var words = String(t.passage || "").split(/\s+/).filter(Boolean).length; if (words < 70) prob.push(tag + ": reading passage too short (" + words + " words)"); if (words > 220) prob.push(tag + ": reading passage too long (" + words + " words)"); }
       var f = {}; t.questions.forEach(function (q, qi) {
         var qt = tag + " Q" + (qi + 1); f[q.type] = (f[q.type] || 0) + 1; fmt[q.type] = (fmt[q.type] || 0) + 1;
