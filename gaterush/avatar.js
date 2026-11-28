@@ -622,6 +622,8 @@
     // trim under the headwear: keep only the part of each piece below the hat's lower edge
     hairBoxes.forEach(function (b) {
       var w = b[0], hgt = b[1], d = b[2], x = b[3], y = b[4], z = b[5], top3 = y + hgt / 2, bot = y - hgt / 2;
+      // big hair (the afro) is squeezed to the head's size under any headwear, otherwise a black ring sticks out around the cap or kumma
+      if (hatBottom < 99) { var capW = HW + 2 * E + 0.02, capD = HD + 2 * E + 0.02; if (w > capW) w = capW; if (d > capD) d = capD; }
       if (hatBottom < 99) { if (bot >= hatBottom - 0.005) return; if (top3 > hatBottom) { hgt = hatBottom - bot; y = bot + hgt / 2; } if (b[7] && (b[7].rx || b[7].rz) && hgt < b[1]) return; }
       box(w, hgt, d, b[6], x, y, z, head, b[7]);
     });
@@ -737,7 +739,7 @@
           if (k !== 1) A.lean = damp(A.lean, 0, 10, dt);
           ty = 0.6 + by; by = 0; tk = 30;   // the whole character hops (legs too), so there is never a gap at the waist
         } else if (st.pose === "celebrate") {
-          la = -2.9 + Math.sin(A.t * 14) * 0.35; ra = -2.9 - Math.sin(A.t * 14) * 0.35; az = 0.35; ll = Math.sin(A.t * 10) * 0.5; rl = -ll; by = Math.abs(Math.sin(A.t * 7)) * 0.25; hx = -0.15;
+          la = -2.9 + Math.sin(A.t * 14) * 0.35; ra = -2.9 - Math.sin(A.t * 14) * 0.35; az = 0.35; ll = Math.sin(A.t * 10) * 0.5; rl = -ll; ty = 0.6 + Math.abs(Math.sin(A.t * 7)) * 0.25; tk = 30; hx = -0.15;   // the whole character hops (legs too), never just the torso
         } else if (st.pose === "stun") {
           la = 0.5; ra = 0.5; az = 0.5; bx = -0.28 + Math.sin(A.t * 8) * 0.05; hz = Math.sin(A.t * 9) * 0.25; ll = 0.3; rl = -0.2; stars.visible = true;
         } else if (st.pose === "dive") {
@@ -802,7 +804,8 @@
         legL.rotation.x = damp(legL.rotation.x, 0, 10, dt); legR.rotation.x = damp(legR.rotation.x, 0, 10, dt);
         head.rotation.set((st.ly || 0) * 0.18 + nod, (st.turn || 0) * 0.5 + shake, -(st.tilt || 0) * 0.02);
         body.rotation.set(0, (st.turn || 0) * 0.12 + shake * 0.25, 0);
-        body.position.y = 0.6 + up - (st.hop || 0) * 0.004; body.scale.set(BX, 1 + Math.sin(t * 1.7) * 0.008, BX);
+        // hops lift the whole character (legs included); moving only the torso left a gap at the waist
+        tilt.position.y = 0.6 + up - (st.hop || 0) * 0.004; tilt.rotation.x = damp(tilt.rotation.x, 0, 14, dt); body.position.y = 0.6; body.scale.set(BX, 1 + Math.sin(t * 1.7) * 0.008, BX);
         if (cape) cape.rotation.x = 0.1 + Math.sin(t * 2) * 0.04;
       },
       // shared textures (fabrics, embroidery) stay cached for the next character; only this one's own things are freed

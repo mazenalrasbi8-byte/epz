@@ -2114,6 +2114,20 @@ body {
 .wd-search input{flex:1;border:0;outline:0;font:inherit;font-size:.92rem;background:transparent;color:var(--gr-navy);min-width:0}
 .wd-lock{position:absolute;left:4px;right:4px;top:4px;padding:2px 4px;border-radius:8px;background:rgb(23 34 77 / .86);color:#fff;font-size:.62rem;font-weight:800;line-height:1.3;pointer-events:none}
 .wd-pk{position:absolute;right:5px;top:4px;font-size:.85rem;pointer-events:none}
+/* rarity is shown by how the card looks, not only by its colour: a tint, then a shimmer, then a glow */
+.wd-rar{position:static;display:inline-block;margin-top:2px;padding:1px 7px;border-radius:999px;font-size:.56rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase;pointer-events:none;color:#fff;background:var(--rc);align-self:center}
+.rar-uncommon{--rc:#178A4C}.rar-rare{--rc:#2B41C4}.rar-epic{--rc:#7C3AED}.rar-legendary{--rc:#B9801A}.rar-mythic{--rc:#D8343F}
+.cz-opt.rar-uncommon .cz-thumb{background:linear-gradient(160deg,#DDF5E6,#fff)!important}
+.cz-opt.rar-rare .cz-thumb{background:linear-gradient(160deg,#DCE5FF,#fff)!important}
+.cz-opt.rar-epic .cz-thumb,.cz-opt.rar-legendary .cz-thumb,.cz-opt.rar-mythic .cz-thumb{position:relative;overflow:hidden}
+.cz-opt.rar-epic .cz-thumb{background:linear-gradient(160deg,#EADCFF,#fff)!important}
+.cz-opt.rar-legendary .cz-thumb{background:linear-gradient(160deg,#FFEFB8,#fff)!important}
+.cz-opt.rar-mythic .cz-thumb{background:linear-gradient(160deg,#FFD0D3,#fff)!important}
+.cz-opt.rar-epic .cz-thumb:after,.cz-opt.rar-legendary .cz-thumb:after,.cz-opt.rar-mythic .cz-thumb:after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgb(255 255 255 / .75),transparent);animation:wd-shine 3.4s ease-in-out infinite;pointer-events:none}
+.cz-opt.rar-legendary .cz-thumb:after{animation-duration:2.4s}.cz-opt.rar-mythic .cz-thumb:after{animation-duration:1.8s}
+.cz-opt.rar-legendary:not(.on),.cz-opt.rar-mythic:not(.on){box-shadow:0 4px 0 var(--gr-navy),0 0 14px color-mix(in srgb,var(--rc) 45%,transparent)}
+@keyframes wd-shine{0%,55%{left:-60%}100%{left:130%}}
+@media (prefers-reduced-motion:reduce){.cz-opt .cz-thumb:after{animation:none!important;display:none}}
 .wd-view{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);display:flex;gap:4px;z-index:2}
 .wd-view button,.wd-zoom button{border:2px solid rgb(255 255 255 / .4);background:rgb(23 34 77 / .6);color:#fff;border-radius:10px;padding:5px 10px;font:inherit;font-size:.74rem;font-weight:800;cursor:pointer;transition:transform .12s}
 .wd-view button:active,.wd-zoom button:active{transform:scale(.92)}
@@ -8729,6 +8743,18 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     { id: "royal", name: "Royal Collection", pts: 3200, ic: "👑", col: "#B9801A", items: ["hat:kumma12", "hat:kumma13", "hat:kumma14", "mf:11", "cl:bishtz", "hat:mzopen", "gl:aviator", "wrist:bracelet"] }
   ];
   var WD_PACK_OF = {}; WD_PACKS.forEach((p) => p.items.forEach((k) => WD_PACK_OF[k] = p));
+  /* epz-patch:collection — every wardrobe item knows its rarity, where it comes from and which collection it belongs to.
+     The geometry stays in gaterush/avatar.js; this is only metadata, so adding items never touches saved characters. Existing items are graded by how hard they are to get. */
+  var CZ_RARITIES = [["common", "Common"], ["uncommon", "Uncommon"], ["rare", "Rare"], ["epic", "Epic"], ["legendary", "Legendary"], ["mythic", "Mythic"]];
+  var CZ_PACK_RARITY = { heritage: "uncommon", sports: "uncommon", street: "rare", football: "rare", explorer: "rare", winter: "epic", festival: "epic", royal: "legendary" };
+  var CZ_LOCKED_RARITY = { "hat:kummag": "legendary", "hat:crown": "legendary", "cl:bishtg": "legendary", "extra:headphones": "epic", "extra:medal": "rare", "extra:cape": "epic" };
+  function czMeta(slot, v) {
+    let key = slot + ":" + v, p = WD_PACK_OF[key];
+    if (/^gr(crown|cape|visor)\d$/.test(String(v))) return { key, rarity: "legendary", source: "gaterush", set: "gr" + String(v).slice(-1) };
+    if (CZ_LOCKED[key]) return { key, rarity: CZ_LOCKED_RARITY[key] || "epic", source: "boss", set: "boss" };
+    if (p) return { key, rarity: CZ_PACK_RARITY[p.id] || "rare", source: "points", set: p.id };
+    return { key, rarity: "common", source: "free", set: null };
+  }
   // the older lists are now made from the wardrobe, so every check that uses them knows every item
   ["hair", "hat", "eyes", "mouth", "gl", "cl"].forEach((k) => DUO_PARTS[k] = WD[k].map((e) => [e[0], e[1]]));
   var WD_SLOTS = ["face", "cheeks", "nose", "brows", "mark", "beard", "hairline", "bottom", "shoes", "neck", "wrist", "extra", "pose"];
@@ -9620,8 +9646,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       let c2 = JSON.parse(JSON.stringify(cfg)); c2[slot] = v;
       if (slot === "mf" && !mzOn()) c2.hat = "mzclassic";
       if (slot === "hair" && c2.hat !== "none" && !/crown/.test(c2.hat)) c2.hat = "none";
-      let frame = BUST[slot] ? "bust" : "full", lk = lockTxt(slot, v), p = WD_PACK_OF[slot + ":" + v], on = isOn(slot, v);
-      return `<button type="button" class="cz-opt wd-opt${on ? " on" : ""}${lk ? " locked" : ""}${frame === "full" ? " tall" : ""}" data-k="${slot}" data-v="${v}" aria-pressed="${on}"><span class="cz-thumb">${czSvg(c2, { size: frame === "bust" ? 76 : 96, frame, still: true, bg: !1, cls: BODY[slot] ? "cz-free" : BUST[slot] ? "cz-face" : "" })}</span><span class="cz-opt-l">${esc(label)}</span>${lk ? `<span class="wd-lock">🔒 ${esc(lk)}</span>` : p ? `<span class="wd-pk" title="${esc(p.name)}">${p.ic}</span>` : ""}</button>`;
+      let frame = BUST[slot] ? "bust" : "full", lk = lockTxt(slot, v), p = WD_PACK_OF[slot + ":" + v], on = isOn(slot, v), rar = slot === "mf" ? "common" : czMeta(slot, v).rarity;
+      return `<button type="button" class="cz-opt wd-opt rar-${rar}${on ? " on" : ""}${lk ? " locked" : ""}${frame === "full" ? " tall" : ""}" data-k="${slot}" data-v="${v}" aria-pressed="${on}"><span class="cz-thumb">${czSvg(c2, { size: frame === "bust" ? 76 : 96, frame, still: true, bg: !1, cls: BODY[slot] ? "cz-free" : BUST[slot] ? "cz-face" : "" })}</span><span class="cz-opt-l">${esc(label)}</span>${lk ? `<span class="wd-lock">🔒 ${esc(lk)}</span>` : p ? `<span class="wd-pk" title="${esc(p.name)}">${p.ic}</span>` : ""}${rar !== "common" ? `<span class="wd-rar r-${rar}">${rar}</span>` : ""}</button>`;
     }
     let grid = (title, slot, list) => list.length ? `${title ? `<h3 class="cz-h">${esc(title)}</h3>` : ""}<div class="cz-grid">${list.map((e) => tile(slot, e[0], e[1])).join("")}</div>` : "";
     let colRow = (title, k) => {
