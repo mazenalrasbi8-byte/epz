@@ -204,6 +204,14 @@ input:focus, textarea:focus { border-color: var(--brand); }
 .suggest > svg { color: var(--brand); }
 
 .skill-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+/* epz-patch:easy: the Easy Level card on the Practice tab */
+.ez-card-home { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: var(--r); text-decoration: none; color: #fff; background: linear-gradient(135deg, var(--brand), var(--brand-deep, #06604D)); box-shadow: var(--shadow); margin-bottom: 14px; transition: transform .1s; }
+.ez-card-home:active { transform: translateY(2px); }
+.ez-card-home .skill-ic { width: 46px; height: 46px; border-radius: 13px; color: #fff; display: grid; place-items: center; flex-shrink: 0; }
+.ez-card-home .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ez-card-home b { font-family: var(--display); font-size: 1.15rem; line-height: 1.2; }
+.ez-card-home small { opacity: .92; font-weight: 700; line-height: 1.35; }
+.ez-card-home .go { background: #FFD83D; color: #2B2300; font-weight: 900; padding: 9px 14px; border-radius: 12px; box-shadow: 0 3px 0 #B9801A; }
 .skill-tile {
   display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
   padding: 16px; border-radius: var(--r); text-decoration: none; color: var(--ink);
@@ -4953,8 +4961,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let mult = LEVELS2[level]?.mult || 1, base = Math.round(c2 * 10 * mult), bonus = 0, quick = aid === "quick", played = !quick && state.results.some((r) => r.aid === aid);
     return played && (base = Math.round(base / 2)), c2 === t && t > 0 && (quick ? bonus = 10 : bestAcc(aid) < 100 && (bonus = 20)), { base, bonus, points: base + bonus, repeat: played };
   }
-  function recordRound({ aid, skill, level, c: c2, i, sk = null }) {
-    let t = c2 + i, s = scoreRound({ aid, level, c: c2, t }), leagueBefore = league().index, before = new Set(Object.keys(state.badges)), row = { aid, skill, level, c: c2, i, t, acc: t ? Math.round(100 * c2 / t) : 0, pts: s.points, at: (/* @__PURE__ */ new Date()).toISOString() };
+  function recordRound({ aid, skill, level, c: c2, i, sk = null, score = null }) {
+    let t = c2 + i, s = score || scoreRound({ aid, level, c: c2, t }), leagueBefore = league().index, before = new Set(Object.keys(state.badges)), row = { aid, skill, level, c: c2, i, t, acc: t ? Math.round(100 * c2 / t) : 0, pts: s.points, at: (/* @__PURE__ */ new Date()).toISOString() };
     return sk && (row.sk = sk), state.results.push(row), state.results.length > 2e3 && (state.results = state.results.slice(-2e3)), refreshBadges(), save(), {
       ...s,
       newBadges: Object.keys(state.badges).filter((k) => !before.has(k)),
@@ -5331,7 +5339,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       evaluate() {
         lock();
         let ok = chosen !== null && answerMatches(shown[chosen], q.answer);
-        return chosen !== null && btns[chosen].classList.add(ok ? "correct" : "wrong"), ok || reveal(), { ok, correctText: firstAnswer(q.answer) };
+        return chosen !== null && btns[chosen].classList.add(ok ? "correct" : "wrong"), ok || reveal(), { ok, correctText: firstAnswer(q.answer), given: chosen !== null ? String(shown[chosen]) : "" };
       }
     };
   }
@@ -5351,7 +5359,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       evaluate() {
         input.disabled = !0;
         let ok = typedMatches(input.value, q.answer);
-        return input.classList.add(ok ? "correct" : "wrong"), { ok, correctText: firstAnswer(q.answer) };
+        return input.classList.add(ok ? "correct" : "wrong"), { ok, correctText: firstAnswer(q.answer), given: input.value.trim() };
       }
     };
   }
@@ -5390,7 +5398,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       evaluate() {
         locked = !0, area.querySelector("#tiles-reset").disabled = !0;
         let ok;
-        return isOrder ? (ok = placed.length === items.length && placed.every((t, i) => t.id === i), target.querySelectorAll(".tile").forEach((b2, i) => b2.classList.add(Number(b2.dataset.id) === i ? "correct" : "wrong"))) : (ok = answerMatches(placed.map((t) => t.text).join(" "), q.answer), target.classList.add(ok ? "correct" : "wrong")), { ok, correctText: correctText() };
+        return isOrder ? (ok = placed.length === items.length && placed.every((t, i) => t.id === i), target.querySelectorAll(".tile").forEach((b2, i) => b2.classList.add(Number(b2.dataset.id) === i ? "correct" : "wrong"))) : (ok = answerMatches(placed.map((t) => t.text).join(" "), q.answer), target.classList.add(ok ? "correct" : "wrong")), { ok, correctText: correctText(), given: placed.map((t) => t.text).join(" ") };
       }
     };
   }
@@ -6153,7 +6161,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   function drawTabs(h) {
     let nav = document.getElementById("tabbar");
     if (!nav) return;
-    let show = !!(me().name && me().grade) && h !== "setup", tab = h === "book" ? "book" /* epz-patch:book */ : h === "skills" || h === "quick" || h.startsWith("play-") ? "skills" : h === "ranking" ? "ranking" : h === "gaterush" || h === "duel" ? "gaterush" : h === "dashboard" ? "dashboard" : h === "word" || h === "words" || h.startsWith("word/") ? "word" : "home";
+    let show = !!(me().name && me().grade) && h !== "setup", tab = h === "book" ? "book" /* epz-patch:book */ : h === "skills" || h === "quick" || h.startsWith("easy") || h.startsWith("play-") ? "skills" : h === "ranking" ? "ranking" : h === "gaterush" || h === "duel" ? "gaterush" : h === "dashboard" ? "dashboard" : h === "word" || h === "words" || h.startsWith("word/") ? "word" : "home";
     nav.hidden = !show, document.body.classList.toggle("has-nav", show), nav.innerHTML = `<div class="tabbar-in">${bookTabs().map(([id, label, ic]) => `<a class="tab" href="#${id}"${id === tab ? ' aria-current="page"' : ""}><span class="tab-ic">${icon(ic, 22)}</span><span>${label}</span></a>`).join("")}</div>`;
   }
   // ============================================================ epz-patch:gaterush — Gate Rush replaces the Challenge tab (the card duel was removed; #duel opens Gate Rush)
@@ -6970,6 +6978,26 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     return n;
   }
 
+  // epz-patch:easy — the Easy Level course (easy/course.js, loaded only when a student opens it; each Part's data loads when that Part opens)
+  var easyReady = null;
+  function easyLoad() {
+    return easyReady || (easyReady = new Promise((ok, bad) => {
+      const s = document.createElement("script");
+      s.src = "easy/course.js?v=1", s.onload = () => {
+        EPZ_EASY.init({
+          get app() { return app; }, go: (h) => go(h), toast: (...a) => toast(...a), icon: (...a) => icon(...a), confetti: (n) => confetti(n), fmtNum: (n) => fmtNum(n), speak: (t2, r) => speak(t2, r),
+          state: () => state, save: () => save(), SKILLS2, BADGES, mountQuestion: (q, area, ctx) => mountQuestion(q, area, ctx)
+        }), ok();
+      }, s.onerror = () => bad(new Error("easy")), document.head.appendChild(s);
+    }).catch((e) => {
+      throw easyReady = null, e;
+    }));
+  }
+  // a small card on the Practice tab; the numbers are the agreed curriculum (7 skills, 40 Parts, 5 tests each), the progress is this student's
+  function easyCard() {
+    let k = me().grade === "guest" ? "guest-" + (me().practice || "9") : (me().grade || "") + "-" + (me().cls || ""), done = Object.values(((state.easy && state.easy.p || {})[k] || { t: {} }).t || {}).filter((r) => r && r.n).length;
+    return `<a class="ez-card-home" href="#easy"><span class="skill-ic" style="background:rgb(255 255 255 / .2)">${icon("target", 24)}</span><span class="tx"><b>Easy Level course</b><small>7 skills · 40 Parts · Learn and 5 tests in each${done ? ` · ${done} test${done === 1 ? "" : "s"} done` : ""}</small></span><span class="go">Open</span></a>`;
+  }
   function route2() {
     cleanup && (cleanup(), cleanup = null), stopSpeaking(), document.querySelectorAll(".confetti").forEach((c2) => c2.remove()), document.body.classList.remove("playing"), app.classList.remove("wide");
     let h = location.hash.replace(/^#/, "");
@@ -7023,6 +7051,23 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     if (h === "dashboard") {
       dashboard();
       return;
+    }
+    if (h === "easy" || h.startsWith("easy/")) { /* epz-patch:easy */
+      easyLoad().then(() => EPZ_EASY.route(h)).catch(() => {
+        app.innerHTML = '<section class="block" style="text-align:center;padding:30px 12px"><h2>Easy Level</h2><p>Could not load the course. Check your connection and try again.</p><a class="btn btn-primary" href="#easy">Try again</a></section>';
+      });
+      return;
+    }
+    if (h.startsWith("play-ez-")) { /* epz-patch:easy: a test of the Easy Level course (id ez-skill-part-test) */
+      let m3 = /^ez-([a-z]+)-(\d+)-(\d)$/.exec(h.slice(5));
+      if (m3) {
+        easyLoad().then(() => EPZ_EASY.openTest(m3[1], +m3[2], +m3[3])).then((a2) => {
+          location.hash.replace(/^#/, "") === h && play({ act: a2 });
+        }).catch(() => {
+          toast("Could not load this test. Check your connection.", "error", 4e3), go("easy");
+        });
+        return;
+      }
     }
     if (h.startsWith("play-")) {
       let act2 = getActivity(h.slice(5));
@@ -7201,6 +7246,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       <span class="prog-go">Open</span>
     </a>
 
+    ${location.hash === "#skills" ? easyCard() : ""}
     <section class="block skills-block">
       <div class="block-head">
         <h2>Pick a skill</h2>
@@ -7441,18 +7487,19 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       toast("No questions here yet.", "error"), go("home");
       return;
     }
-    if (duoHearts() <= 0) { /* epz-patch:duo */
+    if (!act2?.course && duoHearts() <= 0) { /* epz-patch:duo */
       duoNoHearts(quick ? "quick" : `play-${act2.id}`);
       return;
     }
     duoRun = 0;
+    const qlog = []; /* epz-patch:easy: what the student answered, for Review answers */
     let mult = LEVELS2[level]?.mult || 1, perQ = Math.round(10 * mult), skillOf = (q) => SKILLS2[quick ? q._skill : act2.skill] || SKILLS2.grammar;
     document.body.classList.add("playing"), window.scrollTo(0, 0), app.innerHTML = `
     <div class="play">
       <div class="play-bar">
         <button class="icon-btn" id="quit" aria-label="Stop and go home">${icon("x", 24)}</button>
         <div class="pbar" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="${questions.length}" aria-valuenow="0"><span id="pfill"></span></div>
-        <span class="duo-hp" id="duo-hp" aria-label="Hearts">${duoHpHtml()}</span>
+        ${act2?.course ? "" : `<span class="duo-hp" id="duo-hp" aria-label="Hearts">${duoHpHtml()}</span>`}
         <span class="pts-chip" id="score">${icon("star", 16)}<b>0</b></span>
       </div>
       <div class="play-meta"><span class="skill-pill" id="skill-pill"></span><span id="qcount"></span></div>
@@ -7475,7 +7522,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let qarea = app.querySelector("#qarea"), foot = app.querySelector("#foot"), feedback = app.querySelector("#feedback"), checkBtn = app.querySelector("#check-btn"), nextBtn = app.querySelector("#next-btn"), idx = 0, correct = 0, answered = !1, finished = !1, current = null, sk = {};
     app.querySelector("#play-audio")?.addEventListener("click", () => speak(act2.audio_text, 0.92)), app.querySelector("#play-slow")?.addEventListener("click", () => speak(act2.audio_text, 0.7)), app.querySelector("#quit").addEventListener("click", () => {
       if (idx === 0 && !answered) {
-        go("home");
+        go(act2?.back || "home");
         return;
       }
       let m2 = openModal(`
@@ -7483,7 +7530,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       <p class="muted">Your answers in this round will not count.</p>
       <div class="sheet-actions"><button class="btn btn-primary btn-big" data-close>Keep playing</button><button class="btn btn-ghost btn-big" id="stop-yes">Stop</button></div>`);
       m2.el.querySelector("#stop-yes").addEventListener("click", () => {
-        m2.close(), go("home");
+        m2.close(), go(act2?.back || "home");
       });
     });
     function show() {
@@ -7501,7 +7548,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       answered = !0;
       let q = questions[idx], res = current.evaluate();
       res.ok && correct++;
-      let duoMsg = duoAfter(res.ok, app); /* epz-patch:duo */
+      let duoMsg = act2?.course ? (res.ok ? duoCheer(++duoRun) : (duoRun = 0, "Keep going. You can learn from this one.")) : duoAfter(res.ok, app); /* epz-patch:duo */
+      act2?.course && qlog.push({ ok: res.ok, prompt: q.prompt || (q.items ? "Put these in order" : "Question"), answer: res.correctText || "", given: res.given || "", explanation: q.explanation || "" });
       let k = quick ? q._skill : act2.skill;
       sk[k] = sk[k] || [0, 0], sk[k][1]++, res.ok && sk[k][0]++, app.querySelector("#score b").textContent = fmtNum(correct * perQ), foot.className = `play-foot ${res.ok ? "good" : "bad"}`, feedback.innerHTML = `
       <span class="fb-ic">${icon(res.ok ? "check" : "x", 22)}</span>
@@ -7510,10 +7558,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         ${!res.ok && res.correctText ? `<p>Answer: <b>${esc(res.correctText)}</b></p>` : ""}
         ${q.explanation ? `<p class="small">${esc(q.explanation)}</p>` : ""}
         ${res.ok ? "" : `<p class="small duo-kind">${esc(duoMsg)}</p>`}
-      </div>`, feedback.hidden = !1, checkBtn.hidden = !0, nextBtn.hidden = !1, nextBtn.innerHTML = duoHearts() <= 0 ? `Continue ${icon("next", 20)}` : idx === questions.length - 1 ? `See my score ${icon("flag", 20)}` : `Continue ${icon("next", 20)}`, nextBtn.focus({ preventScroll: !0 });
+      </div>`, feedback.hidden = !1, checkBtn.hidden = !0, nextBtn.hidden = !1, nextBtn.innerHTML = !act2?.course && duoHearts() <= 0 ? `Continue ${icon("next", 20)}` : idx === questions.length - 1 ? `See my score ${icon("flag", 20)}` : `Continue ${icon("next", 20)}`, nextBtn.focus({ preventScroll: !0 });
     }
     checkBtn.addEventListener("click", check), nextBtn.addEventListener("click", () => {
-      !answered || finished || (stopSpeaking(), duoHearts() <= 0 ? (finished = !0, duoNoHearts(quick ? "quick" : `play-${act2.id}`, !0)) : (idx++, idx < questions.length ? show() : finish()));
+      !answered || finished || (stopSpeaking(), !act2?.course && duoHearts() <= 0 ? (finished = !0, duoNoHearts(quick ? "quick" : `play-${act2.id}`, !0)) : (idx++, idx < questions.length ? show() : finish()));
     });
     let onKey = (e) => {
       if (finished) return;
@@ -7526,7 +7574,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     function finish() {
       finished = !0;
       let duoSt0 = streak(); /* epz-patch:duo */
-      let t = questions.length, acc = Math.round(100 * correct / t), r = recordRound({ aid: quick ? "quick" : act2.id, skill: quick ? "mix" : act2.skill, level, c: correct, i: t - correct, sk });
+      let t = questions.length, acc = Math.round(100 * correct / t), cs = act2?.course ? EPZ_EASY.score(act2, correct, t) : null, r = recordRound({ aid: quick ? "quick" : act2.id, skill: quick ? "mix" : act2.skill, level, c: correct, i: t - correct, sk, score: cs });
+      if (act2?.course) { EPZ_EASY.save(act2, correct, t), LIVE2 && syncBoard(), document.body.classList.remove("playing"), window.scrollTo(0, 0), EPZ_EASY.finish(act2, { correct, total: t, r, log: qlog }), storageOk || toast("This browser is not saving your points. Open the link in a normal (not private) window.", "error", 6e3); return; } /* epz-patch:easy */
       LIVE2 && syncBoard(), document.body.classList.remove("playing"), window.scrollTo(0, 0);
       let title = acc === 100 ? "Perfect score!" : acc >= 80 ? "Excellent work!" : acc >= 50 ? "Good effort!" : "Keep practising!", sugg = levelSuggestion(), again = quick ? null : nextActivity(act2.skill, me().level), againIsSame = again && again.id === act2.id, againLabel = quick ? "Play again" : againIsSame && acc < 70 ? "Try again" : againIsSame ? "Quick Play" : "Next round", st = streak(), today2 = todayRounds();
       app.innerHTML = `
