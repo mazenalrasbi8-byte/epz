@@ -14,7 +14,7 @@ A 3D parkour race with English question doors. One map ("Sunrise Fort Run").
 
 ## Easy Level course (`#easy`)
 
-7 skills, 40 Parts, 200 tests, 2,000 questions: one shared curriculum for Grades 9 to 12, with progress kept per grade and class (`state.easy`).
+7 skills, 40 topics, 200 tests, 2,000 questions: one shared curriculum for Grades 9 to 12, with progress kept per grade and class (`state.easy`).
 
 - Code: `easy/course.js` (curriculum, screens, Learn viewer, scoring), loaded only when a student opens the course.
 - Content: `easy/data/<skill>-<n>.js`, one file per Part (a Learn section and exactly 5 tests of 10 questions). Loaded when that Part opens.
