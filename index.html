@@ -6146,7 +6146,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     if (grReady) return grReady;
     const files = ["net", "avatar", "engine", "map-fort", "ui"];
     return grReady = Promise.all(files.map((f) => new Promise((ok, bad) => {
-      const s = document.createElement("script"); s.src = `gaterush/${f}.js?v=10`; s.async = !1; s.onload = ok; s.onerror = () => bad(new Error("load " + f)); document.head.appendChild(s);
+      const s = document.createElement("script"); s.src = `gaterush/${f}.js?v=11`; s.async = !1; s.onload = ok; s.onerror = () => bad(new Error("load " + f)); document.head.appendChild(s);
     }))).catch((e) => { grReady = null; throw e; });
   }
   function grHost() {
@@ -6160,6 +6160,9 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       setSound: (v) => { try { let o = JSON.parse(localStorage.getItem("epz-learn-v1") || "{}"); o.sound = !!v; localStorage.setItem("epz-learn-v1", JSON.stringify(o)); } catch {} },
       // three-option questions come from the same bank as Quick Play (the student's grade)
       mcqList: () => { let out = []; for (let a of allActivities()) for (let q of a.questions || []) q && q.type === "mcq" && out.push(q); return out; },
+      /* epz-patch:maps — topic maps: activity titles tell the topic of existing questions; Book mode uses the Book 9A units and lessons */
+      mcqActs: () => allActivities().map((a) => ({ title: a.title || "", grade: a.grade, qs: (a.questions || []).filter((q) => q && q.type === "mcq") })),
+      book: () => (typeof BOOK !== "undefined" ? BOOK : null),
       // prize points are kept in their own list (once per week key), so they never count as a practice day
       addPoints: (pts, note) => { state.gr || (state.gr = { prizes: {} }); state.gr.prizes || (state.gr.prizes = {}); let k = "p" + Date.now(); state.gr.prizes[k] = { p: pts, at: new Date().toISOString(), n: note }; save(); },
       grantItems: (keys) => { if (typeof window.__lzOwn === "function") keys.forEach((k) => window.__lzOwn(k)); },
