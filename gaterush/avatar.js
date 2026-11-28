@@ -713,7 +713,30 @@
         A.ph += dt * (4 + A.run * 9) * (A.run > 0.03 ? 1 : 0);
         var sw = Math.sin(A.ph) * 0.95 * A.run, bob = Math.abs(Math.cos(A.ph)) * 0.07 * A.run;
         var la = 0, ra = 0, ll = sw, rl = -sw, az = 0.06, bx = 0, by = 0, hz = 0, hx = 0, tl = 0, ty = 0.6, tk = 14, flat = false;
-        if (st.pose === "celebrate") {
+        // victory dances at the finish line (st.dance picks one of four); the character stands still and dances
+        var dancing = st.pose === "dance", lzl = 0, lzr = 0, ty2 = 0, azL = null, azR = null;
+        if (dancing && A.lastPose !== "dance") A.d0 = A.t;
+        A.lastPose = st.pose;
+        if (dancing) {
+          var D = A.t - (A.d0 || 0), k = st.dance || 0, beat = D * 7.5;
+          if (k === 0) {        // arm-pump hop: bounce on the beat, fists pumping in turn
+            by = Math.abs(Math.sin(beat * .5)) * .28; la = -2.5 + Math.sin(beat) * .55; ra = -2.5 - Math.sin(beat) * .55; az = .3;
+            ll = rl = -.15 + Math.abs(Math.cos(beat * .5)) * .25; hx = -.12 + Math.sin(beat) * .08;
+          } else if (k === 1) { // disco point: one arm points up and across, hips sway, side steps
+            var sw2 = Math.sin(beat * .5); ra = -2.6 + Math.max(0, -sw2) * 1.9; la = .2 + Math.max(0, sw2) * .3; az = .5 + sw2 * .35;
+            bx = 0; hz = sw2 * .12; lzl = Math.max(0, sw2) * .35; lzr = -Math.max(0, -sw2) * .35; by = Math.abs(sw2) * .06; hx = -.1;
+          } else if (k === 2) { // spin and pose: a full turn with arms out, then a V pose on one leg
+            var cyc = D % 2.8, sp2 = Math.min(1, cyc / 1.2); ty2 = cyc < 1.2 ? (sp2 * sp2 * (3 - 2 * sp2)) * Math.PI * 2 : 0;
+            if (cyc < 1.2) { la = ra = -1.57; az = 1.3; ll = rl = 0; by = Math.sin(sp2 * Math.PI) * .25; }
+            else { la = ra = -2.7; az = .55; ll = 0; rl = -.9; by = .04 + Math.sin((cyc - 1.2) * 6) * .02; hx = -.2; }
+          } else {              // razha-inspired: knees bounce on the beat, right arm raised and pumping, left hand on the hip, side to side
+            var b2 = Math.sin(beat), side = Math.sin(beat * .25);
+            ra = -3.05 + Math.max(0, b2) * .4; azR = .12; la = .45; azL = .95; by = -Math.abs(b2) * .07 + .02; ll = rl = .1 + Math.abs(b2) * .18;
+            lzl = side * .12; lzr = side * .12; hz = side * .08; hx = Math.abs(b2) * .1 - .05;
+          }
+          if (k !== 1) A.lean = damp(A.lean, 0, 10, dt);
+          ty = 0.6 + by; by = 0; tk = 30;   // the whole character hops (legs too), so there is never a gap at the waist
+        } else if (st.pose === "celebrate") {
           la = -2.9 + Math.sin(A.t * 14) * 0.35; ra = -2.9 - Math.sin(A.t * 14) * 0.35; az = 0.35; ll = Math.sin(A.t * 10) * 0.5; rl = -ll; by = Math.abs(Math.sin(A.t * 7)) * 0.25; hx = -0.15;
         } else if (st.pose === "stun") {
           la = 0.5; ra = 0.5; az = 0.5; bx = -0.28 + Math.sin(A.t * 8) * 0.05; hz = Math.sin(A.t * 9) * 0.25; ll = 0.3; rl = -0.2; stars.visible = true;
@@ -740,10 +763,12 @@
         } else { la = -sw * 0.9; ra = sw * 0.9; if (A.run < 0.05) { la = Math.sin(A.t * 1.8) * 0.04; ra = -la; } }
         if (st.pose !== "stun") stars.visible = false;
         legL.rotation.x = damp(legL.rotation.x, ll, 30, dt); legR.rotation.x = damp(legR.rotation.x, rl, 30, dt);
+        legL.rotation.z = damp(legL.rotation.z, lzl, 18, dt); legR.rotation.z = damp(legR.rotation.z, lzr, 18, dt);
+        tilt.rotation.y = dancing ? ty2 : damp(tilt.rotation.y, 0, 12, dt);
         armL.rotation.x = damp(armL.rotation.x, la, 26, dt); armR.rotation.x = damp(armR.rotation.x, ra, 26, dt);
-        armL.rotation.z = damp(armL.rotation.z, -az, 20, dt); armR.rotation.z = damp(armR.rotation.z, az, 20, dt);
+        armL.rotation.z = damp(armL.rotation.z, -(azL === null ? az : azL), 20, dt); armR.rotation.z = damp(armR.rotation.z, azR === null ? az : azR, 20, dt);
         A.lean = damp(A.lean, st.ground ? A.run * 0.22 : 0.1 + (st.vy < 0 ? 0.1 : 0), 10, dt);
-        body.rotation.x = damp(body.rotation.x, flat ? 0 : A.lean + bx, 14, dt);
+        body.rotation.x = damp(body.rotation.x, flat || dancing ? bx : A.lean + bx, 14, dt);
         A.tilt = damp(A.tilt, tl, tk, dt); A.tiltY = damp(A.tiltY, ty, tk, dt); tilt.rotation.x = A.tilt; tilt.position.y = A.tiltY;
         A.roll = damp(A.roll, -(st.turn || 0) * 0.22, 8, dt); body.rotation.z = A.roll + (st.pose === "stun" ? Math.sin(A.t * 7) * 0.12 : st.pose === "stagger" ? Math.sin(A.t * 11) * 0.15 * smooth((st.stg || 0) / 0.7) : 0);
         head.rotation.z = damp(head.rotation.z, hz, 16, dt); head.rotation.x = damp(head.rotation.x, hx, 12, dt);

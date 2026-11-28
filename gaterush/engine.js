@@ -573,7 +573,7 @@
         var a = (state === "race" && p.stun <= 0) ? axis() : { x: 0, y: 0 }, mag = Math.sqrt(a.x * a.x + a.y * a.y);
         var tvx = a.x * MAXSP, tvz = -a.y * MAXSP, acc = p.grounded ? (p.gs && p.gs.ice ? 9 : mag > 0.05 ? 58 : 66) : 36;   // good steering in the air; ice has little grip
         if (p.stun > 0) acc = p.grounded ? 14 : 3;
-        if (state === "finish") { tvx = tvz = 0; acc = 22; }
+        if (state === "finish") { tvx = tvz = 0; acc = 45; p.face += angDiff(p.face, 0) * Math.min(1, 5 * h); }
         p.rec = Math.max(0, p.rec - h); p.stg = Math.max(0, p.stg - h);
         if (p.dive && !p.grounded) { tvx = p.ddx * DIVE_SP * 0.82 + a.x * 2.5; tvz = p.ddz * DIVE_SP * 0.82 - a.y * 2.5; acc = 5; }   // momentum carries the dive; only a light nudge
         else if (p.rec > 0 && p.grounded && p.stun <= 0) { tvx = tvz = 0; acc = 17; }   // belly slide, then get up
@@ -662,10 +662,10 @@
         R.rawMs += dt * 1000;
         if (-p.z >= finishF) finish();
       }
-      else if (state === "finish") { if (stateT > 2.0 && !R.sent) { R.sent = true; deliver(); } }
+      else if (state === "finish") { if (stateT > 4.0 && !R.sent) { R.sent = true; deliver(); } }   // the victory dance plays alone for 4 s, then the results
     }
     function finish() {
-      setState("finish"); p.celebrate = 99; av.mood("happy", 99); sfx.finish(); banner("ok", "FINISH!", "", 2.5); elQ.hidden = true;
+      setState("finish"); p.celebrate = 99; p.dance = Math.floor(Math.random() * 4); av.mood("happy", 99); sfx.finish(); banner("ok", "FINISH!", "", 2.5); elQ.hidden = true;
       var cols = ["#F2B632", "#27C3C3", "#E5484D", "#8B5CF6", "#FFFFFF", "#3DDC84"];
       for (var w = 0; w < 4; w++) timers.push(setTimeout(function () { if (!disposed) burst(p.x, p.y + 3.2, p.z, 26, cols, 6.5, 0.3, 2.2, 8, 9); }, w * 260));
     }
@@ -711,7 +711,7 @@
         // avatar
         av.root.position.set(p.x, p.y - PH, p.z); av.root.rotation.y = p.face; placeBlob();
         var sp = Math.min(1, Math.sqrt(p.vx * p.vx + p.vz * p.vz) / MAXSP);
-        av.update({ speed: sp, vy: p.vy, ground: p.grounded, pose: state === "finish" || p.celebrate > 0.05 && state !== "race" ? "celebrate" : p.stg > 0 ? "stagger" : p.stun > 0 ? "stun" : p.dive ? "dive" : p.rec > 0 ? "recover" : "run", rec: p.rec / DIVE_REC, stg: p.stg / STG_T, turn: p.turn }, dt);
+        av.update({ speed: sp, vy: p.vy, ground: p.grounded, pose: state === "finish" ? "dance" : p.celebrate > 0.05 && state !== "race" ? "celebrate" : p.stg > 0 ? "stagger" : p.stun > 0 ? "stun" : p.dive ? "dive" : p.rec > 0 ? "recover" : "run", rec: p.rec / DIVE_REC, dance: p.dance, stg: p.stg / STG_T, turn: p.turn }, dt);
         if (p.celebrate > 0 && state === "race") av.root.position.y += 0;
         // coins spin (only the ones near)
         coinT += dt; if (coinMesh) { for (var ci = 0; ci < coins.length; ci++) { var cc = coins[ci]; if (cc.got) { tmpO.scale.setScalar(0); } else if (Math.abs(cc.z - p.z) < 90) { tmpO.position.set(cc.x, cc.y + Math.sin(coinT * 3 + ci) * 0.12, cc.z); tmpO.rotation.set(0, coinT * 3 + ci, 0); tmpO.scale.setScalar(1); } else { tmpO.scale.setScalar(1); tmpO.position.set(cc.x, cc.y, cc.z); tmpO.rotation.set(0, ci, 0); } tmpO.updateMatrix(); coinMesh.setMatrixAt(ci, tmpO.matrix); } coinMesh.instanceMatrix.needsUpdate = true; }
