@@ -6146,7 +6146,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     if (grReady) return grReady;
     const files = ["net", "avatar", "engine", "map-fort", "ui"];
     return grReady = Promise.all(files.map((f) => new Promise((ok, bad) => {
-      const s = document.createElement("script"); s.src = `gaterush/${f}.js?v=11`; s.async = !1; s.onload = ok; s.onerror = () => bad(new Error("load " + f)); document.head.appendChild(s);
+      const s = document.createElement("script"); s.src = `gaterush/${f}.js?v=12`; s.async = !1; s.onload = ok; s.onerror = () => bad(new Error("load " + f)); document.head.appendChild(s);
     }))).catch((e) => { grReady = null; throw e; });
   }
   function grHost() {
@@ -9192,7 +9192,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (on || failed) return;
       try { var t = document.createElement("canvas"); if (!(t.getContext("webgl2") || t.getContext("webgl"))) throw 0; } catch (e) { failed = true; czFallbackOn(); return; }
       var js = function (src) { return new Promise(function (ok, bad) { var s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = bad; document.head.appendChild(s); }); };
-      var model = Promise.all([window.GR && window.GR.avatar ? 0 : js("gaterush/avatar.js?v=7"), window.GR && window.GR.bossModel ? 0 : js("gaterush/bosses.js?v=1")]);
+      var model = Promise.all([window.GR && window.GR.avatar ? 0 : js("gaterush/avatar.js?v=8"), window.GR && window.GR.bossModel ? 0 : js("gaterush/bosses.js?v=1")]);
       Promise.all([import("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"), model]).then(function (res) {
         var mod = res[0]; T = mod; init(); on = true; document.documentElement.classList.remove("cz3-wait"); document.documentElement.classList.add("cz3-on"); window.dispatchEvent(new Event("cz3ready"));
         scan(); new MutationObserver(function () { clearTimeout(scan.t); scan.t = setTimeout(scan, 20); }).observe(document.documentElement, { childList: true, subtree: true });
