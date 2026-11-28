@@ -18,7 +18,7 @@
     { k: "correction", parts: ["Spelling", "Capitalization", "Verb Forms", "Basic Grammar", "Punctuation"] }
   ];
   // skills whose Parts are written and shipped (the rest show as "Coming soon", so no number on screen is ever a promise)
-  E.READY = { grammar: true, vocabulary: true, reading: true, listening: true, building: true, scramble: true };
+  E.READY = { grammar: true, vocabulary: true, reading: true, listening: true, building: true, scramble: true, correction: true };
   E.TESTS = TESTS; E.QS = QS;
 
   /* ---------------------------------------------------------------- question helpers used by the data files (same shapes as the rest of EPZ) */
@@ -27,6 +27,8 @@
     m: function (prompt, options, ex) { return x({ type: "mcq", prompt: prompt, options: options, answer: options[0] }, ex); },   // the first option is the answer; the player shuffles
     tf: function (prompt, isTrue, ex) { return x({ type: "truefalse", prompt: prompt, answer: isTrue ? "True" : "False" }, ex); },
     f: function (prompt, answer, ex) { return x({ type: "fill", prompt: prompt, answer: answer }, ex); },
+    cs: function (prompt, answer, ex) { var q = x({ type: "correct", prompt: prompt, answer: answer }, ex); q.strict = true; return q; },   // capital letters and punctuation must be exactly right
+    ms: function (prompt, options, ex) { var q = x({ type: "mcq", prompt: prompt, options: options, answer: options[0] }, ex); q.strict = true; return q; },   // multiple choice where the options differ only by capitals or punctuation
     c: function (prompt, answer, ex) { return x({ type: "correct", prompt: prompt, answer: answer }, ex); },
     b: function (prompt, answer, ex) { return x({ type: "build", prompt: prompt, answer: answer }, ex); },
     o: function (prompt, items, ex) { return x({ type: "order", prompt: prompt, items: items }, ex); },
