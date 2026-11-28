@@ -147,10 +147,14 @@
     var C = colors, skin = C.skin || "#C68258", hair = C.hair || "#3B2A20", top = C.top || "#FFFFFF", bottom = C.bottom || "#2E3440", shoesC = C.shoes || "#7A4B2A";
     var acc = C.acc || "#2B41C4", hatC = C.hat || top, skinD = shade(skin, -.1), skinDD = shade(skin, -.2);
     var cl = cfg.cl || "dish", SZ = cfg.sz || {}, BX = SZ.b || 1;
-    var ROBES = { dish: 1, dishe: 1, dishs: 1, bisht: 1, bishtz: 1, bishtg: 1 }, robe = !!ROBES[cl], cloak = /^bisht/.test(cl);
+    var ROBES = { dish: 1, dishe: 1, dishs: 1, bisht: 1, bishtz: 1, bishtg: 1, wizard: 1 }, robe = !!ROBES[cl], cloak = /^bisht/.test(cl);
     var top2 = C.top2 || ({ dish: shade(top, -.14), dishs: shade(top, -.1), dishe: "#C9A227", bisht: "#2B1E14", bishtz: "#4A3423", bishtg: "#141014", blazer: "#B3262A", check: "#B3262A", explorer: "#F2E8D2",
       stripe: "#1E2A4A", graphic: "#F2B632", polo: shade(top, -.25), bball: "#FFFFFF", bomber: "#E8590C", uniform: "#2B41C4", track: "#FFFFFF", jersey: "#FFFFFF", kit2: "#FFFFFF", kit3: "#FFFFFF", kit4: "#FFFFFF", denim: "#F4F7FB" }[cl] || shade(top, -.2));
     var GOLD = "#D9A93A";
+    // epz-patch:costumes — costume tops keep their own base colour; the student's second colour (top2) is the costume's accent
+    var COST = { knight: "#B9C0CA", ninja: "#23263A", pirate: "#7A1F2E", astro: "#F1F3F7", wizard: "#2E2F7E" }, costume = !!COST[cl];
+    if (costume) { top2 = C.top2 || { knight: "#2B41C4", ninja: "#D8343F", pirate: "#E6B54A", astro: "#E8590C", wizard: "#F2C230" }[cl]; top = COST[cl]; }
+    var STEEL = "#B9C0CA", STEELD = "#8A929E";
 
     // ---- rig: tilt pivots at the hips (dive, stagger); the rig inside it is the standing character
     var tilt = new T.Group(); tilt.position.y = 0.6; root.add(tilt); var rig = new T.Group(); rig.position.y = -0.6; tilt.add(rig);
@@ -158,6 +162,7 @@
 
     /* ================================================================ legs, trousers, shoes */
     var BOT = cfg.bottom || "trousers", shortsLike = BOT === "shorts" || BOT === "kitshorts", wrapLike = BOT === "wizar";
+    var COSTB = { knight: "#9AA4AE", ninja: "#23263A", pirate: "#F4EFE2", astro: "#F1F3F7" }; if (COSTB[BOT]) bottom = COSTB[BOT];
     function pantsTex(side) {
       var k = "pants|" + BOT + "|" + bottom + "|" + side;
       return tx(k, 26, 60, function (g, w, h) {
@@ -168,6 +173,10 @@
         else if (BOT === "cargo") { if (side) { px(g, 4, 22, w - 8, 14, shade(b, -.14)); px(g, 4, 22, w - 8, 3, shade(b, -.24)); px(g, w / 2, 27, 2, 2, shade(b, .3)); } noise(g, w, h, shade(b, .08), .05, 3); }
         else if (BOT === "formal") { if (!side) px(g, w / 2, 0, 1, h, shade(b, .18)); }
         else if (BOT === "shorts" || BOT === "kitshorts") { px(g, 0, h - 3, w, 3, shade(b, -.18)); if (BOT === "kitshorts" && side) px(g, w / 2 - 2, 0, 4, h, top2); }
+        else if (BOT === "knight") { noise(g, w, h, shade(b, .15), .1, 2); px(g, 0, 12, w, 1, shade(b, -.25)); px(g, 0, 44, w, 1, shade(b, -.25)); if (!side) { px(g, 3, 25, w - 6, 11, shade(b, .25)); px(g, 3, 25, w - 6, 2, shade(b, .45)); px(g, w / 2 - 1, 29, 2, 2, STEELD); } }
+        else if (BOT === "ninja") { for (var y5 = h - 24; y5 < h; y5 += 4) px(g, 0, y5, w, 2, shade(b, .2)); px(g, 0, 0, w, 3, shade(b, -.2)); }
+        else if (BOT === "pirate") { for (var y6 = 0; y6 < h; y6 += 6) px(g, 0, y6, w, 3, "#C2414F"); }
+        else if (BOT === "astro") { if (!side) { px(g, 3, 25, w - 6, 10, "#C9CED6"); px(g, 3, 25, w - 6, 2, "#9AA4AE"); } else px(g, w / 2 - 1, 0, 2, h, "#E8590C"); px(g, 0, h - 8, w, 8, "#C9CED6"); }
         else { px(g, 0, 0, w, 3, shade(b, -.15)); }
       });
     }
@@ -180,7 +189,7 @@
       });
     }
     function shoe(g, s) {
-      var S = cfg.shoes || "sandals", sc = shoesC, dk = shade(sc, -.35), sole = "#F4F4F0", y0 = -0.55;
+      var S = cfg.shoes || "sandals", sc = { knight: "#9AA4AE", ninja: "#1B1B22", pirate: "#2A1E18", astro: "#F1F3F7", wizslip: "#7A1F2E" }[S] || shoesC, dk = shade(sc, -.35), sole = "#F4F4F0", y0 = -0.55;
       if (S === "sandals" || S === "slides") {
         box(0.3, 0.05, 0.42, shade(sc, -.15), 0, -0.585, 0.05, g);                        // thick sole
         box(0.26, 0.07, 0.36, skin, 0, -0.53, 0.05, g, { noShadow: true });               // the foot
@@ -188,10 +197,14 @@
         else box(0.28, 0.05, 0.16, acc, 0, -0.5, 0.06, g);
         return;
       }
-      var hi = S === "hightops" ? 0.24 : S === "boots" ? 0.28 : 0.14, top3 = tx("shoe|" + S + "|" + sc, 16, 20, function (g2, w, h) {
+      var hi = S === "hightops" ? 0.24 : S === "boots" ? 0.28 : S === "knight" ? 0.26 : S === "astro" ? 0.3 : S === "pirate" ? 0.36 : S === "wizslip" ? 0.1 : S === "ninja" ? 0.12 : 0.14, top3 = tx("shoe|" + S + "|" + sc, 16, 20, function (g2, w, h) {
         px(g2, 0, 0, w, h, sc);
         if (S === "sneakers" || S === "hightops" || S === "runners" || S === "boots" || S === "school") for (var y = 4; y < h - 2; y += 3) px(g2, 4, y, w - 8, 1, S === "boots" ? "#E8D6B0" : S === "school" ? "#2A2A2A" : "#FFFFFF");
         if (S === "loafers") { px(g2, 3, 6, w - 6, 3, dk); px(g2, w / 2 - 1, 9, 2, 3, GOLD); }
+        if (S === "knight") for (var y7 = 3; y7 < h; y7 += 5) px(g2, 0, y7, w, 1, shade(sc, -.3));
+        if (S === "astro") { px(g2, 0, 4, w, 3, "#E8590C"); px(g2, 0, h - 4, w, 4, "#C9CED6"); }
+        if (S === "ninja") px(g2, w / 2, 8, 1, h - 8, "#0E0E12");
+        if (S === "wizslip") for (var x7 = 2; x7 < w; x7 += 5) px(g2, x7, 6, 2, 2, GOLD);
       });
       var sideT = tx("shoeS|" + S + "|" + sc, 20, 10, function (g2, w, h) {
         px(g2, 0, 0, w, h, sc);
@@ -202,10 +215,13 @@
       });
       var mainM = [tmat(sideT), tmat(sideT), tmat(top3), mat(dk), mat(sc), mat(sc)];
       box(0.3, hi, 0.4, mainM, 0, -0.62 + 0.04 + hi / 2, 0.05, g);
-      var soleC = S === "school" || S === "loafers" ? "#1B1B1F" : S === "boots" ? "#3B2A20" : S === "runners" ? acc : S === "football" ? "#1B1B1F" : sole;
-      box(0.31, 0.045, 0.41, soleC, 0, -0.6, 0.05, g);
+      var soleC = S === "school" || S === "loafers" || S === "pirate" ? "#1B1B1F" : S === "boots" ? "#3B2A20" : S === "runners" ? acc : S === "football" ? "#1B1B1F" : S === "knight" ? "#6B7280" : S === "astro" ? "#9AA4AE" : S === "ninja" ? "#0E0E12" : S === "wizslip" ? dk : sole;
+      box(S === "astro" ? 0.35 : 0.31, S === "astro" ? 0.07 : 0.045, S === "astro" ? 0.45 : 0.41, soleC, 0, -0.6, 0.05, g);
+      if (S === "pirate") { box(0.35, 0.09, 0.35, shade(sc, .18), 0, -0.62 + 0.04 + hi, 0.02, g); box(0.09, 0.07, 0.02, GOLD, 0, -0.45, 0.255, g, { noShadow: true }); }
+      if (S === "knight") { box(0.32, 0.05, 0.32, STEELD, 0, -0.62 + 0.04 + hi, 0.02, g); box(0.2, 0.08, 0.08, sc, 0, -0.53, 0.26, g); }
+      if (S === "wizslip") { box(0.12, 0.08, 0.12, sc, 0, -0.5, 0.29, g, { rx: -0.7 }); box(0.06, 0.06, 0.06, GOLD, 0, -0.44, 0.33, g, { noShadow: true }); }
       if (S === "football") [-.1, .1].forEach(function (zz) { [-.08, .08].forEach(function (xx) { box(0.05, 0.03, 0.05, "#D9DDE2", xx, -0.635, 0.05 + zz, g, { noShadow: true }); }); });
-      if (S === "hightops" || S === "boots") box(0.32, 0.04, 0.3, S === "boots" ? shade(sc, -.2) : "#FFFFFF", 0, -0.62 + 0.04 + hi, 0.02, g);
+      if (S === "hightops" || S === "boots" || S === "astro") box(0.32, 0.04, 0.3, S === "boots" ? shade(sc, -.2) : "#FFFFFF", 0, -0.62 + 0.04 + hi, 0.02, g);
     }
     function leg(s) {
       var g = new T.Group(); g.position.set(s * 0.15, 0.6, 0); rig.add(g);
@@ -227,6 +243,7 @@
     function robeLegTex(s) {
       return tx("robeLeg|" + cl + "|" + top + "|" + top2 + "|" + s, 35, 30, function (g, w, h) {
         px(g, 0, 0, w, h, top);
+        if (cl === "wizard") { star8(g, s < 0 ? 10 : 24, 10, 2, top2, "#FFFFFF"); diamond(g, s < 0 ? 24 : 9, 20, 1, top2); px(g, 0, h - 4, w, 3, top2); }
         if (cloak) { var cw = 22, x0 = s < 0 ? 0 : w - cw; px(g, x0, 0, cw, h, top2); px(g, s < 0 ? cw : w - cw - 2, 0, 2, h, GOLD); if (cl !== "bisht") px(g, s < 0 ? cw - 2 : w - cw + 2, 0, 1, h, shade(GOLD, .3)); }
         px(g, 0, h - 2, w, 2, shade(cloak ? top2 : top, -.08));
       });
@@ -237,12 +254,40 @@
     var TOPS_SHORT = { tee: 1, vtee: 1, stripe: 1, graphic: 1, polo: 1, uniform: 1, jersey: 1, kit2: 1, kit3: 1, kit4: 1, explorer: 1 };
     var sleeve = cl === "bball" ? "none" : TOPS_SHORT[cl] ? "short" : cloak ? "cloak" : "long";
     function torsoFront(g, w, h) {
-      var c = top, t = top2, d = shade(c, -.22), x, y, cx = w / 2;
+      var c = top, t = top2, d = shade(c, -.22), x, y, i, cx = w / 2;
       px(g, 0, 0, w, h, c);
       var neckU = function (col) { for (var i = 0; i < 4; i++) px(g, cx - 9 + i, i, 18 - i * 2, 1, col || d); };
       var neckV = function (col) { for (var i = 0; i < 9; i++) { px(g, cx - 8 + i, i, 1, 1, col || d); px(g, cx + 7 - i, i, 1, 1, col || d); } };
       var buttons = function (col, y0, n) { for (var i = 0; i < n; i++) px(g, cx - 1, y0 + i * 9, 2, 2, col); };
       var collar = function (col) { for (var i = 0; i < 6; i++) { px(g, cx - 12 + i, 0, 1, 7 - i, col); px(g, cx + 11 - i, 0, 1, 7 - i, col); } };
+      if (costume) {   // epz-patch:costumes
+        if (cl === "knight") {
+          noise(g, w, h, shade(c, .18), .08, 5); for (y = 4; y < h; y += 8) { px(g, 3, y, 2, 2, STEELD); px(g, w - 5, y, 2, 2, STEELD); }
+          px(g, cx - 15, 0, 30, h, t); px(g, cx - 15, 0, 2, h, shade(t, -.3)); px(g, cx + 13, 0, 2, h, shade(t, -.3)); neckU(STEELD);
+          px(g, cx - 1, 12, 3, 24, GOLD); px(g, cx - 8, 19, 17, 3, GOLD);
+          px(g, 0, h - 13, w, 5, "#5A3A22"); px(g, cx - 4, h - 14, 8, 7, GOLD); px(g, cx - 2, h - 12, 4, 3, "#5A3A22");
+        } else if (cl === "ninja") {
+          px(g, cx - 6, 0, 12, 26, shade(c, -.35));
+          for (i = 0; i < 26; i++) { px(g, cx - 18 + Math.round(i * .62), i, 4, 1, shade(c, .22)); px(g, cx + 14 - Math.round(i * .62), i, 4, 1, shade(c, .22)); }
+          px(g, 0, h - 15, w, 7, t); px(g, 0, h - 15, w, 1, shade(t, -.3)); px(g, cx + 8, h - 15, 6, 13, shade(t, -.15)); px(g, cx + 14, h - 10, 4, 9, t);
+        } else if (cl === "pirate") {
+          px(g, cx - 9, 0, 18, h - 16, "#F4EFE2"); for (y = 3; y < 26; y += 4) { px(g, cx - 4, y, 8, 2, "#FFFFFF"); px(g, cx - 3, y + 2, 6, 1, "#D9D2C2"); }
+          px(g, cx - 11, 0, 2, h, t); px(g, cx + 9, 0, 2, h, t);
+          for (i = 0; i < 4; i++) { px(g, cx - 17, 8 + i * 10, 3, 3, t); px(g, cx + 14, 8 + i * 10, 3, 3, t); }
+          px(g, 0, h - 16, w, 6, "#1B1B1F"); px(g, cx - 5, h - 17, 10, 8, GOLD); px(g, cx - 3, h - 15, 6, 4, "#1B1B1F");
+        } else if (cl === "astro") {
+          px(g, cx - 12, 0, 24, 3, "#9AA4AE"); px(g, 0, 7, w, 3, t);
+          px(g, cx - 13, 15, 26, 17, "#9AA4AE"); px(g, cx - 12, 16, 24, 15, "#C9CED6");
+          px(g, cx - 9, 19, 4, 4, "#E5484D"); px(g, cx - 2, 19, 4, 4, "#45C97F"); px(g, cx + 5, 19, 4, 4, "#2F6FDE"); px(g, cx - 9, 26, 18, 2, "#1B1B1F");
+          px(g, 6, 36, 12, 8, t); px(g, 7, 37, 10, 2, "#FFFFFF"); px(g, 0, h - 7, w, 7, "#C9CED6"); px(g, cx - 1, 32, 2, h - 39, "#C9CED6");
+        } else if (cl === "wizard") {
+          neckU(t); px(g, cx - 1, 4, 2, h - 18, shade(c, .2));
+          [[10, 14], [50, 10], [18, 34], [46, 30], [28, 46], [54, 48], [8, 52]].forEach(function (p, k) { k % 3 === 2 ? diamond(g, p[0], p[1], 2, t) : star8(g, p[0], p[1], 2, t, "#FFFFFF"); });
+          for (y = 18; y < 26; y++) px(g, 40 + (y < 22 ? 0 : y - 22), y, 4, 1, "#F4EFE2");
+          px(g, 0, h - 14, w, 3, t); px(g, cx - 4, h - 11, 2, 9, t); px(g, cx + 2, h - 11, 2, 7, t);
+        }
+        return;
+      }
       if (robe) {
         // Omani dishdasha: collarless round neck, a short front opening with embroidery, plain long body (the tassel is 3D)
         for (var i2 = 0; i2 < 3; i2++) px(g, cx - 7 + i2, i2, 14 - i2 * 2, 1, shade(c, -.18));
@@ -315,6 +360,14 @@
     }
     function torsoBack(g, w, h) {
       var c = top; px(g, 0, 0, w, h, cloak ? top2 : c);
+      if (costume) {
+        if (cl === "knight") { noise(g, w, h, shade(c, .18), .08, 6); px(g, w / 2 - 15, 0, 30, h, top2); px(g, 0, h - 13, w, 5, "#5A3A22"); }
+        else if (cl === "ninja") px(g, 0, h - 15, w, 7, top2);
+        else if (cl === "pirate") { px(g, 0, h - 16, w, 6, "#1B1B1F"); px(g, w / 2 - 1, h - 10, 2, 10, shade(c, -.25)); }
+        else if (cl === "astro") { px(g, 6, 6, w - 12, 30, "#C9CED6"); px(g, 0, h - 7, w, 7, "#C9CED6"); }
+        else if (cl === "wizard") { [[12, 12], [40, 20], [24, 36], [52, 44]].forEach(function (p) { star8(g, p[0], p[1], 2, top2, "#FFFFFF"); }); px(g, 0, h - 14, w, 3, top2); }
+        return;
+      }
       if (cl === "kit2") for (var x = 0; x < w; x += 12) px(g, x, 0, 6, h, top2);
       if (cl === "kit3") for (var y = 6; y < h; y += 12) px(g, 0, y, w, 6, top2);
       if (/^(jersey|kit2|kit3|kit4|bball)$/.test(cl)) { var bk = cl === "kit2" || cl === "kit3" ? c : top2; px(g, w / 2 - 14, 12, 28, 28, cl === "kit2" || cl === "kit3" ? top2 : c); text(g, FOOTBALL_NUM, w / 2, 27, 24, bk, null); }
@@ -328,10 +381,17 @@
     var tKey = "torso|" + cl + "|" + top + "|" + top2;
     var frontT = tx(tKey + "|f", 66, 62, torsoFront), backT = tx(tKey + "|b", 66, 62, torsoBack);
     var sideC = cloak ? top2 : cl === "explorer" ? top : top, sideM = cl === "bomber" || cl === "puffer" ? mat(shade(top, -.04)) : mat(sideC);
-    var torsoW = cl === "puffer" ? 0.72 : 0.66, torsoD = cl === "puffer" ? 0.46 : 0.4;
+    var bulky = cl === "puffer" || cl === "astro", torsoW = bulky ? 0.72 : 0.66, torsoD = bulky ? 0.46 : 0.4;
     box(torsoW, 0.62, torsoD, [sideM, sideM, mat(cloak ? top2 : top), mat(top), tmat(frontT), tmat(backT)], 0, 0.31, 0, body);
     if (cl === "explorer") { box(0.67, 0.2, 0.41, mat(top2), 0, 0.52, 0, body, { noShadow: true }); box(torsoW + 0.005, 0.62, torsoD + 0.005, [sideM, sideM, mat(top), mat(top), tmat(frontT), tmat(backT)], 0, 0.31, 0, body); }
     if (cl === "puffer") { box(0.5, 0.08, 0.36, shade(top, -.1), 0, 0.64, 0, body); }
+    if (cl === "astro") { box(0.56, 0.07, 0.44, "#C9CED6", 0, 0.645, 0, body); box(0.58, 0.02, 0.46, top2, 0, 0.615, 0, body, { noShadow: true }); }
+    if (cl === "knight") { box(0.4, 0.05, 0.42, STEELD, 0, 0.63, 0, body); }
+    if (cl === "pirate") {   // the coat's tails over the hips, and a turned-down collar
+      var ptT = tx("pcoat|" + top + "|" + top2, 70, 24, function (g, w, h) { px(g, 0, 0, w, h, top); px(g, w / 2 - 1, 0, 2, h, shade(top, -.3)); px(g, 0, h - 3, w, 3, top2); });
+      var pm = mat(top); box(0.7, 0.26, 0.44, [pm, pm, pm, pm, tmat(ptT), tmat(ptT)], 0, -0.12, 0, body);
+      box(0.2, 0.05, 0.05, top2, -0.13, 0.61, 0.2, body, { rz: 0.3 }); box(0.2, 0.05, 0.05, top2, 0.13, 0.61, 0.2, body, { rz: -0.3 }); box(0.5, 0.06, 0.06, top, 0, 0.63, -0.18, body);
+    }
     if (cl === "hoodie" || cl === "ziphood") { box(0.52, 0.22, 0.16, shade(top, -.08), 0, 0.58, -0.25, body); box(0.4, 0.14, 0.04, shade(top, -.3), 0, 0.6, -0.17, body, { noShadow: true }); }
     if (cl === "polo" || cl === "shirt" || cl === "uniform" || cl === "check" || cl === "denim") {   // a raised collar
       var colc = cl === "polo" ? top2 : cl === "check" ? shade(top, .2) : cl === "denim" ? shade(top, -.15) : shade(top, .35);
@@ -342,12 +402,12 @@
     if (robe) {
       // the hip part of the long robe; the rest moves with the legs (see leg())
       var hipT = tx("robeHip|" + cl + "|" + top + "|" + top2, 70, 24, function (g, w, h) {
-        px(g, 0, 0, w, h, top); if (cloak) { px(g, 0, 0, 22, h, top2); px(g, w - 22, 0, 22, h, top2); px(g, 20, 0, 2, h, GOLD); px(g, w - 22, 0, 2, h, GOLD); }
+        px(g, 0, 0, w, h, top); if (cl === "wizard") { star8(g, 14, 12, 2, top2, "#FFFFFF"); star8(g, 52, 8, 2, top2, "#FFFFFF"); diamond(g, 34, 16, 2, top2); } if (cloak) { px(g, 0, 0, 22, h, top2); px(g, w - 22, 0, 22, h, top2); px(g, 20, 0, 2, h, GOLD); px(g, w - 22, 0, 2, h, GOLD); }
       });
       var hs = mat(cloak ? top2 : top);
       box(0.7, 0.24, 0.46, [hs, hs, mat(top), mat(top), tmat(hipT), hs], 0, -0.1, 0, body);
       // the furakha: the dishdasha's tassel hanging from the neckline
-      {
+      if (cl !== "wizard") {
         var tc = cl === "dishe" ? top2 : shade(top, -.08), tl = cl === "dishs" ? 0.1 : 0.17;
         box(0.016, tl, 0.016, tc, 0.05, 0.6 - tl / 2, 0.208, body, { noShadow: true });
         box(0.045, 0.07, 0.035, tc, 0.05, 0.6 - tl - 0.03, 0.212, body);
@@ -370,6 +430,11 @@
         if (cloak) { px(g, 0, h - 4, w, 4, GOLD); if (cl !== "bisht") px(g, 0, h - 7, w, 1, GOLD); }
         if (cl === "check") { for (var x2 = 0; x2 < w; x2 += 10) px(g, x2, 0, 4, h, mix(top, top2, .55)); for (var y4 = 0; y4 < h; y4 += 10) px(g, 0, y4, w, 4, mix(top, top2, .45)); }
         if (cl === "denim") noise(g, w, h, shade(c, .15), .15, 4);
+        if (cl === "knight") { noise(g, w, h, shade(c, .2), .1, 8); for (var y8 = 3; y8 < h; y8 += 5) px(g, 0, y8, w, 1, shade(c, -.18)); }
+        if (cl === "ninja") for (var y9 = h - 22; y9 < h; y9 += 4) px(g, 0, y9, w, 2, shade(c, .22));
+        if (cl === "pirate") { px(g, 0, h - 10, w, 10, shade(c, -.15)); px(g, 0, h - 10, w, 2, top2); px(g, 4, h - 6, 3, 3, top2); px(g, 12, h - 6, 3, 3, top2); }
+        if (cl === "astro") { px(g, 0, 10, w, 4, top2); px(g, 0, h - 7, w, 7, "#C9CED6"); px(g, 0, 26, w, 2, "#C9CED6"); }
+        if (cl === "wizard") { px(g, 0, h - 6, w, 6, top2); star8(g, 10, 18, 2, top2, "#FFFFFF"); }
         if (cl === "blazer" || /^(shirt|uniform|check|dish|dishe|dishs)$/.test(cl)) px(g, 0, h - 4, w, 4, shade(c, cl === "blazer" ? -.15 : -.08));
       });
     }
@@ -377,11 +442,13 @@
       var g = new T.Group(); g.position.set(s * 0.43, 0.56, 0); body.add(g);
       box(0.2, 0.6, 0.22, skin, 0, -0.28, 0, g);
       if (sleeve !== "none") {
-        var len = sleeve === "short" ? 0.26 : sleeve === "cloak" ? 0.46 : 0.48, wd = sleeve === "cloak" ? 0.28 : cl === "puffer" ? 0.25 : 0.22, dp = sleeve === "cloak" ? 0.3 : cl === "puffer" ? 0.27 : 0.24;
+        var len = sleeve === "short" ? 0.26 : sleeve === "cloak" ? 0.46 : 0.48, wd = sleeve === "cloak" || cl === "wizard" ? 0.28 : bulky ? 0.25 : 0.22, dp = sleeve === "cloak" || cl === "wizard" ? 0.3 : bulky ? 0.27 : 0.24;
         var sm = tmat(sleeveTex(s)), plain = mat(cloak ? top2 : cl === "explorer" ? top2 : top);
         box(wd, len, dp, [sm, sm, plain, plain, sm, sm], 0, -len / 2 + 0.02, 0, g);
         if (sleeve === "cloak") box(0.22, 0.48, 0.24, top, 0, -0.22, 0, g, { noShadow: true });   // the dishdasha sleeve inside the bisht sleeve
       }
+      if (cl === "knight") { box(0.3, 0.15, 0.3, STEEL, s * 0.02, -0.02, 0, g); box(0.31, 0.03, 0.31, STEELD, s * 0.02, -0.1, 0, g, { noShadow: true }); box(0.25, 0.13, 0.27, STEELD, 0, -0.47, 0, g); }
+      if (cl === "astro") box(0.27, 0.1, 0.29, "#C9CED6", 0, -0.47, 0, g);
       return g;
     }
     var armL = arm(-1), armR = arm(1);
@@ -579,6 +646,53 @@
     } else if (h === "crown") {
       box(HW + 0.04, 0.14, HD + 0.04, "#F2B632", 0, HT + 0.06, 0, head); [-0.2, 0, 0.2].forEach(function (x) { box(0.12, 0.2, 0.12, "#F2B632", x, HT + 0.22, 0.2, head); });
       box(0.08, 0.08, 0.02, "#E5484D", 0, HT + 0.06, HD / 2 + 0.03, head); hatBottom = HT - 0.01;
+    } else if (h === "knight") {   // epz-patch:costumes — an open-faced helm with a nose guard and a red plume
+      var bh = HT - fy(17);
+      box(HW + 0.1, 0.13, HD + 0.1, STEEL, 0, HT + 0.045, 0, head); box(0.06, 0.06, HD + 0.1, STEELD, 0, HT + 0.13, 0, head);
+      [-1, 1].forEach(function (s) { box(0.05, 0.42, HD + 0.1, STEEL, s * (HW / 2 + 0.05), HT - 0.19, 0, head); box(0.1, 0.22, 0.05, STEEL, s * (HW / 2 - 0.01), fy(37), FZ + 0.035, head); });
+      box(HW + 0.1, 0.42, 0.05, STEEL, 0, HT - 0.19, -HD / 2 - 0.05, head);
+      box(HW + 0.1, bh, 0.05, STEEL, 0, HT - bh / 2, FZ + 0.035, head); box(HW + 0.11, 0.025, 0.055, STEELD, 0, HT - bh, FZ + 0.036, head, { noShadow: true });
+      box(0.05, HT - bh - fy(39), 0.03, STEELD, 0, (HT - bh + fy(39)) / 2, FZ + 0.08, head);
+      box(0.07, 0.16, 0.34, "#D8343F", 0, HT + 0.23, -0.06, head, { rx: -0.25 }); box(0.07, 0.1, 0.12, "#B3262A", 0, HT + 0.18, -0.26, head, { rx: 0.4 });
+      hatBottom = HT - 0.4;
+    } else if (h === "ninja") {   // a hood with the face open and a metal-plated headband tied at the back
+      var nc2 = "#23263A", hl2 = HH * 0.78;
+      box(HW + 0.08, 0.1, HD + 0.08, nc2, 0, HT + 0.03, 0, head);
+      [-1, 1].forEach(function (s) { box(0.04, hl2, HD + 0.08, nc2, s * (HW / 2 + 0.04), HT - hl2 / 2 + 0.03, 0, head); });
+      box(HW + 0.08, hl2, 0.04, nc2, 0, HT - hl2 / 2 + 0.03, -HD / 2 - 0.04, head);
+      box(HW + 0.09, 0.12, 0.04, nc2, 0, HT - 0.04, FZ + 0.02, head);
+      box(HW + 0.1, 0.06, 0.03, "#D8343F", 0, HT - 0.07, FZ + 0.045, head, { noShadow: true }); box(0.2, 0.08, 0.02, "#B9C0CA", 0, HT - 0.07, FZ + 0.065, head); box(0.12, 0.012, 0.005, "#6B7280", 0, HT - 0.07, FZ + 0.077, head, { noShadow: true });
+      box(0.06, 0.26, 0.02, "#D8343F", -0.05, HT - 0.2, -HD / 2 - 0.08, head, { rz: 0.25 }); box(0.06, 0.22, 0.02, "#D8343F", 0.05, HT - 0.18, -HD / 2 - 0.08, head, { rz: -0.2 });
+      hatBottom = HT - hl2 + 0.03;
+    } else if (h === "pirate") {   // a black three-cornered hat with gold trim
+      var pc = "#1B1B1F";
+      octo(HW + 0.06, 0.2, HD + 0.06, pc, HT + 0.07);
+      box(HW + 0.36, 0.04, HD + 0.3, pc, 0, HT - 0.03, 0, head);
+      [-1, 1].forEach(function (s) { box(0.05, 0.18, HD + 0.3, pc, s * (HW / 2 + 0.17), HT + 0.05, 0, head, { rz: -s * 0.35 }); box(0.02, 0.02, HD + 0.3, GOLD, s * (HW / 2 + 0.2), HT + 0.14, 0, head, { noShadow: true }); });
+      box(HW + 0.36, 0.18, 0.05, pc, 0, HT + 0.05, -(HD / 2 + 0.14), head, { rx: 0.35 }); box(HW + 0.36, 0.02, 0.02, GOLD, 0, HT + 0.14, -(HD / 2 + 0.17), head, { noShadow: true });
+      box(0.12, 0.12, 0.02, GOLD, 0, HT + 0.08, HD / 2 + 0.035, head); box(0.06, 0.06, 0.025, "#F4EFE2", 0, HT + 0.08, HD / 2 + 0.04, head, { noShadow: true });
+      hatBottom = HT - 0.05;
+    } else if (h === "astro") {   // a clear bubble helmet: the whole face shows through the glass
+      var glassH = mats.helmet || (mats.helmet = new T.MeshLambertMaterial({ color: "#CFEFFF", transparent: true, opacity: 0.22, depthWrite: false }));
+      var gm = box(HW + 0.26, HH + 0.3, HD + 0.26, glassH, 0, HH / 2 + 0.07, 0.02, head, { noShadow: true }); gm.renderOrder = 2;
+      box(HW + 0.34, 0.1, HD + 0.34, "#F1F3F7", 0, -0.04, 0.02, head); box(HW + 0.35, 0.03, HD + 0.35, "#E8590C", 0, 0.005, 0.02, head, { noShadow: true });
+      box(0.05, 0.1, 0.05, "#9AA4AE", HW / 2 + 0.06, HH + 0.27, 0, head); box(0.06, 0.06, 0.06, "#E5484D", HW / 2 + 0.06, HH + 0.34, 0, head, { noShadow: true });
+      hatBottom = HH + 0.2;
+    } else if (h === "wizard") {   // a tall pointed hat that bends at the tip, with gold stars
+      var wc = "#2E2F7E";
+      box(HW + 0.34, 0.04, HD + 0.34, wc, 0, HT - 0.02, 0, head); box(HW + 0.08, 0.06, HD + 0.08, GOLD, 0, HT + 0.03, 0, head);
+      [[HW + 0.04, 0.11, 0, 0], [HW - 0.12, 0.1, 0.015, 0], [HW - 0.26, 0.09, 0.05, -0.2], [HW - 0.38, 0.08, 0.11, -0.55]].reduce(function (y, t2) {
+        box(t2[0], t2[1], t2[0] * HD / HW, wc, t2[2], y + t2[1] / 2, 0, head, { rz: t2[3] }); return y + t2[1] - 0.01;
+      }, HT + 0.06);
+      box(0.06, 0.06, 0.06, GOLD, 0.2, HT + 0.4, 0, head, { rz: 0.78 });
+      box(0.05, 0.05, 0.01, GOLD, -0.1, HT + 0.12, (HW + 0.04) * HD / HW / 2 + 0.006, head, { rz: 0.78, noShadow: true }); box(0.04, 0.04, 0.01, "#FFFFFF", 0.07, HT + 0.21, (HW - 0.12) * HD / HW / 2 + 0.006, head, { rz: 0.78, noShadow: true });
+      hatBottom = HT - 0.03;
+    } else if (h === "pith") {   // the explorer's safari helmet
+      var pt = "#E8D6B0";
+      octo(HW + 0.1, 0.16, HD + 0.1, pt, HT + 0.04); octo(HW - 0.04, 0.08, HD - 0.04, pt, HT + 0.15); box(0.06, 0.04, 0.06, shade(pt, -.15), 0, HT + 0.2, 0, head);
+      octo(HW + 0.11, 0.05, HD + 0.11, "#5A3A22", HT - 0.02);
+      box(HW + 0.32, 0.03, HD + 0.34, shade(pt, -.08), 0, HT - 0.06, 0.02, head);
+      hatBottom = HT - 0.06;
     }
 
     /* ---- hair: a list of boxes in head space, trimmed under any headwear so nothing pokes through */
@@ -631,7 +745,13 @@
     /* ---- glasses (at the eyes, which follow the face shape and eye spacing) */
     var gl = cfg.gl || "none", gp = packOf(gl), gy = fy(27), gxs = [fxp(32 - GAP), fxp(32 + GAP)], gz = FZ + 0.025, lw = 0.17 * Math.max(.85, ES), lh = 0.12 * Math.max(.85, ES);
     function temples(c) { [-1, 1].forEach(function (s) { box(0.015, 0.025, HD * 0.62, c, s * (HW / 2 + 0.008), gy + 0.02, HD * 0.18, head, { noShadow: true }); }); }
-    if (gp && /^grvisor/.test(gl)) { box(HW + 0.04, 0.16, 0.05, gp.col, 0, gy, gz, head); box(HW - 0.02, 0.1, 0.02, "#0E1B2E", 0, gy, gz + 0.03, head); temples(gp.col); }
+    if (gl === "eyepatch") {   // epz-patch:costumes — a patch over one eye, its strap running up across the forehead and round the head
+      var ep = "#1B1B1F", ex2 = gxs[1];
+      box(0.16, 0.14, 0.02, ep, ex2, gy, gz + 0.005, head); box(0.12, 0.1, 0.01, "#2A2A30", ex2, gy, gz + 0.016, head, { noShadow: true });
+      box(0.2, 0.022, 0.015, ep, ex2 + 0.11, gy + 0.05, gz, head, { rz: 0.45, noShadow: true }); box(0.36, 0.022, 0.015, ep, ex2 - 0.17, gy + 0.11, gz, head, { rz: -0.3, noShadow: true });
+      [-1, 1].forEach(function (s) { box(0.015, 0.022, HD * 0.95, ep, s * (HW / 2 + 0.008), s > 0 ? gy + 0.09 : gy + 0.18, -0.01, head, { noShadow: true }); });
+    }
+    else if (gp && /^grvisor/.test(gl)) { box(HW + 0.04, 0.16, 0.05, gp.col, 0, gy, gz, head); box(HW - 0.02, 0.1, 0.02, "#0E1B2E", 0, gy, gz + 0.03, head); temples(gp.col); }
     else if (gl !== "none") {
       var fr = { round: "#2A2540", square: "#2A2540", sun: "#0E1B2E", aviator: GOLD, sport: "#1B1B1F", reading: "#7A4B2A", thick: "#111111" }[gl] || "#2A2540";
       var lens = gl === "sun" || gl === "aviator" ? "#1E2F45" : gl === "sport" ? "#3B2A6B" : null;
@@ -655,11 +775,12 @@
     /* ---- neck, wrist and body accessories */
     var nk = cfg.neck || "none", ex = cfg.extra || "none", wr = cfg.wrist || "none", cape = null, xp = packOf(ex);
     function vStrap(c, w, len, y0, z) { box(w, len, 0.02, c, -0.09, y0 - len / 2, z, body, { rz: 0.32, noShadow: true }); box(w, len, 0.02, c, 0.09, y0 - len / 2, z, body, { rz: -0.32, noShadow: true }); }
-    var FZB = (cl === "puffer" ? 0.23 : 0.2) + 0.01;
+    var FZB = (bulky ? 0.23 : 0.2) + 0.01;
     if (nk === "chain" || nk === "pendant") { vStrap(GOLD, 0.018, 0.2, 0.62, FZB); box(0.08, 0.02, 0.02, GOLD, 0, 0.43, FZB, body, { noShadow: true }); if (nk === "pendant") { box(0.06, 0.07, 0.025, GOLD, 0, 0.39, FZB + 0.005, body); box(0.03, 0.035, 0.03, "#2BB3C0", 0, 0.39, FZB + 0.012, body, { noShadow: true }); } }
     else if (nk === "scarf") { var sfT = tx("scarf|" + acc, 16, 16, function (g, w, hh) { px(g, 0, 0, w, hh, acc); for (var y = 0; y < hh; y += 6) px(g, 0, y, w, 3, "#FFFFFF"); }, true); var sfM = tmat(sfT); box(0.54, 0.12, 0.46, sfM, 0, 0.64, 0, body); box(0.13, 0.34, 0.05, sfM, -0.12, 0.44, FZB + 0.02, body); box(0.13, 0.03, 0.05, "#FFFFFF", -0.12, 0.27, FZB + 0.02, body); }
     else if (nk === "bandana") { var bdT = tx("band|" + acc, 16, 16, function (g, w, hh) { px(g, 0, 0, w, hh, acc); for (var i = 0; i < 6; i++) diamond(g, (i * 5) % w, (i * 7) % hh, 1, "#FFFFFF"); }, true); [0.34, 0.26, 0.18, 0.1].forEach(function (w, i) { box(w, 0.05, 0.03, tmat(bdT), 0, 0.6 - i * 0.05, FZB + 0.01, body, { noShadow: true }); }); }
     else if (nk === "lanyard") { vStrap(acc, 0.02, 0.3, 0.62, FZB); var idT = tx("idcard", 12, 16, function (g, w, hh) { px(g, 0, 0, w, hh, "#FFFFFF"); px(g, 2, 2, 5, 6, "#9FB4D9"); px(g, 2, 10, 8, 1, "#3B4A6B"); px(g, 2, 12, 6, 1, "#3B4A6B"); px(g, 0, 0, w, 1, acc); }); box(0.12, 0.16, 0.012, [mat("#FFFFFF"), mat("#FFFFFF"), mat("#FFFFFF"), mat("#FFFFFF"), tmat(idT), mat("#FFFFFF")], 0, 0.27, FZB + 0.005, body); }
+    else if (nk === "binoculars") { vStrap("#5A3A22", 0.02, 0.26, 0.62, FZB); [-1, 1].forEach(function (s) { box(0.085, 0.15, 0.1, "#1B1B1F", s * 0.055, 0.33, FZB + 0.05, body); box(0.06, 0.06, 0.01, "#7FB6E6", s * 0.055, 0.29, FZB + 0.105, body, { noShadow: true }); }); box(0.04, 0.06, 0.06, "#4A4A52", 0, 0.35, FZB + 0.05, body); }
     else if (nk === "bowtie") { box(0.08, 0.07, 0.03, acc, -0.05, 0.585, FZB + 0.01, body, { rz: 0.15 }); box(0.08, 0.07, 0.03, acc, 0.05, 0.585, FZB + 0.01, body, { rz: -0.15 }); box(0.03, 0.04, 0.035, shade(acc, -.2), 0, 0.585, FZB + 0.015, body); }
     if (ex === "medal") { box(0.1, 0.36, 0.02, "#D8343F", -0.1, 0.38, FZB, body); box(0.14, 0.14, 0.03, "#F2B632", -0.1, 0.18, FZB + 0.01, body); }
     else if (ex === "backpack") { box(0.48, 0.5, 0.2, acc, 0, 0.3, -0.3, body); box(0.36, 0.2, 0.06, shade(acc, -.2), 0, 0.2, -0.42, body); [-1, 1].forEach(function (s) { box(0.06, 0.5, 0.02, shade(acc, -.3), s * 0.17, 0.33, FZB, body, { noShadow: true }); }); }
@@ -679,6 +800,35 @@
       var hpC = acc;
       if (hatBottom < 99) { box(0.1, 0.16, 0.16, hpC, -0.24, 0.66, 0.1, body); box(0.1, 0.16, 0.16, hpC, 0.24, 0.66, 0.1, body); box(0.5, 0.04, 0.06, shade(hpC, -.3), 0, 0.64, -0.17, body); }
       else { box(HW + 0.1, 0.05, 0.08, shade(hpC, -.3), 0, HT + 0.03, 0, head); [-1, 1].forEach(function (s) { box(0.08, 0.2, 0.22, hpC, s * (HW / 2 + 0.05), fy(34), 0, head); box(0.02, 0.12, 0.14, shade(hpC, .4), s * (HW / 2 + 0.095), fy(34), 0, head, { noShadow: true }); }); }
+    }
+    // epz-patch:costumes — costume extras: worn on the back, or (the parrot) on the right shoulder
+    var BZ = -(torsoD / 2) - 0.05;
+    if (ex === "shield") {
+      box(0.05, 0.86, 0.02, "#5A3A22", 0, 0.3, FZB, body, { rz: 0.72, noShadow: true });
+      box(0.5, 0.56, 0.05, acc, 0, 0.32, BZ, body); box(0.34, 0.1, 0.05, acc, 0, 0.0, BZ, body); box(0.16, 0.08, 0.05, acc, 0, -0.08, BZ, body);
+      box(0.54, 0.05, 0.06, STEEL, 0, 0.6, BZ, body); [-1, 1].forEach(function (s) { box(0.04, 0.58, 0.06, STEEL, s * 0.25, 0.32, BZ, body); });
+      box(0.06, 0.42, 0.01, GOLD, 0, 0.27, BZ - 0.03, body, { noShadow: true }); box(0.3, 0.06, 0.01, GOLD, 0, 0.36, BZ - 0.03, body, { noShadow: true });
+    } else if (ex === "scroll") {
+      box(0.04, 0.86, 0.02, "#5A3A22", 0, 0.3, FZB, body, { rz: -0.75, noShadow: true });
+      box(0.12, 0.72, 0.12, "#E8D6B0", 0.02, 0.32, BZ - 0.03, body, { rz: 0.75 }); box(0.13, 0.05, 0.13, "#7A1F2E", 0.02, 0.32, BZ - 0.03, body, { rz: 0.75, noShadow: true });
+      [[-0.225, 0.583], [0.265, 0.057]].forEach(function (p) { box(0.15, 0.06, 0.15, "#B3262A", p[0], p[1], BZ - 0.03, body, { rz: 0.75 }); });
+    } else if (ex === "staff") {
+      box(0.05, 1.24, 0.05, "#6B4422", 0.1, 0.32, BZ - 0.04, body, { rz: -0.42 }); box(0.07, 0.04, 0.07, GOLD, 0.33, 0.84, BZ - 0.04, body, { rz: -0.42, noShadow: true });
+      box(0.13, 0.13, 0.13, acc, 0.37, 0.94, BZ - 0.04, body, { rz: 0.78 }); box(0.06, 0.06, 0.14, "#FFFFFF", 0.37, 0.94, BZ - 0.04, body, { rz: 0.78, noShadow: true });
+    } else if (ex === "jetpack") {
+      box(0.42, 0.12, 0.07, "#9AA4AE", 0, 0.42, BZ + 0.02, body);
+      [-1, 1].forEach(function (s) {
+        var jx = s * 0.12, jz = BZ - 0.07;
+        box(0.17, 0.44, 0.17, "#7D8794", jx, 0.33, jz, body); box(0.02, 0.36, 0.175, "#A9B1BC", jx - 0.05, 0.33, jz, body, { noShadow: true }); box(0.17, 0.06, 0.17, acc, jx, 0.58, jz, body); box(0.18, 0.03, 0.18, acc, jx, 0.2, jz, body, { noShadow: true });
+        box(0.1, 0.08, 0.1, "#4A5560", jx, 0.07, jz, body); box(0.07, 0.12, 0.07, "#F2B632", jx, -0.03, jz, body, { noShadow: true }); box(0.04, 0.08, 0.04, "#E8590C", jx, -0.04, jz, body, { noShadow: true });
+        box(0.06, 0.5, 0.02, "#4A5560", s * 0.17, 0.33, FZB, body, { noShadow: true });
+      });
+    } else if (ex === "parrot") {
+      var px0 = 0.36, py0 = 0.72, gr = "#2FA84F";
+      box(0.13, 0.18, 0.15, gr, px0, py0, -0.02, body); box(0.12, 0.12, 0.12, gr, px0, py0 + 0.14, 0.02, body);
+      box(0.05, 0.06, 0.06, "#F2B632", px0, py0 + 0.12, 0.1, body); box(0.04, 0.03, 0.04, "#1B1B1F", px0, py0 + 0.09, 0.1, body, { noShadow: true });
+      [-1, 1].forEach(function (s) { box(0.01, 0.035, 0.035, "#FFFFFF", px0 + s * 0.062, py0 + 0.16, 0.04, body, { noShadow: true }); box(0.012, 0.018, 0.018, "#1B1B1F", px0 + s * 0.067, py0 + 0.16, 0.045, body, { noShadow: true }); box(0.03, 0.13, 0.11, "#1E6FD9", px0 + s * 0.075, py0 - 0.01, -0.03, body); });
+      box(0.08, 0.2, 0.04, "#D8343F", px0, py0 - 0.15, -0.11, body, { rx: 0.5 }); box(0.1, 0.03, 0.06, "#F2B632", px0, py0 - 0.1, 0.02, body, { noShadow: true });
     }
     if (xp && /^grcape/.test(ex)) {
       cape = new T.Group(); cape.position.set(0, 0.58, -0.22); body.add(cape);

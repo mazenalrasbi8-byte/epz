@@ -2161,6 +2161,7 @@ body {
 .wd-pack-list span{font-size:.74rem;font-weight:700;padding:3px 8px;border-radius:999px;background:#F2F5FB;border:1.5px solid #CDD7EA}
 .wd-pack-more{margin-top:10px;width:100%;padding:9px;border-radius:12px;border:2px solid var(--gr-navy);background:var(--gr-sky);font:inherit;font-weight:800;color:var(--gr-navy);cursor:pointer}
 .wd-pack .cz-grid{margin-top:10px}
+.wd-wear{width:100%;margin-top:10px}
 .wd .cz-opt{min-width:0}
 .wd .wd-title{font-size:1rem;top:8px;left:12px}
 @media (max-width:859px){.wd .wd-title{display:none}}
@@ -8654,7 +8655,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     hat: [["none", "None"], ["kumma1", "Kumma white"], ["kumma2", "Kumma blue"], ["kumma3", "Kumma navy"], ["massar1", "Massar blue"], ["massar2", "Massar red"], ["massar3", "Massar cream"], ["cap", "Cap"], ["beanie", "Beanie"], ["grcrown1", "Gold Crown"], ["grcrown2", "Aqua Crown"], ["grcrown3", "Ruby Crown"], ["grcrown4", "Violet Crown"]],
     eyes: [["dots", "Dots"], ["big", "Big"], ["happy", "Happy"], ["wink", "Wink"], ["cool", "Sleepy"]],
     mouth: [["smile", "Smile"], ["grin", "Big smile"], ["teeth", "Teeth"], ["o", "Wow"], ["flat", "Calm"], ["tongue", "Silly"]],
-    gl: [["none", "None"], ["round", "Round"], ["square", "Square"], ["sun", "Sunglasses"], ["grvisor1", "Gold Visor"], ["grvisor2", "Aqua Visor"], ["grvisor3", "Ruby Visor"], ["grvisor4", "Violet Visor"]],
+    gl: [["none", "None"], ["round", "Round"], ["square", "Square"], ["sun", "Sunglasses"], ["grvisor1", "Gold Visor"], ["grvisor2", "Aqua Visor"], ["grvisor3", "Ruby Visor"], ["grvisor4", "Violet Visor"], ["eyepatch", "Pirate eyepatch", ["costume"]]],
     cl: [["dish", "Dishdasha"], ["bisht", "Bisht"], ["tee", "T-shirt"], ["hoodie", "Hoodie"], ["shirt", "Shirt"], ["sweater", "Sweater"], ["jersey", "Sports"]]
   };
   var DUO_DEF = { skin: 4, hair: "short", hat: "none", hc: 0, eyes: "big", mouth: "smile", gl: "none", cl: "dish", cc: 0, bg: 0 };
@@ -8761,7 +8762,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     beard: [["none", "None"], ["stubble", "Stubble"], ["moustache", "Moustache"], ["beard", "Short beard"], ["goatee", "Goatee"]],
     bottom: [["trousers", "Trousers"], ["jeans", "Jeans"], ["joggers", "Joggers"], ["shorts", "Shorts"]],
     shoes: [["sandals", "Omani sandals"], ["sneakers", "Sneakers"], ["school", "School shoes"], ["boots", "Boots"]],
-    extra: [["none", "None"], ["backpack", "Backpack"], ["pen", "Pen pocket"], ["watch", "Watch"], ["headphones", "Headphones"], ["medal", "Gold medal"], ["cape", "Hero cape"], ["grcape1", "Gold Racer Cape"], ["grcape2", "Aqua Racer Cape"], ["grcape3", "Ruby Racer Cape"], ["grcape4", "Violet Racer Cape"]],
+    extra: [["none", "None"], ["backpack", "Backpack"], ["pen", "Pen pocket"], ["watch", "Watch"], ["headphones", "Headphones"], ["medal", "Gold medal"], ["cape", "Hero cape"], ["grcape1", "Gold Racer Cape"], ["grcape2", "Aqua Racer Cape"], ["grcape3", "Ruby Racer Cape"], ["grcape4", "Violet Racer Cape"], ["shield", "Knight shield", ["costume"]], ["scroll", "Ninja scroll", ["costume"]], ["parrot", "Parrot friend", ["costume"]], ["jetpack", "Jetpack", ["costume"]], ["staff", "Magic staff", ["costume"]]],
     pose: [["relaxed", "Relaxed"], ["hips", "Hands on hips"], ["crossed", "Arms crossed"], ["think", "Thinking"], ["wave", "Waving"], ["ready", "Ready!"]],
     style: [["omani", "Omani"], ["everyday", "Everyday"]]
   };
@@ -8792,20 +8793,22 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       ["kumma11", "Kumma · Jabal Akhdar", ["trad", "kumma"]], ["kumma12", "Kumma · Musandam Ruby", ["trad", "kumma"]], ["kumma13", "Kumma · Dhofar Sun", ["trad", "kumma"]], ["kumma14", "Kumma · Sharqiya Check", ["trad", "kumma"]], ["kummag", "Kumma · Royal Gold", ["trad", "kumma"]],
       ["mzclassic", "Mussar · Classic wrap", ["trad", "mussar"]], ["mztall", "Mussar · Tall wrap", ["trad", "mussar"]], ["mzflap", "Mussar · Raised end", ["trad", "mussar"]], ["mzsport", "Mussar · Tail wrap", ["trad", "mussar"]], ["mzflat", "Mussar · Low wrap", ["trad", "mussar"]], ["mzopen", "Mussar · Open top", ["trad", "mussar"]],
       ["cap", "Cap", ["casual", "street", "hats"]], ["capb", "Backwards cap", ["street", "hats"]], ["snap", "Snapback", ["street", "hats"]], ["beanie", "Beanie", ["winter", "hats"]], ["beaniew", "Winter hat", ["winter", "hats"]], ["bucket", "Bucket hat", ["outdoor", "hats"]], ["explorer", "Explorer hat", ["outdoor", "hats"]], ["headband", "Headband", ["sport", "hats"]],
+      ["pith", "Safari helmet", ["outdoor", "hats"]], ["knight", "Knight helmet", ["costume"]], ["ninja", "Ninja hood", ["costume"]], ["pirate", "Pirate hat", ["costume"]], ["astro", "Space helmet", ["costume"]], ["wizard", "Wizard hat", ["costume"]],
       ["crown", "Champion crown", ["hats"]], ["grcrown1", "Gold Crown", ["hats"]], ["grcrown2", "Aqua Crown", ["hats"]], ["grcrown3", "Ruby Crown", ["hats"]], ["grcrown4", "Violet Crown", ["hats"]]],
     mf: [[0, "Blue Kashmir"], [1, "Ruby Kashmir"], [2, "Sand Kashmir"], [3, "Royal Purple"], [4, "Emerald"], [5, "Rose"], [6, "Saffron"], [7, "Grey Stripe"], [8, "Desert Check"], [9, "White Embroidered"], [10, "Sky Plain"], [11, "Night & Gold"]],
     cl: [["dish", "Dishdasha", ["trad"]], ["dishe", "Embroidered dishdasha", ["trad", "formal"]], ["dishs", "Everyday dishdasha", ["trad", "casual"]], ["bisht", "Bisht", ["trad", "formal"]], ["bishtz", "Zari bisht", ["trad", "formal"]], ["bishtg", "Royal bisht", ["trad", "formal"]],
       ["tee", "T-shirt", ["casual"]], ["vtee", "V-neck tee", ["casual"]], ["stripe", "Striped tee", ["casual"]], ["graphic", "Graphic tee", ["casual", "street"]], ["longsleeve", "Long-sleeve tee", ["casual"]], ["polo", "Polo shirt", ["casual", "formal"]],
       ["shirt", "Shirt", ["formal"]], ["check", "Checked shirt", ["casual", "winter"]], ["uniform", "School shirt", ["formal"]], ["hoodie", "Hoodie", ["casual", "street"]], ["ziphood", "Zip hoodie", ["street", "winter"]], ["sweatshirt", "Sweatshirt", ["casual", "winter"]],
       ["sweater", "Knit sweater", ["winter"]], ["jacket", "Zip jacket", ["outdoor", "casual"]], ["denim", "Denim jacket", ["street"]], ["bomber", "Bomber jacket", ["street"]], ["puffer", "Puffer jacket", ["winter", "outdoor"]], ["blazer", "Blazer & tie", ["formal"]],
-      ["track", "Track jacket", ["sport"]], ["jersey", "Football kit · classic", ["sport"]], ["kit2", "Football kit · stripes", ["sport"]], ["kit3", "Football kit · hoops", ["sport"]], ["kit4", "Football kit · sash", ["sport"]], ["bball", "Basketball vest", ["sport"]], ["explorer", "Explorer vest", ["outdoor"]]],
-    bottom: [["trousers", "Trousers", ["casual", "formal"]], ["jeans", "Jeans", ["casual", "street"]], ["joggers", "Joggers", ["casual", "sport"]], ["shorts", "Shorts", ["casual", "sport"]], ["cargo", "Cargo trousers", ["outdoor", "street"]], ["formal", "Formal trousers", ["formal"]], ["track", "Track pants", ["sport"]], ["kitshorts", "Football shorts & socks", ["sport"]], ["wizar", "Wizar", ["trad", "casual"]]],
-    shoes: [["sandals", "Omani sandals", ["trad"]], ["sneakers", "Sneakers", ["casual"]], ["hightops", "High-tops", ["street"]], ["runners", "Running shoes", ["sport"]], ["school", "School shoes", ["formal"]], ["boots", "Boots", ["outdoor", "winter"]], ["football", "Football boots", ["sport"]], ["slides", "Slides", ["casual"]], ["loafers", "Loafers", ["formal"]]],
-    gl: [["none", "None"], ["round", "Round glasses"], ["square", "Square glasses"], ["thick", "Bold frames"], ["reading", "Half-rim"], ["sun", "Sunglasses"], ["aviator", "Aviators"], ["sport", "Sport shades", ["sport"]], ["grvisor1", "Gold Visor"], ["grvisor2", "Aqua Visor"], ["grvisor3", "Ruby Visor"], ["grvisor4", "Violet Visor"]],
-    neck: [["none", "None"], ["chain", "Gold chain"], ["pendant", "Pendant"], ["scarf", "Knit scarf", ["winter"]], ["bandana", "Bandana"], ["lanyard", "School lanyard"], ["bowtie", "Bow tie", ["formal"]]],
+      ["track", "Track jacket", ["sport"]], ["jersey", "Football kit · classic", ["sport"]], ["kit2", "Football kit · stripes", ["sport"]], ["kit3", "Football kit · hoops", ["sport"]], ["kit4", "Football kit · sash", ["sport"]], ["bball", "Basketball vest", ["sport"]], ["explorer", "Explorer vest", ["outdoor"]],
+      ["knight", "Knight armour", ["costume"]], ["ninja", "Ninja suit", ["costume"]], ["pirate", "Pirate coat", ["costume"]], ["astro", "Space suit", ["costume"]], ["wizard", "Wizard robe", ["costume"]]],
+    bottom: [["trousers", "Trousers", ["casual", "formal"]], ["jeans", "Jeans", ["casual", "street"]], ["joggers", "Joggers", ["casual", "sport"]], ["shorts", "Shorts", ["casual", "sport"]], ["cargo", "Cargo trousers", ["outdoor", "street"]], ["formal", "Formal trousers", ["formal"]], ["track", "Track pants", ["sport"]], ["kitshorts", "Football shorts & socks", ["sport"]], ["wizar", "Wizar", ["trad", "casual"]], ["knight", "Armoured leggings", ["costume"]], ["ninja", "Ninja trousers", ["costume"]], ["pirate", "Sailor stripes", ["costume"]], ["astro", "Space suit trousers", ["costume"]]],
+    shoes: [["sandals", "Omani sandals", ["trad"]], ["sneakers", "Sneakers", ["casual"]], ["hightops", "High-tops", ["street"]], ["runners", "Running shoes", ["sport"]], ["school", "School shoes", ["formal"]], ["boots", "Boots", ["outdoor", "winter"]], ["football", "Football boots", ["sport"]], ["slides", "Slides", ["casual"]], ["loafers", "Loafers", ["formal"]], ["knight", "Armoured boots", ["costume"]], ["ninja", "Ninja tabi", ["costume"]], ["pirate", "Pirate boots", ["costume"]], ["astro", "Moon boots", ["costume"]], ["wizslip", "Wizard slippers", ["costume"]]],
+    gl: [["none", "None"], ["round", "Round glasses"], ["square", "Square glasses"], ["thick", "Bold frames"], ["reading", "Half-rim"], ["sun", "Sunglasses"], ["aviator", "Aviators"], ["sport", "Sport shades", ["sport"]], ["grvisor1", "Gold Visor"], ["grvisor2", "Aqua Visor"], ["grvisor3", "Ruby Visor"], ["grvisor4", "Violet Visor"], ["eyepatch", "Pirate eyepatch", ["costume"]]],
+    neck: [["none", "None"], ["chain", "Gold chain"], ["pendant", "Pendant"], ["scarf", "Knit scarf", ["winter"]], ["bandana", "Bandana"], ["lanyard", "School lanyard"], ["bowtie", "Bow tie", ["formal"]], ["binoculars", "Binoculars", ["outdoor"]]],
     wrist: [["none", "None"], ["watch", "Watch"], ["smartwatch", "Smartwatch"], ["beads", "Bead bracelet"], ["sweatband", "Sweatbands", ["sport"]], ["bracelet", "Gold bracelet"]],
     extra: [["none", "None"], ["backpack", "Backpack"], ["schoolbag", "School satchel"], ["sling", "Sling bag"], ["pen", "Pen pocket"], ["headphones", "Headphones"], ["camera", "Camera"], ["khanjar", "Khanjar (ceremonial)", ["trad"]], ["medal", "Gold medal"], ["cape", "Hero cape"],
-      ["grcape1", "Gold Racer Cape"], ["grcape2", "Aqua Racer Cape"], ["grcape3", "Ruby Racer Cape"], ["grcape4", "Violet Racer Cape"]],
+      ["grcape1", "Gold Racer Cape"], ["grcape2", "Aqua Racer Cape"], ["grcape3", "Ruby Racer Cape"], ["grcape4", "Violet Racer Cape"], ["shield", "Knight shield", ["costume"]], ["scroll", "Ninja scroll", ["costume"]], ["parrot", "Parrot friend", ["costume"]], ["jetpack", "Jetpack", ["costume"]], ["staff", "Magic staff", ["costume"]]],
     pose: [["relaxed", "Relaxed"], ["hips", "Hands on hips"], ["crossed", "Arms crossed"], ["think", "Thinking"], ["wave", "Waving"], ["ready", "Ready!"]]
   };
   var WD_PACKS = [
@@ -8813,16 +8816,21 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     { id: "sports", name: "Sports", pts: 300, ic: "🏃", col: "#2B41C4", items: ["cl:track", "bottom:track", "shoes:runners", "hat:headband", "wrist:sweatband", "gl:sport", "cl:bball", "wrist:smartwatch"] },
     { id: "street", name: "Modern Streetwear", pts: 500, ic: "🧢", col: "#E8590C", items: ["cl:bomber", "cl:denim", "cl:graphic", "shoes:hightops", "hat:snap", "hat:capb", "neck:chain", "extra:sling"] },
     { id: "football", name: "Football", pts: 800, ic: "⚽", col: "#178A4C", items: ["cl:kit2", "cl:kit3", "cl:kit4", "bottom:kitshorts", "shoes:football", "neck:bandana"] },
-    { id: "explorer", name: "Explorer", pts: 1200, ic: "🧭", col: "#8A6A35", items: ["cl:explorer", "bottom:cargo", "hat:bucket", "hat:explorer", "extra:camera", "hat:mzsport"] },
+    { id: "pirate", name: "Pirate", pts: 1000, ic: "⚓", col: "#7A1F2E", costume: 1, items: ["cl:pirate", "hat:pirate", "bottom:pirate", "shoes:pirate", "gl:eyepatch", "extra:parrot"] },
+    { id: "explorer", name: "Explorer", pts: 1200, ic: "🧭", col: "#8A6A35", items: ["cl:explorer", "bottom:cargo", "hat:bucket", "hat:explorer", "extra:camera", "hat:mzsport", "hat:pith", "neck:binoculars"] },
+    { id: "ninja", name: "Ninja", pts: 1500, ic: "🥷", col: "#23263A", costume: 1, items: ["cl:ninja", "hat:ninja", "bottom:ninja", "shoes:ninja", "extra:scroll"] },
     { id: "winter", name: "Winter", pts: 1700, ic: "❄️", col: "#2F6FDE", items: ["cl:puffer", "hat:beaniew", "neck:scarf", "cl:check", "cl:ziphood"] },
+    { id: "knight", name: "Knight", pts: 2000, ic: "🛡️", col: "#6B7280", costume: 1, items: ["cl:knight", "hat:knight", "bottom:knight", "shoes:knight", "extra:shield"] },
     { id: "festival", name: "Eid Festival", pts: 2300, ic: "🎉", col: "#C2414F", items: ["hat:kumma8", "hat:kumma9", "hat:kumma10", "hat:kumma11", "mf:6", "mf:9", "mf:10", "hat:mztall", "cl:blazer", "bottom:formal", "shoes:loafers", "neck:bowtie", "neck:pendant", "wrist:beads"] },
-    { id: "royal", name: "Royal Collection", pts: 3200, ic: "👑", col: "#B9801A", items: ["hat:kumma12", "hat:kumma13", "hat:kumma14", "mf:11", "cl:bishtz", "hat:mzopen", "gl:aviator", "wrist:bracelet"] }
+    { id: "astro", name: "Astronaut", pts: 2800, ic: "🚀", col: "#E8590C", costume: 1, items: ["cl:astro", "hat:astro", "bottom:astro", "shoes:astro", "extra:jetpack"] },
+    { id: "royal", name: "Royal Collection", pts: 3200, ic: "👑", col: "#B9801A", items: ["hat:kumma12", "hat:kumma13", "hat:kumma14", "mf:11", "cl:bishtz", "hat:mzopen", "gl:aviator", "wrist:bracelet"] },
+    { id: "wizard", name: "Wizard", pts: 3600, ic: "🪄", col: "#5B35B8", costume: 1, items: ["cl:wizard", "hat:wizard", "shoes:wizslip", "extra:staff"] }
   ];
   var WD_PACK_OF = {}; WD_PACKS.forEach((p) => p.items.forEach((k) => WD_PACK_OF[k] = p));
   /* epz-patch:collection — every wardrobe item knows its rarity, where it comes from and which collection it belongs to.
      The geometry stays in gaterush/avatar.js; this is only metadata, so adding items never touches saved characters. Existing items are graded by how hard they are to get. */
   var CZ_RARITIES = [["common", "Common"], ["uncommon", "Uncommon"], ["rare", "Rare"], ["epic", "Epic"], ["legendary", "Legendary"], ["mythic", "Mythic"]];
-  var CZ_PACK_RARITY = { heritage: "uncommon", sports: "uncommon", street: "rare", football: "rare", explorer: "rare", winter: "epic", festival: "epic", royal: "legendary" };
+  var CZ_PACK_RARITY = { heritage: "uncommon", sports: "uncommon", street: "rare", football: "rare", explorer: "rare", winter: "epic", festival: "epic", royal: "legendary", pirate: "rare", ninja: "epic", knight: "epic", astro: "legendary", wizard: "legendary" };
   var CZ_LOCKED_RARITY = { "hat:kummag": "legendary", "hat:crown": "legendary", "cl:bishtg": "legendary", "extra:headphones": "epic", "extra:medal": "rare", "extra:cape": "epic" };
   /* epz-patch:collection2 — the collection: every wardrobe item, the themed collections it belongs to, and when the student first owned it.
      Saved on this phone in state.cz = { v: 1, seen: { "hat:kumma4": time }, outfits: [ ... ] }. Nothing else in the saved data changes. */
@@ -8855,6 +8863,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     changed && save();
     return s;
   }
+  // epz-patch:costumes — a piece of one of the dress-up costumes (keeps its own colours)
+  var czCostume = (slot, v) => { let e = (WD[slot] || []).find((x) => x[0] === v); return !!(e && (e[2] || []).indexOf("costume") > -1); };
   function czMeta(slot, v) {
     let key = slot + ":" + v, p = WD_PACK_OF[key];
     if (/^gr(crown|cape|visor)\d$/.test(String(v))) return { key, rarity: "legendary", source: "gaterush", set: "gr" + String(v).slice(-1) };
@@ -8866,8 +8876,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   ["hair", "hat", "eyes", "mouth", "gl", "cl"].forEach((k) => DUO_PARTS[k] = WD[k].map((e) => [e[0], e[1]]));
   var WD_SLOTS = ["face", "cheeks", "nose", "brows", "mark", "beard", "hairline", "bottom", "shoes", "neck", "wrist", "extra", "pose"];
   WD_SLOTS.forEach((k) => CZ_NEW[k] = WD[k].map((e) => [e[0], e[1]]));
-  Object.assign(CZ_BOTC, { cargo: "#6B6450", formal: "#22262E", track: "#1E2A4A", kitshorts: "#FFFFFF", wizar: "#3B4A6B" });
-  Object.assign(CZ_SHOEC, { hightops: "#D13A3A", runners: "#2B41C4", football: "#1B1B1F", slides: "#1B1B1F", loafers: "#3B2A20" });
+  Object.assign(CZ_BOTC, { cargo: "#6B6450", formal: "#22262E", track: "#1E2A4A", kitshorts: "#FFFFFF", wizar: "#3B4A6B", knight: "#9AA4AE", ninja: "#23263A", pirate: "#F4EFE2", astro: "#F1F3F7" });
+  Object.assign(CZ_SHOEC, { hightops: "#D13A3A", runners: "#2B41C4", football: "#1B1B1F", slides: "#1B1B1F", loafers: "#3B2A20", knight: "#9AA4AE", ninja: "#1B1B22", pirate: "#2A1E18", astro: "#F1F3F7", wizslip: "#7A1F2E" });
   // things won from Boss Rush chests (key -> value)
   var GR_PACKS = { 1: ["#F2B632", "#B9801A"], 2: ["#27C3C3", "#12807F"], 3: ["#E5484D", "#A3262A"], 4: ["#8B5CF6", "#5B35B8"] }; /* epz-patch:gaterush — the four exclusive weekly packs */
   function grPk(v) { let m = /^gr(?:crown|cape|visor)(\d)$/.exec(v || ""); return m ? GR_PACKS[m[1]] : null; }
@@ -8884,18 +8894,18 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     brows: { thin: "soft", arched: "soft", worried: "soft", angled: "straight", short: "straight", bushy: "thick" },
     mouth: { wide: "grin", laugh: "grin", small: "smile", smirk: "smile", cat: "smile", lips: "smile" },
     hair: { crew: "short", slick: "short", quiff: "spiky", fauxhawk: "spiky", undercut: "side", messy: "curly", twists: "curly", middle: "fringe", ponytail: "long", cornrows: "buzz" },
-    cl: { dishe: "dish", dishs: "dish", bishtz: "bisht", vtee: "tee", stripe: "tee", graphic: "tee", longsleeve: "tee", polo: "shirt", check: "shirt", explorer: "shirt", ziphood: "hoodie", sweatshirt: "sweater", denim: "jacket", bomber: "jacket", puffer: "jacket", blazer: "jacket", track: "jacket", kit2: "jersey", kit3: "jersey", kit4: "jersey", bball: "jersey" },
-    bottom: { cargo: "trousers", formal: "trousers", track: "joggers", kitshorts: "shorts", wizar: "trousers" },
-    shoes: { hightops: "sneakers", runners: "sneakers", football: "sneakers", slides: "sandals", loafers: "school" },
-    beard: { chinstrap: "beard", full: "beard" }, extra: { schoolbag: "backpack", sling: "backpack", camera: "none", khanjar: "none" },
-    gl: { aviator: "sun", sport: "sun", reading: "square", thick: "square" }
+    cl: { dishe: "dish", dishs: "dish", bishtz: "bisht", vtee: "tee", stripe: "tee", graphic: "tee", longsleeve: "tee", polo: "shirt", check: "shirt", explorer: "shirt", ziphood: "hoodie", sweatshirt: "sweater", denim: "jacket", bomber: "jacket", puffer: "jacket", blazer: "jacket", track: "jacket", kit2: "jersey", kit3: "jersey", kit4: "jersey", bball: "jersey", knight: "jacket", ninja: "sweater", pirate: "jacket", astro: "jacket", wizard: "hoodie" },
+    bottom: { cargo: "trousers", formal: "trousers", track: "joggers", kitshorts: "shorts", wizar: "trousers", knight: "trousers", ninja: "trousers", pirate: "trousers", astro: "trousers" },
+    shoes: { hightops: "sneakers", runners: "sneakers", football: "sneakers", slides: "sandals", loafers: "school", knight: "school", ninja: "school", pirate: "school", astro: "sneakers", wizslip: "school" },
+    beard: { chinstrap: "beard", full: "beard" }, extra: { schoolbag: "backpack", sling: "backpack", camera: "none", khanjar: "none", shield: "backpack", scroll: "backpack", jetpack: "backpack", staff: "none", parrot: "none" }, neck: { binoculars: "none" },
+    gl: { aviator: "sun", sport: "sun", reading: "square", thick: "square", eyepatch: "none" }
   };
   function cz2d(c) {
     let o = Object.assign({}, c);
     for (let k in CZ2D) o[k] in CZ2D[k] && (o[k] = CZ2D[k][o[k]]);
     if (/^kumma\d/.test(o.hat) && !/^kumma[123]$/.test(o.hat)) o.hat = /^kumma(3|9|11|12)$/.test(o.hat) ? "kumma3" : /^kumma(2|8|10)$/.test(o.hat) ? "kumma2" : "kumma1";
     if (/^mz/.test(o.hat)) o.hat = [0, 7, 10].indexOf(o.mf) > -1 ? "massar1" : [1, 3, 5, 6, 11].indexOf(o.mf) > -1 ? "massar2" : "massar3";
-    o.hat = { capb: "cap", snap: "cap", bucket: "cap", explorer: "cap", beaniew: "beanie", headband: "none" }[o.hat] || o.hat;
+    o.hat = { capb: "cap", snap: "cap", bucket: "cap", explorer: "cap", beaniew: "beanie", headband: "none", pith: "cap", knight: "beanie", ninja: "beanie", pirate: "cap", astro: "none", wizard: "beanie" }[o.hat] || o.hat;
     return o;
   }
   var czRobe = (cl) => /^(dish|dishe|dishs|bisht|bishtz|bishtg)$/.test(cl);
@@ -9310,9 +9320,11 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         else if (!hero.drag && performance.now() - hero.last > 1800) hero.yaw += (Math.sin(performance.now() / 1400) * .22 - hero.yaw) * Math.min(1, dt * 2.5);
         m.rotation.y = hero.yaw; hero.zoom += (hero.zt - hero.zoom) * Math.min(1, dt * 8);
       } else m.rotation.y = 0;
-      if (v.hero) { var zk = (hero.zoom - 1) / 1.6, cy = -2.1 + 2.4 * Math.min(1, zk * 1.45); cam.position.set(0, cy + .1, 24 / hero.zoom); cam.lookAt(0, cy, 0); }
-      else if (v.body) { cam.position.set(0, -2, 24); cam.lookAt(0, -2.1, 0); }
-      else if (v.face) { cam.position.set(0, .35, 12); cam.lookAt(0, .25, 0); } else if (v.full) { cam.position.set(0, -1.5, 17); cam.lookAt(0, -1.6, 0); } else { cam.position.set(0, -.5, 16.5); cam.lookAt(0, -.75, 0); }
+      // epz-patch:costumes — tall headwear (wizard hat, space helmet, knight plume) gets a little more room above the head
+      var tk = /^(wizard|astro|knight)$/.test((m.userData.cfg || v.cfg || {}).hat) ? .14 : 0, ty3 = tk * 3;
+      if (v.hero) { var zk = (hero.zoom - 1) / 1.6, cy = -2.1 + 2.4 * Math.min(1, zk * 1.45) + ty3 * (1 - Math.min(1, zk)); cam.position.set(0, cy + .1, 24 * (1 + tk * (1 - Math.min(1, zk))) / hero.zoom); cam.lookAt(0, cy, 0); }
+      else if (v.body) { cam.position.set(0, -2 + ty3, 24 * (1 + tk)); cam.lookAt(0, -2.1 + ty3, 0); }
+      else if (v.face) { cam.position.set(0, .35 + ty3, 12 * (1 + tk)); cam.lookAt(0, .25 + ty3, 0); } else if (v.full) { cam.position.set(0, -1.5 + ty3, 17 * (1 + tk)); cam.lookAt(0, -1.6 + ty3, 0); } else { cam.position.set(0, -.5 + ty3, 16.5 * (1 + tk)); cam.lookAt(0, -.75 + ty3, 0); }
       scene.add(m); R.setViewport(0, 0, px, px); R.setScissor(0, 0, px, px); R.setScissorTest(true); R.clear(); cam.aspect = 1; cam.updateProjectionMatrix(); R.render(scene, cam); scene.remove(m);
       var g = v.ctx, c = m.userData.cfg, bg = czColors(c).bg;
       g.clearRect(0, 0, px, px); g.save(); if (v.bg) { g.beginPath(); g.arc(px / 2, px / 2, px / 2 - px * .015, 0, Math.PI * 2); g.clip(); }   // only round badges are clipped
@@ -9385,7 +9397,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (on || failed) return;
       try { var t = document.createElement("canvas"); if (!(t.getContext("webgl2") || t.getContext("webgl"))) throw 0; } catch (e) { failed = true; czFallbackOn(); return; }
       var js = function (src) { return new Promise(function (ok, bad) { var s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = bad; document.head.appendChild(s); }); };
-      var model = Promise.all([window.GR && window.GR.avatar ? 0 : js("gaterush/avatar.js?v=8"), window.GR && window.GR.bossModel ? 0 : js("gaterush/bosses.js?v=1")]);
+      var model = Promise.all([window.GR && window.GR.avatar ? 0 : js("gaterush/avatar.js?v=9"), window.GR && window.GR.bossModel ? 0 : js("gaterush/bosses.js?v=1")]);
       Promise.all([import("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"), model]).then(function (res) {
         var mod = res[0]; T = mod; init(); on = true; document.documentElement.classList.remove("cz3-wait"); document.documentElement.classList.add("cz3-on"); window.dispatchEvent(new Event("cz3ready"));
         scan(); new MutationObserver(function () { clearTimeout(scan.t); scan.t = setTimeout(scan, 20); }).observe(document.documentElement, { childList: true, subtree: true });
@@ -9729,10 +9741,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let SUBS = {
       face: [["shape", "Shape & skin"], ["eyes", "Eyes"], ["brows", "Brows"], ["nose", "Nose & mouth"], ["details", "Details & beard"]],
       hair: [["style", "Style & colour"], ["line", "Hairline"]],
-      head: [["all", "All"], ["kumma", "Kumma"], ["mussar", "Mussar"], ["hats", "Caps & hats"]],
-      top: [["all", "All"], ["trad", "Traditional"], ["casual", "Casual"], ["sport", "Sport"], ["formal", "Formal"], ["street", "Street"], ["winter", "Winter"], ["outdoor", "Outdoor"]],
-      bottom: [["all", "All"], ["trad", "Traditional"], ["casual", "Casual"], ["sport", "Sport"], ["formal", "Formal"], ["outdoor", "Outdoor"]],
-      shoes: [["all", "All"], ["trad", "Traditional"], ["casual", "Casual"], ["sport", "Sport"], ["formal", "Formal"], ["outdoor", "Outdoor"]],
+      head: [["all", "All"], ["kumma", "Kumma"], ["mussar", "Mussar"], ["hats", "Caps & hats"], ["costume", "Costumes"]],
+      top: [["all", "All"], ["trad", "Traditional"], ["casual", "Casual"], ["sport", "Sport"], ["formal", "Formal"], ["street", "Street"], ["winter", "Winter"], ["outdoor", "Outdoor"], ["costume", "Costumes"]],
+      bottom: [["all", "All"], ["trad", "Traditional"], ["casual", "Casual"], ["sport", "Sport"], ["formal", "Formal"], ["outdoor", "Outdoor"], ["costume", "Costumes"]],
+      shoes: [["all", "All"], ["trad", "Traditional"], ["casual", "Casual"], ["sport", "Sport"], ["formal", "Formal"], ["outdoor", "Outdoor"], ["costume", "Costumes"]],
       acc: [["gl", "Glasses"], ["neck", "Neck"], ["wrist", "Wrist"], ["bags", "Bags & more"]]
     };
     let OMANI = ["#FFFFFF", "#F2EEE3", "#E4EAF0", "#C9D6E3", "#D8D2C4", "#BDB6A6", "#9AA4AE", "#8A7A6A", "#C9B6C9", "#A7B79A", "#3B4A6B", "#2E2A28"];
@@ -9765,7 +9777,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     };
     let slider = (k) => { let [a, b] = CZ_SZ[k], v = cfg.sz[k]; return `<label class="cz-sl"><span>${SL[k]}</span><input type="range" min="${a}" max="${b}" step="0.01" value="${v}" data-sz="${k}"><button type="button" class="cz-sl-r" data-szr="${k}" aria-label="Reset ${SL[k]}">↺</button></label>`; };
     let note = (t) => `<p class="cz-note">${esc(t)}</p>`;
-    function top2Label() { return /^bisht/.test(cfg.cl) ? "Bisht colour" : /^dish/.test(cfg.cl) ? "Embroidery and tassel colour" : cfg.cl === "blazer" ? "Tie colour" : /^(jersey|kit\d|bball|track)$/.test(cfg.cl) ? "Second colour" : cfg.cl === "explorer" ? "T-shirt colour" : "Trim colour"; }
+    function top2Label() { return czCostume("cl", cfg.cl) ? "Costume colour" : /^bisht/.test(cfg.cl) ? "Bisht colour" : /^dish/.test(cfg.cl) ? "Embroidery and tassel colour" : cfg.cl === "blazer" ? "Tie colour" : /^(jersey|kit\d|bball|track)$/.test(cfg.cl) ? "Second colour" : cfg.cl === "explorer" ? "T-shirt colour" : "Trim colour"; }
     function body() {
       if (mode === "outfits") return outfitsView();
       if (mode === "collections") return colSub === "packs" ? packsView() : collectionView();
@@ -9782,9 +9794,9 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         let fab = mzOn() || s === "mussar" ? grid("Mussar fabric", "mf", WD.mf) : "";
         return (s === "mussar" ? fab + grid("Wrapping style", "hat", list) : grid("", "hat", list) + fab) + (/^(cap|capb|snap|beanie|beaniew|bucket)$/.test(cfg.hat) || s === "hats" ? colRow("Cap and hat colour", "hat") : "");
       }
-      if (cat === "top") return grid("", "cl", tagged("cl", s)) + colRow(robe() ? "Dishdasha colour" : "Main colour", "top") + colRow(top2Label(), "top2");
-      if (cat === "bottom") return (robe() ? note("Your dishdasha covers these; they show when you wear a T-shirt, shirt or jacket.") : "") + grid("", "bottom", tagged("bottom", s)) + colRow("Colour", "bottom");
-      if (cat === "shoes") return grid("", "shoes", tagged("shoes", s)) + colRow("Colour", "shoes");
+      if (cat === "top") return grid("", "cl", tagged("cl", s)) + (czCostume("cl", cfg.cl) ? colRow(top2Label(), "top2") + note("Costumes keep their own main colour. The costume colour changes the trim, belt or badge.") : colRow(robe() ? "Dishdasha colour" : "Main colour", "top") + colRow(top2Label(), "top2"));
+      if (cat === "bottom") return czCostume("bottom", cfg.bottom) ? grid("", "bottom", tagged("bottom", s)) + note("Costume trousers keep their own colours.") : (robe() || cfg.cl === "wizard" ? note(cfg.cl === "wizard" ? "Your wizard robe covers these." : "Your dishdasha covers these; they show when you wear a T-shirt, shirt or jacket.") : "") + grid("", "bottom", tagged("bottom", s)) + colRow("Colour", "bottom");
+      if (cat === "shoes") return grid("", "shoes", tagged("shoes", s)) + (czCostume("shoes", cfg.shoes) ? note("Costume shoes keep their own colours.") : colRow("Colour", "shoes"));
       if (cat === "acc") return s === "gl" ? grid("Glasses", "gl", WD.gl) : s === "neck" ? grid("Around the neck", "neck", WD.neck) + colRow("Accessory colour", "acc")
         : s === "wrist" ? grid("Wrist", "wrist", WD.wrist) + colRow("Accessory colour", "acc") : grid("Bags and more", "extra", WD.extra) + colRow("Accessory colour", "acc");
       if (cat === "body") return slider("h") + slider("b") + slider("hd") + grid("Favourite pose", "pose", WD.pose) + colRow("Circle colour (small pictures)", "bg");
@@ -9798,6 +9810,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         return `<section class="wd-pack${open ? " open" : ""}" style="--pc:${p.col}"><div class="wd-pack-h"><span class="wd-pack-ic">${p.ic}</span><div><b>${esc(p.name)}</b><small>${p.items.length} items · ${open ? "Unlocked" : `opens at ${fmtNum(p.pts)} points`}</small></div><span class="wd-pack-st">${open ? "✅" : `🔒 ${fmtNum(p.pts - pts)} to go`}</span></div>`
           + (open ? "" : `<div class="wd-bar" role="progressbar" aria-valuenow="${pc}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pc}%"></i></div>`)
           + `<p class="wd-pack-list">${p.items.map((k) => `<span>${esc(itemName(k))}</span>`).join("")}</p>`
+          + (p.costume && open ? `<button type="button" class="btn btn-primary wd-wear" data-wearpack="${p.id}">${p.ic} Wear the whole costume</button>` : "")
           + `<button type="button" class="wd-pack-more" data-pack="${p.id}">${ex ? "Hide items" : "See the items on me"}</button>`
           + (ex ? `<div class="cz-grid">${p.items.map((k) => { let [s, v] = k.split(":"); return tile(s, s === "mf" ? Number(v) : v, itemName(k)); }).join("")}</div>` : "") + "</section>";
       };
@@ -9860,7 +9873,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     function searchView() {
       let t = q.trim().toLowerCase(), out = "", n = 0;
       [["hat", "Headwear"], ["mf", "Mussar fabrics"], ["cl", "Tops"], ["bottom", "Bottoms"], ["shoes", "Shoes"], ["hair", "Hair"], ["gl", "Glasses"], ["neck", "Neck"], ["wrist", "Wrist"], ["extra", "Bags and more"], ["face", "Face shape"], ["eyes", "Eyes"], ["brows", "Eyebrows"], ["nose", "Nose"], ["mouth", "Mouth"], ["mark", "Face details"], ["beard", "Beard"], ["cheeks", "Cheeks"], ["hairline", "Hairline"]].forEach(([k, title]) => {
-        let hits = WD[k].filter((e) => e[1].toLowerCase().indexOf(t) > -1 || (e[2] || []).some((g) => ({ trad: "traditional omani", casual: "casual", sport: "sport", formal: "formal", street: "street", winter: "winter", outdoor: "outdoor" }[g] || g).indexOf(t) > -1)).slice(0, 24);
+        let hits = WD[k].filter((e) => e[1].toLowerCase().indexOf(t) > -1 || (e[2] || []).some((g) => ({ trad: "traditional omani", casual: "casual", sport: "sport", formal: "formal", street: "street", winter: "winter", outdoor: "outdoor", costume: "costume dress up" }[g] || g).indexOf(t) > -1)).slice(0, 24);
         n += hits.length; out += grid(title, k, hits);
       });
       return n ? out : note(`Nothing matches "${q}". Try kumma, mussar, jacket or glasses.`);
@@ -9918,6 +9931,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (vw) return CZ3.hero && CZ3.hero.view(Number(vw.dataset.view));
       if (zm) return CZ3.hero && CZ3.hero.zoom(zm.dataset.zoom === "face" ? (CZ3.hero.zt > 2 ? 1 : 2.4) : CZ3.hero.zt + (zm.dataset.zoom === "in" ? .4 : -.4));
       if (pk) return openPack = openPack === pk.dataset.pack ? null : pk.dataset.pack, drawOpts();
+      let wp = e.target.closest("[data-wearpack]"); /* epz-patch:costumes — put on every piece of an unlocked costume at once */
+      if (wp) { let p = WD_PACKS.find((x) => x.id === wp.dataset.wearpack); if (!p) return; snap(); ["gl", "neck", "wrist", "extra"].forEach((k) => czCostume(k, cfg[k]) && (cfg[k] = "none")); p.items.forEach((key) => { let [k, v] = key.split(":"); czOwns(key) && (cfg[k] = k === "mf" ? Number(v) : v); }); let st = app.querySelector("#cz-stage"); st.classList.remove("cz-swap"), void st.offsetWidth, st.classList.add("cz-swap"); drawStage("celebrate"), drawOpts(); return toast(`You are dressed as ${/^[aeiou]/i.test(p.name) ? "an" : "a"} ${p.name.toLowerCase()}! Press Save to keep it.`, "success", 2600); }
       let ss = e.target.closest("[data-set]"), oa = e.target.closest("[data-oact]"); /* epz-patch:collection2 */
       if (ss) return openSet = openSet === ss.dataset.set ? null : ss.dataset.set, drawOpts();
       if (oa) return outfitAct(oa.dataset.oact, oa.dataset.oid);
