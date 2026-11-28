@@ -145,7 +145,13 @@ mark.ez-hl{background:#FFE9A8;color:inherit;padding:0 4px;border-radius:5px;font
 .ez-pass{background:var(--surface-2);border-left:5px solid var(--c);border-radius:0 14px 14px 0;padding:12px 14px;display:flex;flex-direction:column;gap:8px}.ez-pass p{font-size:1.02rem;line-height:1.55}\
 .ez-qbox{background:#E3EAF6;border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}.ez-qbox small{font-weight:900;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--c)}.ez-qbox b{font-size:1.02rem}\
 .ez-steps-l{list-style:none;counter-reset:s;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}.ez-steps-l li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start}.ez-steps-l li:before{content:counter(s);grid-row:1 / span 2;width:30px;height:30px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font-weight:900}.ez-steps-l b{display:block;grid-column:2}.ez-steps-l span{display:block;grid-column:2;color:var(--muted);font-weight:600;line-height:1.4}\.ez-vnote{background:#FFF1D6;border-radius:12px;padding:10px 12px;font-weight:700;color:#5A3A00}.ez-reveal{background:var(--surface-2);border-left:5px solid var(--c);border-radius:0 14px 14px 0;padding:12px 14px;display:flex;flex-direction:column;gap:6px}.ez-reveal p{font-size:.95rem;line-height:1.45}\
-@media(max-width:380px){.ez-stats b{font-size:1.05rem}.ez-words{grid-template-columns:1fr}}\
+.ez-topic{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:var(--r-s);background:var(--surface);border:2px solid var(--line);box-shadow:0 3px 0 var(--line)}\
+.ez-topic-main{display:grid;grid-template-columns:38px minmax(0,1fr);gap:12px;align-items:center;text-decoration:none;color:var(--ink)}\
+.ez-topic .no{width:38px;height:38px;border-radius:12px;background:var(--c);color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:800}\
+.ez-topic b{display:block;line-height:1.25}.ez-topic small{color:var(--muted);font-weight:700}\
+.ez-topic-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ez-topic-btns .btn{min-height:42px;justify-content:center;white-space:nowrap}\
+.ez-topic.soon{display:grid;grid-template-columns:38px minmax(0,1fr);gap:12px;align-items:center;opacity:.6;box-shadow:none}\
+.ez-all{border:2px solid var(--line);border-radius:var(--r);background:var(--surface);padding:0 12px;margin-top:10px}.ez-all summary{display:flex;align-items:center;gap:10px;min-height:54px;cursor:pointer;list-style:none}.ez-all summary::-webkit-details-marker{display:none}.ez-all summary .skill-ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none}.ez-all summary b{flex:1;font-family:var(--display);font-size:1.05rem}.ez-all summary:after{content:'+';font-size:1.3rem;font-weight:900;margin-left:4px}.ez-all[open] summary:after{content:'\\2013'}.ez-all .ez-topics{padding-bottom:12px}\@media(max-width:380px){.ez-stats b{font-size:1.05rem}.ez-words{grid-template-columns:1fr}}\
 ";
   function injectCss() { if (css) return; css = true; var s = document.createElement("style"); s.id = "ez-css"; s.textContent = CSS; document.head.appendChild(s); }
 
@@ -157,7 +163,7 @@ mark.ez-hl{background:#FFE9A8;color:inherit;padding:0 4px;border-radius:5px;font
   // the card shown at the top of the Practice tab
   E.homeCard = function () {
     var t = E.totals(), r = readyTotals(); injectCssSafe();
-    return '<a class="ez-card-home" href="#easy"><span class="skill-ic" style="--c:#fff;background:rgb(255 255 255 / .2)">' + H.icon("target", 24) + '</span><span class="tx"><b>Easy Level course</b><small>' + t.skills + ' skills · ' + t.parts + ' Parts · Learn and 5 tests in each' + (r.done ? ' · ' + r.done + '/' + r.tests + ' tests done' : '') + '</small></span><span class="go">Open</span></a>';
+    return '<a class="ez-card-home" href="#easy"><span class="skill-ic" style="--c:#fff;background:rgb(255 255 255 / .2)">' + H.icon("target", 24) + '</span><span class="tx"><b>Easy Level course</b><small>' + t.skills + ' skills · ' + t.parts + ' topics · Learn and 5 tests in each' + (r.done ? ' · ' + r.done + '/' + r.tests + ' tests done' : '') + '</small></span><span class="go">Open</span></a>';
   };
   function injectCssSafe() { try { injectCss(); } catch (e) {} }
 
@@ -174,15 +180,19 @@ mark.ez-hl{background:#FFE9A8;color:inherit;padding:0 4px;border-radius:5px;font
     var t = E.totals(), r = readyTotals(), pct = r.tests ? Math.round(100 * r.done / r.tests) : 0, weak = weakAreas();
     app().dataset.tab = "skills";
     app().innerHTML = '<div class="ez">' + top("Easy Level", "skills", "Back to Practice") +
-      '<section class="ez-hero"><h2>Learn, then test yourself</h2><p>' + t.skills + ' skills · ' + t.parts + ' Parts · ' + t.tests + ' tests · ' + t.questions.toLocaleString("en") + ' questions. The same course for Grades 9 to 12.</p>' +
+      '<section class="ez-hero"><h2>Learn, then test yourself</h2><p>' + t.skills + ' skills · ' + t.parts + ' topics · ' + t.tests + ' tests · ' + t.questions.toLocaleString("en") + ' questions. The same course for Grades 9 to 12.</p>' +
       '<div class="ez-bar"><span style="width:' + pct + '%"></span></div>' +
       '<div class="ez-stats"><div><b>' + r.done + '</b><span>of ' + r.tests + ' tests</span></div><div><b>' + r.learned + '</b><span>of ' + r.parts + ' Learn</span></div><div><b>' + (r.done ? r.avg + "%" : "–") + '</b><span>average</span></div><div><b>' + (r.done ? r.best + "%" : "–") + '</b><span>best</span></div></div>' +
       (r.skills < t.skills ? '<p style="font-size:.8rem">' + r.skills + ' of ' + t.skills + ' skills are open now. The rest are on the way.</p>' : "") + '</section>' +
       '<h2 class="ez-h">Pick a skill</h2><div class="ez-sk">' + E.SKILLS.map(function (S) {
         var sk = H.SKILLS2[S.k], st = skillStats(S.k), ready = !!E.READY[S.k], pc = st.tests ? Math.round(100 * st.done / st.tests) : 0;
-        return '<a class="ez-skill' + (ready ? "" : " soon") + '" href="' + (ready ? "#easy/" + S.k : "#easy") + '" style="--c:' + sk.color + '"><span class="skill-ic">' + H.icon(sk.icon, 24) + '</span><span class="tx"><b>' + esc(sk.name) + '</b><small>' + plural(S.parts.length, "Part") + ' · ' + S.parts.length * TESTS + ' tests</small>' +
+        return '<a class="ez-skill' + (ready ? "" : " soon") + '" href="' + (ready ? "#easy/" + S.k : "#easy") + '" style="--c:' + sk.color + '"><span class="skill-ic">' + H.icon(sk.icon, 24) + '</span><span class="tx"><b>' + esc(sk.name) + '</b><small>' + plural(S.parts.length, "topic") + ' · ' + S.parts.length * TESTS + ' tests</small>' +
           (ready ? '<div class="ez-bar"><span style="width:' + pc + '%"></span></div><small>' + st.done + '/' + st.tests + ' tests · ' + st.learned + '/' + st.parts + ' Learn</small>' : '<small><span class="ez-chip">Coming soon</span></small>') + '</span></a>';
       }).join("") + '</div>' +
+      '<h2 class="ez-h">All topics</h2>' + E.SKILLS.map(function (S, si) {
+        var sk = H.SKILLS2[S.k], ready = !!E.READY[S.k];
+        return '<details class="ez-all" style="--c:' + sk.color + '"' + (ready && si === 0 ? " open" : "") + '><summary><span class="skill-ic" style="background:' + sk.color + ';color:#fff">' + H.icon(sk.icon, 18) + '</span><b>' + esc(sk.name) + '</b><span class="ez-chip">' + plural(S.parts.length, "topic") + '</span></summary><div class="ez-topics">' + S.parts.map(function (name, i) { return topicRow(S.k, i + 1, name, ready); }).join("") + '</div></details>';
+      }).join("") +
       (weak.length ? '<h2 class="ez-h">Practise these again</h2><div class="ez-weak">' + weak.map(function (w) { return '<a href="#easy/' + w.sk + '/' + w.n + '"><span>' + esc(H.SKILLS2[w.sk].name) + ' · ' + esc(w.name) + '</span><b>' + w.avg + '%</b></a>'; }).join("") + '</div>' : "") + '</div>';
   }
   function weakAreas() {
@@ -191,17 +201,22 @@ mark.ez-hl{background:#FFE9A8;color:inherit;padding:0 4px;border-radius:5px;font
     return out.sort(function (a, b) { return a.avg - b.avg; }).slice(0, 5);
   }
 
+  // one topic (a Part) as a row with two visible buttons: Learn and Tests
+  function topicRow(sk, n, name, ready) {
+    var S = skillOf(sk), meta = H.SKILLS2[sk];
+    if (!ready) return '<div class="ez-topic soon" style="--c:' + meta.color + '"><span class="no">' + n + '</span><span class="tx"><b>' + esc(name) + '</b><small><span class="ez-chip">Coming soon</span></small></span></div>';
+    var ps = partStats(sk, n), dots = ""; for (var t = 1; t <= TESTS; t++) { var r = tRec(sk, n, t); dots += '<i class="' + (r && r.n ? (r.b >= 8 ? "g" : "d") : "") + '"></i>'; }
+    return '<div class="ez-topic" style="--c:' + meta.color + '"><a class="ez-topic-main" href="#easy/' + sk + '/' + n + '"><span class="no">' + n + '</span><span class="tx"><b>' + esc(name) + '</b><small>' + ps.done + '/' + TESTS + ' tests' + (ps.done ? ' \u00B7 ' + ps.avg + '% average' : '') + '</small><span class="ez-dots">' + dots + '</span></span></a>' +
+      '<div class="ez-topic-btns"><a class="btn ' + (ps.learn ? "btn-ghost" : "btn-primary") + ' btn-sm" href="#easy/learn/' + sk + '/' + n + '">' + H.icon("book", 14) + ' Learn' + (ps.learn ? " \u2713" : "") + '</a><a class="btn ' + (ps.done === TESTS ? "btn-ghost" : "btn-primary") + ' btn-sm" href="#easy/' + sk + '/' + n + '/tests">' + H.icon("target", 14) + ' Tests ' + ps.done + '/' + TESTS + '</a></div></div>';
+  }
   function skillScreen(sk) {
     var S = skillOf(sk); if (!S || !E.READY[sk]) return homeScreen();
     var meta = H.SKILLS2[sk], st = skillStats(sk), pc = Math.round(100 * st.done / st.tests);
     app().dataset.tab = "skills";
     app().innerHTML = '<div class="ez" style="--c:' + meta.color + '">' + top(meta.name, "easy", "Back to Easy Level") +
-      '<section class="ez-hero" style="background:linear-gradient(135deg,' + meta.color + ',color-mix(in srgb,' + meta.color + ' 60%,#17224D))"><h2>' + esc(meta.name) + '</h2><p>' + plural(st.parts, "Part") + ' · ' + st.tests + ' tests. Study the Learn page, then take the 5 tests.</p><div class="ez-bar"><span style="width:' + pc + '%"></span></div>' +
-      '<div class="ez-stats"><div><b>' + st.done + '</b><span>of ' + st.tests + ' tests</span></div><div><b>' + st.learned + '</b><span>of ' + st.parts + ' Learn</span></div><div><b>' + st.partsDone + '</b><span>Parts done</span></div><div><b>' + (st.done ? st.avg + "%" : "–") + '</b><span>average</span></div></div></section>' +
-      '<div class="ez-sk" style="grid-template-columns:1fr">' + S.parts.map(function (name, i) {
-        var n = i + 1, ps = partStats(sk, n), dots = ""; for (var t = 1; t <= TESTS; t++) { var r = tRec(sk, n, t); dots += '<i class="' + (r && r.n ? (r.b >= 8 ? "g" : "d") : "") + '"></i>'; }
-        return '<a class="ez-part" href="#easy/' + sk + '/' + n + '"><span class="no">' + n + '</span><span><b>' + esc(name) + '</b><small>' + ps.done + '/' + TESTS + ' tests' + (ps.done ? ' · ' + ps.avg + '% average' : '') + '</small><span class="ez-dots">' + dots + '</span></span><span class="ez-chip ' + (ps.learn ? "ok" : "") + '">' + (ps.learn ? "Learn ✓" : "Learn") + '</span></a>';
-      }).join("") + '</div></div>';
+      '<section class="ez-hero" style="background:linear-gradient(135deg,' + meta.color + ',color-mix(in srgb,' + meta.color + ' 60%,#17224D))"><h2>' + esc(meta.name) + '</h2><p>' + plural(st.parts, "topic") + ' · ' + st.tests + ' tests. Study the Learn page, then take the 5 tests.</p><div class="ez-bar"><span style="width:' + pc + '%"></span></div>' +
+      '<div class="ez-stats"><div><b>' + st.done + '</b><span>of ' + st.tests + ' tests</span></div><div><b>' + st.learned + '</b><span>of ' + st.parts + ' Learn</span></div><div><b>' + st.partsDone + '</b><span>topics done</span></div><div><b>' + (st.done ? st.avg + "%" : "–") + '</b><span>average</span></div></div></section>' +
+      '<h2 class="ez-h">Topics</h2><div class="ez-topics">' + S.parts.map(function (name, i) { return topicRow(sk, i + 1, name, true); }).join("") + '</div></div>';
   }
 
   function partScreen(sk, n) {
@@ -209,16 +224,17 @@ mark.ez-hl{background:#FFE9A8;color:inherit;padding:0 4px;border-radius:5px;font
     var meta = H.SKILLS2[sk], name = S.parts[n - 1]; app().dataset.tab = "skills";
     app().innerHTML = '<div class="ez"><p style="text-align:center;padding:40px 12px">Loading…</p></div>';
     loadPart(sk, n).then(function (part) {
-      if (location.hash.replace(/^#/, "") !== "easy/" + sk + "/" + n) return;
+      if (location.hash.replace(/^#/, "").indexOf("easy/" + sk + "/" + n) !== 0) return;
       var ps = partStats(sk, n), prev = n > 1 ? n - 1 : 0, next = n < S.parts.length ? n + 1 : 0;
       app().innerHTML = '<div class="ez" style="--c:' + meta.color + '">' + top(name, "easy/" + sk, "Back to " + meta.name) +
         '<a class="ez-learnbtn" href="#easy/learn/' + sk + '/' + n + '"><span class="skill-ic" style="background:' + meta.color + ';color:#fff">' + H.icon("book", 24) + '</span><span class="tx"><b>' + (ps.learn ? "Learn (done)" : ps.learnStep ? "Continue Learn" : "Start with Learn") + '</b><small>' + part.learn.length + ' short steps. You can open it any time.</small></span><span class="ez-chip ' + (ps.learn ? "ok" : "warn") + '">' + (ps.learn ? "✓ Done" : "Study first") + '</span></a>' +
-        '<h2 class="ez-h">5 tests · 10 questions each</h2>' + part.tests.map(function (T, i) {
+        '<h2 class="ez-h" id="ez-tests">5 tests · 10 questions each</h2>' + part.tests.map(function (T, i) {
           var t = i + 1, r = tRec(sk, n, t);
           return '<div class="ez-test"><div><b>Test ' + t + ': ' + esc(T.title) + '</b><small>' + esc(T.instructions) + '</small>' + (r && r.n ? '<small>Best ' + r.b * 10 + '% · last ' + r.l * 10 + '% · ' + plural(r.n, "try") + '</small>' : '<small>Not tried yet</small>') + '</div><a class="btn ' + (r && r.n ? "btn-ghost" : "btn-primary") + ' btn-sm" href="#play-' + testId(sk, n, t) + '">' + (r && r.n ? "Again" : "Start") + '</a></div>';
         }).join("") +
-        '<div class="ez-link">' + (prev ? '<a href="#easy/' + sk + '/' + prev + '">‹ Previous Part</a>' : "") + '<a href="#easy/' + sk + '">Return to ' + esc(meta.name) + '</a>' + (next ? '<a href="#easy/' + sk + '/' + next + '">Next Part ›</a>' : "") + '</div></div>';
-    }).catch(function () { app().innerHTML = '<div class="ez">' + top(name, "easy/" + sk) + '<section class="block" style="text-align:center"><p>Could not load this Part. Check your connection.</p><a class="btn btn-primary" href="#easy/' + sk + '/' + n + '">Try again</a></section></div>'; });
+        '<div class="ez-link">' + (prev ? '<a href="#easy/' + sk + '/' + prev + '">‹ Previous topic</a>' : "") + '<a href="#easy/' + sk + '">Return to ' + esc(meta.name) + '</a>' + (next ? '<a href="#easy/' + sk + '/' + next + '">Next topic ›</a>' : "") + '</div></div>';
+      if (/\/tests$/.test(location.hash)) { var tg = app().querySelector('#ez-tests'); tg && setTimeout(function () { tg.scrollIntoView({ block: 'start' }); }, 60); }
+    }).catch(function () { app().innerHTML = '<div class="ez">' + top(name, "easy/" + sk) + '<section class="block" style="text-align:center"><p>Could not load this topic. Check your connection.</p><a class="btn btn-primary" href="#easy/' + sk + '/' + n + '">Try again</a></section></div>'; });
   }
 
   /* ---------------------------------------------------------------- Learn viewer: one short card at a time, progress saved so the student can continue */
@@ -230,11 +246,11 @@ mark.ez-hl{background:#FFE9A8;color:inherit;padding:0 4px;border-radius:5px;font
       function save(step, done) { var p = prog(true), r = p.l[partId(sk, n)] || (p.l[partId(sk, n)] = { s: 0, d: 0 }); r.s = step; if (done) r.d = 1; r.at = new Date().toISOString(); H.save(); }
       function draw() {
         var c = cards[at], last = at === cards.length - 1;
-        app().innerHTML = '<div class="ez" style="--c:' + meta.color + '">' + top("Learn: " + name, "easy/" + sk + "/" + n, "Back to the Part") +
+        app().innerHTML = '<div class="ez" style="--c:' + meta.color + '">' + top("Learn: " + name, "easy/" + sk + "/" + n, "Back to the topic") +
           '<div class="ez-steps" aria-label="Step ' + (at + 1) + ' of ' + cards.length + '">' + cards.map(function (_, i) { return '<i class="' + (i < at ? "d" : i === at ? "now" : "") + '"></i>'; }).join("") + '</div>' +
           '<section class="ez-card" id="ez-card">' + cardHtml(c, sk) + '</section>' +
           '<div class="ez-nav"><button class="btn btn-ghost btn-big" id="ez-prev" ' + (at ? "" : "disabled") + '>' + H.icon("back", 18) + ' Previous</button><button class="btn btn-primary btn-big" id="ez-next">' + (last ? "Finish " + H.icon("check", 18) : "Next " + H.icon("next", 18)) + '</button></div>' +
-          '<div class="ez-link"><a href="#easy/' + sk + '/' + n + '">Back to Part</a><a href="#easy/' + sk + '">Return to ' + esc(meta.name) + '</a></div></div>';
+          '<div class="ez-link"><a href="#easy/' + sk + '/' + n + '">Back to topic</a><a href="#easy/' + sk + '">Return to ' + esc(meta.name) + '</a></div></div>';
         mountCard(c);
         app().querySelector("#ez-prev").addEventListener("click", function () { if (at) { at--; save(at); window.scrollTo(0, 0); draw(); } });
         app().querySelector("#ez-next").addEventListener("click", function () {
@@ -303,7 +319,7 @@ mark.ez-hl{background:#FFE9A8;color:inherit;padding:0 4px;border-radius:5px;font
       '<div class="res-chips"><span>' + H.icon("check", 16) + ' ' + o.correct + ' correct</span><span>' + H.icon("x", 16) + ' ' + (o.total - o.correct) + ' incorrect</span><span>' + acc + '%</span></div><p>' + msg + '</p>' +
       '<div class="earned-pts">' + H.icon("star", 22) + ' +' + H.fmtNum(o.r.points) + ' points</div>' + (o.r.bonus ? '<p class="small good-text">Includes +' + o.r.bonus + ' for your first perfect score.</p>' : "") + (o.r.repeat ? '<p class="muted small">You tried this test before, so you only earn points for answers that beat your best score.</p>' : "") +
       (o.r.newBadges || []).map(function (k) { return '<div class="unlock badge-new"><span class="badge-ic">' + H.icon(H.BADGES[k].icon, 22) + '</span><div><b>New badge: ' + esc(H.BADGES[k].name) + '</b><span>' + esc(H.BADGES[k].desc) + '</span></div></div>'; }).join("") +
-      '<div class="res-actions"><button class="btn btn-ghost btn-big" id="ez-rev">' + H.icon("eye", 20) + ' Review answers</button><a class="btn btn-primary btn-big" href="#' + (next ? "play-" + testId(cr.skill, part, next) : "easy/" + cr.skill + "/" + part) + '">' + H.icon("play", 20) + ' ' + (next ? "Try another test" : "Back to the Part") + '</a><a class="btn btn-ghost btn-big" href="#easy/' + cr.skill + '/' + part + '">' + H.icon("back", 20) + ' Return to the Part</a></div>' +
+      '<div class="res-actions"><button class="btn btn-ghost btn-big" id="ez-rev">' + H.icon("eye", 20) + ' Review answers</button><a class="btn btn-primary btn-big" href="#' + (next ? "play-" + testId(cr.skill, part, next) : "easy/" + cr.skill + "/" + part) + '">' + H.icon("play", 20) + ' ' + (next ? "Try another test" : "Back to the topic") + '</a><a class="btn btn-ghost btn-big" href="#easy/' + cr.skill + '/' + part + '">' + H.icon("back", 20) + ' Return to the topic</a></div>' +
       '<div class="ez-rv" id="ez-rv" hidden>' + o.log.map(function (L, i) { return '<div class="' + (L.ok ? "ok" : "no") + '"><b>' + (i + 1) + '. ' + esc(L.prompt) + '</b>' + (L.given ? '<div class="a">Your answer: ' + esc(L.given) + '</div>' : "") + (L.ok ? '<div class="a">✓ Correct</div>' : '<div class="a">Correct answer: ' + esc(L.answer) + '</div>') + (L.explanation ? '<small>' + esc(L.explanation) + '</small>' : "") + '</div>'; }).join("") + '</div></section>';
     app().querySelector("#ez-rev").addEventListener("click", function () { var rv = app().querySelector("#ez-rv"); rv.hidden = !rv.hidden; this.lastChild.textContent = rv.hidden ? " Review answers" : " Hide answers"; });
     if (acc >= 80) H.confetti();
