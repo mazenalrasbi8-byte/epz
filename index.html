@@ -2100,6 +2100,37 @@ body {
 .tab { color: #56618A !important; }
 .tab[aria-current="page"] { color: #17224D !important; }
 .tab[aria-current="page"] .tab-ic { background: #FFD83D !important; color: #2B2300 !important; box-shadow: 0 3px 0 #B89A1A !important; }
+/* ============================================================ epz-patch:wardrobe — the wardrobe screen */
+.wd-sub{display:flex;gap:6px;overflow-x:auto;padding:0 2px 8px;scrollbar-width:none}
+.wd-sub::-webkit-scrollbar{display:none}
+.wd-sub:empty{display:none}
+.wd-sub button{flex:none;padding:6px 12px;border-radius:999px;border:2px solid var(--gr-navy);background:#fff;font:inherit;font-size:.8rem;font-weight:800;color:var(--gr-navy);cursor:pointer}
+.wd-sub button.on{background:var(--gr-navy);color:#fff}
+.wd-search{display:flex;align-items:center;gap:8px;margin:12px 2px 0;padding:8px 12px;border:2px solid var(--gr-navy);border-radius:14px;background:#fff;font-size:1rem}
+.wd-search input{flex:1;border:0;outline:0;font:inherit;font-size:.92rem;background:transparent;color:var(--gr-navy);min-width:0}
+.wd-lock{position:absolute;left:4px;right:4px;top:4px;padding:2px 4px;border-radius:8px;background:rgb(23 34 77 / .86);color:#fff;font-size:.62rem;font-weight:800;line-height:1.3;pointer-events:none}
+.wd-pk{position:absolute;right:5px;top:4px;font-size:.85rem;pointer-events:none}
+.wd-view{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);display:flex;gap:4px;z-index:2}
+.wd-view button,.wd-zoom button{border:2px solid rgb(255 255 255 / .4);background:rgb(23 34 77 / .6);color:#fff;border-radius:10px;padding:5px 10px;font:inherit;font-size:.74rem;font-weight:800;cursor:pointer;transition:transform .12s}
+.wd-view button:active,.wd-zoom button:active{transform:scale(.92)}
+.wd-zoom{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:5px;z-index:2}
+.wd-zoom button{width:38px;height:34px;padding:0;font-size:1rem}
+.wd-pack{position:relative;border:3px solid var(--gr-navy);border-left:10px solid var(--pc,var(--gr-navy));border-radius:18px;background:#fff;padding:12px;margin:0 0 12px;box-shadow:0 4px 0 var(--gr-navy)}
+.wd-pack-h{display:flex;align-items:center;gap:10px}
+.wd-pack-h div{flex:1;min-width:0}.wd-pack-h b{display:block;font-size:1.02rem}.wd-pack-h small{display:block;color:var(--muted);font-weight:700;font-size:.78rem}
+.wd-pack-ic{font-size:1.8rem;line-height:1}
+.wd-pack-st{font-weight:800;font-size:.76rem;white-space:nowrap}
+.wd-bar{height:10px;border-radius:999px;background:#E3EAF6;margin:10px 0 2px;overflow:hidden;border:2px solid var(--gr-navy)}
+.wd-bar i{display:block;height:100%;background:var(--pc,var(--gr-gold))}
+.wd-pack-list{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0 0}
+.wd-pack-list span{font-size:.74rem;font-weight:700;padding:3px 8px;border-radius:999px;background:#F2F5FB;border:1.5px solid #CDD7EA}
+.wd-pack-more{margin-top:10px;width:100%;padding:9px;border-radius:12px;border:2px solid var(--gr-navy);background:var(--gr-sky);font:inherit;font-weight:800;color:var(--gr-navy);cursor:pointer}
+.wd-pack .cz-grid{margin-top:10px}
+.wd .cz-opt{min-width:0}
+.wd .wd-title{font-size:1rem;top:8px;left:12px}
+@media (max-width:859px){.wd .wd-title{display:none}}
+.wd .cz-opt-l{overflow-wrap:anywhere}
+@media (min-width:860px){.wd{display:grid;grid-template-columns:minmax(300px,400px) 1fr;gap:22px;align-items:start}.wd .cz-make{position:sticky;top:8px}.wd .cz-stage-wrap{height:480px;max-width:none}.wd .wd-search{margin-top:4px}}
 </style>
 </head>
 <body>
@@ -6115,7 +6146,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     if (grReady) return grReady;
     const files = ["net", "avatar", "engine", "map-fort", "ui"];
     return grReady = Promise.all(files.map((f) => new Promise((ok, bad) => {
-      const s = document.createElement("script"); s.src = `gaterush/${f}.js?v=9`; s.async = !1; s.onload = ok; s.onerror = () => bad(new Error("load " + f)); document.head.appendChild(s);
+      const s = document.createElement("script"); s.src = `gaterush/${f}.js?v=10`; s.async = !1; s.onload = ok; s.onerror = () => bad(new Error("load " + f)); document.head.appendChild(s);
     }))).catch((e) => { grReady = null; throw e; });
   }
   function grHost() {
@@ -8477,6 +8508,9 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   function duoCfg(c) {
     let o = Object.assign({}, DUO_DEF, c && typeof c == "object" ? c : {}), ok = (k, list) => list.some((p) => p[0] === o[k]) || (o[k] = DUO_DEF[k]);
     o.hair === "kumma" && (o.hair = "short", o.hat = "kumma1"), o.hair === "massar" && (o.hair = "short", o.hat = "massar1");
+    /* epz-patch:wardrobe — the three old mussars become the classic wrap in their fabric; the watch moved to the wrist slot */
+    let oldMz = { massar1: 0, massar2: 1, massar3: 2 }; o.hat in oldMz && (o.mf = oldMz[o.hat], o.hat = "mzclassic");
+    o.extra === "watch" && ((!o.wrist || o.wrist === "none") && (o.wrist = "watch"), o.extra = "none");
     ok("hair", DUO_PARTS.hair), ok("hat", DUO_PARTS.hat), ok("eyes", DUO_PARTS.eyes), ok("mouth", DUO_PARTS.mouth), ok("gl", DUO_PARTS.gl), ok("cl", DUO_PARTS.cl);
     let n = (k, len) => (o[k] = Number.isInteger(o[k]) && o[k] >= 0 && o[k] < len ? o[k] : DUO_DEF[k]);
     return n("skin", DUO_SKIN.length), n("hc", DUO_HAIRC.length), n("cc", DUO_CLOTHC.length), n("bg", DUO_BG.length), o;
@@ -8484,7 +8518,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   var duoUid = 0;
   function duoHat(h, id, cc) {
     if (/^kumma/.test(h)) {
-      let [base, cols, edge] = { kumma1: ["#FFFFFF", ["#C8323A", "#0B7A63", "#2F6FDE", "#E89A12"], "#D6DDDA"], kumma2: ["#FFFFFF", ["#1F5FA8", "#139C99", "#5AA6E0", "#0E3F7A"], "#D6DDDA"], kumma3: ["#1E2A4A", ["#F2C230", "#FFFFFF", "#E0601C", "#7FC3E8"], "#33456F"] }[h] || [];
+      let [base, cols, edge] = { kumma1: ["#FFFFFF", ["#C8323A", "#0B7A63", "#2F6FDE", "#E89A12"], "#D6DDDA"], kumma2: ["#FFFFFF", ["#1F5FA8", "#139C99", "#5AA6E0", "#0E3F7A"], "#D6DDDA"], kumma3: ["#1E2A4A", ["#F2C230", "#FFFFFF", "#E0601C", "#7FC3E8"], "#33456F"], kummag: ["#E9B53A", ["#FFFFFF", "#B3262A", "#8A5A12", "#F2C230"], "#B9801A"] }[h] || ["#FFFFFF", ["#C8323A", "#0B7A63", "#2F6FDE", "#E89A12"], "#D6DDDA"];
       let shape = "M31 41 L32.5 24 Q34 13 60 12.5 Q86 13 87.5 24 L89 41 Q60 44.5 31 41 Z", m = "", i = 0;
       for (let r = 0; r < 3; r++) for (let x = 36 + r % 2 * 4; x <= 84; x += 8, i++) {
         let y = 19 + r * 5.5;
@@ -8578,13 +8612,66 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     pose: [["relaxed", "Relaxed"], ["hips", "Hands on hips"], ["crossed", "Arms crossed"], ["think", "Thinking"], ["wave", "Waving"], ["ready", "Ready!"]],
     style: [["omani", "Omani"], ["everyday", "Everyday"]]
   };
-  var CZ_DEF = { face: "round", brows: "soft", beard: "none", bottom: "trousers", shoes: "sandals", extra: "none", pose: "relaxed", style: "omani" };
+  var CZ_DEF = { face: "round", brows: "soft", beard: "none", bottom: "trousers", shoes: "sandals", extra: "none", pose: "relaxed", style: "omani", cheeks: "none", nose: "button", mark: "none", hairline: "straight", neck: "none", wrist: "none" };
   // free sliders: [min, max, default]
-  var CZ_SZ = { h: [.86, 1.14, 1], b: [.84, 1.2, 1], hd: [.88, 1.14, 1], es: [.75, 1.3, 1], ed: [-3.5, 3.5, 0], by: [-3, 4, 0], ns: [.6, 1.5, 1], mw: [.75, 1.35, 1] };
-  var CZ_COLS = ["skin", "hair", "eyes", "top", "bottom", "shoes", "hat", "bg"];
+  var CZ_SZ = { h: [.86, 1.14, 1], b: [.84, 1.2, 1], hd: [.88, 1.14, 1], es: [.75, 1.3, 1], ed: [-3.5, 3.5, 0], by: [-3, 4, 0], bw: [.6, 1.8, 1], ns: [.6, 1.5, 1], mw: [.75, 1.35, 1] };
+  var CZ_COLS = ["skin", "hair", "eyes", "top", "top2", "bottom", "shoes", "hat", "acc", "bg"];
   var CZ_EYEC = ["#3B2416", "#5A3A22", "#1F1A17", "#2E6B3A", "#2F6FDE", "#6B8E9E", "#8A5A2B", "#7E5BEF"];
   var CZ_BOTC = { trousers: "#2E3440", jeans: "#3D5A8A", joggers: "#3B3F4A", shorts: "#5A6B7A" };
   var CZ_SHOEC = { sandals: "#7A4B2A", sneakers: "#FFFFFF", school: "#1B1B1F", boots: "#6B4A2B" };
+  /* ============================================================ epz-patch:wardrobe — one wardrobe: traditional and modern items side by side
+     Every slot lists [value, name, tags]. Tags only drive the filters (trad = Omani / traditional, casual, sport, formal, street, winter, outdoor).
+     Items in a pack open when the student's total points reach the pack's level; Boss Rush prizes and Gate Rush champion packs stay exclusive. */
+  var WD = {
+    face: [["round", "Round"], ["oval", "Oval"], ["square", "Square"], ["long", "Long"], ["wide", "Wide"], ["heart", "Heart"], ["strong", "Strong jaw"], ["soft", "Soft jaw"]],
+    cheeks: [["none", "Smooth"], ["round", "Round cheeks"], ["high", "High cheekbones"], ["chubby", "Full cheeks"]],
+    nose: [["button", "Button"], ["small", "Small"], ["round", "Round"], ["wide", "Wide"], ["long", "Long"], ["pointed", "Pointed"], ["roman", "Roman"], ["flat", "Flat"], ["none", "Tiny"]],
+    eyes: [["big", "Big"], ["round", "Round"], ["almond", "Almond"], ["narrow", "Narrow"], ["sharp", "Sharp"], ["droopy", "Relaxed"], ["sparkle", "Sparkle"], ["lashes", "Lashes"], ["dots", "Dots"], ["happy", "Happy"], ["wink", "Wink"], ["cool", "Sleepy"]],
+    brows: [["soft", "Soft"], ["straight", "Straight"], ["thick", "Thick"], ["thin", "Thin"], ["arched", "Arched"], ["angled", "Determined"], ["worried", "Worried"], ["bushy", "Bushy"], ["short", "Short"]],
+    mouth: [["smile", "Smile"], ["grin", "Big smile"], ["teeth", "Teeth"], ["wide", "Wide smile"], ["small", "Small smile"], ["smirk", "Smirk"], ["laugh", "Laugh"], ["cat", "Cheeky"], ["lips", "Full lips"], ["o", "Surprised"], ["flat", "Calm"], ["tongue", "Silly"]],
+    mark: [["none", "None"], ["freckles", "Freckles"], ["blush", "Rosy cheeks"], ["dimples", "Dimples"], ["mole", "Beauty mark"], ["scar", "Brow scar"], ["birthmark", "Birthmark"]],
+    beard: [["none", "None"], ["stubble", "Stubble"], ["moustache", "Moustache"], ["goatee", "Goatee"], ["chinstrap", "Chinstrap"], ["beard", "Short beard"], ["full", "Full beard"]],
+    hair: [["none", "Bald"], ["buzz", "Buzz cut"], ["short", "Short"], ["crew", "Crew cut"], ["side", "Side part"], ["fringe", "Fringe"], ["quiff", "Quiff"], ["slick", "Slicked back"], ["undercut", "Undercut"], ["fauxhawk", "Faux hawk"], ["spiky", "Spiky"], ["messy", "Messy"], ["curly", "Curly"], ["wavy", "Wavy"], ["afro", "Big hair"], ["twists", "Twists"], ["middle", "Middle part"], ["long", "Long"], ["bun", "Top knot"], ["ponytail", "Ponytail"], ["cornrows", "Cornrows"]],
+    hairline: [["straight", "Straight"], ["round", "Rounded"], ["peak", "Widow's peak"], ["high", "High"], ["mshape", "M-shape"]],
+    hat: [["none", "None"],
+      ["kumma1", "Kumma · Muscat", ["trad", "kumma"]], ["kumma2", "Kumma · Sur Blue", ["trad", "kumma"]], ["kumma3", "Kumma · Nizwa Night", ["trad", "kumma"]], ["kumma4", "Kumma · Bahla Clay", ["trad", "kumma"]], ["kumma5", "Kumma · Sohar Vine", ["trad", "kumma"]],
+      ["kumma6", "Kumma · Salalah Bloom", ["trad", "kumma"]], ["kumma7", "Kumma · Classic Eyelet", ["trad", "kumma"]], ["kumma8", "Kumma · Rustaq Sky", ["trad", "kumma"]], ["kumma9", "Kumma · Ibri Night", ["trad", "kumma"]], ["kumma10", "Kumma · Masirah Waves", ["trad", "kumma"]],
+      ["kumma11", "Kumma · Jabal Akhdar", ["trad", "kumma"]], ["kumma12", "Kumma · Musandam Ruby", ["trad", "kumma"]], ["kumma13", "Kumma · Dhofar Sun", ["trad", "kumma"]], ["kumma14", "Kumma · Sharqiya Check", ["trad", "kumma"]], ["kummag", "Kumma · Royal Gold", ["trad", "kumma"]],
+      ["mzclassic", "Mussar · Classic wrap", ["trad", "mussar"]], ["mztall", "Mussar · Tall wrap", ["trad", "mussar"]], ["mzflap", "Mussar · Raised end", ["trad", "mussar"]], ["mzsport", "Mussar · Tail wrap", ["trad", "mussar"]], ["mzflat", "Mussar · Low wrap", ["trad", "mussar"]], ["mzopen", "Mussar · Open top", ["trad", "mussar"]],
+      ["cap", "Cap", ["casual", "street", "hats"]], ["capb", "Backwards cap", ["street", "hats"]], ["snap", "Snapback", ["street", "hats"]], ["beanie", "Beanie", ["winter", "hats"]], ["beaniew", "Winter hat", ["winter", "hats"]], ["bucket", "Bucket hat", ["outdoor", "hats"]], ["explorer", "Explorer hat", ["outdoor", "hats"]], ["headband", "Headband", ["sport", "hats"]],
+      ["crown", "Champion crown", ["hats"]], ["grcrown1", "Gold Crown", ["hats"]], ["grcrown2", "Aqua Crown", ["hats"]], ["grcrown3", "Ruby Crown", ["hats"]], ["grcrown4", "Violet Crown", ["hats"]]],
+    mf: [[0, "Blue Kashmir"], [1, "Ruby Kashmir"], [2, "Sand Kashmir"], [3, "Royal Purple"], [4, "Emerald"], [5, "Rose"], [6, "Saffron"], [7, "Grey Stripe"], [8, "Desert Check"], [9, "White Embroidered"], [10, "Sky Plain"], [11, "Night & Gold"]],
+    cl: [["dish", "Dishdasha", ["trad"]], ["dishe", "Embroidered dishdasha", ["trad", "formal"]], ["dishs", "Everyday dishdasha", ["trad", "casual"]], ["bisht", "Bisht", ["trad", "formal"]], ["bishtz", "Zari bisht", ["trad", "formal"]], ["bishtg", "Royal bisht", ["trad", "formal"]],
+      ["tee", "T-shirt", ["casual"]], ["vtee", "V-neck tee", ["casual"]], ["stripe", "Striped tee", ["casual"]], ["graphic", "Graphic tee", ["casual", "street"]], ["longsleeve", "Long-sleeve tee", ["casual"]], ["polo", "Polo shirt", ["casual", "formal"]],
+      ["shirt", "Shirt", ["formal"]], ["check", "Checked shirt", ["casual", "winter"]], ["uniform", "School shirt", ["formal"]], ["hoodie", "Hoodie", ["casual", "street"]], ["ziphood", "Zip hoodie", ["street", "winter"]], ["sweatshirt", "Sweatshirt", ["casual", "winter"]],
+      ["sweater", "Knit sweater", ["winter"]], ["jacket", "Zip jacket", ["outdoor", "casual"]], ["denim", "Denim jacket", ["street"]], ["bomber", "Bomber jacket", ["street"]], ["puffer", "Puffer jacket", ["winter", "outdoor"]], ["blazer", "Blazer & tie", ["formal"]],
+      ["track", "Track jacket", ["sport"]], ["jersey", "Football kit · classic", ["sport"]], ["kit2", "Football kit · stripes", ["sport"]], ["kit3", "Football kit · hoops", ["sport"]], ["kit4", "Football kit · sash", ["sport"]], ["bball", "Basketball vest", ["sport"]], ["explorer", "Explorer vest", ["outdoor"]]],
+    bottom: [["trousers", "Trousers", ["casual", "formal"]], ["jeans", "Jeans", ["casual", "street"]], ["joggers", "Joggers", ["casual", "sport"]], ["shorts", "Shorts", ["casual", "sport"]], ["cargo", "Cargo trousers", ["outdoor", "street"]], ["formal", "Formal trousers", ["formal"]], ["track", "Track pants", ["sport"]], ["kitshorts", "Football shorts & socks", ["sport"]], ["wizar", "Wizar", ["trad", "casual"]]],
+    shoes: [["sandals", "Omani sandals", ["trad"]], ["sneakers", "Sneakers", ["casual"]], ["hightops", "High-tops", ["street"]], ["runners", "Running shoes", ["sport"]], ["school", "School shoes", ["formal"]], ["boots", "Boots", ["outdoor", "winter"]], ["football", "Football boots", ["sport"]], ["slides", "Slides", ["casual"]], ["loafers", "Loafers", ["formal"]]],
+    gl: [["none", "None"], ["round", "Round glasses"], ["square", "Square glasses"], ["thick", "Bold frames"], ["reading", "Half-rim"], ["sun", "Sunglasses"], ["aviator", "Aviators"], ["sport", "Sport shades", ["sport"]], ["grvisor1", "Gold Visor"], ["grvisor2", "Aqua Visor"], ["grvisor3", "Ruby Visor"], ["grvisor4", "Violet Visor"]],
+    neck: [["none", "None"], ["chain", "Gold chain"], ["pendant", "Pendant"], ["scarf", "Knit scarf", ["winter"]], ["bandana", "Bandana"], ["lanyard", "School lanyard"], ["bowtie", "Bow tie", ["formal"]]],
+    wrist: [["none", "None"], ["watch", "Watch"], ["smartwatch", "Smartwatch"], ["beads", "Bead bracelet"], ["sweatband", "Sweatbands", ["sport"]], ["bracelet", "Gold bracelet"]],
+    extra: [["none", "None"], ["backpack", "Backpack"], ["schoolbag", "School satchel"], ["sling", "Sling bag"], ["pen", "Pen pocket"], ["headphones", "Headphones"], ["camera", "Camera"], ["khanjar", "Khanjar (ceremonial)", ["trad"]], ["medal", "Gold medal"], ["cape", "Hero cape"],
+      ["grcape1", "Gold Racer Cape"], ["grcape2", "Aqua Racer Cape"], ["grcape3", "Ruby Racer Cape"], ["grcape4", "Violet Racer Cape"]],
+    pose: [["relaxed", "Relaxed"], ["hips", "Hands on hips"], ["crossed", "Arms crossed"], ["think", "Thinking"], ["wave", "Waving"], ["ready", "Ready!"]]
+  };
+  var WD_PACKS = [
+    { id: "heritage", name: "Omani Heritage", pts: 150, ic: "🕌", col: "#0B7A63", items: ["hat:kumma4", "hat:kumma5", "hat:kumma6", "hat:kumma7", "mf:3", "mf:4", "mf:5", "hat:mzflap", "cl:dishe", "extra:khanjar"] },
+    { id: "sports", name: "Sports", pts: 300, ic: "🏃", col: "#2B41C4", items: ["cl:track", "bottom:track", "shoes:runners", "hat:headband", "wrist:sweatband", "gl:sport", "cl:bball", "wrist:smartwatch"] },
+    { id: "street", name: "Modern Streetwear", pts: 500, ic: "🧢", col: "#E8590C", items: ["cl:bomber", "cl:denim", "cl:graphic", "shoes:hightops", "hat:snap", "hat:capb", "neck:chain", "extra:sling"] },
+    { id: "football", name: "Football", pts: 800, ic: "⚽", col: "#178A4C", items: ["cl:kit2", "cl:kit3", "cl:kit4", "bottom:kitshorts", "shoes:football", "neck:bandana"] },
+    { id: "explorer", name: "Explorer", pts: 1200, ic: "🧭", col: "#8A6A35", items: ["cl:explorer", "bottom:cargo", "hat:bucket", "hat:explorer", "extra:camera", "hat:mzsport"] },
+    { id: "winter", name: "Winter", pts: 1700, ic: "❄️", col: "#2F6FDE", items: ["cl:puffer", "hat:beaniew", "neck:scarf", "cl:check", "cl:ziphood"] },
+    { id: "festival", name: "Eid Festival", pts: 2300, ic: "🎉", col: "#C2414F", items: ["hat:kumma8", "hat:kumma9", "hat:kumma10", "hat:kumma11", "mf:6", "mf:9", "mf:10", "hat:mztall", "cl:blazer", "bottom:formal", "shoes:loafers", "neck:bowtie", "neck:pendant", "wrist:beads"] },
+    { id: "royal", name: "Royal Collection", pts: 3200, ic: "👑", col: "#B9801A", items: ["hat:kumma12", "hat:kumma13", "hat:kumma14", "mf:11", "cl:bishtz", "hat:mzopen", "gl:aviator", "wrist:bracelet"] }
+  ];
+  var WD_PACK_OF = {}; WD_PACKS.forEach((p) => p.items.forEach((k) => WD_PACK_OF[k] = p));
+  // the older lists are now made from the wardrobe, so every check that uses them knows every item
+  ["hair", "hat", "eyes", "mouth", "gl", "cl"].forEach((k) => DUO_PARTS[k] = WD[k].map((e) => [e[0], e[1]]));
+  var WD_SLOTS = ["face", "cheeks", "nose", "brows", "mark", "beard", "hairline", "bottom", "shoes", "neck", "wrist", "extra", "pose"];
+  WD_SLOTS.forEach((k) => CZ_NEW[k] = WD[k].map((e) => [e[0], e[1]]));
+  Object.assign(CZ_BOTC, { cargo: "#6B6450", formal: "#22262E", track: "#1E2A4A", kitshorts: "#FFFFFF", wizar: "#3B4A6B" });
+  Object.assign(CZ_SHOEC, { hightops: "#D13A3A", runners: "#2B41C4", football: "#1B1B1F", slides: "#1B1B1F", loafers: "#3B2A20" });
   // things won from Boss Rush chests (key -> value)
   var GR_PACKS = { 1: ["#F2B632", "#B9801A"], 2: ["#27C3C3", "#12807F"], 3: ["#E5484D", "#A3262A"], 4: ["#8B5CF6", "#5B35B8"] }; /* epz-patch:gaterush — the four exclusive weekly packs */
   function grPk(v) { let m = /^gr(?:crown|cape|visor)(\d)$/.exec(v || ""); return m ? GR_PACKS[m[1]] : null; }
@@ -8593,12 +8680,34 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   function czOwned() {
     try { return (JSON.parse(localStorage.getItem("epz-learn-v1") || "{}").owned) || []; } catch (e) { return []; }
   }
-  var czHas = (k, v) => !CZ_LOCKED[k + ":" + v] || czOwned().indexOf(k + ":" + v) > -1;
-  var czRobe = (cl) => cl === "dish" || cl === "bisht" || cl === "bishtg";
+  var czHas = (k, v) => { let key = k + ":" + v, p = WD_PACK_OF[key]; return CZ_LOCKED[key] ? czOwned().indexOf(key) > -1 : !p || totalPoints() >= p.pts || czOwned().indexOf(key) > -1; };
+  // the simple 2D drawings (shown only before / without 3D) know the original items; newer ones are drawn as the closest of those
+  var CZ2D = {
+    face: { long: "oval", heart: "oval", wide: "square", strong: "square", soft: "round" },
+    eyes: { round: "big", almond: "big", sparkle: "big", lashes: "big", narrow: "cool", sharp: "cool", droopy: "cool" },
+    brows: { thin: "soft", arched: "soft", worried: "soft", angled: "straight", short: "straight", bushy: "thick" },
+    mouth: { wide: "grin", laugh: "grin", small: "smile", smirk: "smile", cat: "smile", lips: "smile" },
+    hair: { crew: "short", slick: "short", quiff: "spiky", fauxhawk: "spiky", undercut: "side", messy: "curly", twists: "curly", middle: "fringe", ponytail: "long", cornrows: "buzz" },
+    cl: { dishe: "dish", dishs: "dish", bishtz: "bisht", vtee: "tee", stripe: "tee", graphic: "tee", longsleeve: "tee", polo: "shirt", check: "shirt", explorer: "shirt", ziphood: "hoodie", sweatshirt: "sweater", denim: "jacket", bomber: "jacket", puffer: "jacket", blazer: "jacket", track: "jacket", kit2: "jersey", kit3: "jersey", kit4: "jersey", bball: "jersey" },
+    bottom: { cargo: "trousers", formal: "trousers", track: "joggers", kitshorts: "shorts", wizar: "trousers" },
+    shoes: { hightops: "sneakers", runners: "sneakers", football: "sneakers", slides: "sandals", loafers: "school" },
+    beard: { chinstrap: "beard", full: "beard" }, extra: { schoolbag: "backpack", sling: "backpack", camera: "none", khanjar: "none" },
+    gl: { aviator: "sun", sport: "sun", reading: "square", thick: "square" }
+  };
+  function cz2d(c) {
+    let o = Object.assign({}, c);
+    for (let k in CZ2D) o[k] in CZ2D[k] && (o[k] = CZ2D[k][o[k]]);
+    if (/^kumma\d/.test(o.hat) && !/^kumma[123]$/.test(o.hat)) o.hat = /^kumma(3|9|11|12)$/.test(o.hat) ? "kumma3" : /^kumma(2|8|10)$/.test(o.hat) ? "kumma2" : "kumma1";
+    if (/^mz/.test(o.hat)) o.hat = [0, 7, 10].indexOf(o.mf) > -1 ? "massar1" : [1, 3, 5, 6, 11].indexOf(o.mf) > -1 ? "massar2" : "massar3";
+    o.hat = { capb: "cap", snap: "cap", bucket: "cap", explorer: "cap", beaniew: "beanie", headband: "none" }[o.hat] || o.hat;
+    return o;
+  }
+  var czRobe = (cl) => /^(dish|dishe|dishs|bisht|bishtz|bishtg)$/.test(cl);
   function czCfg(c) {
     let o = duoCfg(c);
     for (let k in CZ_NEW) CZ_NEW[k].some((p) => p[0] === o[k]) || (o[k] = CZ_DEF[k]);
-    czHas("hat", o.hat) || (o.hat = "none"), czHas("cl", o.cl) || (o.cl = "dish"), czHas("extra", o.extra) || (o.extra = "none"), czHas("gl", o.gl) || (o.gl = "none");
+    WD_SLOTS.forEach((k) => WD[k].some((p) => p[0] === o[k]) || (o[k] = CZ_DEF[k]));
+    o.mf = Number.isInteger(o.mf) && o.mf >= 0 && o.mf < WD.mf.length ? o.mf : 0;
     let col = {}, sz = {}, src = c && typeof c == "object" ? c : {};
     CZ_COLS.forEach((k) => { let v = src.col && src.col[k]; /^#[0-9a-f]{6}$/i.test(v || "") && (col[k] = v); });
     for (let k in CZ_SZ) { let v = Number(src.sz && src.sz[k]); sz[k] = isFinite(v) && src.sz && src.sz[k] != null ? Math.max(CZ_SZ[k][0], Math.min(CZ_SZ[k][1], v)) : CZ_SZ[k][2]; }
@@ -8609,7 +8718,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let top = c.col.top || DUO_CLOTHC[c.cc];
     return {
       skin: c.col.skin || DUO_SKIN[c.skin], hair: c.col.hair || DUO_HAIRC[c.hc], eyes: c.col.eyes || CZ_EYEC[0], top,
-      bottom: c.col.bottom || CZ_BOTC[c.bottom], shoes: c.col.shoes || CZ_SHOEC[c.shoes], hat: c.col.hat || top, bg: c.col.bg || DUO_BG[c.bg]
+      bottom: c.col.bottom || CZ_BOTC[c.bottom] || "#2E3440", shoes: c.col.shoes || CZ_SHOEC[c.shoes] || "#7A4B2A", hat: c.col.hat || top, bg: c.col.bg || DUO_BG[c.bg],
+      top2: c.col.top2 || "", acc: c.col.acc || "#2B41C4"
     };
   }
   function czShade(hex, amt) {
@@ -8626,7 +8736,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   var czUid = 0;
   function czLongSleeve(cl) { return !/^(tee|jersey)$/.test(cl); }
   function czSvg(cfg, opt = {}) {
-    let c = czCfg(cfg), id = "cz" + ++czUid, size = opt.size || 120, frame = opt.frame || "full", mood = opt.mood || "idle";
+    let c3 = czCfg(cfg), c = cz2d(c3), id = "cz" + ++czUid, size = opt.size || 120, frame = opt.frame || "full", mood = opt.mood || "idle";
     let C = czColors(c), sz = c.sz, sk = C.skin, skD = czShade(sk, -.16), hc = C.hair, cc = C.top, ink = CZ_INK;
     let pose = CZ_POSES[opt.pose || c.pose] || CZ_POSES.relaxed;
     let white = czLight(cc), B = sz.b, H = sz.h, X = (f) => (100 + f * B).toFixed(1);
@@ -8763,7 +8873,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let body = `<g class="cz-body">${exBack}${legs}${pelvis}${hood}${T}${exFront}${neck}${headG}${arm("L", pose[0], pose[1])}${arm("R", pose[2], pose[3])}</g>`;
     let mm = { idle: c.mouth, happy: "grin", celebrate: "cele", sad: "sad", excited: "det", surprised: "o", think: "think", proud: "teeth" }[mood] || c.mouth;
     let rig = ` data-sl="${shL.join(",")}" data-sr="${shR.join(",")}" data-hl="${hpL.join(",")}" data-hr="${hpR.join(",")}" data-th="${thighL.toFixed(1)}" data-gy="${groundY.toFixed(1)}"`;
-    let attrs = `class="epzc ${opt.cls || ""}" data-frame="${frame}" data-cfg="${esc(JSON.stringify(c))}"${opt.bg === !1 ? ' data-nobg="1"' : ""} data-mood="${mood}" data-m="${mm}" data-base-m="${c.mouth}" data-pose="${opt.pose || c.pose}" data-eyes="${c.eyes}"${rig}${opt.still ? ' data-still="1"' : ""}`;
+    let attrs = `class="epzc ${opt.cls || ""}" data-frame="${frame}" data-cfg="${esc(JSON.stringify(c3))}"${opt.bg === !1 ? ' data-nobg="1"' : ""} data-mood="${mood}" data-m="${mm}" data-base-m="${c.mouth}" data-pose="${opt.pose || c.pose}" data-eyes="${c.eyes}"${rig}${opt.still ? ' data-still="1"' : ""}`;
     if (frame === "bust") {
       let bg = opt.bg === !1 ? "" : `<circle cx="100" cy="84" r="58" fill="${C.bg}"/>`;
       return `<svg ${attrs} width="${size}" height="${size}" viewBox="42 26 116 116" role="img" aria-label="${esc(opt.label || "My character")}"><defs><clipPath id="${id}c"><circle cx="100" cy="84" r="58"/></clipPath></defs><g clip-path="url(#${id}c)">${bg}${body}</g></svg>`;
@@ -8965,15 +9075,22 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       var fill = frame === "bust" && /^(100%|auto)?$/.test(svg.style.width || "") && svg.closest(".avatar,.duo-praise-av,.duo-nudge-av,.cz-rank-av");
       cv.style.width = cv.style.height = Math.round(D) + "px";
       svg.after(cv); svg.classList.add("cz3-hid"); svg._cz3 = cv;
-      var v = { svg: svg, cv: cv, ctx: cv.getContext("2d"), key: svg.dataset.cfg || "{}", still: still, bg: !svg.hasAttribute("data-nobg"), done: false, full: frame !== "bust" || svg.classList.contains("cz-hero"), hero: svg.classList.contains("cz-hero"), body: svg.classList.contains("cz-free") };
+      var v = { svg: svg, cv: cv, ctx: cv.getContext("2d"), key: svg.dataset.cfg || "{}", still: still, bg: !svg.hasAttribute("data-nobg"), done: false, full: frame !== "bust" || svg.classList.contains("cz-hero"), hero: svg.classList.contains("cz-hero"), body: svg.classList.contains("cz-free"), face: svg.classList.contains("cz-face") };
       try { v.cfg = JSON.parse(v.key); } catch (e) { v.cfg = DUO_DEF; }
       views.push(v); io && io.observe(cv); cv._cz3vis = true;
       // the big character (avatar maker) can be spun by dragging; it eases back to facing you after a moment
       if (v.hero) {
         var lastX = null; cv.style.touchAction = "pan-y"; cv.style.cursor = "grab";
-        cv.addEventListener("pointerdown", function (e) { lastX = e.clientX; hero.drag = true; try { cv.setPointerCapture(e.pointerId); } catch (x) {} });
-        cv.addEventListener("pointermove", function (e) { if (lastX === null) return; hero.yaw += (e.clientX - lastX) * .018; lastX = e.clientX; hero.last = performance.now(); });
-        var end = function () { lastX = null; hero.drag = false; hero.last = performance.now(); }; cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+        var pts = {}, pinch = 0;
+        cv.addEventListener("pointerdown", function (e) { pts[e.pointerId] = e.clientX + "," + e.clientY; lastX = e.clientX; hero.drag = true; hero.lock = null; try { cv.setPointerCapture(e.pointerId); } catch (x) {} });
+        cv.addEventListener("pointermove", function (e) {
+          if (pts[e.pointerId] === undefined) return; pts[e.pointerId] = e.clientX + "," + e.clientY;
+          var ks = Object.keys(pts);
+          if (ks.length > 1) { var a = pts[ks[0]].split(","), b = pts[ks[1]].split(","), d = Math.hypot(a[0] - b[0], a[1] - b[1]); if (pinch) hero.zt = Math.max(1, Math.min(2.6, hero.zt * d / pinch)); pinch = d; return; }
+          if (lastX === null) return; hero.yaw += (e.clientX - lastX) * .018; lastX = e.clientX; hero.last = performance.now();
+        });
+        var end = function (e) { delete pts[e.pointerId]; pinch = 0; lastX = Object.keys(pts).length ? lastX : null; hero.drag = !!Object.keys(pts).length; hero.last = performance.now(); }; cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+        cv.addEventListener("wheel", function (e) { e.preventDefault(); hero.zt = Math.max(1, Math.min(2.6, hero.zt - e.deltaY * .0015)); }, { passive: false });
       }
     }
     function draw(v, dt) {
@@ -8992,8 +9109,14 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       pose(m, st, v.svg, dt, v);
       // close-up of head and shoulders for small avatars; a bigger character shows down to the knees
       // close-up of head and shoulders for small avatars, head to knees for bigger ones, the whole body in the avatar maker
-      if (v.hero) { if (!hero.drag && performance.now() - hero.last > 1800) hero.yaw += (Math.sin(performance.now() / 1400) * .22 - hero.yaw) * Math.min(1, dt * 2.5); m.rotation.y = hero.yaw; } else m.rotation.y = 0;
-      if (v.hero || v.body) { cam.position.set(0, -2, 24); cam.lookAt(0, -2.1, 0); } else if (v.full) { cam.position.set(0, -1.5, 17); cam.lookAt(0, -1.6, 0); } else { cam.position.set(0, -.5, 16.5); cam.lookAt(0, -.75, 0); }
+      if (v.hero) {
+        if (hero.lock !== null && !hero.drag) { var dy2 = hero.lock - hero.yaw; dy2 = Math.atan2(Math.sin(dy2), Math.cos(dy2)); hero.yaw += dy2 * Math.min(1, dt * 7); }
+        else if (!hero.drag && performance.now() - hero.last > 1800) hero.yaw += (Math.sin(performance.now() / 1400) * .22 - hero.yaw) * Math.min(1, dt * 2.5);
+        m.rotation.y = hero.yaw; hero.zoom += (hero.zt - hero.zoom) * Math.min(1, dt * 8);
+      } else m.rotation.y = 0;
+      if (v.hero) { var zk = (hero.zoom - 1) / 1.6, cy = -2.1 + 2.4 * Math.min(1, zk * 1.45); cam.position.set(0, cy + .1, 24 / hero.zoom); cam.lookAt(0, cy, 0); }
+      else if (v.body) { cam.position.set(0, -2, 24); cam.lookAt(0, -2.1, 0); }
+      else if (v.face) { cam.position.set(0, .35, 12); cam.lookAt(0, .25, 0); } else if (v.full) { cam.position.set(0, -1.5, 17); cam.lookAt(0, -1.6, 0); } else { cam.position.set(0, -.5, 16.5); cam.lookAt(0, -.75, 0); }
       scene.add(m); R.setViewport(0, 0, px, px); R.setScissor(0, 0, px, px); R.setScissorTest(true); R.clear(); cam.aspect = 1; cam.updateProjectionMatrix(); R.render(scene, cam); scene.remove(m);
       var g = v.ctx, c = m.userData.cfg, bg = czColors(c).bg;
       g.clearRect(0, 0, px, px); g.save(); if (v.bg) { g.beginPath(); g.arc(px / 2, px / 2, px / 2 - px * .015, 0, Math.PI * 2); g.clip(); }   // only round badges are clipped
@@ -9023,7 +9146,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       }
       tickBosses(dt, now);
     }
-    var live = null, liveT = 0, hero = { yaw: 0, drag: false, last: 0 };
+    var live = null, liveT = 0, hero = { yaw: 0, drag: false, last: 0, zoom: 1, zt: 1, lock: null };   /* epz-patch:wardrobe — zoom and fixed views */
     // ---------------------------------------------------------------- bosses: still pictures in menus, live in a battle (epz-patch:look stage 3)
     var bossModels = {}, bviews = [], liveBoss = null;
     function attachBoss(el) {
@@ -9066,14 +9189,14 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (on || failed) return;
       try { var t = document.createElement("canvas"); if (!(t.getContext("webgl2") || t.getContext("webgl"))) throw 0; } catch (e) { failed = true; czFallbackOn(); return; }
       var js = function (src) { return new Promise(function (ok, bad) { var s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = bad; document.head.appendChild(s); }); };
-      var model = Promise.all([window.GR && window.GR.avatar ? 0 : js("gaterush/avatar.js?v=6"), window.GR && window.GR.bossModel ? 0 : js("gaterush/bosses.js?v=1")]);
+      var model = Promise.all([window.GR && window.GR.avatar ? 0 : js("gaterush/avatar.js?v=7"), window.GR && window.GR.bossModel ? 0 : js("gaterush/bosses.js?v=1")]);
       Promise.all([import("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"), model]).then(function (res) {
         var mod = res[0]; T = mod; init(); on = true; document.documentElement.classList.remove("cz3-wait"); document.documentElement.classList.add("cz3-on"); window.dispatchEvent(new Event("cz3ready"));
         scan(); new MutationObserver(function () { clearTimeout(scan.t); scan.t = setTimeout(scan, 20); }).observe(document.documentElement, { childList: true, subtree: true });
         raf = requestAnimationFrame(tick);
       }).catch(function () { failed = true; czFallbackOn(); });
     }
-    return { start: start, get on() { return on; }, get T() { return T; }, build: build, pose: pose, mobile: mobile };
+    return { start: start, get on() { return on; }, get T() { return T; }, build: build, pose: pose, mobile: mobile, hero: { zoom: function (z) { hero.zt = Math.max(1, Math.min(2.6, z)); }, get zt() { return hero.zt; }, view: function (y) { hero.lock = y; hero.last = performance.now(); }, reset: function () { hero.lock = null; hero.zt = 1; } } };
   })();
   /* epz-patch:look — CZ3 now starts lazily (see below) */
   // Start the 3D characters when the browser is idle (the page shows first). Characters stay hidden for that short moment,
@@ -9082,10 +9205,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   (window.requestIdleCallback || function (f) { return setTimeout(f, 200); })(function () { CZ3.start(); }, { timeout: 1200 });
   setTimeout(function () { if (!CZ3.on) czFallbackOn(); }, 6000);
   function czBlockSvg(cfg, full) {
-    let c = czCfg(cfg), C = czColors(c), ink = "#13232F", sk = C.skin, top = C.top, R = (x, y, w, h, f) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}" stroke="${ink}" stroke-width="2.5"/>`;
+    let c = cz2d(czCfg(cfg)), C = czColors(c), ink = "#13232F", sk = C.skin, top = C.top, R = (x, y, w, h, f) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}" stroke="${ink}" stroke-width="2.5"/>`;
     let hairOn = c.hair !== "none" && !(c.hat && c.hat !== "none"), hat = c.hat && c.hat !== "none" ? R(66, 30, 68, 20, grPk(c.hat) ? grPk(c.hat)[0] : /^kumma|cap|beanie/.test(c.hat) ? (c.hat === "kumma3" ? "#1E2A4A" : C.hat) : "#2F6FDE") : "";
     let body = R(64, 112, 72, 62, top) + R(44, 116, 20, 52, top) + R(136, 116, 20, 52, top) + R(48, 166, 14, 12, sk) + R(138, 166, 14, 12, sk);
-    let legs = full ? R(72, 172, 24, 22, c.cl === "dish" || c.cl === "bisht" ? top : C.bottom) + R(104, 172, 24, 22, c.cl === "dish" || c.cl === "bisht" ? top : C.bottom) : "";
+    let legs = full ? R(72, 172, 24, 22, czRobe(c.cl) ? top : C.bottom) + R(104, 172, 24, 22, czRobe(c.cl) ? top : C.bottom) : "";
     let head = R(68, 46, 64, 64, sk) + (hairOn ? R(66, 38, 68, 14, C.hair) : "") + hat
       + `<rect x="80" y="70" width="10" height="12" fill="${ink}"/><rect x="110" y="70" width="10" height="12" fill="${ink}"/><path d="M88 94 Q100 102 112 94" fill="none" stroke="${ink}" stroke-width="3.5" stroke-linecap="round"/>`;
     return `<svg viewBox="${full ? "20 20 160 180" : "30 26 140 140"}" class="czb" aria-hidden="true"><circle cx="100" cy="${full ? 110 : 96}" r="${full ? 88 : 70}" fill="${C.bg}"/>${legs}${body}${head}</svg>`;
@@ -9399,97 +9522,160 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   })();
 
 
-  // ---------------------------------------------------------------- the character maker (#avatar): free design
+  // ---------------------------------------------------------------- epz-patch:wardrobe — the wardrobe (#avatar): every item in one place, a live 3D preview
+  // Categories on top, sub-tabs or filters inside each, a search over every item, packs with their contents. Locked items show what opens them.
   function czMaker() {
-    let cfg = czCfg(state.avatar || DUO_DEF), tab = "body", isNew = !state.avatar, hist = [];
+    let cfg = czCfg(state.avatar || DUO_DEF), isNew = !state.avatar, hist = [], cat = "face", sub = {}, q = "", openPack = null;
     let snap = () => { hist.push(JSON.stringify(cfg)); hist.length > 40 && hist.shift(); };
-    let TABS3 = [["body", "Body", "🧍"], ["face", "Face", "🙂"], ["hair", "Hair", "💇"], ["beard", "Beard", "🧔"], ["head", "Headwear", "🧢"], ["top", "Top", "👕"], ["bottom", "Bottom", "👖"], ["shoes", "Shoes", "👟"], ["extra", "Extras", "🎒"], ["pose", "Pose", "🕺"], ["bg", "Circle", "⭕"]];
-    let opts = (k) => (DUO_PARTS[k] || CZ_NEW[k]).map((p) => p[0]);
-    let om = (k, v) => !!CZ_OMANI[k + ":" + v];
-    let split = (k) => { let all = opts(k), a = all.filter((v) => om(k, v)), b = all.filter((v) => !om(k, v)); return cfg.style === "omani" ? [["Omani", a], ["More", b]] : [["Everyday", b], ["Omani", a]]; };
-    let label = (k, v) => ((DUO_PARTS[k] || CZ_NEW[k]).find((p) => p[0] === v) || [, v])[1];
-    let PRE = { skin: DUO_SKIN, hair: DUO_HAIRC, eyes: CZ_EYEC, top: DUO_CLOTHC.concat(["#8B5E3C", "#3B2A20", "#7A1F3D", "#A7C7E7"]), bottom: ["#2E3440", "#3D5A8A", "#1B1B1F", "#5A6B7A", "#8A7A5A", "#F4F7FB", "#6B4A2B", "#2B41C4"], shoes: ["#7A4B2A", "#FFFFFF", "#1B1B1F", "#6B4A2B", "#D8343F", "#2B41C4", "#FFD83D", "#178A4C"], hat: DUO_CLOTHC, bg: DUO_BG.concat(["#1F4A3D", "#2B41C4", "#FFD83D", "#17224D"]) };
-    let SL = { h: "Height", b: "Build", hd: "Head size", es: "Eye size", ed: "Eye spacing", by: "Eyebrow height", ns: "Nose size", mw: "Mouth width" };
-    let C = () => czColors(cfg);
-    // a section is: ["opts", title, key, groups] | ["col", title, colourKey] | ["sl", key] | ["note", text]
-    function sections() {
-      let robe = czRobe(cfg.cl);
-      return tab === "body" ? [["col", "Skin colour", "skin"], ["sl", "h"], ["sl", "b"], ["sl", "hd"]]
-        : tab === "face" ? [["opts", "Face shape", "face", [["", opts("face")]]], ["opts", "Eyes", "eyes", [["", opts("eyes")]]], ["col", "Eye colour", "eyes"], ["sl", "es"], ["sl", "ed"], ["opts", "Eyebrows", "brows", [["", opts("brows")]]], ["sl", "by"], ["sl", "ns"], ["opts", "Smile", "mouth", [["", opts("mouth")]]], ["sl", "mw"], ["opts", "Glasses", "gl", [["", opts("gl")]]]]
-        : tab === "hair" ? [["opts", "Hair style", "hair", [["", opts("hair")]]], ["col", "Hair colour", "hair"]]
-        : tab === "beard" ? [["opts", "Beard", "beard", split("beard")], ["note", "The beard uses your hair colour."]]
-        : tab === "head" ? [["opts", "Headwear", "hat", split("hat")], ["col", "Cap and beanie colour", "hat"]]
-        : tab === "top" ? [["opts", "Top", "cl", split("cl")], ["col", robe && cfg.cl !== "dish" ? "Bisht colour" : "Colour", "top"]]
-        : tab === "bottom" ? (robe ? [["note", "Your dishdasha covers the trousers. Choose a T-shirt, hoodie or shirt in Top to see them."], ["opts", "Bottom", "bottom", [["", opts("bottom")]]], ["col", "Colour", "bottom"]] : [["opts", "Bottom", "bottom", [["", opts("bottom")]]], ["col", "Colour", "bottom"]])
-        : tab === "shoes" ? [["opts", "Shoes", "shoes", split("shoes")], ["col", "Colour", "shoes"]]
-        : tab === "extra" ? [["opts", "Extras", "extra", [["", opts("extra")]]]]
-        : tab === "pose" ? [["opts", "Favourite pose", "pose", [["", opts("pose")]]]]
-        : [["col", "Circle colour (in small pictures)", "bg"]];
+    let CATS = [["face", "Face", "🙂"], ["hair", "Hair", "💇"], ["head", "Headwear", "🧢"], ["top", "Tops", "👕"], ["bottom", "Bottoms", "👖"], ["shoes", "Shoes", "👟"], ["acc", "Extras", "🎒"], ["body", "Body", "🧍"], ["packs", "Packs", "🎁"]];
+    let SUBS = {
+      face: [["shape", "Shape & skin"], ["eyes", "Eyes"], ["brows", "Brows"], ["nose", "Nose & mouth"], ["details", "Details & beard"]],
+      hair: [["style", "Style & colour"], ["line", "Hairline"]],
+      head: [["all", "All"], ["kumma", "Kumma"], ["mussar", "Mussar"], ["hats", "Caps & hats"]],
+      top: [["all", "All"], ["trad", "Traditional"], ["casual", "Casual"], ["sport", "Sport"], ["formal", "Formal"], ["street", "Street"], ["winter", "Winter"], ["outdoor", "Outdoor"]],
+      bottom: [["all", "All"], ["trad", "Traditional"], ["casual", "Casual"], ["sport", "Sport"], ["formal", "Formal"], ["outdoor", "Outdoor"]],
+      shoes: [["all", "All"], ["trad", "Traditional"], ["casual", "Casual"], ["sport", "Sport"], ["formal", "Formal"], ["outdoor", "Outdoor"]],
+      acc: [["gl", "Glasses"], ["neck", "Neck"], ["wrist", "Wrist"], ["bags", "Bags & more"]]
+    };
+    let OMANI = ["#FFFFFF", "#F2EEE3", "#E4EAF0", "#C9D6E3", "#D8D2C4", "#BDB6A6", "#9AA4AE", "#8A7A6A", "#C9B6C9", "#A7B79A", "#3B4A6B", "#2E2A28"];
+    let PRE = {
+      skin: DUO_SKIN, hair: DUO_HAIRC.concat(["#E8E8E8", "#1B2A4A", "#5B2A6B", "#1E5E3A"]), eyes: CZ_EYEC,
+      top: OMANI.concat(["#0B7A63", "#2F6FDE", "#6C4CE0", "#E8590C", "#D13A3A", "#F4A51C", "#13232F", "#8B5E3C", "#7A1F3D", "#A7C7E7", "#178A4C", "#FFD83D"]),
+      top2: ["#C9A227", "#2B1E14", "#4A3423", "#141014", "#FFFFFF", "#1E2A4A", "#B3262A", "#2B41C4", "#178A4C", "#F2B632", "#E8590C", "#7E5BEF"],
+      bottom: ["#2E3440", "#3D5A8A", "#1B1B1F", "#5A6B7A", "#8A7A5A", "#F4F7FB", "#6B4A2B", "#2B41C4", "#3B4A6B", "#6B6450", "#7A1F3D", "#178A4C"],
+      shoes: ["#7A4B2A", "#FFFFFF", "#1B1B1F", "#6B4A2B", "#D8343F", "#2B41C4", "#FFD83D", "#178A4C", "#3B2A20", "#9AA4AE"],
+      hat: DUO_CLOTHC.concat(["#1E2A4A", "#C9A46A", "#7A1F3D"]), acc: ["#2B41C4", "#D13A3A", "#178A4C", "#F2B632", "#7E5BEF", "#E8590C", "#1B1B1F", "#FFFFFF", "#27C3C3", "#8B5E3C"],
+      bg: DUO_BG.concat(["#1F4A3D", "#2B41C4", "#FFD83D", "#17224D"])
+    };
+    let SL = { h: "Height", b: "Build", hd: "Head size", es: "Eye size", ed: "Eye spacing", by: "Eyebrow height", bw: "Eyebrow thickness", ns: "Nose size", mw: "Mouth width" };
+    let C = () => czColors(cfg), robe = () => czRobe(cfg.cl), mzOn = () => /^mz/.test(cfg.hat);
+    let tagged = (slot, t) => WD[slot].filter((e) => t === "all" || (e[2] || []).indexOf(t) > -1);
+    let BUST = { face: 1, cheeks: 1, nose: 1, eyes: 1, brows: 1, mouth: 1, mark: 1, beard: 1, hair: 1, hairline: 1, hat: 1, mf: 1, gl: 1, neck: 1 }, BODY = { bottom: 1, shoes: 1, pose: 1 };
+    let lockTxt = (slot, v) => { let key = slot + ":" + v, p = WD_PACK_OF[key]; return czHas(slot, v) ? "" : CZ_LOCKED[key] ? (grPk(v) ? "🏆 Champion" : "⚔ Boss Rush") : p ? `${p.ic} ${fmtNum(p.pts)} pts` : ""; };
+    let isOn = (slot, v) => slot === "mf" ? mzOn() && cfg.mf === v : cfg[slot] === v;
+    function tile(slot, v, label) {
+      let c2 = JSON.parse(JSON.stringify(cfg)); c2[slot] = v;
+      if (slot === "mf" && !mzOn()) c2.hat = "mzclassic";
+      if (slot === "hair" && c2.hat !== "none" && !/crown/.test(c2.hat)) c2.hat = "none";
+      let frame = BUST[slot] ? "bust" : "full", lk = lockTxt(slot, v), p = WD_PACK_OF[slot + ":" + v], on = isOn(slot, v);
+      return `<button type="button" class="cz-opt wd-opt${on ? " on" : ""}${lk ? " locked" : ""}${frame === "full" ? " tall" : ""}" data-k="${slot}" data-v="${v}" aria-pressed="${on}"><span class="cz-thumb">${czSvg(c2, { size: frame === "bust" ? 76 : 96, frame, still: true, bg: !1, cls: BODY[slot] ? "cz-free" : BUST[slot] ? "cz-face" : "" })}</span><span class="cz-opt-l">${esc(label)}</span>${lk ? `<span class="wd-lock">🔒 ${esc(lk)}</span>` : p ? `<span class="wd-pk" title="${esc(p.name)}">${p.ic}</span>` : ""}</button>`;
     }
-    let thumb = (k, v) => {
-      let c2 = JSON.parse(JSON.stringify(cfg)); c2[k] = v;
-      k === "hair" && c2.hat !== "crown" && (c2.hat = "none");
-      let lockKey = k === "cl" || k === "hat" || k === "extra" || k === "gl" ? k + ":" + v : "", locked = CZ_LOCKED[lockKey] && czOwned().indexOf(lockKey) < 0, src = locked ? (grPk(v) ? "🏆 Weekly prize" : "⚔ Boss Rush") : "";
-      let full = /^(cl|pose|extra|bottom|shoes)$/.test(k);
-      return `<button type="button" class="cz-opt${cfg[k] === v ? " on" : ""}${locked ? " locked" : ""}${full ? " tall" : ""}" data-k="${k}" data-v="${v}" aria-pressed="${cfg[k] === v}"><span class="cz-thumb">${czSvg(c2, { size: full ? 92 : 74, frame: full ? "full" : "bust", still: !0, pose: k === "pose" ? v : "relaxed", bg: !1 })}</span>${src ? `<span class="cz-src">${src}</span>` : ""}<span class="cz-opt-l">${locked ? "🔒 " : ""}${esc(label(k, v))}</span></button>`;
-    };
+    let grid = (title, slot, list) => list.length ? `${title ? `<h3 class="cz-h">${esc(title)}</h3>` : ""}<div class="cz-grid">${list.map((e) => tile(slot, e[0], e[1])).join("")}</div>` : "";
     let colRow = (title, k) => {
-      let cur = C()[k].toLowerCase(), list = PRE[k] || [];
-      return `<h3 class="cz-h">${title}</h3><div class="cz-swatches">${list.map((col) => `<button type="button" class="cz-sw${col.toLowerCase() === cur ? " on" : ""}" data-col="${k}" data-hex="${col}" style="--sw:${col}" aria-label="${title} ${col}"></button>`).join("")}<label class="cz-sw cz-pick${list.some((x) => x.toLowerCase() === cur) ? "" : " on"}" style="--sw:${cur}" title="Any colour"><input type="color" value="${cur}" data-pick="${k}" aria-label="${title}: any colour"><span>🎨</span></label></div>`;
+      let cur = (C()[k] || "#ffffff").toLowerCase(), list = PRE[k] || [];
+      return `<h3 class="cz-h">${esc(title)}</h3><div class="cz-swatches">${list.map((col) => `<button type="button" class="cz-sw${col.toLowerCase() === cur ? " on" : ""}" data-col="${k}" data-hex="${col}" style="--sw:${col}" aria-label="${esc(title)} ${col}"></button>`).join("")}<label class="cz-sw cz-pick${list.some((x) => x.toLowerCase() === cur) ? "" : " on"}" style="--sw:${cur}" title="Any colour"><input type="color" value="${/^#[0-9a-f]{6}$/.test(cur) ? cur : "#ffffff"}" data-pick="${k}" aria-label="${esc(title)}: any colour"><span>🎨</span></label></div>`;
     };
-    let slider = (k) => {
-      let [a, b] = CZ_SZ[k], v = cfg.sz[k];
-      return `<label class="cz-sl"><span>${SL[k]}</span><input type="range" min="${a}" max="${b}" step="0.01" value="${v}" data-sz="${k}"><button type="button" class="cz-sl-r" data-szr="${k}" aria-label="Reset ${SL[k]}">↺</button></label>`;
-    };
+    let slider = (k) => { let [a, b] = CZ_SZ[k], v = cfg.sz[k]; return `<label class="cz-sl"><span>${SL[k]}</span><input type="range" min="${a}" max="${b}" step="0.01" value="${v}" data-sz="${k}"><button type="button" class="cz-sl-r" data-szr="${k}" aria-label="Reset ${SL[k]}">↺</button></label>`; };
+    let note = (t) => `<p class="cz-note">${esc(t)}</p>`;
+    function top2Label() { return /^bisht/.test(cfg.cl) ? "Bisht colour" : /^dish/.test(cfg.cl) ? "Embroidery and tassel colour" : cfg.cl === "blazer" ? "Tie colour" : /^(jersey|kit\d|bball|track)$/.test(cfg.cl) ? "Second colour" : cfg.cl === "explorer" ? "T-shirt colour" : "Trim colour"; }
+    function body() {
+      let s = sub[cat] || (SUBS[cat] ? SUBS[cat][0][0] : "");
+      if (cat === "face") return s === "shape" ? colRow("Skin colour", "skin") + grid("Face shape", "face", WD.face) + grid("Cheeks", "cheeks", WD.cheeks) + slider("hd")
+        : s === "eyes" ? grid("Eyes", "eyes", WD.eyes) + colRow("Eye colour", "eyes") + slider("es") + slider("ed")
+        : s === "brows" ? grid("Eyebrows", "brows", WD.brows) + slider("by") + slider("bw")
+        : s === "nose" ? grid("Nose", "nose", WD.nose) + slider("ns") + grid("Mouth", "mouth", WD.mouth) + slider("mw")
+        : grid("Face details", "mark", WD.mark) + grid("Beard", "beard", WD.beard) + note("The beard and eyebrows use your hair colour.");
+      if (cat === "hair") return s === "line" ? grid("Hairline", "hairline", WD.hairline) + note("The hairline shows best with short styles and no headwear.")
+        : grid("Hair style", "hair", WD.hair) + colRow("Hair colour", "hair") + (cfg.hat !== "none" ? note("Your headwear sits over your hair; only the hair below it shows.") : "");
+      if (cat === "head") {
+        let list = s === "all" ? WD.hat : s === "hats" ? WD.hat.filter((e) => e[0] === "none" || (e[2] || []).indexOf("hats") > -1) : WD.hat.filter((e) => (e[2] || []).indexOf(s) > -1);
+        let fab = mzOn() || s === "mussar" ? grid("Mussar fabric", "mf", WD.mf) : "";
+        return (s === "mussar" ? fab + grid("Wrapping style", "hat", list) : grid("", "hat", list) + fab) + (/^(cap|capb|snap|beanie|beaniew|bucket)$/.test(cfg.hat) || s === "hats" ? colRow("Cap and hat colour", "hat") : "");
+      }
+      if (cat === "top") return grid("", "cl", tagged("cl", s)) + colRow(robe() ? "Dishdasha colour" : "Main colour", "top") + colRow(top2Label(), "top2");
+      if (cat === "bottom") return (robe() ? note("Your dishdasha covers these; they show when you wear a T-shirt, shirt or jacket.") : "") + grid("", "bottom", tagged("bottom", s)) + colRow("Colour", "bottom");
+      if (cat === "shoes") return grid("", "shoes", tagged("shoes", s)) + colRow("Colour", "shoes");
+      if (cat === "acc") return s === "gl" ? grid("Glasses", "gl", WD.gl) : s === "neck" ? grid("Around the neck", "neck", WD.neck) + colRow("Accessory colour", "acc")
+        : s === "wrist" ? grid("Wrist", "wrist", WD.wrist) + colRow("Accessory colour", "acc") : grid("Bags and more", "extra", WD.extra) + colRow("Accessory colour", "acc");
+      if (cat === "body") return slider("h") + slider("b") + slider("hd") + grid("Favourite pose", "pose", WD.pose) + colRow("Circle colour (small pictures)", "bg");
+      return packsView();
+    }
+    function itemName(key) { let [k, v] = key.split(":"), e = (WD[k] || []).find((x) => String(x[0]) === v); return e ? (k === "mf" ? "Mussar fabric · " + e[1] : e[1]) : v; }
+    function packsView() {
+      let pts = totalPoints(), own = czOwned();
+      let card = (p) => {
+        let open = pts >= p.pts, pc = Math.min(100, Math.round(pts / p.pts * 100)), ex = openPack === p.id;
+        return `<section class="wd-pack${open ? " open" : ""}" style="--pc:${p.col}"><div class="wd-pack-h"><span class="wd-pack-ic">${p.ic}</span><div><b>${esc(p.name)}</b><small>${p.items.length} items · ${open ? "Unlocked" : `opens at ${fmtNum(p.pts)} points`}</small></div><span class="wd-pack-st">${open ? "✅" : `🔒 ${fmtNum(p.pts - pts)} to go`}</span></div>`
+          + (open ? "" : `<div class="wd-bar" role="progressbar" aria-valuenow="${pc}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pc}%"></i></div>`)
+          + `<p class="wd-pack-list">${p.items.map((k) => `<span>${esc(itemName(k))}</span>`).join("")}</p>`
+          + `<button type="button" class="wd-pack-more" data-pack="${p.id}">${ex ? "Hide items" : "See the items on me"}</button>`
+          + (ex ? `<div class="cz-grid">${p.items.map((k) => { let [s, v] = k.split(":"); return tile(s, s === "mf" ? Number(v) : v, itemName(k)); }).join("")}</div>` : "") + "</section>";
+      };
+      let champ = GR_PACKS ? [1, 2, 3, 4].map((i) => ({ i, n: ["Sunrise Gold", "Lagoon Aqua", "Ruby Dash", "Violet Storm"][i - 1], c: GR_PACKS[i][0], has: own.indexOf("hat:grcrown" + i) > -1 })) : [];
+      return `<p class="cz-note">You have <b>${fmtNum(pts)}</b> points. Packs open as your points grow, and every item goes straight into your one wardrobe.</p>` + WD_PACKS.map(card).join("")
+        + `<h3 class="cz-h">Exclusive</h3><section class="wd-pack"><div class="wd-pack-h"><span class="wd-pack-ic">🏆</span><div><b>Gate Rush champion packs</b><small>Crown, racer cape and visor. Finish in the top 3 of a Gate Rush week. Cannot be bought.</small></div></div><p class="wd-pack-list">${champ.map((x) => `<span style="border-color:${x.c}">${x.has ? "✅" : "🔒"} ${esc(x.n)}</span>`).join("")}</p></section>`
+        + `<section class="wd-pack"><div class="wd-pack-h"><span class="wd-pack-ic">⚔️</span><div><b>Boss Rush chest prizes</b><small>Win a chest by beating a boss (Book → Boss Rush).</small></div></div><p class="wd-pack-list">${["hat:kummag", "cl:bishtg", "hat:crown", "extra:headphones", "extra:medal", "extra:cape"].map((k) => `<span>${own.indexOf(k) > -1 ? "✅" : "🔒"} ${esc(itemName(k))}</span>`).join("")}</p></section>`;
+    }
+    function searchView() {
+      let t = q.trim().toLowerCase(), out = "", n = 0;
+      [["hat", "Headwear"], ["mf", "Mussar fabrics"], ["cl", "Tops"], ["bottom", "Bottoms"], ["shoes", "Shoes"], ["hair", "Hair"], ["gl", "Glasses"], ["neck", "Neck"], ["wrist", "Wrist"], ["extra", "Bags and more"], ["face", "Face shape"], ["eyes", "Eyes"], ["brows", "Eyebrows"], ["nose", "Nose"], ["mouth", "Mouth"], ["mark", "Face details"], ["beard", "Beard"], ["cheeks", "Cheeks"], ["hairline", "Hairline"]].forEach(([k, title]) => {
+        let hits = WD[k].filter((e) => e[1].toLowerCase().indexOf(t) > -1 || (e[2] || []).some((g) => ({ trad: "traditional omani", casual: "casual", sport: "sport", formal: "formal", street: "street", winter: "winter", outdoor: "outdoor" }[g] || g).indexOf(t) > -1)).slice(0, 24);
+        n += hits.length; out += grid(title, k, hits);
+      });
+      return n ? out : note(`Nothing matches "${q}". Try kumma, mussar, jacket or glasses.`);
+    }
     let stageT = 0;
     function drawStage(reaction) {
       let st = app.querySelector("#cz-stage");
-      st.innerHTML = CZ3.on ? czSvg(cfg, { size: 236, frame: "bust", cls: "cz-me cz-hero", bg: !1 }) : czSvg(cfg, { size: 178, cls: "cz-me cz-hero" });
+      st.innerHTML = CZ3.on ? czSvg(cfg, { size: innerWidth >= 860 ? 420 : 236, frame: "bust", cls: "cz-me cz-hero", bg: !1 }) : czSvg(cfg, { size: 178, cls: "cz-me cz-hero" });
       reaction && setTimeout(() => CZ.react(st, reaction), 30);
     }
     let liveStage = () => { cancelAnimationFrame(stageT); stageT = requestAnimationFrame(() => drawStage()); };
     function drawOpts() {
-      app.querySelector("#cz-tabs").innerHTML = TABS3.map(([k, l, ic]) => `<button type="button" role="tab" data-t="${k}" aria-selected="${k === tab}"><span>${ic}</span>${l}</button>`).join("");
-      let styleSw = /^(top|head|beard|shoes)$/.test(tab) ? `<div class="cz-style">${CZ_NEW.style.map(([v, l]) => `<button type="button" data-style="${v}" class="${cfg.style === v ? "on" : ""}">${l} first</button>`).join("")}</div>` : "";
+      app.querySelector("#cz-tabs").innerHTML = CATS.map(([k, l, ic]) => `<button type="button" role="tab" data-t="${k}" aria-selected="${k === cat && !q}"><span>${ic}</span>${l}</button>`).join("");
+      let subs = SUBS[cat], s = sub[cat] || (subs ? subs[0][0] : "");
+      app.querySelector("#wd-sub").innerHTML = !q && subs ? subs.map(([k, l]) => `<button type="button" data-sub="${k}" class="${k === s ? "on" : ""}">${l}</button>`).join("") : "";
       app.querySelector("#cz-undo").disabled = !hist.length;
-      app.querySelector("#cz-opts").innerHTML = styleSw + sections().map((s) => s[0] === "col" ? colRow(s[1], s[2]) : s[0] === "sl" ? slider(s[1]) : s[0] === "note" ? `<p class="cz-note">${esc(s[1])}</p>`
-        : `<h3 class="cz-h">${s[1]}</h3>` + s[3].map(([g, vals]) => vals.length ? `${g ? `<p class="cz-g">${g}</p>` : ""}<div class="cz-grid">${vals.map((v) => thumb(s[2], v)).join("")}</div>` : "").join("")).join("");
+      app.querySelector("#cz-opts").innerHTML = q ? searchView() : body();
     }
-    app.dataset.tab = "home";
+    app.dataset.tab = "home", app.classList.add("wide");
     app.innerHTML = `
     <header class="top">
       <a class="back-btn" href="#home">${icon("back", 20)} Home</a>
       <button class="btn btn-primary" id="cz-save" type="button">${icon("check", 18)} Save</button>
     </header>
+    <div class="wd">
     <section class="cz-make">
       <div class="cz-stage-wrap"><div class="cz-floor"></div><div id="cz-stage" class="cz-stage"></div>
-        <p class="cz-stage-t">${isNew ? "Create your character" : "Your character"}</p>
-        <div class="cz-try" aria-label="Try a reaction">${[["happy", "😄"], ["celebrate", "🎉"], ["sad", "😕"], ["excited", "🔥"], ["think", "🤔"], ["wave", "👋"]].map(([r, e]) => `<button type="button" data-try="${r}" aria-label="${r}">${e}</button>`).join("")}</div>
+        <p class="cz-stage-t wd-title">${isNew ? "Create your character" : "Wardrobe"}</p>
         <div class="cz-tools"><button type="button" id="cz-undo" aria-label="Undo">↶ Undo</button><button type="button" id="cz-dice">🎲 Surprise</button></div>
+        <div class="wd-view" aria-label="Turn the character"><button type="button" data-view="0">Front</button><button type="button" data-view="1.5708">Side</button><button type="button" data-view="3.1416">Back</button></div>
+        <div class="wd-zoom" aria-label="Zoom"><button type="button" data-zoom="in" aria-label="Zoom in">＋</button><button type="button" data-zoom="face" aria-label="Face close-up">🙂</button><button type="button" data-zoom="out" aria-label="Zoom out">－</button></div>
       </div>
-      <nav class="cz-tabs" id="cz-tabs" role="tablist"></nav>
     </section>
-    <section class="cz-opts" id="cz-opts"></section>`;
+    <div class="wd-side">
+      <label class="wd-search">🔎<input type="search" id="wd-q" placeholder="Search the wardrobe: kumma, hoodie, glasses…" autocomplete="off" aria-label="Search the wardrobe"></label>
+      <nav class="cz-tabs" id="cz-tabs" role="tablist"></nav>
+      <nav class="wd-sub" id="wd-sub" aria-label="Filter"></nav>
+      <section class="cz-opts" id="cz-opts"></section>
+    </div>
+    </div>`;
     let onClick = (e) => {
       if (!app.querySelector("#cz-opts")) return;
-      let t = e.target.closest("[data-t]"), o = e.target.closest("[data-k]"), s = e.target.closest("[data-style]"), tr = e.target.closest("[data-try]"), sw = e.target.closest("[data-col]"), rs = e.target.closest("[data-szr]");
-      if (tr) return CZ.react(app.querySelector("#cz-stage"), tr.dataset.try);
-      if (s) return snap(), cfg.style = s.dataset.style, drawOpts(), CZ.react(app.querySelector("#cz-stage"), "proud");
-      if (t) return tab = t.dataset.t, drawOpts(), t.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+      let t = e.target.closest("[data-t]"), o = e.target.closest("[data-k]"), sb = e.target.closest("[data-sub]"), sw = e.target.closest("[data-col]"), rs = e.target.closest("[data-szr]"), vw = e.target.closest("[data-view]"), zm = e.target.closest("[data-zoom]"), pk = e.target.closest("[data-pack]");
+      if (vw) return CZ3.hero && CZ3.hero.view(Number(vw.dataset.view));
+      if (zm) return CZ3.hero && CZ3.hero.zoom(zm.dataset.zoom === "face" ? (CZ3.hero.zt > 2 ? 1 : 2.4) : CZ3.hero.zt + (zm.dataset.zoom === "in" ? .4 : -.4));
+      if (pk) return openPack = openPack === pk.dataset.pack ? null : pk.dataset.pack, drawOpts();
+      if (t) return q = "", app.querySelector("#wd-q").value = "", cat = t.dataset.t, drawOpts(), t.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" }), CZ3.hero && CZ3.hero.zoom(cat === "face" || cat === "hair" || cat === "head" ? 2.1 : 1);
+      if (sb) return sub[cat] = sb.dataset.sub, drawOpts();
       if (sw) return snap(), cfg.col[sw.dataset.col] = sw.dataset.hex, drawStage(), drawOpts();
       if (rs) return snap(), cfg.sz[rs.dataset.szr] = CZ_SZ[rs.dataset.szr][2], drawStage("happy"), drawOpts();
       if (o) {
-        let k = o.dataset.k, v = o.dataset.v;
-        if (o.classList.contains("locked")) return toast(grPk(v) ? "Exclusive! Finish in the top 3 of a Gate Rush week to win this. It cannot be bought." : "Win this in a Boss Rush chest (Book → Boss Rush).", "info", 3200), CZ.react(app.querySelector("#cz-stage"), "surprised");
-        snap(), cfg[k] = v, k === "hair" && cfg.hat !== "crown" && (cfg.hat = "none");
+        let k = o.dataset.k, v = k === "mf" ? Number(o.dataset.v) : o.dataset.v;
+        if (o.classList.contains("locked")) {
+          let key = k + ":" + v, p = WD_PACK_OF[key];
+          return toast(CZ_LOCKED[key] ? (grPk(v) ? "Exclusive! Finish in the top 3 of a Gate Rush week to win this. It cannot be bought." : "Win this in a Boss Rush chest (Book → Boss Rush).") : `Part of the ${p.name} pack. It opens at ${fmtNum(p.pts)} points; you have ${fmtNum(totalPoints())}.`, "info", 3600), CZ.react(app.querySelector("#cz-stage"), "think");
+        }
+        snap(); cfg[k] = v;
+        if (k === "mf" && !mzOn()) cfg.hat = "mzclassic";
         let st = app.querySelector("#cz-stage");
         st.classList.remove("cz-swap"), void st.offsetWidth, st.classList.add("cz-swap");
-        drawStage(k === "pose" ? null : /^(cl|hat|bottom|shoes)$/.test(k) ? "proud" : "happy"), k === "pose" && CZ.react(st, v === "wave" ? "wave" : "proud", { pose: v, ms: 900 });
+        drawStage(k === "pose" ? null : /^(cl|hat|bottom|shoes|mf)$/.test(k) ? "proud" : "happy"), k === "pose" && CZ.react(st, v === "wave" ? "wave" : "proud", { pose: v, ms: 900 });
         drawOpts();
       }
     };
-    // colour picker and sliders update the character live while dragging
     let onInput = (e) => {
+      if (e.target.id === "wd-q") { q = e.target.value; clearTimeout(onInput.t); onInput.t = setTimeout(drawOpts, 180); return; }
       let p = e.target.closest("[data-pick]"), r = e.target.closest("[data-sz]");
       if (p) { dragging || (snap(), dragging = 1), cfg.col[p.dataset.pick] = p.value, p.parentNode.style.setProperty("--sw", p.value), liveStage(); }
       if (r) { dragging || (snap(), dragging = 1), cfg.sz[r.dataset.sz] = Number(r.value), liveStage(); }
@@ -9497,15 +9683,22 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let dragging = 0, onChange = (e) => { (e.target.closest("[data-pick]") || e.target.closest("[data-sz]")) && (dragging = 0, drawOpts()); };
     let onReady3 = () => { app.querySelector("#cz-stage") && (drawStage("wave"), drawOpts()); };
     window.addEventListener("cz3ready", onReady3), app.addEventListener("click", onClick), app.addEventListener("input", onInput), app.addEventListener("change", onChange);
-    cleanup = () => (window.removeEventListener("cz3ready", onReady3), app.removeEventListener("click", onClick), app.removeEventListener("input", onInput), app.removeEventListener("change", onChange));
+    cleanup = () => (window.removeEventListener("cz3ready", onReady3), app.removeEventListener("click", onClick), app.removeEventListener("input", onInput), app.removeEventListener("change", onChange), CZ3.hero && CZ3.hero.reset());
     app.querySelector("#cz-undo").addEventListener("click", () => { if (!hist.length) return; cfg = czCfg(JSON.parse(hist.pop())); drawStage("surprised"), drawOpts(); });
     app.querySelector("#cz-dice").addEventListener("click", () => {
       snap();
-      let r = (n) => Math.floor(Math.random() * n), p = (k) => { let l = opts(k).filter((v) => czHas(k, v)); return l[r(l.length)]; }, any = (k) => PRE[k][r(PRE[k].length)], rnd = (k) => { let [a, b] = CZ_SZ[k]; return +(a + Math.random() * (b - a) * .8 + (b - a) * .1).toFixed(2); };
-      let omani = cfg.style === "omani";
-      cfg = czCfg(Object.assign({}, cfg, { hair: p("hair"), hat: omani ? ["kumma1", "kumma2", "kumma3", "massar1", "massar2", "massar3", "none"][r(7)] : Math.random() < .6 ? "none" : p("hat"), eyes: p("eyes"), mouth: p("mouth"), gl: Math.random() < .7 ? "none" : p("gl"), cl: omani ? ["dish", "dish", "bisht"][r(3)] : ["tee", "hoodie", "shirt", "sweater", "jersey", "uniform", "jacket"][r(7)], face: p("face"), brows: p("brows"), beard: Math.random() < .6 ? "none" : p("beard"), bottom: p("bottom"), shoes: omani ? "sandals" : p("shoes"),
-        col: { skin: any("skin"), hair: any("hair"), eyes: any("eyes"), top: omani && Math.random() < .7 ? "#FFFFFF" : any("top"), bottom: any("bottom"), shoes: any("shoes"), bg: any("bg") },
-        sz: { h: rnd("h"), b: rnd("b"), hd: rnd("hd"), es: rnd("es"), ed: rnd("ed"), by: rnd("by"), ns: rnd("ns"), mw: rnd("mw") } }));
+      let r = (n) => Math.floor(Math.random() * n), pick = (k, f) => { let l = WD[k].filter((e) => czHas(k, e[0]) && (!f || f(e))); return l[r(l.length)][0]; }, any = (k) => PRE[k][r(PRE[k].length)];
+      let rnd = (k) => { let [a, b] = CZ_SZ[k]; return +(a + (b - a) * (.15 + Math.random() * .7)).toFixed(2); };
+      let trad = Math.random() < .5, cl = trad ? pick("cl", (e) => /^(dish|bisht)/.test(e[0])) : pick("cl", (e) => !/^(dish|bisht)/.test(e[0]));
+      cfg = czCfg(Object.assign({}, cfg, {
+        face: pick("face"), cheeks: Math.random() < .6 ? "none" : pick("cheeks"), nose: pick("nose"), eyes: pick("eyes", (e) => !/^(happy|wink|cool|dots)$/.test(e[0])), brows: pick("brows"), mouth: pick("mouth", (e) => !/^(o|tongue|flat)$/.test(e[0])),
+        mark: Math.random() < .7 ? "none" : pick("mark"), beard: Math.random() < .7 ? "none" : pick("beard"), hair: pick("hair"), hairline: pick("hairline"),
+        hat: trad ? pick("hat", (e) => /^(kumma|mz)/.test(e[0])) : Math.random() < .6 ? "none" : pick("hat", (e) => !/^(kumma|mz)/.test(e[0])), mf: pick("mf"),
+        cl, bottom: pick("bottom"), shoes: trad ? "sandals" : pick("shoes", (e) => e[0] !== "sandals"), gl: Math.random() < .75 ? "none" : pick("gl"),
+        neck: Math.random() < .75 ? "none" : pick("neck"), wrist: Math.random() < .6 ? "none" : pick("wrist"), extra: Math.random() < .7 ? "none" : pick("extra"),
+        col: { skin: any("skin"), hair: any("hair"), eyes: any("eyes"), top: trad ? OMANI[r(OMANI.length)] : any("top"), top2: Math.random() < .5 ? "" : any("top2"), bottom: any("bottom"), shoes: any("shoes"), hat: any("hat"), acc: any("acc"), bg: any("bg") },
+        sz: { h: rnd("h"), b: rnd("b"), hd: rnd("hd"), es: rnd("es"), ed: rnd("ed"), by: rnd("by"), bw: rnd("bw"), ns: rnd("ns"), mw: rnd("mw") }
+      }));
       drawStage("surprised"), drawOpts();
     });
     app.querySelector("#cz-save").addEventListener("click", () => {
