@@ -1232,6 +1232,11 @@ body.playing .tabbar { display: none; }
 }
 
 /* epz-patch:luck — Lucky Box */
+.lp-drop{align-items:center;border-color:var(--rc,#F2B632)!important;background:color-mix(in srgb,var(--rc,#F2B632) 12%,#fff)!important;animation:lp-drop .6s .5s cubic-bezier(.3,1.5,.5,1) both}
+.lp-drop .lp-drop-ic{font-size:1.8rem;line-height:1;flex:none}
+.lp-drop .btn{flex:none;margin-left:auto}
+@keyframes lp-drop{from{transform:scale(.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){.lp-drop{animation:none}}
 .app[data-tab="skills"] > .luck-home, .app[data-tab="ranking"] > .luck-home { display: none; }
 .luck-home { display: flex; align-items: center; gap: 14px; padding: 14px 16px; transition: transform .15s ease, box-shadow .15s ease; border-radius: var(--r); text-decoration: none; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); box-shadow: 0 3px 0 var(--line); }
 .luck-home:hover { transform: translateY(-1px); } .luck-home:active { transform: translateY(2px); }
@@ -6777,6 +6782,28 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
     let k = Math.min(Math.max(day, 1), 6) - 1, legend = golden ? 25 : 5 + k, rare = golden ? 75 : 15 + 2 * k, good = golden ? 0 : 30, r = Math.random() * 100, tier = r < legend ? "legend" : r < legend + rare ? "rare" : r < legend + rare + good ? "good" : "common", t = LUCK_TIERS[tier];
     return { tier, p: t.min + Math.round(Math.random() * (t.max - t.min) / 5) * 5 };
   }
+  /* epz-patch:luckdrop — an extra, separate chance of a wardrobe item the student does not have yet. The points prize is rolled
+     exactly as before; the drop never replaces it. Items come from the points packs (never the Boss Rush or Gate Rush exclusives),
+     rarer ones less often. A student who already owns every pack item gets bonus points instead, so there are no duplicates. */
+  var LUCK_DROP = { common: 8, good: 10, rare: 18, legend: 35 }, LUCK_DROP_GOLD = 50, LUCK_DROP_W = { uncommon: 50, rare: 30, epic: 14, legendary: 6, mythic: 3 }, LUCK_DROP_BONUS = 25;
+  function luckDrop(tier, golden) {
+    if (Math.random() * 100 >= (golden ? LUCK_DROP_GOLD : LUCK_DROP[tier] || 0)) return null;
+    let pool = [];
+    WD_PACKS.forEach((p) => p.items.forEach((k) => { czOwns(k) || pool.indexOf(k) > -1 || pool.push(k); }));
+    if (!pool.length) return { bonus: LUCK_DROP_BONUS };
+    let w = pool.map((k) => { let j = k.indexOf(":"), s = k.slice(0, j), v = k.slice(j + 1); return LUCK_DROP_W[czMeta(s, s === "mf" ? Number(v) : v).rarity] || 20; });
+    let r = Math.random() * w.reduce((a, b) => a + b, 0), i = 0;
+    while (i < pool.length - 1 && (r -= w[i]) >= 0) i++;
+    return { key: pool[i] };
+  }
+  function luckGive(key) {
+    if (typeof window.__lzOwn == "function") return window.__lzOwn(key);
+    try { let o = JSON.parse(localStorage.getItem("epz-learn-v1") || "{}"); o.owned = o.owned || []; o.owned.indexOf(key) < 0 && o.owned.push(key); localStorage.setItem("epz-learn-v1", JSON.stringify(o)); } catch (e) {}
+  }
+  function luckDropInfo(key) {
+    let j = key.indexOf(":"), s = key.slice(0, j), v = key.slice(j + 1), it = czAllItems().find((x) => x.key === key);
+    return { name: it ? it.name : v, rarity: czMeta(s, s === "mf" ? Number(v) : v).rarity, pack: WD_PACK_OF[key] };
+  }
   var luckCd = (ms) => typeof bossCountdown == "function" ? bossCountdown(ms) : `${Math.ceil(ms / 36e5)}h`;
   function luckBoxSvg(golden, cls = "") {
     /* epz-patch:luck3d — the same block-style chest as the 3D scene (wood planks, gold trim, a lid that lifts), drawn flat so the homepage stays light */
@@ -6843,11 +6870,11 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         <button class="btn btn-big luck-start" id="lk-start" type="button">\u{1F511} Get the key</button>` : `<h1>Come back soon</h1>
         <p class="li-sub">Your next box opens in</p>
         <p class="li-cd" data-luck-cd>${luckCd(st.readyAt - Date.now())}</p>
-        ${last ? `<p class="li-last">Last box: <b style="color:${lt.color}">${lt.name}</b> \xB7 +${last.p} points</p>` : ""}`}
+        ${last ? `<p class="li-last">Last box: <b style="color:${lt.color}">${lt.name}</b> \xB7 +${last.p} points${last.d ? ` \xB7 \u{1F381} ${esc(luckDropInfo(last.d).name)}` : ""}</p>` : ""}`}
     </section>
     <section class="block luck-odds">
       <h2>What is inside?</h2>
-      <ul>${Object.entries(LUCK_TIERS).map(([k, t]) => `<li style="--t:${t.color}"><i></i><b>${t.name}</b><span>${t.min === t.max ? t.min : `${t.min}–${t.max}`} points</span></li>`).join("")}</ul>
+      <ul>${Object.entries(LUCK_TIERS).map(([k, t]) => `<li style="--t:${t.color}"><i></i><b>${t.name}</b><span>${t.min === t.max ? t.min : `${t.min}–${t.max}`} points</span></li>`).join("")}<li style="--t:#F2B632"><i></i><b>\u{1F381} Bonus</b><span>sometimes a wardrobe item too</span></li></ul>
       <p class="small muted">Open a box every day to keep your \u{1F525} streak. Each day in a row gives better luck, and <b>day 7 is a golden box</b> with a Rare or Legendary prize for sure. Miss a day and the streak starts again.</p>
     </section>
     <footer class="foot"><b>English Practice Zone</b> by ${TEACHER_NAME}</footer>`, app.querySelector("#lk-start")?.addEventListener("click", () => {
@@ -6937,8 +6964,10 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       svg.classList.remove("wiggle", "shake1", "shake2"), svg.offsetWidth, svg.classList.add("shake2"), typeof sfxCtx == "function" && sfxCtx();
       /* epz-patch:luck3d — one press opens it. The prize is rolled and saved right here, once, before any animation is shown. */
       opened = !0, openBtn && (openBtn.disabled = !0), prize = luckRoll(st.next, st.golden);
+      let drop = luckDrop(prize.tier, st.golden); drop && drop.bonus && (prize.p += drop.bonus); drop && drop.key && luckGive(drop.key); /* epz-patch:luckdrop */
+      let dInfo = drop && drop.key ? luckDropInfo(drop.key) : null;
       let s = luckData(), leagueBefore = league().index, before = new Set(Object.keys(state.badges)), at = (/* @__PURE__ */ new Date()).toISOString();
-      s.o.push({ at, p: prize.p, r: prize.tier }), s.streak = st.next, prize.tier === "legend" && (s.legend = !0), s.best = Math.max(s.best || 0, s.streak), refreshBadges(), save(), LIVE2 && syncBoard();
+      s.o.push(Object.assign({ at, p: prize.p, r: prize.tier }, drop && drop.key ? { d: drop.key } : {}, drop && drop.bonus ? { b: drop.bonus } : {})), s.streak = st.next, prize.tier === "legend" && (s.legend = !0), s.best = Math.max(s.best || 0, s.streak), refreshBadges(), save(), LIVE2 && syncBoard();
       let newBadges = Object.keys(state.badges).filter((k) => !before.has(k)), lgUp = league().index > leagueBefore ? league() : null, t = LUCK_TIERS[prize.tier], big = prize.tier === "rare" || prize.tier === "legend";
       /* the plain reveal below is the fallback: it runs only if the 3D scene cannot start */
       const flat = () => {
@@ -6956,6 +6985,8 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         <span class="lp-pts">+<b id="lp-n">0</b></span>
         <span class="lp-lbl">points</span>
         <p class="lp-streak">\u{1F525} ${s.streak} day${s.streak === 1 ? "" : "s"} in a row${s.streak % 7 === 6 ? " \xB7 tomorrow is a golden box!" : ""}</p>
+        ${dInfo ? `<div class="unlock lp-drop rar-${dInfo.rarity}"><span class="lp-drop-ic">\u{1F381}</span><div><b>Bonus item: ${esc(dInfo.name)}</b><span>${dInfo.rarity.charAt(0).toUpperCase() + dInfo.rarity.slice(1)} \xB7 it is in your wardrobe now</span></div><a class="btn btn-sm" href="#avatar">Wear it</a></div>` : ""}
+        ${drop && drop.bonus ? `<div class="unlock lp-drop"><span class="lp-drop-ic">\u{1F381}</span><div><b>Lucky extra: +${drop.bonus} bonus points</b><span>You already have every wardrobe item, so you get points instead.</span></div></div>` : ""}
         ${lgUp ? `<div class="unlock" style="--lg:${lgUp.color}"><span class="medal">${icon("medal", 24)}</span><div><b>New league: ${lgUp.name}!</b><span>Your class ranking shows your new league.</span></div></div>` : ""}
         ${newBadges.map((k) => `<div class="unlock badge-new"><span class="badge-ic">${icon(BADGES[k].icon, 22)}</span><div><b>New badge: ${esc(BADGES[k].name)}</b><span>${esc(BADGES[k].desc)}</span></div></div>`).join("")}
         <p class="lp-next">Next box in <b data-luck-cd>${luckCd(LUCK_GAP)}</b></p>
@@ -6967,7 +6998,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         requestAnimationFrame(step), big && confetti(prize.tier === "legend" ? 140 : 80);
       }, 650);
       };
-      luckScene3d({ prize, tier: t, golden: st.golden, day: (st.next - 1) % 7 + 1, streak: s.streak, lgUp, newBadges }).then((ok) => {
+      luckScene3d({ prize, tier: t, golden: st.golden, day: (st.next - 1) % 7 + 1, streak: s.streak, lgUp, newBadges, dInfo, drop }).then((ok) => {
         ok || flat();
       }).catch((e) => {
         console.warn("Lucky Box 3D scene unavailable, using the plain reveal.", e), document.querySelector(".lbx")?.remove(), flat();
@@ -6987,7 +7018,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   }
   var luckLoadP = null;
   function luckLoad() {
-    return luckLoadP || (luckLoadP = Promise.all([["avatar", 12], ["luckybox", 1]].map(([f, v]) => new Promise((ok, bad) => {
+    return luckLoadP || (luckLoadP = Promise.all([["avatar", 13], ["luckybox", 1]].map(([f, v]) => new Promise((ok, bad) => {
       if (document.querySelector(`script[data-lb="${f}"]`)) return ok();
       const s = document.createElement("script");
       s.src = `gaterush/${f}.js?v=${v}`, s.dataset.lb = f, s.async = !1, s.onload = ok, s.onerror = () => bad(new Error("load " + f)), document.head.appendChild(s);
@@ -7006,6 +7037,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       }
     }, big = p.tier === "rare" || p.tier === "legend";
     const lines = [`\u{1F525} ${o.streak} day${o.streak === 1 ? "" : "s"} in a row${o.streak % 7 === 6 ? " \xB7 tomorrow is a golden box!" : ""}`];
+    o.dInfo && lines.push(`\u{1F381} Bonus item: <b>${esc(o.dInfo.name)}</b> (${o.dInfo.rarity})`), o.drop && o.drop.bonus && lines.push(`\u{1F381} Lucky extra: <b>+${o.drop.bonus}</b> bonus points`); /* epz-patch:luckdrop */
     o.lgUp && lines.push(`\u{1F3C5} New league: <b>${esc(o.lgUp.name)}</b>`), o.newBadges.forEach((k) => lines.push(`\u{1F396} New badge: <b>${esc(BADGES[k].name)}</b>`));
     const sc = GR.luckScene(T, {
       container: document.body, cfg, colors: h.colors(cfg), key: p.tier, tier: t, points: p.p, golden: o.golden,
@@ -7018,7 +7050,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
         claim: snd(() => SFX.power())
       },
       onClaim: () => {
-        cleanup = null, toast(`+${p.p} points added`, "success"), go("home");
+        cleanup = null, toast(o.dInfo ? `+${p.p} points and a new item: ${o.dInfo.name}!` : `+${p.p} points added`, "success", o.dInfo ? 3200 : 2200), go("home");
       }
     });
     return cleanup = () => sc.dispose(), !0;
@@ -9501,7 +9533,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (on || failed) return;
       try { var t = document.createElement("canvas"); if (!(t.getContext("webgl2") || t.getContext("webgl"))) throw 0; } catch (e) { failed = true; czFallbackOn(); return; }
       var js = function (src) { return new Promise(function (ok, bad) { var s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = bad; document.head.appendChild(s); }); };
-      var model = Promise.all([window.GR && window.GR.avatar ? 0 : js("gaterush/avatar.js?v=9"), window.GR && window.GR.bossModel ? 0 : js("gaterush/bosses.js?v=1")]);
+      var model = Promise.all([window.GR && window.GR.avatar ? 0 : js("gaterush/avatar.js?v=13"), window.GR && window.GR.bossModel ? 0 : js("gaterush/bosses.js?v=1")]);
       Promise.all([import("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"), model]).then(function (res) {
         var mod = res[0]; T = mod; init(); on = true; document.documentElement.classList.remove("cz3-wait"); document.documentElement.classList.add("cz3-on"); window.dispatchEvent(new Event("cz3ready"));
         scan(); new MutationObserver(function () { clearTimeout(scan.t); scan.t = setTimeout(scan, 20); }).observe(document.documentElement, { childList: true, subtree: true });
