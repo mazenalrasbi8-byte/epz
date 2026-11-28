@@ -8,6 +8,13 @@
 
   /* =====================================================================  CSS (injected once) */
   var CSS = "\
+.gr-tabs{flex-wrap:wrap}.gr-tabs button{flex:1 1 30%;min-width:0}\
+.gr-mode{display:flex;gap:6px;margin:4px 0 10px}.gr-mode button{flex:1;font:inherit;font-weight:800;font-size:.84rem;padding:8px 4px;border:3px solid var(--gr-navy);border-radius:12px;background:#fff;color:var(--gr-navy);cursor:pointer}.gr-mode button.on{background:var(--gr-gold)}\
+.gr-maps{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}\
+.gr-mapc{position:relative;display:flex;flex-direction:column;gap:4px;text-align:left;font:inherit;color:var(--gr-navy);background:#fff;border:3px solid var(--gr-navy);border-radius:16px;padding:10px 12px 12px;box-shadow:0 4px 0 var(--gr-navy);cursor:pointer;border-top:10px solid var(--mc)}\
+.gr-mapc:active{transform:translateY(3px);box-shadow:0 1px 0 var(--gr-navy)}.gr-mapc .ic{font-size:1.6rem;line-height:1}.gr-mapc small{font-weight:800;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;opacity:.7}\
+.gr-mapc b{font-size:1.02rem;line-height:1.2}.gr-mapc span{font-size:.8rem;line-height:1.35;opacity:.85}.gr-mapc .pb{font-weight:800;font-size:.76rem;opacity:1;margin-top:2px}\
+.gr-unit{margin:12px 0 6px;font-size:1rem}.gr-les{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;color:var(--gr-navy);background:#fff;border:2px solid var(--gr-navy);border-radius:12px;padding:9px 12px;margin:0 0 6px;cursor:pointer}.gr-les b{flex:1}.gr-les span{font-size:.78rem;font-weight:700;opacity:.75}\
 :root{--gr-navy:#13232F;--gr-ink:#1B1630;--gr-teal:#27C3C3;--gr-tealD:#0B7A63;--gr-gold:#F2B632;--gr-red:#E5484D;--gr-sand:#FFF6E2}\
 .gr-wrap{max-width:720px;margin:0 auto;padding:0 0 28px;color:#13232F}.gr-wrap .muted{color:#4B5A66}\
 .gr-hero{position:relative;overflow:hidden;border-radius:22px;background:linear-gradient(#7FD3EA,#CDE9F2 58%,#F5D27A 58%);border:4px solid var(--gr-navy);box-shadow:0 6px 0 var(--gr-navy);padding:18px 16px 0;min-height:230px;color:var(--gr-navy)}\
@@ -138,17 +145,19 @@ body.grx-playing{overflow:hidden;overscroll-behavior:none}body.grx-playing .tabb
     var left_t = info ? n.fmtLeft(info.ends - Date.now()) : n.fmtLeft(n.weekEndsMs() - Date.now());
     var body = "";
     if (tab === "race") body = raceHtml();
+    else if (tab === "maps") body = mapsHtml();
     else if (tab === "board") body = '<div class="gr-card"><h2>Weekly Leaderboard</h2><div id="gr-board"><p class="muted">Loading…</p></div></div>';
     else if (tab === "champs") body = '<div class="gr-card"><h2>Weekly Champions</h2><div id="gr-champs"><p class="muted">Loading…</p></div></div>';
     else body = '<div class="gr-card"><h2>My prizes</h2><div id="gr-mine"><p class="muted">Loading…</p></div></div>';
     app.innerHTML = '<section class="gr-wrap"><div class="gr-hero"><h1>GATE<br><b>RUSH</b></h1><p>Run, jump and smash the right door. English is your key.</p>' + fortSvg() + '</div>' +
       statusNote +
-      '<div class="gr-tabs" role="tablist"><button data-t="race" class="' + (tab === "race" ? "on" : "") + '">Race</button><button data-t="board" class="' + (tab === "board" ? "on" : "") + '">Leaderboard</button><button data-t="champs" class="' + (tab === "champs" ? "on" : "") + '">Champions</button><button data-t="mine" class="' + (tab === "mine" ? "on" : "") + '">Prizes</button></div>' + body + '</section>';
+      '<div class="gr-tabs" role="tablist"><button data-t="race" class="' + (tab === "race" ? "on" : "") + '">Weekly race</button><button data-t="maps" class="' + (tab === "maps" ? "on" : "") + '">Maps</button><button data-t="board" class="' + (tab === "board" ? "on" : "") + '">Leaderboard</button><button data-t="champs" class="' + (tab === "champs" ? "on" : "") + '">Champions</button><button data-t="mine" class="' + (tab === "mine" ? "on" : "") + '">Prizes</button></div>' + body + '</section>';
     app.querySelectorAll(".gr-tabs button").forEach(function (b) { b.addEventListener("click", function () { tab = b.dataset.t; draw(); }); });
     if (tab === "race") {
       var go = app.querySelector("#gr-go"); go && go.addEventListener("click", function () { ui.startRace(); });
       var adm = app.querySelector("#gr-adm"); adm && adm.addEventListener("click", function () { ui.admin(); });
     }
+    if (tab === "maps") bindMaps(app);
     if (tab === "board") loadBoard(true); if (tab === "champs") loadChamps(true); if (tab === "mine") loadMine();
   }
   function fortSvg() {
@@ -166,6 +175,43 @@ body.grx-playing{overflow:hidden;overscroll-behavior:none}body.grx-playing .tabb
       '<button id="gr-go" class="gr-go" type="button">' + h.icon("play", 24) + ' START RACE</button>' +
       '<div class="gr-card"><h2>How it works</h2><ul class="gr-how"><li><b>Run</b> with WASD or the arrow keys and <b>jump</b> with Space. On a phone, use the joystick and the jump button.</li><li><b>Read the question</b>, then run into the door with the right answer. The right door breaks. A wrong one bounces you back and costs 2 seconds.</li><li><b>Score</b> = ' + cfg.per_correct + ' points per correct answer, a speed bonus (up to ' + cfg.time_max + '), coins (' + cfg.coin + ' each, up to ' + cfg.coin_cap + ') and −' + cfg.hit_pen + ' for every obstacle hit.</li><li>Your <b>best race</b> of the week counts. At most ' + max + ' races are scored each week.</li><li>The top 3 win exclusive outfits! Positions 1–10 win bonus points. Everyone who races gets points.</li></ul></div>' +
       '<p style="text-align:center;margin:14px 0 0"><button id="gr-adm" type="button" style="background:none;border:0;font:inherit;font-size:.78rem;opacity:.6;text-decoration:underline;cursor:pointer;color:inherit">Teacher tools</button></p>';
+  }
+
+  /* ---------- topic maps (epz-patch:maps): World 1, Topic mode and Book mode, personal bests on this phone ---------- */
+  var MAPS = [["t01", "⏰", "Present Simple", "Daily Routine Town", "#F2B632"], ["t02", "🎬", "Present Continuous", "Live TV Studio", "#7C5CFA"], ["t03", "🦴", "Past Simple", "Dinosaur Dig Site", "#E8590C"],
+    ["t04", "🚂", "Past Continuous", "Midnight Express", "#2B41C4"], ["t05", "🏆", "Present Perfect", "Hall of Achievements", "#C9A227"], ["t06", "🏛️", "Past Perfect", "Layers of the Ancient Ruins", "#4E9A57"],
+    ["t07", "🚀", "Future Simple", "Rocket Launch Base", "#E5484D"], ["t08", "⛈️", "Future Forms", "Weather Forecast Tower", "#46617A"], ["t09", "⏳", "Present Perfect Continuous", "Hourglass Desert", "#C98F12"], ["t10", "🌀", "Mixed Tenses", "Time Portal Gauntlet", "#8B5CF6"]];
+  var TOPIC = { t01: "present-simple", t02: "present-continuous", t03: "past-simple", t04: "past-continuous", t05: "present-perfect", t06: "past-perfect", t07: "future-simple", t08: "future-forms", t09: "present-perfect-continuous", t10: "mixed-tenses" };
+  function pref() { try { return JSON.parse(localStorage.getItem("gr-maps-pref") || "{}"); } catch (e) { return {}; } }
+  function setPref(k, v) { try { var p = pref(); p[k] = v; localStorage.setItem("gr-maps-pref", JSON.stringify(p)); } catch (e) {} }
+  function pbs() { try { return JSON.parse(localStorage.getItem("gr-pb-v1") || "{}"); } catch (e) { return {}; } }
+  function lessonMap(l, i) { var t = (l.title || "").toLowerCase(); return /present simple/.test(t) ? "t01" : /past simple/.test(t) ? "t03" : /future/.test(t) ? "t08" : MAPS[i % MAPS.length][0]; }
+  function mapsHtml() {
+    var p = pref(), mode = p.mode || "topic", easy = !!p.easy, best = pbs(), n = net();
+    var head = '<div class="gr-card"><h2>World 1 · Tenses World</h2><p class="muted" style="margin:2px 0 8px">Ten practice maps, each with its own place, obstacles and tense. Only Sunrise Fort counts for the weekly leaderboard; your best time on each map is saved on this phone.</p>' +
+      '<div class="gr-mode" role="group" aria-label="How to choose questions"><button type="button" data-mode="topic" class="' + (mode === "topic" ? "on" : "") + '">Topic maps</button><button type="button" data-mode="book" class="' + (mode === "book" ? "on" : "") + '">Book mode</button></div>' +
+      '<div class="gr-mode" role="group" aria-label="Parkour level"><button type="button" data-easy="0" class="' + (!easy ? "on" : "") + '">Normal parkour</button><button type="button" data-easy="1" class="' + (easy ? "on" : "") + '">Easy parkour</button></div></div>';
+    if (mode === "topic") return head + '<div class="gr-maps">' + MAPS.map(function (m, i) {
+      var b = best[m[0]]; return '<button type="button" class="gr-mapc" data-map="' + m[0] + '" style="--mc:' + m[4] + '"><span class="ic">' + m[1] + '</span><small>Map ' + (i + 1) + ' · ' + esc(m[2]) + '</small><b>' + esc(m[3]) + '</b><span class="pb">' + (b ? "Best " + n.fmtTime(b).slice(0, -3) : "Not raced yet") + '</span></button>';
+    }).join("") + "</div>";
+    var units = n.bookUnits(), g = String(H().me().grade || "9");
+    if (!units.length || g !== "9") return head + '<div class="gr-card"><p>Book mode uses the Grade 9 textbook (Book 9A). More books are coming. For now, choose a topic map.</p></div>';
+    return head + '<div class="gr-card"><h2>Book 9A</h2><p class="muted" style="margin:2px 0 6px">Pick the lesson you are studying. The race asks that lesson\'s questions.</p>' + units.map(function (u) {
+      var ls = u.lessons.map(function (l, i) { return [l, i]; }).filter(function (x) { var l = x[0]; return l.kind !== "reading" && l.kind !== "writing" && (l.qs || []).filter(function (q) { return q.type === "mcq" && q.options && q.options.length >= 3; }).length >= 3; });
+      return ls.length ? '<h3 class="gr-unit">' + esc(u.label + " · " + u.name) + '</h3>' + ls.map(function (x) { var mid = lessonMap(x[0], x[1]), m = MAPS.find(function (y) { return y[0] === mid; }); return '<button type="button" class="gr-les" data-u="' + u.id + '" data-l="' + x[0].id + '" data-map="' + mid + '"><span>' + m[1] + '</span><b>' + esc(x[0].title) + '</b><span>' + esc(m[3]) + ' ›</span></button>'; }).join("") : "";
+    }).join("") + "</div>";
+  }
+  function bindMaps(app) {
+    app.querySelectorAll("[data-mode]").forEach(function (b) { b.addEventListener("click", function () { setPref("mode", b.dataset.mode); draw(); }); });
+    app.querySelectorAll("[data-easy]").forEach(function (b) { b.addEventListener("click", function () { setPref("easy", b.dataset.easy === "1"); draw(); }); });
+    app.querySelectorAll(".gr-mapc").forEach(function (b) { b.addEventListener("click", function () { ui.startRace({ map: b.dataset.map, topic: TOPIC[b.dataset.map], easy: !!pref().easy }); }); });
+    app.querySelectorAll(".gr-les").forEach(function (b) { b.addEventListener("click", function () { ui.startRace({ map: b.dataset.map, book: { u: b.dataset.u, l: b.dataset.l }, easy: !!pref().easy }); }); });
+  }
+  var mapReady = {};
+  function loadMapFiles(id) {
+    if (mapReady[id]) return mapReady[id];
+    var js = function (src) { return new Promise(function (ok, bad) { if (document.querySelector('script[data-gr="' + src + '"]')) return ok(); var s = document.createElement("script"); s.src = "gaterush/" + src + "?v=1"; s.dataset.gr = src; s.async = false; s.onload = ok; s.onerror = function () { bad(new Error("load " + src)); }; document.head.appendChild(s); }); };
+    return mapReady[id] = js("course.js").then(function () { return js("maps-w1.js"); }).catch(function (e) { mapReady[id] = null; throw e; });
   }
 
   /* ---------- leaderboard ---------- */
@@ -214,21 +260,24 @@ body.grx-playing{overflow:hidden;overscroll-behavior:none}body.grx-playing .tabb
 
   /* =====================================================================  race launcher + results */
   var stage = null, game = null, racing = false;
-  ui.startRace = async function () {
-    if (racing) return; racing = true; var h = H(), n = net(), map = GR.maps.fort;
+  ui.startRace = async function (opt) {
+    opt = opt || {}; if (racing) return; racing = true; var h = H(), n = net(), map = GR.maps.fort, practice = !!opt.map;
     stage = document.createElement("div"); stage.className = "grx-stage"; document.body.appendChild(stage); document.body.classList.add("grx-playing");
     stage.innerHTML = '<div class="grx-load"><div class="grx-spin"></div><b>Gate Rush</b><span>Loading 3D engine…</span></div>';
     var T;
     try { T = await h.loadThree(); } catch (e) { exitStage(); h.toast("Could not load the 3D engine. Check your connection.", "error", 4500); return; }
-    var qs = n.pick(map.gates);
-    if (qs.length < map.gates) { exitStage(); h.toast("Not enough questions for your grade yet.", "error", 4500); return; }
-    var runPromise = n.startRun();
+    if (practice) { try { await loadMapFiles(opt.map); map = GR.maps[opt.map]; } catch (e) { exitStage(); h.toast("Could not load this map. Check your connection.", "error", 4500); return; } }
+    var qs = [];
+    try { qs = !practice ? n.pick(map.gates) : opt.book ? n.pickLesson(opt.book.u, opt.book.l, map.gates) : await n.pickTopic(opt.topic, map.gates); } catch (e) { qs = []; }
+    if (!stage) { racing = false; return; }
+    if (qs.length < map.gates) { exitStage(); h.toast("Not enough questions for this map yet.", "error", 4500); return; }
+    var runPromise = practice ? null : n.startRun();
     stage.innerHTML = "";
     try {
       var cfg = h.avatarCfg();
-      game = GR.Game({ T: T, host: h, container: stage, map: map, questions: qs, cfg: cfg, colors: h.colors(cfg),
-        onFinish: function (res) { onFinish(res, runPromise); },
-        onRestart: function () { disposeGame(); racing = false; stage.remove(); stage = null; document.body.classList.remove("grx-playing"); ui.startRace(); },
+      game = GR.Game({ T: T, host: h, container: stage, map: map, questions: qs, cfg: cfg, colors: h.colors(cfg), easy: !!opt.easy,
+        onFinish: function (res) { practice ? onPractice(res, opt, map) : onFinish(res, runPromise); },
+        onRestart: function () { disposeGame(); racing = false; stage.remove(); stage = null; document.body.classList.remove("grx-playing"); ui.startRace(opt); },
         onExit: function () { exitStage(); } });
       game.start(); /[?&]grdebug/.test(location.search) && (GR.game = game);
     } catch (e) { console.error(e); exitStage(); h.toast("Gate Rush could not start on this device.", "error", 4500); }
@@ -237,6 +286,19 @@ body.grx-playing{overflow:hidden;overscroll-behavior:none}body.grx-playing .tabb
   function exitStage() {
     disposeGame(); racing = false; stage && stage.remove(); stage = null; document.body.classList.remove("grx-playing");
     var h = H(); if (h.app.dataset.tab === "gaterush" || location.hash === "#gaterush") { h.app.dataset.tab = "gaterush"; draw(); ui.mount && net().sync().then(function () { h.app.dataset.tab === "gaterush" && draw(); }); }
+  }
+  function onPractice(res, opt, map) {
+    var n = net(), host = stage; if (!host) return;
+    var acc = res.total ? Math.round(100 * res.correct / res.total) : 0, best = pbs(), prev = best[opt.map], isNew = !prev || res.timeMs < prev;
+    if (isNew) { best[opt.map] = res.timeMs; try { localStorage.setItem("gr-pb-v1", JSON.stringify(best)); } catch (e) {} }
+    var box = document.createElement("div"); box.className = "grx-results";
+    box.innerHTML = '<div class="grx-res"><h2>' + esc(map.name) + '</h2><div class="tm">' + n.fmtTime(res.timeMs) + '</div>' + (isNew ? '<span class="badge">NEW BEST!</span>' : '<div class="grx-rank">Best: ' + n.fmtTime(prev) + '</div>') +
+      '<div class="grx-grid"><div><b>' + acc + '%</b><span>English accuracy</span></div><div><b>' + res.correct + '</b><span>Correct</span></div><div><b>' + res.wrong + '</b><span>Incorrect</span></div><div><b>' + res.coins + '/' + res.coinsTotal + '</b><span>Coins</span></div></div>' +
+      '<div class="grx-rank">' + esc(map.title || "") + ' practice · ' + (opt.book ? "Book mode" : "Topic map") + (opt.easy ? " · Easy parkour" : "") + '</div><div class="grx-acts"><button class="grx-btn pri" id="gr-again" type="button">Race again</button><button class="grx-btn" id="gr-maps" type="button">Choose another map</button></div></div>';
+    host.appendChild(box);
+    box.querySelector("#gr-again").addEventListener("click", function () { disposeGame(); racing = false; host.remove(); stage = null; document.body.classList.remove("grx-playing"); ui.startRace(opt); });
+    box.querySelector("#gr-maps").addEventListener("click", function () { tab = "maps"; exitStage(); });
+    if (res.correct === res.total) try { H().confetti(50); } catch (e) {}
   }
   async function onFinish(res, runPromise) {
     var n = net(), h = H(), host = stage; if (!host) return;

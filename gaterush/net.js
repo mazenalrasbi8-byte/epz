@@ -114,6 +114,73 @@
     var list = shuffled(all, mulberry(hashStr(key))).slice(0, 90);
     cache = { key: key, list: list }; return list;
   };
+  /* ---------- topic maps (epz-patch:maps): one central bank by grade and topic, plus Book mode ----------
+     Topic questions live in gaterush/q-g<grade>-w<world>.json (only grade 9 so far; other grades fall back to it).
+     Gate i asks for format FMT[i]; the band rises from basic to challenge. Recently seen questions are avoided. */
+  var FMT = ["form", "complete", "mistake", "meaning", "rewrite", "real"], topicCache = {};
+  // existing bank questions join a topic when their activity title names it (used when a format runs short, and for variety)
+  var TITLE = {
+    "present-simple": /present simple/i, "present-continuous": /present (simple )?(or |, |& |and )?(simple )?continuous|present continuous/i,
+    "past-simple": /past simple/i, "past-continuous": /past continuous/i, "present-perfect": /present perfect(?!.*continuous)|for or since|ever, never|already, yet/i,
+    "past-perfect": /past perfect/i, "future-simple": /future|\bwill\b/i, "future-forms": /future|going to/i,
+    "present-perfect-continuous": /present perfect continuous|present perfect or present perfect continuous/i, "mixed-tenses": /tenses|past simple|present simple|future/i
+  };
+  net.loadTopic = function (topic) {
+    var g = (H().me().grade || "9"), key = g + "/" + topic;
+    if (topicCache[key]) return Promise.resolve(topicCache[key]);
+    // one file per grade and world (World 1 = the tenses), e.g. gaterush/q-g9-w1.json
+    var get = function (gr) { return fetch("gaterush/q-g" + gr + "-w1.json?v=1").then(function (r) { if (!r.ok) throw new Error("no " + gr); return r.json(); }).then(function (d) { if (!d.topics || !d.topics[topic]) throw new Error("no topic"); return d.topics[topic]; }); };
+    return get(g).catch(function () { return get("9"); }).then(function (d) { topicCache[key] = d; return d; });
+  };
+  function seenKey(k) { return "gr-seen-" + k; }
+  function seenGet(k) { try { return JSON.parse(localStorage.getItem(seenKey(k)) || "[]"); } catch (e) { return []; } }
+  function seenAdd(k, ids) { try { var a = seenGet(k).concat(ids).slice(-30); localStorage.setItem(seenKey(k), JSON.stringify(a)); } catch (e) {} }
+  function toGate(q, rng) {
+    var wrong = shuffled(q.options.filter(function (o) { return o !== q.answer; }), rng).slice(0, 2); if (wrong.length < 2) return null;
+    var opts = shuffled([q.answer].concat(wrong), rng); return { prompt: q.prompt, options: opts, correct: opts.indexOf(q.answer), explanation: q.explanation || "", id: q.id };
+  }
+  function bankFor(topic) {
+    var re = TITLE[topic], g = H().me().grade || "9", out = [], seen = {};
+    if (!re || !H().mcqActs) return out;
+    H().mcqActs().forEach(function (a) {
+      if (!re.test(a.title) || (a.grade && a.grade !== "all" && String(a.grade) !== String(g))) return;
+      a.qs.forEach(function (q, i) {
+        var p = String(q.prompt || ""); if (seen[p] || !q.options || q.options.length < 3 || q.image || q.passage || p.length < 8 || p.length > 110 || q.options.indexOf(q.answer) < 0) return;
+        if (!q.options.every(function (o) { return String(o).length <= 40; })) return; seen[p] = 1;
+        out.push({ id: "bank:" + p.slice(0, 40), prompt: p, options: q.options, answer: q.answer, explanation: q.explanation || "" });
+      });
+    });
+    return out;
+  }
+  // n questions for a topic map: gate i takes format FMT[i % 6]; one bank question may replace a middle gate for variety
+  net.pickTopic = function (topic, n) {
+    return net.loadTopic(topic).then(function (d) {
+      var rng = Math.random, seen = seenGet(topic), used = {}, out = [], bank = shuffled(bankFor(topic), rng), bankSlot = bank.length ? 1 + Math.floor(rng() * 3) : -1;
+      for (var i = 0; i < n; i++) {
+        var fmt = FMT[i % FMT.length], pool = d.qs.filter(function (q) { return q.format === fmt && !used[q.id]; });
+        var fresh = pool.filter(function (q) { return seen.indexOf(q.id) < 0; }), src = fresh.length ? fresh : pool, q = null;
+        if (i === bankSlot && bank.length) q = bank.shift();
+        if (!q && src.length) q = src[Math.floor(rng() * src.length)];
+        if (!q) q = bank.shift() || shuffled(d.qs.filter(function (x) { return !used[x.id]; }), rng)[0];
+        if (!q) break; used[q.id] = 1;
+        var gq = toGate(q, rng); gq && out.push(gq);
+      }
+      seenAdd(topic, out.map(function (q) { return q.id; }).filter(Boolean));
+      return out;
+    });
+  };
+  // Book mode: the chosen lesson's three-choice questions, topped up from the rest of its unit
+  net.bookUnits = function () { var b = H().book && H().book(); return b && b.units ? b.units : []; };
+  net.pickLesson = function (unitId, lessonId, n) {
+    var u = net.bookUnits().find(function (x) { return x.id === unitId; }); if (!u) return [];
+    var ok = function (q) { return q && q.type === "mcq" && q.options && q.options.length >= 3 && q.options.indexOf(q.answer) > -1 && String(q.prompt || "").length <= 120 && !q.passage; };
+    var les = u.lessons.find(function (l) { return l.id === lessonId; }), rng = Math.random;
+    var first = shuffled((les ? les.qs || [] : []).filter(ok), rng), rest = shuffled([].concat.apply([], u.lessons.filter(function (l) { return l !== les; }).map(function (l) { return (l.qs || []).filter(ok); })), rng);
+    var out = [], seenP = {};
+    first.concat(rest).forEach(function (q) { if (out.length >= n || seenP[q.prompt]) return; seenP[q.prompt] = 1; var g = toGate(q, rng); g && out.push(g); });
+    return out;
+  };
+
   // one question per gate for one attempt (6 on the fort map): random questions from the weekly pool, three answers each, random door for the right one
   net.pick = function (n) {
     var pool = net.pool(), rng = Math.random, src = shuffled(pool, rng), out = [];
