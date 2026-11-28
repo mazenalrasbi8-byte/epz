@@ -18,7 +18,7 @@
     { k: "correction", parts: ["Spelling", "Capitalization", "Verb Forms", "Basic Grammar", "Punctuation"] }
   ];
   // skills whose Parts are written and shipped (the rest show as "Coming soon", so no number on screen is ever a promise)
-  E.READY = { grammar: true };
+  E.READY = { grammar: true, vocabulary: true };
   E.TESTS = TESTS; E.QS = QS;
 
   /* ---------------------------------------------------------------- question helpers used by the data files (same shapes as the rest of EPZ) */
@@ -30,6 +30,8 @@
     c: function (prompt, answer, ex) { return x({ type: "correct", prompt: prompt, answer: answer }, ex); },
     b: function (prompt, answer, ex) { return x({ type: "build", prompt: prompt, answer: answer }, ex); },
     o: function (prompt, items, ex) { return x({ type: "order", prompt: prompt, items: items }, ex); },
+    mi: function (image, prompt, options, ex) { var q = x({ type: "mcq", prompt: prompt, options: options, answer: options[0] }, ex); q.image = image; return q; },   // a picture (emoji) above the question
+    fi: function (image, prompt, answer, ex) { var q = x({ type: "fill", prompt: prompt, answer: answer }, ex); q.image = image; return q; },
     mt: function (prompt, pairs, ex) { return x({ type: "match", prompt: prompt, pairs: pairs.map(function (p) { return { left: p[0], right: p[1] }; } ) }, ex); },
     T: function (title, instructions, questions, more) { return Object.assign({ title: title, instructions: instructions, questions: questions }, more || {}); }
   };
