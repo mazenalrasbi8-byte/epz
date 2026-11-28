@@ -2141,6 +2141,15 @@ body {
 .wd-view button:active,.wd-zoom button:active{transform:scale(.92)}
 .wd-zoom{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:5px;z-index:2}
 .wd-zoom button{width:38px;height:34px;padding:0;font-size:1rem}
+/* epz-patch:collection2 */
+.wd-sum{border:3px solid var(--gr-navy);border-radius:18px;background:#fff;padding:12px;margin:0 0 12px;box-shadow:0 4px 0 var(--gr-navy);display:flex;flex-direction:column;gap:8px}
+.wd-sum-top{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}.wd-sum-top b{display:block;font-family:var(--display);font-size:1.35rem;line-height:1.1}.wd-sum-top span{font-size:.72rem;font-weight:800;color:var(--muted)}
+.wd-rcs{display:flex;flex-wrap:wrap;gap:6px}.wd-rc{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:.72rem;font-weight:800;background:color-mix(in srgb,var(--rc,#8A94A8) 14%,#fff);color:var(--gr-navy);border:2px solid var(--rc,#8A94A8)}.wd-rc b{font-family:var(--display)}.wd-rc.rar-common{--rc:#8A94A8}
+.wd-osave{width:100%;margin:4px 0 12px}
+.wd-outfits{display:grid;grid-template-columns:1fr;gap:10px}@media(min-width:560px){.wd-outfits{grid-template-columns:1fr 1fr}}
+.wd-outfit{display:flex;gap:12px;align-items:center;border:3px solid var(--gr-navy);border-radius:16px;background:#fff;padding:10px;box-shadow:0 4px 0 var(--gr-navy)}
+.wd-oav{flex:none;width:84px;height:84px;border-radius:14px;background:var(--gr-sky,#E3EAF6);display:grid;place-items:center;overflow:hidden}.wd-oinfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}.wd-oinfo b{font-size:1rem;overflow-wrap:anywhere}
+.wd-obtns{display:flex;flex-wrap:wrap;gap:6px}.wd-obtns .btn{min-height:36px}.wd-oname-in{font:inherit;font-weight:700;padding:8px 10px;border:2px solid var(--gr-navy);border-radius:10px;width:100%}
 .wd-pack{position:relative;border:3px solid var(--gr-navy);border-left:10px solid var(--pc,var(--gr-navy));border-radius:18px;background:#fff;padding:12px;margin:0 0 12px;box-shadow:0 4px 0 var(--gr-navy)}
 .wd-pack-h{display:flex;align-items:center;gap:10px}
 .wd-pack-h div{flex:1;min-width:0}.wd-pack-h b{display:block;font-size:1.02rem}.wd-pack-h small{display:block;color:var(--muted);font-weight:700;font-size:.78rem}
@@ -8803,6 +8812,37 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   var CZ_RARITIES = [["common", "Common"], ["uncommon", "Uncommon"], ["rare", "Rare"], ["epic", "Epic"], ["legendary", "Legendary"], ["mythic", "Mythic"]];
   var CZ_PACK_RARITY = { heritage: "uncommon", sports: "uncommon", street: "rare", football: "rare", explorer: "rare", winter: "epic", festival: "epic", royal: "legendary" };
   var CZ_LOCKED_RARITY = { "hat:kummag": "legendary", "hat:crown": "legendary", "cl:bishtg": "legendary", "extra:headphones": "epic", "extra:medal": "rare", "extra:cape": "epic" };
+  /* epz-patch:collection2 — the collection: every wardrobe item, the themed collections it belongs to, and when the student first owned it.
+     Saved on this phone in state.cz = { v: 1, seen: { "hat:kumma4": time }, outfits: [ ... ] }. Nothing else in the saved data changes. */
+  var CZ_COL_SLOTS = ["hat", "mf", "cl", "bottom", "shoes", "gl", "neck", "wrist", "extra", "hair", "hairline", "face", "cheeks", "nose", "eyes", "brows", "mouth", "mark", "beard"];
+  var CZ_LOCK_SLOTS = ["hat", "mf", "cl", "bottom", "shoes", "gl", "neck", "wrist", "extra"];
+  var CZ_MAX_OUTFITS = 8;
+  function czAllItems() {
+    let out = [];
+    CZ_COL_SLOTS.forEach((k) => (WD[k] || []).forEach((e) => { e[0] !== "none" && out.push({ k, v: e[0], key: k + ":" + e[0], name: k === "mf" ? "Mussar fabric \u00B7 " + e[1] : e[1] }); }));
+    return out;
+  }
+  function czSets() {
+    let sets = WD_PACKS.map((p) => ({ id: p.id, name: p.name, ic: p.ic, col: p.col, how: `Opens at ${fmtNum(p.pts)} points`, items: p.items.slice() }));
+    sets.push({ id: "boss", name: "Boss Rush prizes", ic: "\u2694\uFE0F", col: "#7C3AED", how: "Win them in Boss Rush chests", items: ["hat:kummag", "cl:bishtg", "hat:crown", "extra:headphones", "extra:medal", "extra:cape"] });
+    ["Sunrise Gold", "Lagoon Aqua", "Ruby Dash", "Violet Storm"].forEach((n, i) => sets.push({ id: "gr" + (i + 1), name: n + " champion pack", ic: "\uD83C\uDFC6", col: GR_PACKS[i + 1][0], how: "Finish in the top 3 of a Gate Rush week", items: ["hat:grcrown" + (i + 1), "extra:grcape" + (i + 1), "gl:grvisor" + (i + 1)] }));
+    return sets;
+  }
+  var czOwns = (key) => { let i = key.indexOf(":"), k = key.slice(0, i), v = key.slice(i + 1); return czHas(k, k === "mf" ? Number(v) : v); };
+  function czStore() {
+    let s = state.cz;
+    if (!s || typeof s !== "object") s = state.cz = { v: 1, seen: null, outfits: [] };
+    s.outfits = Array.isArray(s.outfits) ? s.outfits.slice(0, CZ_MAX_OUTFITS) : [];
+    return s;
+  }
+  // remembers when each item was first owned. Items owned before this existed count as "already had" (time 0), so only new ones are "recent".
+  function czTrack() {
+    let s = czStore(), first = !s.seen, now = Date.now(), changed = first;
+    s.seen = s.seen || {};
+    czAllItems().forEach((it) => { if (!(it.key in s.seen) && czOwns(it.key)) s.seen[it.key] = first ? 0 : now, changed = !0; });
+    changed && save();
+    return s;
+  }
   function czMeta(slot, v) {
     let key = slot + ":" + v, p = WD_PACK_OF[key];
     if (/^gr(crown|cape|visor)\d$/.test(String(v))) return { key, rarity: "legendary", source: "gaterush", set: "gr" + String(v).slice(-1) };
@@ -9671,7 +9711,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
   function czMaker() {
     let cfg = czCfg(state.avatar || DUO_DEF), isNew = !state.avatar, hist = [], cat = "face", sub = {}, q = "", openPack = null;
     let snap = () => { hist.push(JSON.stringify(cfg)); hist.length > 40 && hist.shift(); };
-    let CATS = [["face", "Face", "🙂"], ["hair", "Hair", "💇"], ["head", "Headwear", "🧢"], ["top", "Tops", "👕"], ["bottom", "Bottoms", "👖"], ["shoes", "Shoes", "👟"], ["acc", "Extras", "🎒"], ["body", "Body", "🧍"], ["packs", "Packs", "🎁"]];
+    let CATS = [["face", "Face", "🙂"], ["hair", "Hair", "💇"], ["head", "Headwear", "🧢"], ["top", "Tops", "👕"], ["bottom", "Bottoms", "👖"], ["shoes", "Shoes", "👟"], ["acc", "Extras", "🎒"], ["body", "Body", "🧍"], ["packs", "Packs", "🎁"], ["collection", "Collection", "📚"], ["outfits", "Outfits", "👔"]]; /* epz-patch:collection2 */
     let SUBS = {
       face: [["shape", "Shape & skin"], ["eyes", "Eyes"], ["brows", "Brows"], ["nose", "Nose & mouth"], ["details", "Details & beard"]],
       hair: [["style", "Style & colour"], ["line", "Hairline"]],
@@ -9732,7 +9772,7 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (cat === "acc") return s === "gl" ? grid("Glasses", "gl", WD.gl) : s === "neck" ? grid("Around the neck", "neck", WD.neck) + colRow("Accessory colour", "acc")
         : s === "wrist" ? grid("Wrist", "wrist", WD.wrist) + colRow("Accessory colour", "acc") : grid("Bags and more", "extra", WD.extra) + colRow("Accessory colour", "acc");
       if (cat === "body") return slider("h") + slider("b") + slider("hd") + grid("Favourite pose", "pose", WD.pose) + colRow("Circle colour (small pictures)", "bg");
-      return packsView();
+      return cat === "collection" ? collectionView() : cat === "outfits" ? outfitsView() : packsView();
     }
     function itemName(key) { let [k, v] = key.split(":"), e = (WD[k] || []).find((x) => String(x[0]) === v); return e ? (k === "mf" ? "Mussar fabric · " + e[1] : e[1]) : v; }
     function packsView() {
@@ -9749,6 +9789,57 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       return `<p class="cz-note">You have <b>${fmtNum(pts)}</b> points. Packs open as your points grow, and every item goes straight into your one wardrobe.</p>` + WD_PACKS.map(card).join("")
         + `<h3 class="cz-h">Exclusive</h3><section class="wd-pack"><div class="wd-pack-h"><span class="wd-pack-ic">🏆</span><div><b>Gate Rush champion packs</b><small>Crown, racer cape and visor. Finish in the top 3 of a Gate Rush week. Cannot be bought.</small></div></div><p class="wd-pack-list">${champ.map((x) => `<span style="border-color:${x.c}">${x.has ? "✅" : "🔒"} ${esc(x.n)}</span>`).join("")}</p></section>`
         + `<section class="wd-pack"><div class="wd-pack-h"><span class="wd-pack-ic">⚔️</span><div><b>Boss Rush chest prizes</b><small>Win a chest by beating a boss (Book → Boss Rush).</small></div></div><p class="wd-pack-list">${["hat:kummag", "cl:bishtg", "hat:crown", "extra:headphones", "extra:medal", "extra:cape"].map((k) => `<span>${own.indexOf(k) > -1 ? "✅" : "🔒"} ${esc(itemName(k))}</span>`).join("")}</p></section>`;
+    }
+    /* epz-patch:collection2 — Collection: totals, rarities, recently unlocked, every themed collection with its missing items */
+    let openSet = null, renaming = null;
+    function collectionView() {
+      let st = czTrack(), all = czAllItems(), owned = all.filter((it) => czOwns(it.key)), pct = Math.round(100 * owned.length / all.length), sets = czSets();
+      let done = sets.filter((s2) => s2.items.every(czOwns)).length;
+      let rr = CZ_RARITIES.slice(0, 5).map(([r, label]) => { let inR = all.filter((it) => czMeta(it.k, it.v).rarity === r); return inR.length ? `<span class="wd-rc rar-${r}"><b>${inR.filter((it) => czOwns(it.key)).length}/${inR.length}</b>${label}</span>` : ""; }).join("");
+      let recent = Object.keys(st.seen).filter((k) => st.seen[k] > 0 && czOwns(k)).sort((a, b) => st.seen[b] - st.seen[a]).slice(0, 8);
+      let tileOf = (key) => { let i = key.indexOf(":"), k = key.slice(0, i), v = key.slice(i + 1); return tile(k, k === "mf" ? Number(v) : v, itemName(key)); };
+      let setCard = (s2) => {
+        let have = s2.items.filter(czOwns).length, n = s2.items.length, full = have === n, ex = openSet === s2.id, miss = s2.items.filter((k) => !czOwns(k));
+        return `<section class="wd-pack${full ? " open" : ""}" style="--pc:${s2.col}"><div class="wd-pack-h"><span class="wd-pack-ic">${s2.ic}</span><div><b>${esc(s2.name)}</b><small>${have}/${n} items \u00B7 ${full ? "Collection complete" : esc(s2.how)}</small></div><span class="wd-pack-st">${full ? "\uD83C\uDFC6" : Math.round(100 * have / n) + "%"}</span></div>`
+          + `<div class="wd-bar" role="progressbar" aria-valuenow="${have}" aria-valuemin="0" aria-valuemax="${n}"><i style="width:${Math.round(100 * have / n)}%"></i></div>`
+          + (full ? "" : `<p class="wd-pack-list"><b>Missing:</b> ${miss.map((k) => `<span>${esc(itemName(k))}</span>`).join("")}</p>`)
+          + `<button type="button" class="wd-pack-more" data-set="${s2.id}">${ex ? "Hide items" : "See the items on me"}</button>`
+          + (ex ? `<div class="cz-grid">${s2.items.map(tileOf).join("")}</div>` : "") + "</section>";
+      };
+      let rare = all.filter((it) => /^(epic|legendary|mythic)$/.test(czMeta(it.k, it.v).rarity));
+      return `<section class="wd-sum"><div class="wd-sum-top"><div><b>${owned.length}</b><span>of ${all.length} items collected</span></div><div><b>${pct}%</b><span>complete</span></div><div><b>${done}/${sets.length}</b><span>collections done</span></div></div>`
+        + `<div class="wd-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div><div class="wd-rcs">${rr}</div></section>`
+        + `<h3 class="cz-h">Recently unlocked</h3>` + (recent.length ? `<div class="cz-grid">${recent.map(tileOf).join("")}</div>` : note("New items you unlock from now on appear here. Earn points, win Boss Rush chests and Gate Rush weeks to unlock more."))
+        + `<h3 class="cz-h">Rare and exclusive items <small class="muted">${rare.filter((it) => czOwns(it.key)).length}/${rare.length}</small></h3>`
+        + `<button type="button" class="wd-pack-more" data-set="rare">${openSet === "rare" ? "Hide rare items" : "Show rare items"}</button>` + (openSet === "rare" ? `<div class="cz-grid">${rare.map((it) => tile(it.k, it.v, it.name)).join("")}</div>` : "")
+        + `<h3 class="cz-h">Collections</h3>` + sets.map(setCard).join("");
+    }
+    /* epz-patch:collection2 — Outfits: save up to 8 complete looks and switch between them */
+    function outfitsView() {
+      let s = czStore(), list = s.outfits, full = list.length >= CZ_MAX_OUTFITS;
+      return `<p class="cz-note">Save your favourite looks and switch between them with one tap. You can keep up to ${CZ_MAX_OUTFITS} outfits.</p>`
+        + `<button type="button" class="btn btn-primary btn-big wd-osave" data-oact="save" ${full ? "disabled" : ""}>\uD83D\uDCBE Save this look as an outfit</button>`
+        + (full ? note(`You have ${CZ_MAX_OUTFITS} outfits. Delete one to save a new one.`) : "")
+        + (list.length ? `<div class="wd-outfits">${list.map((o) => `<section class="wd-outfit"><span class="wd-oav">${czSvg(o.c, { size: 84, frame: "bust", still: !0, bg: !1 })}</span><div class="wd-oinfo">`
+          + (renaming === o.id ? `<input class="wd-oname-in" data-oren="${o.id}" maxlength="24" value="${esc(o.name)}" aria-label="Outfit name"><div class="wd-obtns"><button type="button" class="btn btn-primary btn-sm" data-oact="rensave" data-oid="${o.id}">Save name</button></div>`
+          : `<b>${esc(o.name)}</b><div class="wd-obtns"><button type="button" class="btn btn-primary btn-sm" data-oact="wear" data-oid="${o.id}">Wear</button><button type="button" class="btn btn-ghost btn-sm" data-oact="ren" data-oid="${o.id}">Rename</button><button type="button" class="btn btn-ghost btn-sm" data-oact="del" data-oid="${o.id}">Delete</button></div>`)
+          + "</div></section>").join("")}</div>` : note("No outfits yet. Dress your character, then press Save this look."));
+    }
+    function outfitAct(act, id) {
+      let s = czStore(), o = s.outfits.find((x) => x.id === id);
+      if (act === "save") {
+        if (s.outfits.length >= CZ_MAX_OUTFITS) return toast(`You can keep ${CZ_MAX_OUTFITS} outfits. Delete one first.`, "info", 3e3);
+        let n = s.outfits.length + 1, name = "Outfit " + n; while (s.outfits.some((x) => x.name === name)) name = "Outfit " + ++n;
+        s.outfits.push({ id: Date.now().toString(36), name, c: czCfg(cfg), at: new Date().toISOString() }), save(), toast(`Saved as "${name}".`, "success", 2e3);
+      } else if (o && act === "wear") {
+        let c2 = czCfg(o.c), locked = CZ_LOCK_SLOTS.filter((k) => !czHas(k, c2[k]));
+        locked.forEach((k) => c2[k] = cfg[k]);
+        snap(), cfg = c2, state.avatar = czCfg(cfg), save(), drawStage("proud");
+        toast(locked.length ? `Now wearing "${o.name}". ${locked.length} locked item${locked.length > 1 ? "s were" : " was"} kept as before.` : `Now wearing "${o.name}".`, "success", 2600);
+      } else if (o && act === "ren") renaming = id;
+      else if (o && act === "rensave") { let inp = app.querySelector(`[data-oren="${id}"]`), v = (inp && inp.value || "").replace(/\s+/g, " ").trim().slice(0, 24); v && (o.name = v, save()); renaming = null; }
+      else if (o && act === "del") { if (!confirm(`Delete the outfit "${o.name}"?`)) return; s.outfits = s.outfits.filter((x) => x.id !== id), save(); }
+      drawOpts();
     }
     function searchView() {
       let t = q.trim().toLowerCase(), out = "", n = 0;
@@ -9800,6 +9891,9 @@ Hi Khalid! This morning Sami came here to return your laptop. He says 'Thanks a 
       if (vw) return CZ3.hero && CZ3.hero.view(Number(vw.dataset.view));
       if (zm) return CZ3.hero && CZ3.hero.zoom(zm.dataset.zoom === "face" ? (CZ3.hero.zt > 2 ? 1 : 2.4) : CZ3.hero.zt + (zm.dataset.zoom === "in" ? .4 : -.4));
       if (pk) return openPack = openPack === pk.dataset.pack ? null : pk.dataset.pack, drawOpts();
+      let ss = e.target.closest("[data-set]"), oa = e.target.closest("[data-oact]"); /* epz-patch:collection2 */
+      if (ss) return openSet = openSet === ss.dataset.set ? null : ss.dataset.set, drawOpts();
+      if (oa) return outfitAct(oa.dataset.oact, oa.dataset.oid);
       if (t) return q = "", app.querySelector("#wd-q").value = "", cat = t.dataset.t, drawOpts(), t.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" }), CZ3.hero && CZ3.hero.zoom(cat === "face" || cat === "hair" || cat === "head" ? 2.1 : 1);
       if (sb) return sub[cat] = sb.dataset.sub, drawOpts();
       if (sw) return snap(), cfg.col[sw.dataset.col] = sw.dataset.hex, drawStage(), drawOpts();
